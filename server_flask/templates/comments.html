@@ -1,0 +1,77 @@
+{% extends 'layout/base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+<div class="content">
+
+  <h1>Система Комментариев с Ответами</h1>
+
+    <form action="{{ url_for('comment.comments') }}" method="post">
+        <textarea class="bg-light" name="comment" rows="4" cols="50" placeholder="Введите ваш комментарий"></textarea><br>
+        <button class="btn btn-outline-success btn-lg my-sm-0" type="submit">Отправить комментарий</button>
+    </form>
+
+	{% if comments|length < 1 %}
+	<h4 style="text-align: center;">There are no comment. Create one below!</h4>
+	{% else %}
+
+
+
+  
+    
+
+    <h2>Комментарии:</h2>
+     <ul class="bg-light">
+        {% for comment in comments %}
+            <li class="bg-light">
+                {{ comment.text }}
+
+                <a class="btn btn-outline-success my-sm-0" style="margin-left:20px;"  href="{{ url_for('comment.add_reply', parent_id=comment.id) }}" >Ответить</a>
+
+                <ul>
+                    {% for reply in comment.replies %}
+                        <li>
+                          {{ reply.text }}
+                           <a class="btn btn-outline-success my-sm-0" style="margin-left:20px;" href="{{ url_for('comment.add_reply2', parent_id=reply.id) }}">Ответить</a>
+                            <ul>
+                        {% for reply2 in reply.replies %}
+                          <li>
+                            {{ reply2.text }}
+                            
+                          </li>
+                        {% endfor %}
+                             </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+
+<!-- <div id="comments">
+  {% for task in tasks %}
+    <div class="comment">
+      <p>{{ task.content }}</p>
+      {% if "replies" in comment %}
+        <div class="replies">
+          {% for reply in comment.replies %}
+            <div class="reply">
+              <p>{{ reply.comment }}</p>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  {% endfor %}
+</div> -->
+	{% endif %}
+<!-- 	<form action="/comments" method="POST">
+		<input type="text" name="text" id="content">
+		<input type="submit" value="ADD COMMENT">
+	</form> -->
+
+</div>
+{% endblock %}

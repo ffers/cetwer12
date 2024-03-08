@@ -1,0 +1,15 @@
+{% extends 'layout/base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+<div class="content">
+	 <h1>Ответ на комментарий</h1>
+	 <form action="{{ url_for('comment.add_reply', parent_id=parent_id) }}" method="post">
+        <textarea name="reply_text" rows="4" cols="50" placeholder="Введите ваш ответ"></textarea><br>
+        <button type="submit">Отправить ответ</button>
+    </form>
+</div>
+{% endblock %}

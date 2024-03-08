@@ -1,0 +1,105 @@
+{% extends 'cabinet_client/Products/layout/base.html' %} {% block title %}Home{% endblock %}
+
+{% block body %}
+
+<h1 align="center">{% block header %}Товари{% endblock %}</h1>
+<div id="products">
+  {% for product in tasks_products %}
+  <div class="content">
+    <div class="card-header d-flex justify-content-between align-items-center">
+
+      <a href="/cabinet/products">{{product.id}}</a>
+
+
+      <div>
+        <span id="likes-count-{{product.id}}">
+        {{ product.likes|length }}</span>
+        {% if user.id in product.likes|map(attribute="author")|list %}
+
+        {% else %}
+        <i
+          class="far fa-thumbs-up"
+          id="like-button-{{product.id}}"
+          onclick="like({{product.id}})"
+        ></i>
+        {% endif %} {% if user.id == author_id %}
+        <div class="btn-group">
+          <button
+            type="button"
+            class="btn btn-sm btn-primary dropdown-toggle"
+            data-bs-toggle="dropdown"
+          ></button>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="/delete-product/{{product.id}}" class="dropdown-item"
+                >Delete</a
+              >
+            </li>
+          </ul>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <!-- <div class="col align-items-center"><a href="/cabinet/products/{{product.id}}">{{product.id}}</a><footer><small class="text-muted"></small></footer></div> -->
+        <div class="col">{{product.article}}<footer><small class="text-muted">Артікул</small></footer></div>
+        <div class="col">{{product.product_name}}<footer><small class="text-muted">Назва</small></footer></div>
+        <div class="col">{{product.description}}<footer><small class="text-muted">Опис</small></footer></div>
+        <div class="col">{{product.price}}<footer><small class="text-muted">Ціна</small></footer></div>
+        <div class="col">{{product.quantity}}<footer><small class="text-muted">Кількість</small></footer></div>
+        </small></footer></div>
+      </div>
+
+      <div class="collapse" id="comments-{{product.id}}">
+        <div class="card">
+          <div class="card-body" id="comments-expanded-{{product.id}}">
+            {% for comment in product.comments %}
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <a href="/products/{{comment.user.username}}"
+                  >{{comment.user.username}}</a
+                >: {{comment.text}}
+              </div>
+              <div>
+                <small class="text-muted"> {{comment.date_created}}</small>
+                {% if user.id == comment.author or user.id == product.author %}
+                <div class="btn-group">
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-primary dropdown-toggle"
+                    data-bs-toggle="dropdown"
+                  ></button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a href="/delete-comment/{{comment.id}}" class="dropdown-item">Delete</a>
+                    </li>
+                  </ul>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      </form>
+    </div>
+  </div>
+  <br>
+</div>
+{% endfor %}
+{% block footer %}
+{% if product == none %}
+<div class="text-center">
+  <a href="/cabinet/products/add_product"> 
+    <button type="button" class="btn btn-info btn-lg">
+      Створити Продукт
+    </button></a
+  >
+   <br/>
+   <br/>
+</div>
+{% endif %}
+
+{% endblock %} {% endblock %}

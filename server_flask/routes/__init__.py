@@ -1,0 +1,9 @@
+from .Blog import bp as Blog
+from .Auth import bp as Auth
+from .Comment import bp as Comment
+from .User import bp as User_post
+from .Bot import bp as Bot
+from .cabinet_client.Order import bp as Order
+from .cabinet_client.Cabinet import bp as Cabinet
+from .cabinet_client.Admin import bp as Admin
+from .cabinet_client.Product import bp as Products

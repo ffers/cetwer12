@@ -1,0 +1,29 @@
+{% extends 'cabinet_client/Products/layout/base.html' %} {% block title %}Додати товар{% endblock %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+	<div class="content">
+		<h1 style="text-align: center;">
+			Додайте Товар
+		</h1>
+		<form action="{{ url_for('Products.add_product') }}" method="post">
+			<textarea class="form-control bg-light" name="article" rows="1" cols="50" placeholder="* Артікул"></textarea><br>
+			<div class="row">
+				<div class="col-sm"><textarea class="form-control bg-light" name="product_name" rows="1" cols="50" placeholder="* Назва"></textarea><br></div>
+				<div class="col-sm"><textarea class="form-control bg-light" name="description" rows="1" cols="50" placeholder="Опис"></textarea><br></div>
+				<div class="col-sm"><textarea class="form-control bg-light" name="price" rows="1" cols="50" placeholder="Ціна"></textarea><br></div>
+				<div class="col-sm"><textarea class="form-control bg-light" name="quantity" rows="1" cols="50" placeholder="Кількість"></textarea><br></div>
+			</div>
+
+			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Додати Товар</button>
+		</form>
+
+
+
+	</div>
+
+
+{% endblock %}

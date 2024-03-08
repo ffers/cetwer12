@@ -1,0 +1,161 @@
+
+
+.content {
+    margin: 0 auto;
+    width: 90%;
+}
+
+body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            /* background-image: radial-gradient(circle, black 1px, transparent 1px);
+            background-size: 18px 19px; /* розмір кожної точки 
+            background-position: center;
+            background-color: #f0f0f0; колір фону */
+        }
+h1 {
+    text-align: center;
+    padding: 20px 0;
+}
+form {
+    text-align: center;
+    margin-bottom: 20px;
+}
+form textarea {
+    width: 100%;
+    padding: 10px;
+}
+.button_cor {
+
+    margin: 2px;
+    
+}
+h2 {
+    padding: 10px 0;    
+}
+ul {
+    list-style: none;
+    padding-left: 0;
+}
+ul li {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+ul li ul {
+    padding-left: 20px;
+}
+a {
+    color: #0dcaf0;
+    text-decoration: none;
+    /* margin-left: 30px; */
+    text-align: center;
+}
+a:hover {
+    color: #51d9f5;
+    text-decoration: none;
+    /* margin-left: 30px; */
+    text-align: center;
+}
+tr {
+    color: #14149e;
+   font-size: 15px;
+   
+   
+}
+
+
+.text-button {
+    padding: 0;
+    background: none; /* Задаємо прозорий фон */
+    border: none; /* Відключаємо границю */
+    color: #6ab8f8; /* Задаємо колір тексту */
+    text-decoration: underline; /* Підкреслюємо текст */
+    cursor: pointer; /* Змінюємо вид курсору при наведенні */
+    text-align: center;
+    }
+
+.text-button:focus, .text-button:active {
+    outline: none; /* Приховати обведення (окантовку) також для станів :focus та :active */
+    color: #007bff;
+    }
+
+
+    
+.limited-text {
+    margin: 0; /* Відміняє зовнішні відступи у <p> */
+     /* Забороняє перенос тексту на новий рядок */
+    overflow: hidden; /* Обрізання зайвого контенту, який не поміщається */
+    text-overflow: ellipsis; /* Додає мітку "..." для вказівки, що текст обрізаний */
+    }
+      
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+.text-radio {
+    margin-right: 5px;
+}
+/* .modal-content {
+    width: 70%;
+    position: absolute;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    overflow-y: auto;
+} */
+
+.container-info {
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    /* height: 100vh; */
+}
+
+#notificationContainer {
+    color: #595c5f;
+    position: absolute;
+    width: 20%;
+
+    /* transform: translate(-50%, -50%); */
+    background-color: #fff;
+    border: 1px #797474;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 9px 9px 10px rgba(0, 0, 0, 0.1);
+    top: 100px;
+    right: 108px;
+    opacity: 0; /* Початкова прозорість 0 */
+    transition: opacity 2s ease-in-out; /* Плавна анімація прозорості */
+  }
+  
+#notificationContainer.show {
+    opacity: 2; /* Зростання прозорості при показі */
+  }
+
+
+
+@media screen and (max-width: 576px) {
+    .content {
+        width: 90%; /* Занимает всю доступную ширину экрана */
+    }
+    .form-control {
+        margin-top: 5px;
+    }
+    th, td {
+        display: block;
+        width: 95%;
+        box-sizing: border-box;
+    
+    }
+}

@@ -1,0 +1,284 @@
+{% extends 'cabinet_client/base.html' %} {% block title %}Home{% endblock %}
+
+{% block body %}
+
+
+{% block footer %}
+<!-- <div class="content text-center">
+   <br/>
+   <br/>
+   <style>
+      
+  
+      .sun-moon {
+         width: 369px;
+         height: 145px;
+         flex-shrink: 0;
+         border-radius: 200px;
+         background: #0DCAF0;
+         box-shadow: 0px 7px 9px 0px rgba(0, 0, 0, 0.25) inset, 0px 1px 13px 0px rgba(0, 0, 0, 0.00) inset, 0px 4px 10px 0px rgba(255, 255, 255, 0.80), 0px -3px 4px 0px rgba(0, 0, 0, 0.35);
+      }
+      .sun {
+         width: 120px;
+         height: 120px;
+         flex-shrink: 0;
+         border-radius: 120px;
+         background: #EBF94B;
+         box-shadow: 0px -5px 4px 4px rgba(154, 139, 10, 0.24) inset, 3px 4px 4px 0px rgba(255, 255, 255, 0.31) inset, 7px 4px 8px 0px rgba(0, 0, 0, 0.25);
+         margin: 10px, 10px;
+      }
+      .moon {
+         width: 369px;
+height: 145px;
+flex-shrink: 0;
+border-radius: 200px;
+background: #0D2C33;
+box-shadow: 0px 7px 9px 0px rgba(0, 0, 0, 0.25) inset, 0px 1px 13px 0px rgba(0, 0, 0, 0.00) inset, 0px 4px 10px 0px rgba(255, 255, 255, 0.80), 0px -3px 4px 0px rgba(0, 0, 0, 0.35);
+      }
+
+
+
+      /* .cloud1 {
+         width: 68px;
+         height: 68px;
+         fill: #D9D9D9;
+      }
+
+      .cloud10 {
+         width: 364px;
+height: 364px;
+flex-shrink: 0;
+border-radius: 364px;
+background: rgba(217, 217, 217, 0.30);
+      }
+      .cloud11 {
+         width: 281px;
+height: 281px;
+flex-shrink: 0;
+border-radius: 281px;
+background: rgba(217, 217, 217, 0.30);
+      }
+  .cloud12 {
+   width: 203px;
+height: 203px;
+flex-shrink: 0;
+fill: rgba(217, 217, 217, 0.30);
+  }
+
+.elips1 {
+   width: 364px;
+height: 364px;
+flex-shrink: 0;
+border-radius: 364px;
+background: rgba(217, 217, 217, 0.30);
+}
+.elips2 {
+   width: 281px;
+height: 281px;
+flex-shrink: 0;
+border-radius: 281px;
+background: rgba(217, 217, 217, 0.30);
+}
+.elips3 {
+   width: 203px;
+height: 203px;
+flex-shrink: 0;
+fill: rgba(217, 217, 217, 0.30);
+}
+
+/* облака */
+/* .elips4 {
+   width: 105px;
+height: 105px;
+fill: #D9D9D9;
+}
+.elips5 {
+   width: 68px;
+height: 68px;
+fill: #D9D9D9;
+}
+.elips6 {
+   width: 76px;
+height: 76px;
+fill: #D9D9D9;
+}
+.elips7 {
+   width: 68px;
+height: 68px;
+fill: #D9D9D9;
+}
+.elips8 {
+   width: 68px;
+height: 68px;
+fill: #D9D9D9;
+}
+.elips9 {
+   width: 94px;
+height: 94px;
+fill: #D9D9D9;
+} */
+/* білі облака */
+/* .elips10 {
+   width: 203px;
+height: 203px;
+flex-shrink: 0;
+fill: rgba(217, 217, 217, 0.30);
+} */ 
+
+.element1, .element2 {
+  width: 369px;
+  height: 145px;
+  flex-shrink: 0;
+  border-radius: 200px;
+  box-shadow: 0px 7px 9px 0px rgba(0, 0, 0, 0.25) inset, 0px 1px 13px 0px rgba(0, 0, 0, 0.00) inset, 0px 4px 10px 0px rgba(255, 255, 255, 0.80), 0px -3px 4px 0px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.element1 {
+  background: #0DCAF0;
+}
+
+.element2 {
+  display: none;
+  background: #0D2C33;
+}
+
+.element1:hover {
+  background: #0D2C33;
+}
+
+.element2.show {
+  display: block;
+}
+
+
+    </style>
+  <div id="element1" class="element1"></div>
+  <div id="element2" class="element2"></div>
+
+    
+   <div class="col-sm"><a href="cabinet/orders/add_order">
+      <button type="button" class="btn btn-info btn-lg">
+                  Створити Замовлення
+      </button></a>
+   <br/>
+   <br/></div>
+  
+</div> -->
+{% endblock %} {% endblock %}
+
+
+
+    <!-- <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" fill="none">
+      <g clip-path="url(#clip0_30_33)">
+        <g filter="url(#filter0_dii_30_33)">
+          <circle cx="60" cy="60" r="60" fill="#EBF94B"/>
+        </g>
+      </g>
+      <defs>
+        <filter id="filter0_dii_30_33" x="-1" y="-5" width="136" height="137" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+          <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+          <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+          <feOffset dx="7" dy="4"/>
+          <feGaussianBlur stdDeviation="4"/>
+          <feComposite in2="hardAlpha" operator="out"/>
+          <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_30_33"/>
+          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_30_33" result="shape"/>
+          <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+          <feMorphology radius="4" operator="erode" in="SourceAlpha" result="effect2_innerShadow_30_33"/>
+          <feOffset dy="-5"/>
+          <feGaussianBlur stdDeviation="2"/>
+          <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+          <feColorMatrix type="matrix" values="0 0 0 0 0.603 0 0 0 0 0.54679 0 0 0 0 0.0409036 0 0 0 0.24 0"/>
+          <feBlend mode="normal" in2="shape" result="effect2_innerShadow_30_33"/>
+          <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+          <feOffset dx="3" dy="4"/>
+          <feGaussianBlur stdDeviation="2"/>
+          <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+          <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.31 0"/>
+          <feBlend mode="normal" in2="effect2_innerShadow_30_33" result="effect3_innerShadow_30_33"/>
+        </filter>
+        <clipPath id="clip0_30_33">
+          <rect width="120" height="120" rx="60" fill="white"/>
+        </clipPath>
+      </defs>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <g clip-path="url(#clip0_3_166)">
+        <path d="M7.99998 1.33333L10.06 5.50666L14.6666 6.18L11.3333 9.42666L12.12 14.0133L7.99998 11.8467L3.87998 14.0133L4.66665 9.42666L1.33331 6.18L5.93998 5.50666L7.99998 1.33333Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+      <defs>
+        <clipPath id="clip0_3_166">
+          <rect width="16" height="16" fill="white"/>
+        </clipPath>
+      </defs>
+    </svg>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 11 11" fill="none">
+      <g clip-path="url(#clip0_3_168)">
+        <path d="M5.50002 0.916672L6.91627 3.78584L10.0834 4.24876L7.79169 6.48084L8.33252 9.63417L5.50002 8.14459L2.66752 9.63417L3.20835 6.48084L0.916687 4.24876L4.08377 3.78584L5.50002 0.916672Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+      <defs>
+        <clipPath id="clip0_3_168">
+          <rect width="11" height="11" fill="white"/>
+        </clipPath>
+      </defs>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 11 11" fill="none">
+      <g clip-path="url(#clip0_3_170)">
+        <path d="M5.50002 0.916672L6.91627 3.78584L10.0834 4.24876L7.79169 6.48084L8.33252 9.63417L5.50002 8.14459L2.66752 9.63417L3.20835 6.48084L0.916687 4.24876L4.08377 3.78584L5.50002 0.916672Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+      <defs>
+        <clipPath id="clip0_3_170">
+          <rect width="11" height="11" fill="white"/>
+        </clipPath>
+      </defs>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
+      <path d="M11 1L14.09 7.26L21 8.27L16 13.14L17.18 20.02L11 16.77L4.82 20.02L6 13.14L1 8.27L7.91 7.26L11 1Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <g clip-path="url(#clip0_3_162)">
+        <path d="M7.99998 1.33333L10.06 5.50666L14.6666 6.18L11.3333 9.42666L12.12 14.0133L7.99998 11.8467L3.87998 14.0133L4.66665 9.42666L1.33331 6.18L5.93998 5.50666L7.99998 1.33333Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+      <defs>
+        <clipPath id="clip0_3_162">
+          <rect width="16" height="16" fill="white"/>
+        </clipPath>
+      </defs>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <g clip-path="url(#clip0_3_162)">
+        <path d="M7.99998 1.33333L10.06 5.50666L14.6666 6.18L11.3333 9.42666L12.12 14.0133L7.99998 11.8467L3.87998 14.0133L4.66665 9.42666L1.33331 6.18L5.93998 5.50666L7.99998 1.33333Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+      <defs>
+        <clipPath id="clip0_3_162">
+          <rect width="16" height="16" fill="white"/>
+        </clipPath>
+      </defs>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="179" height="145" viewBox="0 0 179 145" fill="none">
+      <circle cx="101.5" cy="72.5" r="101.5" fill="#D9D9D9" fill-opacity="0.3"/>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="177" height="145" viewBox="0 0 177 145" fill="none">
+      <circle cx="75.5" cy="72.5" r="101.5" fill="#D9D9D9" fill-opacity="0.3"/>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="344" height="145" viewBox="0 0 344 145" fill="none">
+      <g filter="url(#filter0_d_1_15)">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M327.5 106C356.495 106 380 82.4949 380 53.5C380 24.5051 356.495 1 327.5 1C298.505 1 275 24.5051 275 53.5C275 58.5094 275.702 63.3549 277.012 67.9437C268.28 70.0462 260.861 75.5186 256.208 82.908C249.789 77.9498 241.739 75 233 75C213.316 75 197.128 89.9657 195.194 109.139C189.119 103.47 180.965 100 172 100C170.056 100 168.149 100.163 166.294 100.477C158.674 84.8031 142.599 74 124 74C98.0426 74 77 95.0426 77 121C77 146.957 98.0426 168 124 168C133.681 168 142.679 165.073 150.156 160.055C156.064 165.014 163.683 168 172 168C188.969 168 203.035 155.568 205.587 139.316C212.502 146.517 222.228 151 233 151C247.923 151 260.836 142.398 267.053 129.883C272.262 133.126 278.412 135 285 135C302.331 135 316.633 122.033 318.734 105.271C321.585 105.751 324.513 106 327.5 106ZM44 182C62.7777 182 78 166.778 78 148C78 129.222 62.7777 114 44 114C25.2223 114 10 129.222 10 148C10 166.778 25.2223 182 44 182Z" fill="#D9D9D9" fill-opacity="0.5" shape-rendering="crispEdges"/>
+      </g>
+      <defs>
+        <filter id="filter0_d_1_15" x="0" y="-9" width="390" height="201" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+          <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+          <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+          <feOffset/>
+          <feGaussianBlur stdDeviation="5"/>
+          <feComposite in2="hardAlpha" operator="out"/>
+          <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0"/>
+          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1_15"/>
+          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1_15" result="shape"/>
+        </filter>
+      </defs>
+    </svg> -->

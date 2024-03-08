@@ -1,0 +1,47 @@
+{% extends 'layout/base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+<div class="content">
+	<h1 style="text-align: center;">
+		Create Belove
+	</h1>
+
+	</div>
+	<!-- {% if tasks|length < 1 %}
+	<h4 style="text-align: center;">There are no comment. Create one below!</h4>
+	{% else %}
+	<table>
+		<tr>
+			<th>Login</th>
+			<th>Comment</th>
+			<th>Added</th>
+			<th>Actions</th>
+		</tr>
+		{% for task in tasks %}
+			<tr>
+				<td>{{task.text}}</td>
+				<td>{{task.timestamp}}</td>	
+				
+				
+				<td>
+					<a href="/delete/{{task.id}}">Delete</a>
+					<br>
+					<a href="/update/{{task.id}}">Update</a>
+				</td>
+
+			</tr>
+		{% endfor %}
+	</table>
+	{% endif %}
+	<form action="/" method="POST">
+		<input type="text" name="conect" id="conect" value="Login">
+		<input type="text" name="content" id="content">
+		<input type="submit" value="ADD COMMENT">
+	</form>
+
+</div> -->
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends 'cabinet_client/base.html' %}
+
+{% block body %}
+	<div class="content">
+		<h1 style="text-align: center; color: #7d7f85;">Додайте Замовлення</h1>
+		<form id="myForm" action="{{ url_for('Order.add_order') }}" method="post">
+			<div class="row">
+				<div class="col-sm"><input type="tel" class="form-control  " name="phone" rows="1" cols="50" pattern="[0-9]{12}" style="text-align: center;" placeholder="*Номер телефону 380909009000" required><br></div>
+				<div class="col-sm"><input class="form-control  " style="text-align: center;" id="client_lastname" name="client_lastname" rows="1" cols="50" placeholder="* Призвіще" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Тут є латиниця"><br></div>
+				<div class="col-sm"><input class="form-control  " style="text-align: center;"  id="client_firstname"  name="client_firstname" rows="1" cols="50" placeholder="* Ім'я" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Тут є латиниця"><br></div>
+				<div class="col-sm"><input class="form-control  " style="text-align: center;" name="client_surname" rows="1" cols="50" placeholder="Побатькові(необов.)"><br></div>
+			</div>
+            <div class="row"></div>
+			<div class="row">
+  				<legend></legend>
+                <div class="col-sm"><input class="form-check-input text-radio" type="radio" id="warehouse" name="warehouse_option" value="warehouse" onclick="toggleField()" ><label for="warehouse" class="form-check-label"> Відділення</label></div>
+                <div class="col-sm"><input type="radio" id="poshtomat" class="form-check-input text-radio" name="warehouse_option" value="poshtomat" onclick="toggleField()" /><label for="poshtomat" class="form-check-label"> Поштомат</label></div>
+                <div class="col-sm"><input type="radio" id="address" class="form-check-input text-radio" name="warehouse_option" value="address" onclick="toggleField()" /><label for="address" class="form-check-label"> Адреса</label></div>
+			</div></br>
+			<div class="row "> {# selectArea address **************************** #}
+  				<legend></legend>
+				<div class="col-sm" ><select id="citySelect" class=" " name="city" required></select></div>
+				<div id="hiddenFieldWar" style="display:block;" class="col-sm"><select id="warhousSelect" class="form-control  " name="warehouse" rows="1" cols="50" placeholder="Відділення"></select></div>
+				<div id="hiddenFieldPost" style="display:none;" class="col-sm"><select id="postSelect" class="form-control  " name="warehouse" rows="1" cols="50" placeholder="Поштомат"></select></div>
+				<div id="hiddenFieldAdr" style="display:none;" class="col-sm"><textarea id="addressText" class="form-control  " name="warehouse" rows="1" cols="50" placeholder="* Адреса"></textarea></div>
+			</div></br>
+			<div class="row">
+                <div class="col-sm"><input type="radio" class="form-check-input text-radio" id="nalogka" name="payment_option" value="1"/><label for="nalogka" class="form-check-label" required> Післяплата</label></div>
+                <div class="col-sm"><input type="radio" class="form-check-input text-radio" id="card_pay" name="payment_option" value="2"/><label for="card_pay" class="form-check-label" required> Оплата на рахунок</label></div>
+                <div class="col-sm"><input type="radio" class="form-check-input text-radio" id="peredpalata" name="payment_option" value="3" onclick="togglePaybefore()"/><label for="peredpalata" id="labelPayBe" class="form-check-label" required> Передплата</label></div>
+				<div id="hiddenFieldPay" style="display:none;" class="col"><input type="number" style="text-align: center;" class="form-control" id="sum_before_goods" name="sum_before_goods" min="1" placeholder="Сумма" value="100"><br></div>                      
+			</div></br>
+            <div id="product-container">
+                <div class="row">
+					<!-- Товар та кількість -->
+                    <div class="col-sm"><select  class="  form-control product-select" name="product" required></select><br></div>
+					<div class="col-sm col-lg-2"><input type="number" style="text-align: center;" class=" quantity form-control" id="quantity" name="quantity"  min="1" max="10000" placeholder="* Кількість" required><br></div>
+					<div class="col-sm col-lg-2" ><input type="number" style="text-align: center;" class=" price form-control" id="price" name="price" min="1" placeholder="Ціна" required><br></div>					
+					<div class="col-sm col-lg-2"><input type="number" style="text-align: center; display: none;" class="total form-control" id="total	" name="total" min="1" placeholder="Сумма" required><br></div>
+					<div class="col-sm col-lg-2"><input type="number" style="text-align: center;" class="totalall form-control" id="total-all" name="total-all" min="1" placeholder="Сумма" required><br></div>
+                </div>                
+            </div></br>
+			
+            <div class="row">
+                <div class="col-sm"></div>
+                <div class="col-sm"><input type="button" class="text-button"  value="Додати товар" id="addButton"></div>
+				<div class="col-sm"><input type="button" class="text-button"  value="Створити товар" data-bs-toggle="modal" data-bs-target="#myModal" ></div>
+                <div class="col-sm"><a href="get_product/send_with_prom_test">Підвердити</a></div>
+            </div><br>
+			<div class="row"><div class="col-sm"><textarea style="text-align: center;" class="  form-control" name="description" rows="3" cols="50" placeholder="Нотатки"></textarea><br></div></div>
+			<button class="btn btn-outline-success my-2 my-sm-0" onclick="submitForm()" type="submit">Зберегти Замовлення</button>
+		</form>
+		
+		
+		<div class="modal fade" id="myModal"  style="background-color: transparent;" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog custom-modal-dialog"  >
+			<div class="modal-content ">
+				<div class="modal-header">
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="content text-center">
+					<h1 style="text-align: center;">
+						Створеня Товару
+					</h1>
+					<form id="dataForm">
+						<textarea class="form-control  " style="text-align: center;"  id="article" name="article" rows="1" cols="50" placeholder="* Артікул"></textarea><br>
+						<div class="row">									
+							<div class="col-sm "><textarea class="form-control  " style="text-align: center;" id="product_name" name="product_name" rows="1" cols="50" placeholder="* Назва"></textarea><br></div>
+						</div>
+						<div class="row">	
+							<div class="col-sm "><textarea class="form-control  " style="text-align: center;" id="description_prod" name="description" rows="1" cols="50" placeholder="Опис"></textarea><br></div>
+							<div class="col-sm "><input type="number" style="text-align: center;" class="  form-control" id="price_prod" name="price" min="1" placeholder="Ціна" required><br></div>
+							<div class="col-sm "><textarea class="form-control  "  style="text-align: center;"id="quantity_prod" name="quantity" rows="1" cols="50" placeholder="Кількість"></textarea><br></div>
+						</div><br>
+					</div>
+					<div class="modal-footer">
+						<button id="submitBtn" class="btn btn-outline-success my-2 my-sm-0" onclick="sendDataToServer()" type="button">Додати Товар</button>
+					</form>
+				</div>
+				</div>
+			</div>	
+			</div>
+		</div>
+
+
+		<div class="container-info text-center">
+			<div id="notificationContainer" >
+			<div id="notification">
+			  <!-- Зміст вашого уведомлення -->
+			  <p>Товар додано</p>
+			</div>
+		  </div></div>
+
+	<script type="module" src="{{url_for('static', filename='javascript/calculate.js')}}"></script>
+    <script src="{{url_for('static', filename='javascript/add-select2.js')}}"></script>
+    <script src="{{url_for('static', filename='javascript/hiddenElement.js')}}"></script>
+    <script src="{{url_for('static', filename='javascript/submitFormSelect2.js')}}"></script>
+    <script type="module" src="{{url_for('static', filename='javascript/add-button-product.js')}}"></script>
+    <script src="{{url_for('static', filename='javascript/modal-window.js')}}"></script>
+{% endblock %}		
