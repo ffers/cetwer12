@@ -293,6 +293,7 @@ def get_prom_to_crm():
 def get_update_order():
     token = request.headers.get("Authorization")
     json_data = request.json
+    print("Отримали запит від scrypt")
     if verify_token(token):
         if json_data:
             resp = aw_cl.await_order(json_data, "update_to_crm")

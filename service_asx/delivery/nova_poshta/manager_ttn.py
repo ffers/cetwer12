@@ -6,8 +6,13 @@ from api.nova_poshta.create_data import ListClient
 from api.nova_poshta import CreateNpData
 # from service_asx.delivery import NpCabinetCl
 from server_flask.models import Orders
+
 from server_flask.db import db
-import os
+import sys,os
+sys.path.append('../')
+current_directory = os.getcwd()
+from common_asx.utilits import Utils
+
 
 ttn_ref_list = "../common_asx/ttn_ref_list.json"
 tg_cl = TgClient()
@@ -17,6 +22,7 @@ ls_cl = ListClient()
 reg_cl = RegistrDoc()
 crnp_cl = CreateNpData()
 # cab_cl = NpCabinetCl()
+ut_cl = Utils()
 
 chat_id_info = "-421982888"
 RESP = {}
@@ -72,7 +78,7 @@ class ManagerTTN:
             dict_ttn_prom.update({"order_id": order_id, "declaration_id": ttn})
         print(dict_ttn_prom)
         global RESP
-        RESP.update(evo_cl.get_send_ttn(dict_ttn_prom))
+        RESP.update(ut_cl.change_ttn(dict_ttn_prom))
         print(RESP)
         return RESP
 
@@ -87,7 +93,7 @@ class ManagerTTN:
             tg_cl.send_message_f(chat_id_info, f"Помилка валідації по замовленю {order_id}, ttn: {ttn}, помилка {error}")
             evo_cl.get_set_status(dict_status_prom)
         else:
-            status = evo_cl.get_set_status(dict_status_prom)
+            status = ut_cl.change_status(dict_status_prom)
             return status
 
     def all_product(self, order):
@@ -122,12 +128,12 @@ class ManagerTTN:
 
     def update_prom_order(self, ttn, order_id, delivery_type):
         resp = "Пром не відповідає"
-        try:
-              #  resp = self.make_send_ttn(ttn, order_id, delivery_type)
-              #  resp = self.make_set_status(ttn, order_id)
-            return resp
-        except:
-            return resp
+        #try:
+        resp = self.make_send_ttn(ttn, order_id, delivery_type)
+        resp = self.make_set_status(ttn, order_id)
+        return resp
+        # except:
+        #     return resp
 
 
     def add_ttn_crm(self, order_id, ttn_data):
