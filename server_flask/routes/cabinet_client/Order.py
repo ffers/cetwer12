@@ -187,7 +187,7 @@ def send_cab(id):
 @author_permission.require(http_exception=403)
 def get_cities():
     search_query = request.args.get('q', '').lower()
-    cities_data = fl_cl.directory_load_json("nova_poshta/create_data/warehouses")
+    cities_data = fl_cl.directory_load_json("api/nova_poshta/create_data/warehouses")
     print(f"warehouse_option {request.args}")
     # Фільтрація даних за текстовим запитом
     filtered_data = [item for item in cities_data["City"] if search_query in item["City"].lower()]
@@ -205,7 +205,7 @@ def get_warehouse():
     # warehouse_option = request.form['warehouse_option']
     print(f"warehouse_option {request.args}")
     search_query = request.args.get('q', '').lower()
-    cities_data = fl_cl.directory_load_json("nova_poshta/create_data/warehouses")
+    cities_data = fl_cl.directory_load_json("api/nova_poshta/create_data/warehouses")
 
     # Фільтрація даних за текстовим запитом
     city_data = next((item for item in cities_data["City"] if city_ref in item["CityRef"].lower()), None)
@@ -227,7 +227,7 @@ def get_post():
     print(f"отриманий реф міста {city_ref}")
 
     search_query = request.args.get('q', '').lower()
-    cities_data = fl_cl.directory_load_json("nova_poshta/create_data/warehouses")
+    cities_data = fl_cl.directory_load_json("api/nova_poshta/create_data/warehouses")
 
     # Фільтрація даних за текстовим запитом
     city_data = next((item for item in cities_data["City"] if city_ref in item["CityRef"].lower()), None)

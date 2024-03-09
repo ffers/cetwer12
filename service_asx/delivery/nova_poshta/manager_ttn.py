@@ -123,8 +123,8 @@ class ManagerTTN:
     def update_prom_order(self, ttn, order_id, delivery_type):
         resp = "Пром не відповідає"
         try:
-          #  resp = self.make_send_ttn(ttn, order_id, delivery_type)
-          #  resp = self.make_set_status(ttn, order_id)
+              #  resp = self.make_send_ttn(ttn, order_id, delivery_type)
+              #  resp = self.make_set_status(ttn, order_id)
             return resp
         except:
             return resp

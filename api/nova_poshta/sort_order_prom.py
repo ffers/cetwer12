@@ -17,8 +17,8 @@ np_cl = NpClient()
 chat_id = "-421982888"
 delivery_np = 13013934
 json_data_prom = "../common_asx/data.json"
-json_data_np_dict = "nova_poshta/create_data/json_dict/json_data_np_dict.json"
-contact_np = "nova_poshta/create_data/json_dict/contact_np.json"
+json_data_np_dict = "api/nova_poshta/create_data/json_dict/json_data_np_dict.json"
+contact_np = "api/nova_poshta/create_data/json_dict/contact_np.json"
 
 OptionsSeat = { "OptionsSeat" : [
                     {
