@@ -1,0 +1,25 @@
+{
+  "success": true,
+  "data": [{
+      "Description": "Агрономія",
+      "DescriptionRu": "Агрономия",
+      "Ref": "f17dc676-cf44-11e9-b0c5-005056b24375",
+      "Delivery1": "0",
+      "Delivery2": "1",
+      "Delivery3": "1",
+      "Delivery4": "1",
+      "Delivery5": "1",
+      "Delivery6": "1",
+      "Delivery7": "0",
+      "Area": "71508135-9b87-11de-822f-000c2965ae0e",
+      "SettlementType": "563ced13-f210-11e3-8c4a-0050568002cf",
+      "IsBranch": "0",
+      "PreventEntryNewStreetsUser": "0",
+      "CityID": "4150",
+      "SettlementTypeDescription": "село",
+      "SettlementTypeDescriptionRu": "село",
+      "SpecialCashCheck": 1,
+      "AreaDescription": "Миколаївська",
+      "AreaDescriptionRu": "Николаевская"
+    }
+]}

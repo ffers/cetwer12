@@ -6,9 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
-*.json
-*.txt
-ttn/
+
+
+
 instance/
 .idea/
 data.json

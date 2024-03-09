@@ -1,0 +1,162 @@
+{
+    "success": true,
+    "data": [
+        {
+            "Ref": "dcaad3d6-4b33-11e4-ab6d-005056801329",
+            "AreasCenter": "db5c88b7-391c-11dd-90d9-001a92567626",
+            "DescriptionRu": "АРК",
+            "Description": "АРК"
+        },
+        {
+            "Ref": "dcaad5a7-4b33-11e4-ab6d-005056801329",
+            "AreasCenter": "db5c88de-391c-11dd-90d9-001a92567626",
+            "DescriptionRu": "Винницкая",
+            "Description": "Вінницька"
+        },
+        {
+            "Ref": "dcaad676-4b33-11e4-ab6d-005056801329",
+            "AreasCenter": "db5c893b-391c-11dd-90d9-001a92567626",
+            "DescriptionRu": "Волынская",
+            "Description": "Волинська"
+        },
+        {
+            "Ref": "dcaad735-4b33-11e4-ab6d-005056801329",
+            "AreasCenter": "db5c88f0-391c-11dd-90d9-001a92567626",
+            "DescriptionRu": "Днепропетровская",
+            "Description": "Дніпропетровська"
+        },
+        {
+            "Ref": "dcaad81c-4b33-11e4-ab6d-005056801329",
+            "AreasCenter": "db5c88bf-391c-11dd-90d9-001a92567626",
+            "DescriptionRu": "Донецкая",
+            "Description": "Донецька"
+        },
+        {
+            "Ref": "dcaad8fb-4b33-11e4-ab6d-005056801329",
+            "AreasCenter": "db5c88c4-391c-11dd-90d9-001a92567626",
+            "DescriptionRu": "Житомирская",
+            "Description": "Житомирська"
+        },
+        {
+            "Ref": "dcaad993-4b33-11e4-ab6d-005056801329",
+            "AreasCenter": "e221d627-391c-11dd-90d9-001a92567626",
+            "DescriptionRu": "Закарпатская",
+            "Description": "Закарпатська"
+        },
+        {
+            "Ref": "dcaada26-4b33-11e4-ab6d-005056801329",
+            "AreasCenter": "db5c88c6-391c-11dd-90d9-001a92567626",
+            "DescriptionRu": "Запорожская",
+            "Description": "Запорізька"
+        },
+        {
+            "Ref": "dcaadac6-4b33-11e4-ab6d-005056801329",
+            "AreasCenter": "db5c8904-391c-11dd-90d9-001a92567626",
+            "DescriptionRu": "Ивано-Франковская",
+            "Description": "Івано-Франківська"
+        },
+        {
+            "Ref": "dcaadb64-4b33-11e4-ab6d-005056801329",
+            "AreasCenter": "8d5a980d-391c-11dd-90d9-001a92567626",
+            "DescriptionRu": "Киевская",
+            "Description": "Київська"
+        },
+        {
+            "Ref": "dcaadbf9-4b33-11e4-ab6d-005056801329",
+            "AreasCenter": "db5c891b-391c-11dd-90d9-001a92567626",
+            "DescriptionRu": "Кировоградская",
+            "Description": "Кіровоградська"
+        },
+        {
+            "Ref": "dcaadc91-4b33-11e4-ab6d-005056801329",
+            "AreasCenter": "db5c88ba-391c-11dd-90d9-001a92567626",
+            "DescriptionRu": "Луганская",
+            "Description": "Луганська"
+        },
+        {
+            "Ref": "dcaadd3a-4b33-11e4-ab6d-005056801329",
+            "AreasCenter": "db5c88f5-391c-11dd-90d9-001a92567626",
+            "DescriptionRu": "Львовская",
+            "Description": "Львівська"
+        },
+        {
+            "Ref": "dcaaddd7-4b33-11e4-ab6d-005056801329",
+            "AreasCenter": "db5c888c-391c-11dd-90d9-001a92567626",
+            "DescriptionRu": "Николаевская",
+            "Description": "Миколаївська"
+        },
+        {
+            "Ref": "dcaade6d-4b33-11e4-ab6d-005056801329",
+            "AreasCenter": "db5c88d0-391c-11dd-90d9-001a92567626",
+            "DescriptionRu": "Одесская",
+            "Description": "Одеська"
+        },
+        {
+            "Ref": "dcaadf02-4b33-11e4-ab6d-005056801329",
+            "AreasCenter": "db5c8892-391c-11dd-90d9-001a92567626",
+            "DescriptionRu": "Полтавская",
+            "Description": "Полтавська"
+        },
+        {
+            "Ref": "dcaadfa0-4b33-11e4-ab6d-005056801329",
+            "AreasCenter": "db5c896a-391c-11dd-90d9-001a92567626",
+            "DescriptionRu": "Ровенская",
+            "Description": "Рівненська"
+        },
+        {
+            "Ref": "dcaae036-4b33-11e4-ab6d-005056801329",
+            "AreasCenter": "db5c88e5-391c-11dd-90d9-001a92567626",
+            "DescriptionRu": "Сумская",
+            "Description": "Сумська"
+        },
+        {
+            "Ref": "dcaae303-4b33-11e4-ab6d-005056801329",
+            "AreasCenter": "db5c8900-391c-11dd-90d9-001a92567626",
+            "DescriptionRu": "Тернопольская",
+            "Description": "Тернопільська"
+        },
+        {
+            "Ref": "dcaae3a1-4b33-11e4-ab6d-005056801329",
+            "AreasCenter": "db5c88e0-391c-11dd-90d9-001a92567626",
+            "DescriptionRu": "Харьковская",
+            "Description": "Харківська"
+        },
+        {
+            "Ref": "dcaae44b-4b33-11e4-ab6d-005056801329",
+            "AreasCenter": "db5c88cc-391c-11dd-90d9-001a92567626",
+            "DescriptionRu": "Херсонская",
+            "Description": "Херсонська"
+        },
+        {
+            "Ref": "dcaae4e5-4b33-11e4-ab6d-005056801329",
+            "AreasCenter": "db5c88ac-391c-11dd-90d9-001a92567626",
+            "DescriptionRu": "Хмельницкая",
+            "Description": "Хмельницька"
+        },
+        {
+            "Ref": "dcaae57c-4b33-11e4-ab6d-005056801329",
+            "AreasCenter": "db5c8902-391c-11dd-90d9-001a92567626",
+            "DescriptionRu": "Черкасская",
+            "Description": "Черкаська"
+        },
+        {
+            "Ref": "dcaae60e-4b33-11e4-ab6d-005056801329",
+            "AreasCenter": "e221d642-391c-11dd-90d9-001a92567626",
+            "DescriptionRu": "Черновицкая",
+            "Description": "Чернівецька"
+        },
+        {
+            "Ref": "dcaae6a8-4b33-11e4-ab6d-005056801329",
+            "AreasCenter": "db5c897c-391c-11dd-90d9-001a92567626",
+            "DescriptionRu": "Черниговская",
+            "Description": "Чернігівська"
+        }
+    ],
+    "errors": [],
+    "warnings": [],
+    "info": [],
+    "messageCodes": [],
+    "errorCodes": [],
+    "warningCodes": [],
+    "infoCodes": []
+}

@@ -1,0 +1,133 @@
+{
+  "data": {
+    "data_adress": {
+      "apiKey": "[ВАШ КЛЮЧ]",
+      "modelName": "Address",
+      "calledMethod": "save",
+      "methodProperties": {
+        "CounterpartyRef": "00000000-0000-0000-0000-000000000000",
+        "StreetRef": "00000000-0000-0000-0000-000000000000",
+        "BuildingNumber": "7",
+        "Flat": "2",
+        "Note": "Коментар"
+      }
+    },
+    "data_street": {
+      "apiKey": "[ВАШ КЛЮЧ]",
+      "modelName": "Address",
+      "calledMethod": "getStreet",
+      "methodProperties": {
+        "CityRef": "",
+        "FindByString": "",
+        "Page": "1",
+        "Limit": ""
+      }
+    },
+    "data_city": {
+      "apiKey": "[ВАШ КЛЮЧ]",
+      "modelName": "Address",
+      "calledMethod": "getCities",
+      "methodProperties": {
+        "Ref": "",
+        "Page": "1",
+        "FindByString": "",
+        "Limit": "20"
+      }
+    },
+    "data_IntDocNumber": {
+      "apiKey": "[ВАШ КЛЮЧ]",
+      "modelName": "InternetDocument",
+      "calledMethod": "save",
+      "methodProperties": {
+        "SenderWarehouseIndex": "38/17",
+        "RecipientWarehouseIndex": "101/102",
+        "PayerType": "Recipient",
+        "PaymentMethod": "Cash",
+        "DateTime": "дд.мм.рррр",
+        "CargoType": "Parcel",
+        "VolumeGeneral": "0.0004",
+        "Weight": "0.5",
+        "ServiceType": "WarehouseWarehouse",
+        "SeatsAmount": "1",
+        "Description": "Одяг",
+        "Cost": "300",
+        "CitySender": "000",
+        "Sender": "00000000-0000-0000-0000-000000000000",
+        "SenderAddress": "00000000-0000-0000-0000-000000000000",
+        "ContactSender": "00000000-0000-0000-0000-000000000000",
+        "SendersPhone": "380989323122",
+        "CityRecipient": "00000000-0000-0000-0000-000000000000",
+        "Recipient": "00000000-0000-0000-0000-000000000000",
+        "RecipientAddress": "00000000-0000-0000-0000-000000000000",
+        "ContactRecipient": "00000000-0000-0000-0000-000000000000",
+        "RecipientsPhone": "380660000000"
+      }
+    },
+    "ContactPerson": {
+      "apiKey": "[ВАШ КЛЮЧ]",
+      "modelName": "ContactPerson",
+      "calledMethod": "save",
+      "methodProperties": {
+        "CounterpartyRef": "00000000-0000-0000-0000-000000000000",
+        "FirstName": "Іван",
+        "LastName": "Іванов",
+        "MiddleName": "Іванович",
+        "Phone": "380997979789"
+      }
+    },
+    "Buffer_Person": {
+      "apiKey": "",
+      "CounterpartyRef": "",
+      "FirstName": "Іван",
+      "LastName": "Іванов",
+      "MiddleName": "Іванович",
+      "Phone": "380997979789",
+      "CityName" : "",
+      "WarehouseId" : ""
+    },
+
+  "Counterparty": {
+    "apiKey": "[ВАШ КЛЮЧ]",
+    "modelName": "Counterparty",
+    "calledMethod": "getCounterpartyContactPersons",
+    "methodProperties": {
+      "Ref": "00000000-0000-0000-0000-000000000000",
+      "Page": "1"
+    }
+  },
+    "getCounterparties": {
+      "apiKey": "[ВАШ КЛЮЧ]",
+      "modelName": "Counterparty",
+      "calledMethod": "getCounterparties",
+      "methodProperties": {
+            "CounterpartyProperty" : "Sender",
+            "FindByString": "",
+            "Page": "1"
+      }
+    },
+
+    "Recepient" : {
+       "apiKey": "[ВАШ КЛЮЧ]",
+       "modelName": "Counterparty",
+       "calledMethod": "save",
+       "methodProperties": {
+            "FirstName" : "Іван",
+            "MiddleName" : "Іванович",
+            "LastName" : "Іванов",
+            "Phone" : "380997979789",
+            "Email" : "test@i.com",
+            "CounterpartyType" : "PrivatePerson",
+            "CounterpartyProperty" : "Recipient"
+   }
+},
+    "BackwardDeliveryData" : [{
+        "PayerType":"Recipient",
+        "CargoType":"Money",
+        "RedeliveryString": ""
+
+        }
+        ]
+  }
+}
+
+
