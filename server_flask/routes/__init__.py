@@ -7,3 +7,4 @@ from .cabinet_client.Order import bp as Order
 from .cabinet_client.Cabinet import bp as Cabinet
 from .cabinet_client.Admin import bp as Admin
 from .cabinet_client.Product import bp as Products
+from .cabinet_client.Analitic import bp as Analitic
