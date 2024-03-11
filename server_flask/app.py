@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 import uvicorn, multiprocessing
 
+
 app = FastAPI()
 @app.get("/v2")
 def read_main():
@@ -8,7 +9,7 @@ def read_main():
 
 def main():
     uvicorn.run(
-        "main:app",
+        "server_flask.flask_app:app",
         log_level="debug",
         reload=True
     )

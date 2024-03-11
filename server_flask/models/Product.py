@@ -10,5 +10,6 @@ class Products(db.Model):
     description = db.Column(db.String(300))
     price = db.Column(db.Float)
     quantity = db.Column(db.Integer)
+    body_product_price = db.Column(db.Float)
     orders = db.relationship('Orders', secondary='ordered_product', overlaps='ordered_product,orders,products')
     ordered_product = db.relationship('OrderedProduct', back_populates='products')

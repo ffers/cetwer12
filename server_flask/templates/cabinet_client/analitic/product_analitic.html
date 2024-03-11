@@ -2,9 +2,9 @@
 
 {% block body %}
 
-<h1 align="center">{% block header %}Товари{% endblock %}</h1>
+<h1 align="center">{% block header %}Аналитика Товаров{% endblock %}</h1>
 <div id="products">
-  {% for product in tasks_products %}
+  {% for item in analitic_product %}
   <div class="content">
     <div class="card-header d-flex justify-content-between align-items-center">
 
@@ -43,11 +43,11 @@
     <div class="card-body">
       <div class="row">
         <!-- <div class="col align-items-center"><a href="/cabinet/products/{{product.id}}">{{product.id}}</a><footer><small class="text-muted"></small></footer></div> -->
-        <div class="col">{{product.article}}<footer><small class="text-muted">Артікул</small></footer></div>
-        <div class="col">{{product.product_name}}<footer><small class="text-muted">Назва</small></footer></div>
-        <div class="col">{{product.description}}<footer><small class="text-muted">Опис</small></footer></div>
-        <div class="col">{{product.price}}<footer><small class="text-muted">Ціна</small></footer></div>
-        <div class="col">{{product.quantity}}<footer><small class="text-muted">Кількість</small></footer></div>
+        <div class="col">{{item.article}}<footer><small class="text-muted">Артікул</small></footer></div>
+        <div class="col">{{item.quantity_sale}}<footer><small class="text-muted">Назва</small></footer></div>
+        <div class="col">{{item.money_in_product}}<footer><small class="text-muted">Опис</small></footer></div>
+        <div class="col">{{item.quantity_stok}}<footer><small class="text-muted">Ціна</small></footer></div>
+        <div class="col">{{item.article.product.article}}<footer><small class="text-muted">Кількість</small></footer></div>
         </small></footer></div>
       </div>
 

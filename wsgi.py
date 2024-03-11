@@ -1,5 +1,3 @@
-
-import uvicorn
 from server_flask import app
 
 

@@ -22,3 +22,5 @@ from .order.teegram_address_order.ConfirmedAddressTg import ConfirmedAddressTg
 from .order.teegram_address_order.NpAddressTg import NpAddressTg
 from .order.teegram_address_order.RozetkaAddressTg import RozetkaAddressTg
 from .order.teegram_address_order.UkrAddressTg import UkrAddressTg
+from .analitic.ProductAnalitic import ProductAnalitic
+from .analitic.FinancAnalitic import FinancAnalitic
