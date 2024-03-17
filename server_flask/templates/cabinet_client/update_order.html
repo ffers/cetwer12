@@ -31,7 +31,7 @@
 				<div class="col-sm"><input type="tel" class="form-control   " name="phone" rows="1" cols="50" pattern="[0-9]{12}" style="text-align: center;" placeholder="*Номер телефону 380909009000" value="{{order.phone}}" required><br></div>
 				<div class="col-sm"><input class="form-control   " style="text-align: center;" name="client_lastname" rows="1" cols="50" placeholder="* Призвіще" value="{{order.client_lastname}}" id="client_lastname" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Тут є латиниця"><br></div>
 				<div class="col-sm"><input class="form-control   " style="text-align: center;" name="client_firstname" rows="1" cols="50" placeholder="* Ім'я" value="{{order.client_firstname}}" id="client_firstname" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Тут є латиниця"><br></div>
-				<div class="col-sm"><input class="form-control   " style="text-align: center;" name="client_surname" rows="1" cols="50" placeholder="Побатькові(необов.)" value="{{order.client_surname}}"><br></div>
+				<div class="col-sm"><input class="form-control   " style="text-align: center;" name="client_surname" rows="1" cols="50" placeholder="Побатькові(необов.)" value=" "><br></div>
 			</div>
             <div class="row"></div>
 			<div id="address_row">
@@ -61,7 +61,7 @@
 <!--  				<legend>Спосіб оплати:</legend>-->
                 <div class="col-sm"><input type="radio" class="form-check-input text-radio" id="nalogka" name="payment_option" value="1" {% if order.payment_method_id == 1 %}checked{% endif %}/><label for="nalogka" class="form-check-label"> Післяплата</label></div>
                 <div class="col-sm"><input type="radio" class="form-check-input text-radio" id="card_pay" name="payment_option" value="2"{% if order.payment_method_id == 2 %}checked{% endif %}/><label for="card_pay" class="form-check-label"> Оплата на рахунок</label></div>
-                <div class="col-sm"><input type="radio" class="form-check-input text-radio" id="peredpalata100" name="payment_option" value="3" onclick="togglePaybefore()" {% if order.payment_method_id == 3 %}checked{% endif %}/><label for="peredpalata100" id="labelPayBe" class="form-check-label" > Передплата 100</label></div>
+                <div class="col-sm"><input type="radio" class="form-check-input text-radio" id="peredpalata100" name="payment_option" value="3" onclick="togglePaybefore()" {% if order.payment_method_id == 3 %}checked{% endif %}/><label for="peredpalata100" id="labelPayBe" class="form-check-label" > Передплата</label></div>
 				<div id="hiddenFieldPay" style="display:none;" class="col"><input type="number" style="text-align: center;" class="   form-control" id="sum_before_goods" name="sum_before_goods" min="1" placeholder="Сумма" value="100" required><br></div>
                                
 			</div></br>

@@ -8,8 +8,10 @@ class Products(db.Model):
     article = db.Column(db.String(150), unique=True)
     product_name = db.Column(db.String(150))
     description = db.Column(db.String(300))
-    price = db.Column(db.Float)
+    price = db.Column(db.Numeric(precision=8, scale=2))
     quantity = db.Column(db.Integer)
-    body_product_price = db.Column(db.Float)
+    body_product_price = db.Column(db.Numeric(precision=8, scale=2))
     orders = db.relationship('Orders', secondary='ordered_product', overlaps='ordered_product,orders,products')
     ordered_product = db.relationship('OrderedProduct', back_populates='products')
+    product_analitic_id = db.Column(db.Integer, db.ForeignKey(
+        'product_analitic.id', name='fk_product_product_analitic_id'))

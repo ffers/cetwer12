@@ -1,19 +1,18 @@
-import logging, psycopg2, os, threading, uvicorn
 from .app import app
-from fastapi.middleware.wsgi import WSGIMiddleware
-
 from celery import Celery
-from flask import Flask, render_template, request
+import logging, psycopg2, os, threading, uvicorn
+from dotenv import load_dotenv
 from markupsafe import escape
-
+from fastapi.middleware.wsgi import WSGIMiddleware
+from flask import Flask, render_template, request
 from flask_login import current_user, LoginManager, login_required
 from flask_migrate import Migrate
-from .db import db
-from .routes import Blog, Auth, Comment, User_post, Bot, Order, Cabinet, Admin, Products, Analitic
-from dotenv import load_dotenv
 from flask_principal import identity_loaded, RoleNeed, Principal, Identity, identity_changed
-from server_flask.permission_registred import update_roles
 
+from .db import db
+from server_flask.permission_registred import update_roles
+from .routes import Blog, Auth, Comment, User_post, Bot, \
+    Order, Cabinet, Admin, Products, Analitic
 
 load_dotenv()
 flask_app = Flask(__name__)

@@ -1,6 +1,5 @@
 from server_flask.db import db
 
-
 class OrderedProduct(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     quantity = db.Column(db.Integer)

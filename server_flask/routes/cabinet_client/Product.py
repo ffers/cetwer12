@@ -1,11 +1,13 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
-from flask_principal import Permission, RoleNeed, Principal
+from flask_principal import Permission, RoleNeed
 from flask_login import login_required, current_user
-from server_flask.db import db
-from server_flask.models import  Users, Products, Orders
+from server_flask.models import  Users
+from black import ProductCntrl
 
+prod_cntrl = ProductCntrl()
 manager = RoleNeed('manager')
-author_permission = Permission(manager)
+manager_permission = Permission(manager)
+admin_permission = Permission(RoleNeed('admin'))
 bp = Blueprint('Products', __name__, template_folder='templates')
 
 def format_float(num_str):
@@ -21,19 +23,19 @@ def format_float(num_str):
 
 @bp.route('/cabinet/products', methods=['POST', 'GET'])
 @login_required
-@author_permission.require(http_exception=403)
+@manager_permission.require(http_exception=403)
 def Product():
     if request.method == 'POST':
         return redirect('/products')
     else:
-        tasks_products = Products.query.order_by(Products.timestamp).all()
+        tasks_products = prod_cntrl.load_product_all()
         tasks_users = Users.query.order_by(Users.timestamp).all()
         return render_template('cabinet_client/Products/products.html',
                                user=current_user, tasks_users=tasks_users, tasks_products=tasks_products)
 
 @bp.route('/cabinet/products/add_product', methods=['POST', 'GET'])
 @login_required
-@author_permission.require(http_exception=403)
+@manager_permission.require(http_exception=403)
 def add_product():
     if request.method == 'POST':
         article = request.form['article']
@@ -48,27 +50,50 @@ def add_product():
         print(price_ch)
         price = format_float(price_ch)
         print(price, product_name)
-        post = Products(description=description, article=article,
-                      product_name=product_name,
-                      price=price, quantity=quantity)
-        db.session.add(post)
-        db.session.commit()
-
-        order = Orders.query.order_by(Orders.id.desc()).first()
-        if "modal" in request.form:
-            responce_data = {'status': 'success', 'message': 'Product added successfully'}
-            print(responce_data)
-            return jsonify(responce_data)
+        resp_bool = prod_cntrl.add_product(description, article, product_name, price, quantity)
+        if resp_bool == True:
+            print("Product added successfully")
+            if "modal" in request.form:
+                responce_data = {'status': 'success', 'message': 'Product added successfully'}
+                print(responce_data)
+                flash('Продукт створено!', category='success')
+                return jsonify(responce_data)
+            else:
+                print(request.form)
+                print("НЕВИЙШЛО!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                return redirect(url_for('Products.Product'))
         else:
-            flash('Продукт створено!', category='success')
-            print(request.form)
-            print("НЕВИЙШЛО!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            return redirect(url_for('Products.Product'))
+            print("!!! Product don`t added! Unsuccessfully")
 
     return render_template('cabinet_client/Products/add_product.html', user=current_user )
 
 @bp.route('/cabinet/products/count', methods=['POST', 'GET'])
 @login_required
-@author_permission.require(http_exception=403)
+@manager_permission.require(http_exception=403)
 def call_product():
     return redirect(url_for('Products.Product'))
+
+
+@bp.route('/cabinet/products/update/<int:id>', methods=['GET', 'POST'])
+@login_required
+@admin_permission.require(http_exception=403)
+def update(id):
+    product = prod_cntrl.load_product_item(id)
+    if request.method == 'POST':
+        resp = prod_cntrl.update_product(request, id)
+        if resp == True:
+            flash('Продукт оновлено!', category='success')
+            # return redirect(url_for('Products.Product'))
+            return render_template(
+                'cabinet_client/Products/update_product.html',
+                user=current_user, product=product)
+
+        else:
+            flash('Не вийшло!', category='warning')
+            return redirect(url_for('Products.Product'))
+    else:
+        product = prod_cntrl.load_product_item(id)
+        print(f"Перевірка {product}")
+        return render_template(
+            'cabinet_client/Products/update_product.html',
+            user=current_user, product=product)

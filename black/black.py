@@ -2,7 +2,8 @@ import os
 from dotenv import load_dotenv
 from manager import ManageReg
 from service_asx.delivery import ManagerTTN, NpCabinetCl
-from service_asx.order import ManagerTg, PromToCrm, UpdateToCrm, TTN_to_Prom
+from service_asx.order import ManagerTg, PromToCrm, UpdateToCrm
+from service_asx.delivery import TTN_to_Prom
 from service_asx.order.telegram.crm_to_telegram import CrmToTelegram
 from api.prom import EvoClient
 
