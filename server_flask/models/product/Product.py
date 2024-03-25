@@ -13,5 +13,5 @@ class Products(db.Model):
     body_product_price = db.Column(db.Numeric(precision=8, scale=2))
     orders = db.relationship('Orders', secondary='ordered_product', overlaps='ordered_product,orders,products')
     ordered_product = db.relationship('OrderedProduct', back_populates='products')
-    product_analitic_id = db.Column(db.Integer, db.ForeignKey(
-        'product_analitic.id', name='fk_product_product_analitic_id'))
+    product_analitic = db.relationship('ProductAnalitic', back_populates='products')
+    arrival = db.relationship('Arrival', back_populates='products')

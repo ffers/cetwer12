@@ -1,5 +1,4 @@
 import os
-
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
 from server_flask.models import  Users, Orders, Products, OrderedProduct
 from flask_login import login_required, current_user
@@ -13,6 +12,9 @@ import logging, requests, json
 from urllib.parse import unquote
 from pytz import timezone, utc
 from datetime import datetime
+from black import OrderCntrl
+
+ord_cntrl = OrderCntrl()
 
 def format_float(num_str):
     try:
@@ -313,7 +315,7 @@ def verify_token(token):
 
 @bp.route('/cabinet/orders/delete/<int:id>')
 @login_required
-@author_permission.require(http_exception=403)
+@admin_permission.require(http_exception=403)
 def delete(id):
     try:
         task_to_delete = Orders.query.get_or_404(id)
@@ -325,3 +327,11 @@ def delete(id):
         return redirect('/cabinet/orders')
     except:
         return 'Це замовлення вже було видаленно'
+
+
+@bp.route('/cabinet/orders/dublicate/<int:id>', methods=['GET', 'POST'])
+@login_required
+@author_permission.require(http_exception=403)
+def dublicate(id):
+    ord_cntrl.dublicate(id)
+    return redirect('/cabinet/orders')

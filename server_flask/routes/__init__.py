@@ -8,3 +8,4 @@ from .cabinet_client.Cabinet import bp as Cabinet
 from .cabinet_client.Admin import bp as Admin
 from .cabinet_client.Product import bp as Products
 from .cabinet_client.Analitic_rout import bp as Analitic
+from .cabinet_client.Arrival_rout import bp as Arrival

@@ -7,7 +7,7 @@ from .Likes import Likes
 from .order.Orders import Orders
 from .Roles import Role
 from .UserRoles import UserRoles
-from .Product import Products
+from .product.Product import Products
 from .order.OrderedProduct import OrderedProduct
 from .Color.Color_rep_35 import Colorrep35
 from .Color.Color_rep_45 import Colorrep45
@@ -18,9 +18,10 @@ from .order.WarehouseMethod import WarehouseMethod
 from .order.OrderedStatus import OrderedStatus
 from .order.PrompayStatus import PrompayStatus
 from .order.TelegramOrdered import TelegramOrdered
-from .order.teegram_address_order.ConfirmedAddressTg import ConfirmedAddressTg
-from .order.teegram_address_order.NpAddressTg import NpAddressTg
-from .order.teegram_address_order.RozetkaAddressTg import RozetkaAddressTg
-from .order.teegram_address_order.UkrAddressTg import UkrAddressTg
+from .order.telegram_address_order.ConfirmedAddressTg import ConfirmedAddressTg
+from .order.telegram_address_order.NpAddressTg import NpAddressTg
+from .order.telegram_address_order.RozetkaAddressTg import RozetkaAddressTg
+from .order.telegram_address_order.UkrAddressTg import UkrAddressTg
 from .analitic.ProductAnalitic import ProductAnalitic
 from .analitic.FinancAnalitic import FinancAnalitic
+from .product.Arrival import Arrival

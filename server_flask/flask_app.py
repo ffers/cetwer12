@@ -12,7 +12,8 @@ from flask_principal import identity_loaded, RoleNeed, Principal, Identity, iden
 from .db import db
 from server_flask.permission_registred import update_roles
 from .routes import Blog, Auth, Comment, User_post, Bot, \
-    Order, Cabinet, Admin, Products, Analitic
+    Order, Cabinet, Admin, Products, Analitic, \
+    Arrival
 
 load_dotenv()
 flask_app = Flask(__name__)
@@ -47,6 +48,7 @@ flask_app.register_blueprint(Cabinet)
 flask_app.register_blueprint(Admin)
 flask_app.register_blueprint(Products)
 flask_app.register_blueprint(Analitic)
+flask_app.register_blueprint(Arrival)
 
 
 from .models import Users

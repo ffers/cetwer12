@@ -2,6 +2,19 @@ from decimal import Decimal
 
 
 class ProductServ:
+    def format_float(self, num):
+        try:
+            if isinstance(num, int):
+                num_format = str(f"{int(num)}.00")
+                # Конвертуємо int у Decimal
+                return Decimal(num_format)
+            else:
+                num_format = float(num)
+                # Конвертуємо float у Decimal
+                return Decimal(str(f"{num_format: .2f}"))
+        except ValueError:
+            return None
+
     def update_product(self, req):
         article = req.form['article']
         product_name = req.form['product_name']
@@ -18,17 +31,3 @@ class ProductServ:
         price = self.format_float(price_ch)
         print(price, product_name)
         return (article, product_name, description, quantity, price, body_product_price)
-
-
-    def format_float(self, num):
-        try:
-            if isinstance(num, int):
-                num_format = str(f"{int(num)}.00")
-                # Конвертуємо int у Decimal
-                return Decimal(num_format)
-            else:
-                num_format = float(num)
-                # Конвертуємо float у Decimal
-                return Decimal(str(f"{num_format: .2f}"))
-        except ValueError:
-            return None

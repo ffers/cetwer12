@@ -5,14 +5,16 @@ from server_flask.models import Products, ProductAnalitic
 class ProductRep():
     def add_product(self, description, article, product_name, price, quantity):
         try:
-            post = Products(description=description,
+            product = Products(description=description,
                             article=article,
                             product_name=product_name,
                             price=price,
                             quantity=quantity)
-            db.session.add(post)
+            db.session.add(product)
             db.session.commit()
-            add_analitic = ProductAnalitic()
+            add_analitic = ProductAnalitic(product_id=product.id)
+            db.session.add(add_analitic)
+            db.session.commit()
             return True
         except:
             return False
@@ -38,4 +40,18 @@ class ProductRep():
             return True
         # except:
         #     return False
+
+    def update_after_arrival(self, combined_list):
+        for item in combined_list:
+            datetime_new, product_id, quantity, price, total = item
+            product = Products.query.get_or_404(product_id)
+            product.quantity = quantity + product.quantity
+            product.body_product_price = price
+            db.session.commit()
+        return True
+
+
+
+
+
 

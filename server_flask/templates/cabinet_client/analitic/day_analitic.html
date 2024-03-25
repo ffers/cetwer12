@@ -1,0 +1,54 @@
+{% extends 'cabinet_client/base.html' %} {% block title %}Home{% endblock %}
+
+{% block body %}
+
+<h1 align="center">{% block header %}Облік приходу товару{% endblock %}</h1>
+
+  
+
+
+<div id="arrival-list">
+    <div class="table-responsive-sm" >
+      <table class="table table-hover table-striped " >
+        <thead>
+          <tr >
+            <th scope="col">ID</th>
+            <th scope="col">Дата</th>
+            <th scope="col">Артикул</th>
+            <th scope="col">Кількість</th>
+            <th scope="col">В товар</th>
+          </tr>
+        </thead>
+        <tbody >
+            {% for item in data %}
+          <tr>          
+            <td>
+          <a href="#"><button type="button" class="btn btn-info">{{ item.id }}</button></a>
+            </td>
+            <td>{% if item.datetime_new %} {{item.datetime_new.strftime('%d-%m-%Y')}} {%else%} {{item.datetime_new}} {%endif%}</td>
+            <td>{{item.products.article}}</td>
+            <td>{{item.body_price}}</td>
+            <td>{{item.total_price}}</td>
+        </tr>
+        {% endfor %}
+    
+        </tbody>
+        </table>
+            </div>
+            
+          </div>  
+          {% endblock %}
+{% block footer %}
+{% if analitic_product == none %}
+<div class="text-center">
+  <a href="/cabinet/products/add_product">
+    <button type="button" class="btn btn-info btn-lg">
+      Створити Продукт
+    </button></a
+  >
+   <br/>
+   <br/>
+</div>
+{% endif %}
+
+{% endblock %}

@@ -25,7 +25,8 @@
 	<div class="content"> <div class="row">
 		<div class="col-sm"><h1 style="text-align: center;">Редагування Замовлення №{{order.id}}</h1></div>
 		{% if 1 == user.id %}<div style="position: absolute; margin-top: 30px;"><button type="button" onclick="confirmDelete({{order.id}})" class="btn btn-outline-success my-2 my-sm-0">Видалити Замовлення</button></div>{% endif %}
-		</div>
+		<div style="position: absolute; margin-top: 30px;"><a href="/cabinet/orders/dublicate/{{order.id}}"><button type="button" class="btn btn-outline-success my-2 my-sm-0">Дублювати Замовлення</button></a></div>
+	</div>
 		 <form id="myForm" action="/cabinet/orders/update/{{order.id}}" method="post">
 			<div class="row">
 				<div class="col-sm"><input type="tel" class="form-control   " name="phone" rows="1" cols="50" pattern="[0-9]{12}" style="text-align: center;" placeholder="*Номер телефону 380909009000" value="{{order.phone}}" required><br></div>
@@ -69,16 +70,21 @@
 					<div id="product_row">
 						
 					<div class="row ProductOld" id="ProductOld">
-						{% for product in order.ordered_product %} 
-						<div class="col-sm"><input class="form-control   " style="text-align: center;" name="old_product_art" rows="1" cols="50" placeholder="Товар" value="{{product.products.article}}" readonly><br></div>
-						<div class="col-sm"><input class="form-control   " style="text-align: center;" name="old_product_quantity" rows="1" cols="50" placeholder="кількість" value="{{product.quantity}}" readonly><br></div>
-						<div class="col-sm"><input class="form-control   " style="text-align: center;" name="old_product_name" rows="1" cols="50" placeholder="Назва Товару" value="{{product.products.product_name}}" readonly><br></div>
-						<div class="col-sm"><input class="form-control   " style="text-align: center;" name="old_product_price" rows="1" cols="50" placeholder="Сумма" value="{{order.sum_price}}" readonly><br></div>
+						{% for product in order.ordered_product %} 	
+						<div class="row">
+						<div class="col-sm"><footer><small class="text-muted">Артікул:</small></footer><input class="form-control   " style="text-align: center;" name="old_product_art" rows="1" cols="50" placeholder="Товар" value="{{product.products.article}}" readonly><br></div>
+						<div class="col-sm"><footer><small class="text-muted">Кількість:</small></footer><input class="form-control   " style="text-align: center;" name="old_product_quantity" rows="1" cols="50" placeholder="кількість" value="{{product.quantity}}" readonly><br></div>
+						<div class="col-sm"><footer><small class="text-muted">Назва:</small></footer><input class="form-control   " style="text-align: center;" name="old_product_name" rows="1" cols="50" placeholder="Назва Товару" value="{{product.products.product_name}}" readonly><br></div>
+						<div class="col-sm"><footer><small class="text-muted">Ціна:</small></footer><input class="form-control   " style="text-align: center;" name="old_product_price" rows="1" cols="50" placeholder="Сумма" value="{{product.price}}" readonly><br></div>
+						</div>
 						{% endfor %}
+						<div class="row">
+						<div class="col-sm"><footer><small class="text-muted">Сумма:</small></footer><input class="form-control   " style="text-align: center;" name="old_product_price" rows="1" cols="50" placeholder="Сумма" value="{{order.sum_price}}" readonly><br></div>
+						</div>
 					</div>
 					
-					<div class="col-sm"><input type="button" class="text-button"  value="Змінити Товар в Замовленні" id="ChangeProduct"></div></br>	
-					</div>
+					<div class="col-sm"><input type="button" class="text-button"  value="Змінити Товар в Замовленні" id="ChangeProduct"></div>
+					</div></br>	
             <!-- <div id="product-container">
                 <div class="row">
                     <div class="col"><select  class="form-control product-select" id="product-select" name="product" required></select><br></div>
@@ -93,7 +99,7 @@
                 <div class="col-sm"></div>
             </div><br> -->
 			<textarea style="text-align: center;" class="   form-control" name="description"  rows="3" cols="50" placeholder="Нотатки" >{{order.description}}</textarea><br>
-			<button class="btn btn-outline-success my-2 my-sm-0" onclick="submitForm()" type="submit">Оновити Замовлення</button> 
+			<button class="btn btn-outline-success my-2 my-sm-0" onclick="submitForm()" type="submit">Оновити Замовлення</button> </br>	
 			
 		</form>
 	</div>

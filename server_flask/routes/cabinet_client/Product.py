@@ -2,22 +2,27 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
 from flask_principal import Permission, RoleNeed
 from flask_login import login_required, current_user
 from server_flask.models import  Users
-from black import ProductCntrl
+from black import ProductCntrl, ArrivelCntrl
+from decimal import Decimal
 
+arriv_cntrl = ArrivelCntrl()
 prod_cntrl = ProductCntrl()
 manager = RoleNeed('manager')
 manager_permission = Permission(manager)
 admin_permission = Permission(RoleNeed('admin'))
 bp = Blueprint('Products', __name__, template_folder='templates')
 
-def format_float(num_str):
+
+def format_float(num):
     try:
-        num = float(num_str)
-        # Якщо число - ціле, додаємо ".00"
-        if num.is_integer():
-            return f"{int(num)}.00"
+        if isinstance(num, int):
+            num_format = str(f"{int(num)}.00")
+            # Конвертуємо int у Decimal
+            return Decimal(num_format)
         else:
-            return float(num)
+            num_format = float(num)
+            # Конвертуємо float у Decimal
+            return Decimal(str(f"{num_format: .2f}"))
     except ValueError:
         return None
 
@@ -97,3 +102,4 @@ def update(id):
         return render_template(
             'cabinet_client/Products/update_product.html',
             user=current_user, product=product)
+ 
