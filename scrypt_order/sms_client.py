@@ -65,8 +65,8 @@ def WriteBalanceSms():
     balance = api_example.getBalanceSms()
     # if not order_list['orders']:
     #     raise Exception('Sorry, there\'s no any order!')
-    with open("balance_sms.json", 'w', encoding='utf-8') as file:
-       json.dump(balance, file, indent=4, ensure_ascii=False)
+    # with open("balance_sms.json", 'w', encoding='utf-8') as file:
+    #    json.dump(balance, file, indent=4, ensure_ascii=False)
     return balance
 
 def WriteStatusSms(data):
@@ -74,12 +74,12 @@ def WriteStatusSms(data):
     status = api_example.getStatusSms(data)
     # if not order_list['orders']:
     #     raise Exception('Sorry, there\'s no any order!')
-    with open("status_sms.json", 'w', encoding='utf-8') as file:
-       json.dump(status, file, indent=4, ensure_ascii=False)
+    # with open("status_sms.json", 'w', encoding='utf-8') as file:
+    #    json.dump(status, file, indent=4, ensure_ascii=False)
 
 def WriteSendSms(data):
     api_example = AuthToken()
     sendSms = api_example.getSendSms(data)
-    with open("send_sms.json", 'w', encoding='utf-8') as file:
-       json.dump(sendSms, file, indent=4, ensure_ascii=False)
+    # with open("send_sms.json", 'w', encoding='utf-8') as file:
+    #    json.dump(sendSms, file, indent=4, ensure_ascii=False)
 
