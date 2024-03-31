@@ -19,7 +19,7 @@ class PromToCrm():
         pass
 
     def add_order(self, json_order, data_for_tg):
-        # try:
+        try:
             print(f"НАЧАЛОСЬ {json_order}")
             order = self.parse_order(json_order)
             order_id = order.id
@@ -28,9 +28,9 @@ class PromToCrm():
             db.session.close()
             print(f"ЗАКІНЧИЛОСЬ {order}")
             return order_id
-        # except:
-        #     order_id = json_order["id"]
-        #     tg_cl.send_message_f(chat_id_helper, f"️❗️❗️❗️ НЕ ВИЙШЛО ДОДАТИ замовлення {order_id} В CRM сторона CRM")
+        except:
+            order_id = json_order["id"]
+            tg_cl.send_message_f(chat_id_helper, f"️❗️❗️❗️ НЕ ВИЙШЛО ДОДАТИ замовлення {order_id} В CRM сторона CRM")
 
     def parse_order(self, order):
         prompay_status_id = self.add_prompay_status(order)

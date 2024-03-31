@@ -10,8 +10,7 @@ class NpCabinetCl():
     def __init__(self):
         self.data = {}
 
-    def manager_data(self, order_id):
-        order = Orders.query.get_or_404(order_id)
+    def manager_data(self, order):
         self.runup_recepient(order)
         print(self.data)
         resp = np_cl.runup_doc(self.data)

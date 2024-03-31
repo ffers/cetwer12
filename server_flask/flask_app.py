@@ -22,15 +22,11 @@ migrate = Migrate(flask_app, db, directory='../common_asx/migrations')
 user_db = os.getenv('DB_USERNAME')
 password_db = os.getenv('DB_PASSWORD')
 
-flask_app.logger.setLevel(logging.INFO)
-file_handler = logging.FileHandler('flask.log')
-file_handler.setLevel(logging.INFO)
-flask_app.logger.addHandler(file_handler)
-
+logging.getLogger('sqlalchemy.engine').setLevel(logging.WARNING)
 flask_app.config['SECRET_KEY'] = os.getenv("SECRET_KEY_FLASK")
 flask_app.config["SQLALCHEMY_DATABASE_URI"] = f"postgresql://{user_db}:{password_db}@localhost:5432/flask_db"
 flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-flask_app.config["SQLALCHEMY_ECHO"] = True
+flask_app.config["SQLALCHEMY_ECHO"] = False
 flask_app.config["SQLALCHEMY_RECORD_QUERIES"] = True
 flask_app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'  # URL для брокера повідомлень (може бути Redis або інший)
 flask_app.config['CELERY_RESULT_BACKEND'] = 'redis://localhost:6379/0'  # URL для збереження результатів завдань
@@ -56,6 +52,7 @@ login_manager = LoginManager()
 login_manager.login_view = "auth.login"
 login_manager.init_app(flask_app)
 
+logging.info("НОВИЙ ЕТАП")
 
 def get_db_connection():
     conn = psycopg2.connect(host='localhost',
@@ -81,9 +78,7 @@ def index():
 @identity_loaded.connect_via(flask_app)
 def on_identity_loaded(sender, identity):
     # Get the user information from the db
-    print("INDENTITY LOAD")
     if current_user.is_authenticated:
-        print("USER AUTHENTICATED")
         id = current_user.id
         user = Users.query.filter_by(id=id).first()
         # Update the roles that a user can provide

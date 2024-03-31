@@ -12,25 +12,17 @@
       <table class="table table-hover table-striped " >
         <thead>
           <tr >
-            <th scope="col">ID</th>
-            <th scope="col">Дата</th>
-            <th scope="col">Артикул</th>
-            <th scope="col">Кількість</th>
-            <th scope="col">В товар</th>
+            <th scope="col">сумма</th>
+
           </tr>
         </thead>
         <tbody >
-            {% for item in data %}
+          
           <tr>          
-            <td>
-          <a href="#"><button type="button" class="btn btn-info">{{ item.id }}</button></a>
-            </td>
-            <td>{% if item.datetime_new %} {{item.datetime_new.strftime('%d-%m-%Y')}} {%else%} {{item.datetime_new}} {%endif%}</td>
-            <td>{{item.products.article}}</td>
-            <td>{{item.body_price}}</td>
-            <td>{{item.total_price}}</td>
+
+            <td>{{data}}</td>
         </tr>
-        {% endfor %}
+      
     
         </tbody>
         </table>

@@ -6,12 +6,16 @@ from service_asx.order import ManagerTg, PromToCrm, UpdateToCrm
 from service_asx.delivery import TTN_to_Prom
 from service_asx.order.telegram.crm_to_telegram import CrmToTelegram
 from api.prom import EvoClient
+from repository import OrderRep
+from service_asx.order import OrderServ
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
 ch_id_sk = os.getenv("CH_ID_SK")
 token = os.getenv("PROM_TOKEN")
 
+ord_serv = OrderServ()
+ord_rep = OrderRep()
 crmtotg_cl = CrmToTelegram()
 crm_cl = PromToCrm()
 upd_crm = UpdateToCrm()
@@ -40,13 +44,13 @@ class Await:
         resp_ok = mng_cl.add_ttn_crm(order_id, ttn_data)
         return ttn_data
 
-    def await_cabinet(self, order_id):
-        resp = cab_cl.manager_data(order_id) # обработка зкаказа из срм создание ттн, телеграм курьеру заказ, додавання в пром ттн
-        if resp["success"] == True:
-            self.await_order_cab_tg(order_id, "crm_to_telegram")  # if telegram True send to telegram
-            invoice_ttn, order_id_sources = ttn_to_prom.main(order_id)
-            ev_cl.make_send_ttn(invoice_ttn, order_id_sources)
+    def await_cabinet(self, order_id, status):
+        order = ord_rep.change_status(order_id, status)
+        resp = {"success": False}
+        if order.delivery_method_id == 1:
+            resp = self.work_with_np(order)
         return resp
+
 
     def await_cabinet_json(self, data):
         if "search_city" in data["name"]:
@@ -59,6 +63,15 @@ class Await:
             resp = tgmn_cl.send_order_curier(order)
         if flag == "crm_to_telegram":
             resp = tgmn_cl.send(order)
+        return resp
+
+    def work_with_np(self, order):
+        resp = cab_cl.manager_data(
+            order)  # обработка зкаказа из срм создание ттн, телеграм курьеру заказ, додавання в пром ттн
+        if resp["success"] == True:
+            self.await_order_cab_tg(order, "crm_to_telegram")  # if telegram True send to telegram
+            invoice_ttn, order_id_sources = ttn_to_prom.main(order)
+            ev_cl.make_send_ttn(invoice_ttn, order_id_sources)
         return resp
 
 

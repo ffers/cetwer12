@@ -1,6 +1,7 @@
 from server_flask.models import Users, Orders, Products, OrderedProduct
 from server_flask.models import ProductAnalitic, FinancAnalitic
 from sqlalchemy import func
+from datetime import datetime, timedelta
 from server_flask.db import db
 
 
@@ -48,6 +49,16 @@ class ProductAnaliticRep():
     def get_sum_product_sale(self, product_id):
         sum_product_sale = db.session.query(func.sum(OrderedProduct.quantity)).filter(OrderedProduct.product_id == product_id).scalar()
         return sum_product_sale
+
+    def get_money_sale_day(self):
+        current_time = datetime.now()
+        start_time = current_time - timedelta(days=1)
+        start_time = start_time.replace(hour=17, minute=0, second=0, microsecond=0)
+        money_sale = (db.session.query(func.count(ProductAnalitic.money_in_sale))
+                      .filter(ProductAnalitic.timestamp >= start_time,
+                        ProductAnalitic.timestamp <= current_time).scalar())
+        return money_sale
+
 
 
 

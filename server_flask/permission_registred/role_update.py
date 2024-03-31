@@ -9,9 +9,7 @@ def update_roles():
 @identity_loaded.connect
 def on_identity_loaded(sender, identity):
     # Get the user information from the db
-    print("INDENTITY LOAD")
     if current_user.is_authenticated:
-        print("USER AUTHENTICATED")
         id = current_user.id
         with current_app.app_context():
             user = Users.query.filter_by(id=id).first()

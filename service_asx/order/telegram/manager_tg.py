@@ -71,8 +71,7 @@ class ManagerTg():
             payment_data = "Несплачено"
         return payment_data
 
-    def send(self, order_id):
-        order = Orders.query.get_or_404(order_id)
+    def send(self, order):
         order_product = order.ordered_product
         if order.description:
             description = "🍏 Нотатка:\n" + order.description

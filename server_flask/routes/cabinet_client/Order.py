@@ -14,7 +14,7 @@ from pytz import timezone, utc
 from datetime import datetime
 from black import OrderCntrl
 
-ord_cntrl = OrderCntrl()
+
 
 def format_float(num_str):
     try:
@@ -31,6 +31,7 @@ def format_float(num_str):
 def get_data(data, offset=0, per_page=10):
     return data[offset: offset + per_page]
 
+ord_cntrl = OrderCntrl()
 fl_cl = FileKit()
 aw_cl = Await()
 author_permission = Permission(RoleNeed('manager'))
@@ -172,7 +173,7 @@ def send_cab(id):
     if request.method == 'POST':
         return redirect('/cabinet/orders')
     else:
-        resp = aw_cl.await_cabinet(id)
+        resp = aw_cl.await_cabinet(id, 2)
         print(resp)
         print(f"Працює {id}")
         if resp["success"] == True:
@@ -283,7 +284,7 @@ def get_prom_to_crm():
     json_data = request.json
     if verify_token(token):
         if json_data:
-            resp = aw_cl.await_order(json_data, "prom_to_crm")
+            resp = ord_cntrl.add_order(json_data)
             return jsonify({'results': 'success', 'order_id': resp})
         else:
             return jsonify({'results': []})

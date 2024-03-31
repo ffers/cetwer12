@@ -25,3 +25,4 @@ from .order.telegram_address_order.UkrAddressTg import UkrAddressTg
 from .analitic.ProductAnalitic import ProductAnalitic
 from .analitic.FinancAnalitic import FinancAnalitic
 from .product.Arrival import Arrival
+from .analitic.DayAnalitic import DayAnalitic

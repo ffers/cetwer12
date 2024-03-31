@@ -43,3 +43,21 @@ class OrderRep:
             order_new.ordered_product.append(ordered_product)
         db.session.commit()
         return True
+
+    def change_status(self, order_id, status):
+        order = self.load_item(order_id)
+        order.ordered_status_id = status
+        db.session.commit()
+        return order
+
+    def change_address(self, order_id, data):
+        order = self.load_item(order_id)
+        order.city_name = data["CityDescription"]
+        order.city_ref = data["CityRef"]
+        order.warehouse_text = data["Description"]
+        order.warehouse_ref = data["Ref"]
+        db.session.commit()
+        return True
+
+
+
