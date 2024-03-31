@@ -63,10 +63,9 @@ class OrderCntrl:
     def update_address(self, order):
         order_update = ev_cl.get_order_id(order["id"])
         war_ref = np_serv.examine_address_prom(order_update)
-        if war_ref:
+        if war_ref and order["delivery_option"]["id"] == 13013934:
             data_address = np_cl.get_s_war_ref(war_ref)
-            data_add = data_address["data"][0]
-            address_dict_np = np_serv.create_address_dict_np(data_add)
+            address_dict_np = np_serv.create_address_dict_np(data_address)
             resp_bool = ord_rep.change_address(order["id"], address_dict_np)
             return resp_bool
         raise

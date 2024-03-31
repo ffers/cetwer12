@@ -10,7 +10,8 @@ class NpServ:
         return address_dict_np
 
     def examine_address_prom(self, order):
-        war_ref = order["delivery_provider_data"]["recipient_warehouse_id"]
+        data_add = order["data"][0]
+        war_ref = data_add["delivery_provider_data"]["recipient_warehouse_id"]
         if not war_ref:
             return False
         return war_ref

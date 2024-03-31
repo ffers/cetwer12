@@ -5,7 +5,7 @@ logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s",
     handlers=[
         logging.StreamHandler(),  # Для виведення на консоль
-        logging.FileHandler("../common_asx/log/app.log"),  # Для запису у файл
+        logging.FileHandler("../common_asx/log/all_app.log"),  # Для запису у файл
     ]
 )
 
