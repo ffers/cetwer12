@@ -17,7 +17,7 @@ OC_log = logging.getLogger("order_cntrl")
 OC_log.setLevel(logging.INFO)
 OC_log.addHandler(order_cntrl_handler)
 
-
+OC_log.info("працює ордер контрол")
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
 token_ev = os.getenv("PROM_TOKEN")
@@ -58,11 +58,11 @@ class OrderCntrl:
             order = order_dr["order"]
             order_id = order["id"]
             delivery_provider_data = order["delivery_provider_data"]
-            # try:
-            self.update_address(order)
-            # except:
-            #     tg_cl.send_message_f(chat_id_helper, f"️❗️❗️❗️ Повторно адреси нема в № {order_id} ")
-            #     OC_log.info(f"Обробка ордера: {order_id}\n Інформація по адресі {delivery_provider_data} ")
+            try:
+                self.update_address(order)
+            except:
+                tg_cl.send_message_f(chat_id_helper, f"️❗️❗️❗️ Повторно адреси нема в № {order_id} ")
+                OC_log.info(f"Обробка ордера: {order_id}\n Інформація по адресі {delivery_provider_data} ")
 
     def update_address(self, order):
         war_ref = np_serv.examine_address_prom(order)
@@ -72,9 +72,10 @@ class OrderCntrl:
             if order["delivery_option"]["id"] == 13013934:
                 data_address = np_cl.get_s_war_ref(war_ref)
                 address_dict_np = np_serv.create_address_dict_np(data_address)
-                resp_bool = ord_rep.change_address(order["id"], address_dict_np)
+                resp_bool = ord_rep.change_address((order["id"]), address_dict_np)
                 return resp_bool
             return True
+        OC_log.info(f"Викликаєм помилку {order}")
         raise
 
     def add_order_code(self, order):

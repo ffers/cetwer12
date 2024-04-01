@@ -61,7 +61,7 @@ class PromToCrm():
     def prepare_for_db(self, order, dict_parse):
         print(dict_parse)
         new_order = Orders(
-            order_id_sources=order["id"],
+            order_id_sources=str(order["id"]),
             description=dict_parse["description"],
             city_name=dict_parse["CityName"],
             city_ref=dict_parse["CityRef"],

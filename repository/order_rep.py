@@ -55,7 +55,7 @@ class OrderRep:
         return item_all
 
     def load_for_code(self, id):
-        item = Orders.query.filter_by(order_id_sources=id).order_by(desc(Orders.timestamp)).first()
+        item = Orders.query.filter_by(order_id_sources=str(id)).order_by(desc(Orders.timestamp)).first()
         return item
 
     def dublicate_order_prod(self, order_new, ord_prod_old):
@@ -74,7 +74,7 @@ class OrderRep:
         return order
 
     def change_address(self, order_id, data):
-        order = self.load_order_source_id(order_id)
+        order = self.load_for_code(order_id)
         order.city_name = data["CityName"]
         order.city_ref = data["CityRef"]
         order.warehouse_text = data["WarehouseText"]
