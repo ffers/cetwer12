@@ -10,7 +10,7 @@ class OrderServ:
     def examine_code(self, order, code):
         while True:
               # Генеруємо нове значення
-            if new_digits not in order:  # Перевіряємо, чи таке значення ще не використовувалось
+            if not order:  # Перевіряємо, чи таке значення ще не використовувалось
                 used_values.add(new_digits)  # Додаємо нове значення до множини використаних
                 return new_digits  # Повертаємо унікальне значення
 

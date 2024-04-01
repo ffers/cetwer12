@@ -42,6 +42,7 @@ class OrderCntrl:
         dublicate_item = ord_rep.dublicate_item(item)
         ord_prod_old = ord_rep.load_prod_order(order_id)
         dublicate_order_prod = ord_rep.dublicate_order_prod(dublicate_item, ord_prod_old)
+        self.add_order_code(dublicate_item)
         return True
 
     def add_order(self, order):
@@ -76,8 +77,16 @@ class OrderCntrl:
             return True
         raise
 
-    # def add_order_code(self, order):
-    #     order_code = ord_serv.generate_order_code()
+    def add_order_code(self, order):
+        while True:
+            order_code = ord_serv.generate_order_code()
+            item = ord_rep.load_for_code(order_code)
+            if not item:
+                ord_rep.add_order_code(order, order_code)
+                return
+
+
+
 
 
 

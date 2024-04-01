@@ -1,7 +1,7 @@
 from server_flask.models import Orders, OrderedProduct
 from server_flask.db import db
 from sqlalchemy import desc
-
+from urllib.parse import unquote
 
 class OrderRep:
     def load_item(self, order_id):
@@ -10,6 +10,21 @@ class OrderRep:
 
     def load_item_all(self):
         item = Orders.query.all()
+
+    # def add_order(self, request):
+    #     order = Orders(description=request.form['description'], city_name=request.form['CityName'],
+    #                    city_ref=request.form['CityREF'],
+    #                    warehouse_text=unquote(request.form['warehouse-text']),
+    #                    warehouse_ref=request.form['warehouse-id'],
+    #                    phone=request.form['phone'], author_id=current_user.id,
+    #                    client_firstname=request.form['client_firstname'],
+    #                    client_lastname=request.form['client_lastname'], client_surname=request.form['client_surname'],
+    #                    warehouse_option=request.form['warehouse_option'], delivery_option="nova_poshta",
+    #                    payment_method_id=request.form['payment_option'], sum_price=format_float(sum_price_draft),
+    #                    sum_before_goods=sum_before_goods, delivery_method_id=1, source_order_id=1, ordered_status_id=10,
+    #                    description_delivery="Одяг Jemis")
+    #     db.session.add(order)
+    #     db.session.commit()
 
     def dublicate_item(self, item):
         order = Orders(description=item.description,
@@ -39,7 +54,7 @@ class OrderRep:
         item_all = OrderedProduct.query.filter_by(order_id=id).all()
         return item_all
 
-    def load_order_source_id(self, id):
+    def load_for_code(self, id):
         item = Orders.query.filter_by(order_id_sources=id).order_by(desc(Orders.timestamp)).first()
         return item
 
@@ -68,9 +83,12 @@ class OrderRep:
         db.session.commit()
         return True
 
-    def examing_code(self, code):
-        item = Orders.query.filter_by(order_id_sources=id).first()
-        return item
+    def add_order_code(self, order, code):
+        order.order_id_sources = code
+        db.session.commit()
+        return True
+
+
 
 
 

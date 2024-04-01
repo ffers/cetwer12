@@ -23,7 +23,7 @@ function validateAndTogglePopover(inputElement, popoverInstance) {
     let inputValue = inputElement.value;
     
     // Перевірка, чи містить рядок тільки кирилицю
-    if (/^[а-яА-ЯЁёіїє\s]+$/.test(inputValue)) {
+    if (/^[а-яА-ЯЁёіїєЇІЄ\s]+$/.test(inputValue)) {
         // Якщо все вірно, ховаємо поповер
 
         

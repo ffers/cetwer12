@@ -150,6 +150,7 @@ def add_order():
                        description_delivery="Одяг Jemis")
         db.session.add(order)
         db.session.commit()
+        ord_cntrl.add_order_code(order)
         product_id = request.form.getlist('product')
         price = request.form.getlist('price')
         quantity = request.form.getlist('quantity')
