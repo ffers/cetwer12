@@ -1,11 +1,15 @@
 from server_flask.models import Orders, OrderedProduct
 from server_flask.db import db
+from sqlalchemy import desc
 
 
 class OrderRep:
     def load_item(self, order_id):
         item = Orders.query.get_or_404(order_id)
         return item
+
+    def load_item_all(self):
+        item = Orders.query.all()
 
     def dublicate_item(self, item):
         order = Orders(description=item.description,
@@ -35,6 +39,10 @@ class OrderRep:
         item_all = OrderedProduct.query.filter_by(order_id=id).all()
         return item_all
 
+    def load_order_source_id(self, id):
+        item = Orders.query.filter_by(order_id_sources=id).order_by(desc(Orders.timestamp)).first()
+        return item
+
     def dublicate_order_prod(self, order_new, ord_prod_old):
         print(f"dublicate_order_prod {ord_prod_old}")
         for item in ord_prod_old:
@@ -51,13 +59,21 @@ class OrderRep:
         return order
 
     def change_address(self, order_id, data):
-        order = self.load_item(order_id)
-        order.city_name = data["CityDescription"]
+        order = self.load_order_source_id(order_id)
+        order.city_name = data["CityName"]
         order.city_ref = data["CityRef"]
-        order.warehouse_text = data["Description"]
-        order.warehouse_ref = data["Ref"]
+        order.warehouse_text = data["WarehouseText"]
+        order.warehouse_ref = data["WarehouseRef"]
+        order.warehouse_method_id = data["WarehouseMethod"]
         db.session.commit()
         return True
+
+    def examing_code(self, code):
+        item = Orders.query.filter_by(order_id_sources=id).first()
+        return item
+
+
+
 
 
 

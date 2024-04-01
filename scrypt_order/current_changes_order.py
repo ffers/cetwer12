@@ -13,7 +13,7 @@ payment_option_test = "../common_asx/payment_option_test.json"
 unpay_order_file = "../common_asx/unpay_order.json"
 canceled_order_file = "../common_asx/canceled_order.json"
 data_order = "../common_asx/data.json"
-url_update = 'http://localhost:5000/cabinet/orders/get_product/update_with_prom'
+url_update = 'http://localhost:8000/cabinet/orders/get_product/update_with_prom'
 
   #-421982888 /// -1001979021180 chat pidtverzgenya /// CHAT_ID_CONFIRMATION //// CHAT_ID_INFO
 chat_id = os.getenv("CHAT_ID_CONFIRMATION")

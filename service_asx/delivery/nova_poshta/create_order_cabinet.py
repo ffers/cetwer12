@@ -90,6 +90,9 @@ class NpCabinetCl():
         print(f"runup {data}")
         pass
 
+    # def add_description(self, data):
+
+
 
 
 
