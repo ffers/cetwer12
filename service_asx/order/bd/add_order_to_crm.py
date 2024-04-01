@@ -1,4 +1,4 @@
-import os, re
+import os, re, logging
 from api.nova_poshta.create_data import NpClient
 from server_flask.db import db
 from server_flask.models import Orders, OrderedProduct, Products, TelegramOrdered, ConfirmedAddressTg
@@ -6,6 +6,14 @@ from flask import current_app
 from telegram import TgClient
 from dotenv import load_dotenv
 from scrypt_order.current_changes_order import Changes
+
+log_formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(name)s: %(message)s")
+log_handler = logging.FileHandler("../common_asx/log/order_to_crm.log")
+log_handler.setFormatter(log_formatter)
+
+LOG = logging.getLogger("ord_to_crm")
+LOG.setLevel(logging.INFO)
+LOG.addHandler(log_handler)
 
 ch_cl = Changes()
 tg_cl = TgClient()
@@ -20,16 +28,17 @@ class PromToCrm():
 
     def add_order(self, json_order, data_for_tg):
         try:
-            print(f"НАЧАЛОСЬ {json_order}")
+            LOG.info(f"НАЧАЛОСЬ {json_order}")
             order = self.parse_order(json_order)
             order_id = order.id
             product = self.parse_product(json_order, order)
             self.add_ordered_telegram(data_for_tg, order_id)
             db.session.close()
-            print(f"ЗАКІНЧИЛОСЬ {order}")
+            LOG.info(f"ЗАКІНЧИЛОСЬ {order}")
             return order_id
-        except:
+        except Exception as e:
             order_id = json_order["id"]
+            LOG.info(f"Спрацював exept {e}")
             tg_cl.send_message_f(chat_id_helper, f"️❗️❗️❗️ НЕ ВИЙШЛО ДОДАТИ замовлення {order_id} В CRM сторона CRM")
 
     def parse_order(self, order):
@@ -59,7 +68,7 @@ class PromToCrm():
         return order
 
     def prepare_for_db(self, order, dict_parse):
-        print(dict_parse)
+        LOG.info(dict_parse)
         new_order = Orders(
             order_id_sources=str(order["id"]),
             description=dict_parse["description"],
@@ -168,7 +177,7 @@ class PromToCrm():
         payment_option = order["payment_option"]["id"]
         if payment_option == 7547964:
             payment_data = order["payment_data"]
-            print(payment_data)
+            LOG.info(payment_data)
             if payment_data != None:
                 if "paid" == payment_data["status"]:
                     status_id = 1
@@ -176,14 +185,14 @@ class PromToCrm():
                     status_id = 3
                 else:
                     status_id = 2
-                print(status_id)
+                LOG.info(status_id)
                 return status_id
             else:
                 status_id = 2
         return status_id
 
     def add_order_status(self, prompay_status_id):
-        print(f"Статус промоплати {prompay_status_id}")
+        LOG.info(f"Статус промоплати {prompay_status_id}")
         status_order = 10
         if prompay_status_id == 1:
             status_order = 3
@@ -252,7 +261,7 @@ class PromToCrm():
             return "Неправильний формат числа"
 
     def add_ordered_telegram(self, data_for_tg, order_id):
-        print(f"data_for_tg {data_for_tg}")
+        LOG.info(f"data_for_tg {data_for_tg}")
         tg_ord = TelegramOrdered(
             text=data_for_tg["text"],
             order_id=order_id)
@@ -265,4 +274,4 @@ class PromToCrm():
         )
         db.session.add(conf_addr_tg)
         db.session.commit()
-        print("НАЧЕ ДОДАНО")
+        LOG.info("НАЧЕ ДОДАНО")
