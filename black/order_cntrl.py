@@ -47,26 +47,32 @@ class OrderCntrl:
     def add_order(self, order):
         data_for_tg = crmtotg_cl.manger(order)
         resp = crm_cl.add_order(order, data_for_tg)
-        self.examine_address(order)
         return resp
 
     def examine_address(self, order):
         resp_bool = np_serv.examine_address_prom(order)
-        order_id = order["id"]
-        delivery_provider_data = order["delivery_provider_data"]
-        try:
-            self.update_address(order)
-        except:
-            tg_cl.send_message_f(chat_id_helper, f"️❗️❗️❗️ Повторно Замовлення додано але адреси нема в № {order_id} ")
-            OC_log.info(f"Обробка ордера: {order_id}\n Інформація по адресі {delivery_provider_data} ")
+        if not resp_bool:
+            order_id = order["id"]
+            delivery_provider_data = order["delivery_provider_data"]
+            try:
+                self.update_address(order)
+            except:
+                tg_cl.send_message_f(chat_id_helper, f"️❗️❗️❗️ Повторно Замовлення додано але адреси нема в № {order_id} ")
+                OC_log.info(f"Обробка ордера: {order_id}\n Інформація по адресі {delivery_provider_data} ")
 
     def update_address(self, order):
-        order_update = ev_cl.get_order_id(order["id"])
+        order_update = ev_cl.get_order_id(order["id"])["order"]
+
         war_ref = np_serv.examine_address_prom(order_update)
-        if war_ref and order["delivery_option"]["id"] == 13013934:
-            data_address = np_cl.get_s_war_ref(war_ref)
-            address_dict_np = np_serv.create_address_dict_np(data_address)
-            resp_bool = ord_rep.change_address(order["id"], address_dict_np)
-            return resp_bool
+        # если есть ключ адреса в заказе еще раз додаем адрес,
+        # если нет то ето может бить розетка или
+        if war_ref:
+            if order["delivery_option"]["id"] == 13013934:
+                data_address = np_cl.get_s_war_ref(war_ref)
+                address_dict_np = np_serv.create_address_dict_np(data_address)
+                resp_bool = ord_rep.change_address(order["id"], address_dict_np)
+                return resp_bool
+            return True
         raise
+
 

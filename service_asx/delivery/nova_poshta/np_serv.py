@@ -1,3 +1,7 @@
+import logging
+
+OC_log = logging.getLogger("order_cntrl")
+
 class NpServ:
     def create_address_dict_np(self, data_address):
         address_dict_np = {
@@ -9,9 +13,8 @@ class NpServ:
         }
         return address_dict_np
 
-    def examine_address_prom(self, order):
-        data_add = order["data"][0]
-        war_ref = data_add["delivery_provider_data"]["recipient_warehouse_id"]
+    def examine_address_prom(self, data):
+        war_ref = data["delivery_provider_data"]["recipient_warehouse_id"]
         if not war_ref:
             return False
         return war_ref
