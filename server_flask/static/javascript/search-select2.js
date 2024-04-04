@@ -30,7 +30,7 @@ $('#search-select2').select2({
         cache: true
     },
     placeholder: 'Пошук по телефону ...',
-    minimumInputLength: 10,
+    minimumInputLength: 2,
     templateResult: function (result) {
         return result.text || result.text; // Виведення тексту міста
     }

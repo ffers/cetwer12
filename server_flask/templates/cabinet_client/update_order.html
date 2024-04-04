@@ -23,7 +23,26 @@
     }
 </script>
 	<div class="content"> <div class="row">
-		<div class="col-sm"><h1 style="text-align: center;">Редагування Замовлення №{{order.order_id_sources}}</h1></div>
+		<div class="col-sm"><h1 style="text-align: center;">Редагування Замовлення №</h1><h1 id="textToCopy">{{order.order_id_sources}} <a onclick="copyText()"><i class="fa-regular fa-copy"></i></a> <!-- Кнопка копіювання --></h1></div>
+		</div>
+		<div class="content"> 
+		<div class="col-sm"><p style="text-align: center;"><small class="text-muted">Створено:</small> {{order.timestamp.strftime('%H:%M %d-%m-%Y')}}</p></div>
+		</div>
+
+
+    <script>
+        function copyText() {
+            var text = document.getElementById("textToCopy").innerText;
+            navigator.clipboard.writeText(text)
+                .then(function() {
+                    alert("Номер скопійовано до буферу обміну!");
+                })
+                .catch(function(err) {
+                    console.error('Помилка копіювання тексту: ', err);
+                    alert("Помилка копіювання тексту!");
+                });
+        }
+    </script>
 		{% if 1 == user.id %}<div style="position: absolute; margin-top: 30px;"><button type="button" onclick="confirmDelete({{order.id}})" class="btn btn-outline-success my-2 my-sm-0">Видалити Замовлення</button></div>{% endif %}
 		<div style=" margin-top: 10px;"><a href="/cabinet/orders/dublicate/{{order.id}}"><button type="button" class="btn btn-outline-success my-2 my-sm-0">Дублювати Замовлення</button></a></div>
 	</div><br>

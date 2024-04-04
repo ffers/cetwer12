@@ -89,15 +89,15 @@ class OrderRep:
         db.session.commit()
         return True
 
-    def search_for_phon(self, phone):
+    def search_for_phone(self, phone):
         order = Orders.query.filter_by(phone=phone).all()
         return order
 
     def search_for_all(self, phone):
         order = Orders.query.filter(
-    (Orders.phone.like(phone)) |
-    (Orders.client_lastname.like(phone)) |
-    (Orders.category.like(phone))
+    (Orders.phone.ilike(f'%{phone}%')) |
+    (Orders.client_lastname.ilike(f'%{phone}%')) |
+    (Orders.order_id_sources.ilike(f'%{phone}%'))
 ).all()
         return order
 

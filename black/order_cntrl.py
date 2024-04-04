@@ -91,7 +91,7 @@ class OrderCntrl:
     def search_for_phone(self, req):
         search_request = req.args.get('q', '').lower()
         print(search_request)
-        order = ord_rep.search_for_phon(search_request)
+        order = ord_rep.search_for_all(search_request)
         result = ord_serv.search_for_phone(order)
         return result
 
