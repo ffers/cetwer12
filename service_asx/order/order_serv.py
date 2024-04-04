@@ -19,9 +19,9 @@ class OrderServ:
         order_list = []
 
         for item in order:
-            product_text = ''
+            product_text = ' '
             for product in item.ordered_product:
-                product_text += product.products.article
+                product_text += product.products.article + ' '
 
             text = (item.order_id_sources + ' '
                     + item.client_lastname + ' '
