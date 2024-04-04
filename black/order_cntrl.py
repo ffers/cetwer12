@@ -18,7 +18,6 @@ OC_log = logging.getLogger("order_cntrl")
 OC_log.setLevel(logging.INFO)
 OC_log.addHandler(order_cntrl_handler)
 
-OC_log.info("працює ордер контрол")
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
 token_ev = os.getenv("PROM_TOKEN")
@@ -61,6 +60,7 @@ class OrderCntrl:
             order_id = order["id"]
             delivery_provider_data = order["delivery_provider_data"]
             try:
+                OC_log.info(f"Обробка стандартна, ордер:{order_id}\n Інформація по адресі {delivery_provider_data} ")
                 self.update_address(order)
             except:
                 tg_cl.send_message_f(chat_id_helper, f"️❗️❗️❗️ Повторно адреси нема в № {order_id} ")

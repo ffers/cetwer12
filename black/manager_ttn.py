@@ -9,8 +9,8 @@ from repository import OrderRep
 
 from server_flask.db import db
 import sys,os
-sys.path.append('../service_asx/delivery/')
-current_directory = os.getcwd()
+
+sys.path.append('../')
 from common_asx.utilits import Utils
 
 

@@ -93,6 +93,16 @@ class OrderRep:
         order = Orders.query.filter_by(phone=phone).all()
         return order
 
+    def search_for_all(self, phone):
+        order = Orders.query.filter(
+    (Orders.phone.like(phone)) |
+    (Orders.client_lastname.like(phone)) |
+    (Orders.category.like(phone))
+).all()
+        return order
+
+
+
 
 
 

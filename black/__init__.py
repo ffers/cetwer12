@@ -5,3 +5,4 @@ from .product_cntrl import ProductCntrl
 from .arrivel_cntrl import ArrivelCntrl
 from .day_analitic_cntrl import DayAnalitic
 from .order_cntrl import OrderCntrl
+from .manager_ttn import ManagerTTN

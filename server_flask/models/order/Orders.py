@@ -29,6 +29,7 @@ class Orders(db.Model):
     cpa_commission = db.Column(db.String(50))
     client_id = db.Column(db.Integer)
     order_id_sources = db.Column(db.String(50))
+    order_code = db.Column(db.String(50))
     prompay_status = db.relationship("PrompayStatus", back_populates="orders")
     prompay_status_id = db.Column(db.Integer, db.ForeignKey(
         'prompay_status.id', name='fk_orders_prompay_status_id'))
