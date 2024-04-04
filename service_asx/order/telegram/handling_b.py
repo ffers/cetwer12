@@ -2,7 +2,7 @@ import os, json, re
 from dotenv import load_dotenv
 from telegram import TgClient
 from api.prom import EvoClient
-from service_asx.delivery import ManagerTTN
+from black.manager_ttn import ManagerTTN
 from service_asx.order import ManagerTg
 
 env_path = '../common_asx/.env'
@@ -17,7 +17,7 @@ mg_ttn = ManagerTTN()
 
 # вп: -421982888; розет: -1001822083358; укр: -1001173544690; нп: -1001391714237
 chat_id_helper = os.getenv("CHAT_ID_HELPER")
-chat_id_np = "-1001391714237"
+chat_id_np = os.getenv("CH_ID_NP")
 chat_id_ukr = "-1001173544690"
 chat_id_rozet = "-1001822083358"
 chat_id_vp = os.getenv("CHAT_ID_INFO")

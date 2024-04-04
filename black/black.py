@@ -1,7 +1,8 @@
 import os
 from dotenv import load_dotenv
 from manager import ManageReg
-from service_asx.delivery import ManagerTTN, NpCabinetCl
+from service_asx.delivery import NpCabinetCl
+from .manager_ttn import ManagerTTN
 from service_asx.order import ManagerTg, PromToCrm, UpdateToCrm
 from service_asx.delivery import TTN_to_Prom
 from service_asx.order.telegram.crm_to_telegram import CrmToTelegram

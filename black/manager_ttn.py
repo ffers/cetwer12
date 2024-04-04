@@ -5,11 +5,11 @@ from api.nova_poshta.create_data import RegistrDoc
 from api.nova_poshta.create_data import ListClient
 from api.nova_poshta import CreateNpData
 # from service_asx.delivery import NpCabinetCl
-from server_flask.models import Orders
+from repository import OrderRep
 
 from server_flask.db import db
 import sys,os
-sys.path.append('../')
+sys.path.append('../service_asx/delivery/')
 current_directory = os.getcwd()
 from common_asx.utilits import Utils
 
@@ -23,8 +23,9 @@ reg_cl = RegistrDoc()
 crnp_cl = CreateNpData()
 # cab_cl = NpCabinetCl()
 ut_cl = Utils()
+ord_rep = OrderRep()
 
-chat_id_info = "-421982888"
+chat_id_info = os.getenv("CHAT_ID_INFO")
 RESP = {}
 
 dict_ttn_prom = {
@@ -140,7 +141,7 @@ class ManagerTTN:
         try:
             ttn = ttn_data["data"][0]["IntDocNumber"]
             ttn_ref = ttn_data["data"][0]["Ref"]
-            order = Orders.query.filter_by(order_id_sources=order_id).first()
+            order = ord_rep.load_for_code(order_id)
             order.ttn = ttn
             order.ttn_ref = ttn_ref
             order.ordered_status_id = 2
