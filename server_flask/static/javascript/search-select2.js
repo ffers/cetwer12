@@ -11,7 +11,7 @@ $('#search-select2').select2({
         },
         inputTooShort: function (args) {
             var remainingChars = args.minimum - args.input.length; 
-            return 'Введіть номер телефону, номер замовлення або прізвище ...' + (remainingChars > 11 ? 'а' : '');}
+            return 'Введіть номер телефону, номер замовлення або ПІБ ...' + (remainingChars > 11 ? 'а' : '');}
     },
     ajax: {
         url: '/cabinet/orders/search_for_phone',

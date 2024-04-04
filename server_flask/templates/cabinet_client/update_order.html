@@ -23,9 +23,9 @@
     }
 </script>
 	<div class="content"> <div class="row">
-		<div class="col-sm"><h1 style="text-align: center;">Редагування Замовлення №</h1><h1 id="textToCopy">{{order.order_id_sources}} <a onclick="copyText()"><i class="fa-regular fa-copy"></i></a> <!-- Кнопка копіювання --></h1></div>
+		<div class="col-sm"><h1 >Редагування Замовлення №<span id="textToCopy">{{order.order_id_sources}}</span> <a onclick="copyText()"><i class="fa-regular fa-copy"></i></a> </h1><!-- Кнопка копіювання --></div>
 		</div>
-		<div class="content"> 
+		<div class="row"> 
 		<div class="col-sm"><p style="text-align: center;"><small class="text-muted">Створено:</small> {{order.timestamp.strftime('%H:%M %d-%m-%Y')}}</p></div>
 		</div>
 
@@ -43,8 +43,16 @@
                 });
         }
     </script>
-		{% if 1 == user.id %}<div style="position: absolute; margin-top: 30px;"><button type="button" onclick="confirmDelete({{order.id}})" class="btn btn-outline-success my-2 my-sm-0">Видалити Замовлення</button></div>{% endif %}
-		<div style=" margin-top: 10px;"><a href="/cabinet/orders/dublicate/{{order.id}}"><button type="button" class="btn btn-outline-success my-2 my-sm-0">Дублювати Замовлення</button></a></div>
+	<div class="row">
+		{% if 1 == user.id %} 
+			<div class="col-sm" style="text-align: center;">
+				<button type="button" onclick="confirmDelete({{order.id}})" class="btn btn-outline-success my-2 my-sm-0">
+				Видалити Замовлення
+			</button>
+		</div>
+			
+			{% endif %}
+		<div class="col-sm" style="text-align: center;"><a href="/cabinet/orders/dublicate/{{order.id}}"><button type="button" class="col-sm btn btn-outline-success my-2 my-sm-0">Дублювати Замовлення</button></a></div>
 	</div><br>
 		 <form id="myForm" action="/cabinet/orders/update/{{order.id}}" method="post">
 			<div class="row">
