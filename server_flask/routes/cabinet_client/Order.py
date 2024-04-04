@@ -254,14 +254,14 @@ def get_product():
     for prod in tasks_products:
         prod_data = {
             'id': prod.id,
-            'article': prod.article
+            'article': prod.article + ' - ' + prod.product_name
         }
         products_list.append(prod_data)
     print(products_list)
     if products_list:
         # Здійснити пошук відділень в даному місті
         result = [warehouse for warehouse in products_list if search_query in warehouse['article'].lower()]
-        print(f"дивимось поштомат  {result}")
+        print(f"дивимось продукти  {result}")
         return jsonify({'results': result})
     else:
         return jsonify({'results': []})
