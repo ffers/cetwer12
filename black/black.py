@@ -8,6 +8,7 @@ from service_asx.order.telegram.crm_to_telegram import CrmToTelegram
 from api.prom import EvoClient
 from repository import OrderRep
 from service_asx.order import OrderServ
+from .product_analitic_cntrl import ProductAnaliticControl
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
@@ -25,6 +26,7 @@ tgmn_cl = ManagerTg()
 cab_cl = NpCabinetCl()
 ttn_to_prom = TTN_to_Prom()
 ev_cl = EvoClient(token)
+prod_an_cntrl = ProductAnaliticControl()
 
 class Await:
     def await_order(self, order, flag=None, id=None):
@@ -46,6 +48,7 @@ class Await:
 
     def await_cabinet(self, order_id, status):
         order = ord_rep.change_status(order_id, status)
+        update_analitic = prod_an_cntrl.product_in_order(order)
         resp = {"success": False}
         if order.delivery_method_id == 1:
             resp = self.work_with_np(order)

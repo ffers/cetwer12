@@ -10,6 +10,7 @@ class OrderRep:
 
     def load_item_all(self):
         item = Orders.query.all()
+        return item
 
     # def add_order(self, request):
     #     order = Orders(description=request.form['description'], city_name=request.form['CityName'],
@@ -87,6 +88,10 @@ class OrderRep:
         order.order_id_sources = code
         db.session.commit()
         return True
+
+    def search_for_phon(self, phone):
+        order = Orders.query.filter_by(phone=phone).all()
+        return order
 
 
 

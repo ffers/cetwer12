@@ -336,3 +336,11 @@ def delete(id):
 def dublicate(id):
     ord_cntrl.dublicate(id)
     return redirect('/cabinet/orders')
+
+
+@bp.route('/cabinet/orders/search_for_phone', methods=['POST', 'GET'])
+@login_required
+@author_permission.require(http_exception=403)
+def search_for_phone():
+    search = ord_cntrl.search_for_phone(request)
+    return search

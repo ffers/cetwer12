@@ -7,6 +7,7 @@ from api import EvoClient
 from dotenv import load_dotenv
 from api.nova_poshta.create_data import NpClient
 from telegram import TgClient
+from black import ProductAnaliticControl
 
 # log_formatter = logging.Formatter("%(asctime)s [%(processName)s: %(process)d] [%(threadName)s: %(thread)d] [%(levelname)s] %(name)s: %(message)s")
 log_formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(name)s: %(message)s")
@@ -28,13 +29,14 @@ chat_id_helper = os.getenv("CHAT_ID_HELPER")
 tg_cl = TgClient()
 crmtotg_cl = CrmToTelegram()
 ord_rep = OrderRep()
-crm_cl = PromToCrm()
+order_prom_serv = PromToCrm()
 upd_crm = UpdateToCrm()
 tgmn_cl = ManagerTg()
 ev_cl = EvoClient(token_ev)
 np_cl = NpClient(token_np)
 ord_serv = OrderServ()
 np_serv = NpServ()
+prod_an_cntrl = ProductAnaliticControl()
 
 class OrderCntrl:
     def dublicate(self, order_id):
@@ -47,7 +49,7 @@ class OrderCntrl:
 
     def add_order(self, order):
         data_for_tg = crmtotg_cl.manger(order)
-        resp = crm_cl.add_order(order, data_for_tg)
+        resp = order_prom_serv.add_order(order, data_for_tg)
         resp_bool = self.examine_address(order)
         return resp
 
@@ -86,6 +88,12 @@ class OrderCntrl:
                 ord_rep.add_order_code(order, order_code)
                 return
 
+    def search_for_phone(self, req):
+        search_request = req.args.get('q', '').lower()
+        print(search_request)
+        order = ord_rep.search_for_phon(search_request)
+        result = ord_serv.search_for_phone(order)
+        return result
 
 
 

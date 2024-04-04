@@ -82,10 +82,15 @@
 											<li><a class="dropdown-item" style="text-align: center;"  href="/cabinet/products/add_arrival">Прихід</a></li>											
 											<li><a class="dropdown-item" style="text-align: center;" href="/cabinet/products/arrival_list">Облік Приходу</a></li>
 										</ul>
-								</li>											
+								</li>
+								{% if user.is_authenticated %}
+								<li class="nav-item active"><div class="col-sm" ><select id="search-select2" class="col-sm" " name="search" required></select></div></li>
+								{% endif %}											
 						</ul>
 						<div class="float-right">
+							
 							<ul class="navbar-nav mr-auto">
+							
 								<li>
 							    <!-- <label class="switch">
 									<input type="checkbox" id="themeSwitch">
@@ -98,6 +103,8 @@
 								  
 							</li>
 							{% if user.is_authenticated %}
+							
+
 							<li class="nav-item active">
 									<a href="/cabinet/orders/add_order">
 										<button type="button" class="btn btn-info btn-lg">
@@ -144,6 +151,7 @@
 {% endblock %} 
 
 <script src="{{url_for('static', filename='javascript/animated-test.js')}}"></script>
+<script src="{{url_for('static', filename='javascript/search-select2.js')}}"></script>
 
 </body>
 
