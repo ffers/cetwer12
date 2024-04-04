@@ -11,7 +11,7 @@ $('#search-select2').select2({
         },
         inputTooShort: function (args) {
             var remainingChars = args.minimum - args.input.length; 
-            return 'Введіть номер телефону 380...' + (remainingChars > 11 ? 'а' : '');}
+            return 'Введіть номер телефону, номер замовлення або прізвище ...' + (remainingChars > 11 ? 'а' : '');}
     },
     ajax: {
         url: '/cabinet/orders/search_for_phone',
@@ -29,7 +29,7 @@ $('#search-select2').select2({
         },
         cache: true
     },
-    placeholder: 'Пошук по телефону ...',
+    placeholder: 'Пошук у замовленнях ...',
     minimumInputLength: 2,
     templateResult: function (result) {
         return result.text || result.text; // Виведення тексту міста

@@ -95,10 +95,12 @@ class OrderRep:
 
     def search_for_all(self, phone):
         order = Orders.query.filter(
-    (Orders.phone.ilike(f'%{phone}%')) |
-    (Orders.client_lastname.ilike(f'%{phone}%')) |
-    (Orders.order_id_sources.ilike(f'%{phone}%'))
-).all()
+            (Orders.phone.ilike(f'%{phone}%')) |
+            (Orders.client_lastname.ilike(f'%{phone}%')) |
+            (Orders.client_surname.ilike(f'%{phone}%')) |
+            (Orders.client_firstname.ilike(f'%{phone}%')) |
+            (Orders.order_id_sources.ilike(f'%{phone}%'))
+        ).all()
         return order
 
 
