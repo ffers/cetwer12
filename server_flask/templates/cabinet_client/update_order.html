@@ -23,7 +23,7 @@
     }
 </script>
 	<div class="content"> <div class="row">
-		<div class="col-sm"><h1 style="text-align: center;">Редагування Замовлення №{{order.id}}</h1></div>
+		<div class="col-sm"><h1 style="text-align: center;">Редагування Замовлення №{{order.order_id_sources}}</h1></div>
 		{% if 1 == user.id %}<div style="position: absolute; margin-top: 30px;"><button type="button" onclick="confirmDelete({{order.id}})" class="btn btn-outline-success my-2 my-sm-0">Видалити Замовлення</button></div>{% endif %}
 		<div style=" margin-top: 10px;"><a href="/cabinet/orders/dublicate/{{order.id}}"><button type="button" class="btn btn-outline-success my-2 my-sm-0">Дублювати Замовлення</button></a></div>
 	</div><br>
@@ -40,6 +40,7 @@
 					
 					<div class="col-sm"><input class="form-control   " style="text-align: center;" name="old_city" rows="1" cols="50" placeholder="Місто" value="{{order.city_name}}" readonly><br></div>
 					<div class="col-sm"><input class="form-control   " style="text-align: center;" name="old_warehouse" rows="1" cols="50" placeholder="Відділення" value="{{order.warehouse_text}}" readonly><br></div>
+					<div class="col-sm"><input class="form-control   " style="text-align: center;" name="ttn" rows="1" cols="50" placeholder="TTN" value="{{order.ttn}}" readonly><br></div>
 					
 				</div>
 			<div class="col-sm"><input type="button" class="text-button"  value="Змінити Адресу доставки" id="ChangeAddress"></div></br>
