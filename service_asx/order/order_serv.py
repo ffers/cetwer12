@@ -17,10 +17,19 @@ class OrderServ:
 
     def search_for_phone(self, order):
         order_list = []
+
         for item in order:
+            product_text = ''
+            for product in item.ordered_product:
+                product_text += product.products.article
+
+            text = (item.order_id_sources + ' '
+                    + item.client_lastname + ' '
+                    + item.client_firstname + ' '
+                    + product_text + ' ' )
             item_data = {
                 'id': item.id,
-                'article': item.client_lastname + ' ' + item.client_firstname + ' ' + item.order_id_sources
+                'text': text
             }
             order_list.append(item_data)
         print(order_list)

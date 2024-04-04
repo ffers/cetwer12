@@ -4,15 +4,14 @@ $('#search-select2').select2({
     theme: 'bootstrap-5',
     language: {
         noResults: function () {
-            return 'Ничего не знайдено';
+            return 'Ничого не знайдено';
         },
         searching: function () {
             return 'Пошук...';
         },
         inputTooShort: function (args) {
-            var remainingChars = args.minimum - args.input.length;
-            return 'Введіть хочаб ' + remainingChars + ' символ' + (remainingChars > 1 ? 'а' : '');
-        }
+            var remainingChars = args.minimum - args.input.length; 
+            return 'Введіть номер телефону 380...' + (remainingChars > 11 ? 'а' : '');}
     },
     ajax: {
         url: '/cabinet/orders/search_for_phone',
@@ -20,17 +19,18 @@ $('#search-select2').select2({
         delay: 250,
         processResults: function (data) {
             return {
-                results: data.results.map(function (city) {
+                results: data.results.map(function (item) {
                     return {
-                        id: city.id,
-                        text: city.article
+                        id: item.id,
+                        text: item.text
                     };
                 })
             };
         },
         cache: true
     },
-    placeholder: 'Пошук по телефону',
+    placeholder: 'Пошук по телефону ...',
+    minimumInputLength: 10,
     templateResult: function (result) {
         return result.text || result.text; // Виведення тексту міста
     }
