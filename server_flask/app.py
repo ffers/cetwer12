@@ -1,4 +1,8 @@
-from fastapi import FastAPI
+from typing import Annotated
+
+from fastapi import Depends, FastAPI
+from fastapi.security import OAuth2PasswordBearer
+
 import uvicorn, multiprocessing, logging
 logging.basicConfig(
     level=logging.INFO,
@@ -11,10 +15,15 @@ logging.basicConfig(
 
 
 app = FastAPI()
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
 @app.get("/v2")
-def read_main():
-    logging.info("Обробка app на головну сторінку")
-    return {"message": "Hello World"}
+async def read_items(token: Annotated[str, Depends(oauth2_scheme)]):
+
+    logging.info("Обробка backend server")
+
+    return {"token": token}
 
 def main():
     uvicorn.run(

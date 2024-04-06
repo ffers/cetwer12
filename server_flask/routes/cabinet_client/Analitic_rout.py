@@ -4,7 +4,7 @@ from flask_principal import Permission, RoleNeed
 from black import ProductAnaliticControl
 from black import DayAnalitic
 
-an_cl = ProductAnaliticControl()
+prod_an_cntrl = ProductAnaliticControl()
 d_an_cntrl = DayAnalitic()
 
 author_permission = Permission(RoleNeed('manager'))
@@ -17,7 +17,7 @@ bp = Blueprint('Analitic', __name__, template_folder='templates')
 @bp.route("/cabinet/analitic", methods=['POST', 'GET'])
 def analitic():
     if request.method == 'GET':
-        all_product_analitic = an_cl.all_product_analitic()
+        all_product_analitic = prod_an_cntrl.all_product_analitic()
         print("Починаєм аналітику!")
         return render_template('cabinet_client/analitic/product_analitic.html',
                                user=current_user, all_product_analitic=all_product_analitic)
@@ -31,3 +31,13 @@ def day_analitic():
         print("Починаєм аналітику!")
         return render_template('cabinet_client/analitic/day_analitic.html',
                                user=current_user, data=data)
+
+
+@login_required
+@admin_permission.require(http_exception=403)
+@bp.route('/cabinet/analitic/delete/<int:id>', methods=['GET'])
+def delete_product(id):
+    product = prod_an_cntrl.analitic_delete(id)
+    print(f"Перевірка {product}")
+    flash('Аналітику видалено', category='success')
+    return redirect('/cabinet/analitic')

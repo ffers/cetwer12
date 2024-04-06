@@ -47,13 +47,7 @@ class Await:
         resp_ok = mng_cl.add_ttn_crm(order_id, ttn_data)
         return ttn_data
 
-    def await_cabinet(self, order_id, status):
-        order = ord_rep.change_status(order_id, status)
-        update_analitic = prod_an_cntrl.product_in_order(order)
-        resp = {"success": False}
-        if order.delivery_method_id == 1:
-            resp = self.work_with_np(order)
-        return resp
+
 
 
     def await_cabinet_json(self, data):
@@ -69,14 +63,7 @@ class Await:
             resp = tgmn_cl.send(order)
         return resp
 
-    def work_with_np(self, order):
-        resp = cab_cl.manager_data(
-            order)  # обработка зкаказа из срм создание ттн, телеграм курьеру заказ, додавання в пром ттн
-        if resp["success"] == True:
-            self.await_order_cab_tg(order, "crm_to_telegram")  # if telegram True send to telegram
-            invoice_ttn, order_id_sources = ttn_to_prom.main(order)
-            ev_cl.make_send_ttn(invoice_ttn, order_id_sources)
-        return resp
+
 
 
 

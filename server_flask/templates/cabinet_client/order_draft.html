@@ -6,18 +6,32 @@
 <div id="orders">
   
   <div class="table-responsive-sm" >
+    
+    <!-- <div class="row" style="text-align: center;">
+      <div class="col-sm">
+        <button id="add_reg"  onclick="processOrders('add_reg')" style="display: none;">
+          Додати в реєстр
+      </button>
+    </div>
+      <div class="col-sm"><button id="del_reg"
+          class="btn btn-outline-success my-2 my-sm-0"
+          onclick="processOrders('del_reg')" style="display: none;">
+        Видалити з реєстру
+      </button></div>
+    </div>  -->
+
     <table class="table table-hover table-striped " >
       <thead>
         <tr >
           <th scope="col">ID</th>
-          <th scope="col"><input class="form-check-input item_check" type="checkbox" value="" id="flexCheckDefault"></th>
+          <th scope="col"><input class="form-check-input item_check" type="checkbox" id="flexCheckDefault"></th>
           <th scope="col">Артикул</th>
           <th scope="col">Сумма</th>
           <th scope="col">Нотатка</th>
           <th scope="col">Адреса</th>
           <th scope="col">Телефон та TTN</th>
           <th scope="col">Клієнт</th>
-          <th scope="col">Доставка</th>
+          <th scope="col">Реєстр</th>
           <th scope="col">Оплата</th>
           <th scope="col">Источник</th>
           <th scope="col">Код</th>
@@ -35,7 +49,7 @@
         <a href="/cabinet/orders/update/{{order.id}}"><button type="button" class="btn btn-info">{{ order.id }}</button></a>
             {% endif %}
         {% endfor %}</td>
-        <td><input class="form-check-input item_check" type="checkbox" value="{{order.id}}" name="selectedItems" id="flexCheckDefault"></td>
+        <td><input class="form-check-input item_check" type="checkbox" name="selectedItems" value="{{order.id}}" id="flexCheckDefault"></td>
           <td >{% for product in order.ordered_product %}
             {{product.products.article}}-{{product.quantity}}шт. <br>{% endfor %}</td>
           <td>{{order.sum_price}}</td>
@@ -43,7 +57,7 @@
           <td>{% if order.city_name %}{{order.city_name}},{% endif %} {{order.warehouse_text}}</td>
           <td>{{order.phone}}{% if order.ttn %};{{order.ttn}}{% else %}{% endif %}</td>
           <td>{{order.client_lastname}} {{order.client_firstname}}</td>
-          <td>{{order.delivery_method.name}}</td>
+          <td>{{order.delivery_order.number_registr}}</td>
           <td>{{order.payment_method.name}}{% if order.payment_method.id == 5 %}:{{order.prompay_status.name}}{% endif %}</td>
           <td>{{order.source_order.name}}</td>
           <td>{% if order.order_id_sources == none %}{{order.id}}{% else %}{{order.order_id_sources}}{% endif %}</td>

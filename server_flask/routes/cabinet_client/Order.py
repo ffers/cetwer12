@@ -12,7 +12,7 @@ import logging, requests, json
 from urllib.parse import unquote
 from pytz import timezone, utc
 from datetime import datetime
-from black import OrderCntrl
+from black import OrderCntrl, DeliveryOrderCntrl
 
 
 
@@ -34,6 +34,7 @@ def get_data(data, offset=0, per_page=10):
 ord_cntrl = OrderCntrl()
 fl_cl = FileKit()
 aw_cl = Await()
+del_ord_cntrl = DeliveryOrderCntrl()
 author_permission = Permission(RoleNeed('manager'))
 admin_permission = Permission(RoleNeed('admin'))
 bp = Blueprint('Order', __name__, template_folder='templates')
@@ -174,13 +175,10 @@ def send_cab(id):
     if request.method == 'POST':
         return redirect('/cabinet/orders')
     else:
-        resp = aw_cl.await_cabinet(id, 2)
-        print(resp)
         print(f"Працює {id}")
+        resp = ord_cntrl.confirmed_order(id, 2)
         if resp["success"] == True:
             flash('Замовлення НП створено', category='success')
-            # order = Orders.query.get_or_404(id)
-            # aw_cl.await_order_cab_tg(order, "crm_to_telegram")  # if telegram True send to telegram
         else:
             flash('Замовлення НП нестворено', category='error')
         return redirect('/cabinet/orders')
@@ -319,12 +317,8 @@ def verify_token(token):
 @admin_permission.require(http_exception=403)
 def delete(id):
     try:
-        task_to_delete = Orders.query.get_or_404(id)
-        print(">>> Start delete in datebase")
-        db.session.delete(task_to_delete)
-        db.session.commit()
-        print(">>> Delete in datebase")
-        flash(f'Замовлення {task_to_delete.id} видалено', category='success')
+        task_to_delete = ord_cntrl.delete_order(id)
+        flash(f'Замовлення видалено', category='success')
         return redirect('/cabinet/orders')
     except:
         return 'Це замовлення вже було видаленно'
@@ -344,3 +338,44 @@ def dublicate(id):
 def search_for_phone():
     search = ord_cntrl.search_for_phone(request)
     return search
+
+@bp.route('/cabinet/order_draft', methods=['POST', 'GET'])
+@login_required
+@author_permission.require(http_exception=403)
+def order_draft():
+    if request.method == 'POST':
+        print(">>> Add datebase")
+        print(f"order_draft {request.json}")
+        bool = del_ord_cntrl.add_registr(request.json)
+        if bool:
+            flash(f'ТТН додано до реєстр', category='success')
+        else:
+            flash(f'Невийшло', category='error')
+        return jsonify({"succes": True})
+    else:
+        tasks_orders = ord_cntrl.load_confirmed_order()
+        tasks_users = Users.query.order_by(Users.timestamp).all()
+        page = request.args.get('page', default=1, type=int)
+        per_page = 50
+        total = len(tasks_orders)
+        pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap5')
+        offset = (page - 1) * per_page
+        data_subset = get_data(tasks_orders, offset=offset, per_page=per_page)
+
+        return render_template('cabinet_client/order_draft.html', pagination=pagination,
+                               tasks_users=tasks_users, orders=data_subset,  user=current_user)
+
+@bp.route('/cabinet/orders/reg', methods=['POST', 'GET'])
+@login_required
+@author_permission.require(http_exception=403)
+def reg():
+    print(">>> Delete reg datebase")
+    print(f"order_draft {request.json}")
+    bool = del_ord_cntrl.delete_ttn_in_reg(request.json)
+    del_ord_cntrl.add_registr(request.form.getlist('selectedItems'))
+    if bool:
+        flash(f'Видалено з реєстру', category='success')
+        return jsonify({"succes": True})
+    else:
+        flash(f'Невийшло', category='error')
+        return jsonify({"succes": False})

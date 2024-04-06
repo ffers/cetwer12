@@ -70,25 +70,46 @@
 					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="navbar-toggler-icon"></span>
 					</button>
-						<div class="collapse navbar-collapse" id="navbarSupportedContent">
-						<ul class="navbar-nav me-auto mb-2 mb-lg-0 text-center">
-							<li><a class="nav-link" href="/cabinet/products">Товари</a></li>
-							<li><a class="nav-link" href="/cabinet/orders">Замовлення</a></li>
-								<li class="nav-item dropdown">
-									<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"">
-									Меню
-									</a>										
-										<ul class="dropdown-menu">
-											<li><a class="dropdown-item" style="text-align: center;" href="/cabinet/analitic">Аналітика</a></li>
-											<li><hr class="dropdown-divider"></li>
-											<li><a class="dropdown-item" style="text-align: center;"  href="/cabinet/products/add_arrival">Прихід</a></li>											
-											<li><a class="dropdown-item" style="text-align: center;" href="/cabinet/products/arrival_list">Облік Приходу</a></li>
-										</ul>
-								</li>
-								{% if user.is_authenticated %}
-								<li class="nav-item active"><div class="col-sm" ><select id="search-select2" class="col-sm" " name="search" required></select></div></li>
-								{% endif %}											
-						</ul>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav me-auto mb-2 mb-lg-0 text-center">
+						<li><a class="nav-link" href="/cabinet/products">
+							Товари</a></li>
+						<li><a class="nav-link" href="/cabinet/orders">
+							Замовлення</a></li>
+							<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"">
+							Меню
+						</a>										
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" style="text-align: center;" href="/cabinet/order_draft">
+									Нова Пошта</a></li>
+								<li><a class="dropdown-item" style="text-align: center;" href="/cabinet/analitic">
+									Аналітика</a></li>
+								<li><hr class="dropdown-divider"></li>
+								<li><a class="dropdown-item" style="text-align: center;"  href="/cabinet/products/add_arrival">
+									Прихід</a></li>											
+								<li><a class="dropdown-item" style="text-align: center;" href="/cabinet/products/arrival_list">
+									Облік Приходу</a></li>
+							</ul>
+							</li>
+							{% if user.is_authenticated %}
+							<li class="nav-item active">
+								<div class="col-sm" >
+									<select id="search-select2" class="col-sm" name="search" required>
+										<!-- ПОШУК SELECT -->
+									</select></div></li>
+							<li><button id="add_reg"
+								class="btn btn-outline-success my-2 my-sm-0"   
+								onclick="processOrders('add_reg')" style="display: none;">
+								Додати в реєстр
+							</button></li>
+							<li><button id="del_reg"
+								class="btn btn-outline-success my-2 my-sm-0"  
+								onclick="processOrders('del_reg')" style="display: none;">
+								Видалити з реєстру
+							  </button></li>
+							{% endif %}											
+					</ul>
 						<div class="float-right">
 							
 							<ul class="navbar-nav mr-auto">
@@ -130,7 +151,7 @@
 							</div>
 							
 				
-						</div>
+				</div>
 			</div>
 		</nav>
 	
@@ -154,6 +175,8 @@
 
 <script src="{{url_for('static', filename='javascript/animated-test.js')}}"></script>
 <script src="{{url_for('static', filename='javascript/search-select2.js')}}"></script>
+<script src="{{url_for('static', filename='javascript/checkboxAll.js')}}"></script>
+<script src="{{url_for('static', filename='javascript/button_registr.js')}}"></script>
 
 </body>
 

@@ -1,13 +1,18 @@
 import os, logging, sys
-from repository import OrderRep
+from repository import OrderRep, DeliveryOrderRep
 from service_asx.order.telegram.crm_to_telegram import CrmToTelegram
 from service_asx.order import ManagerTg, PromToCrm, UpdateToCrm, OrderServ
-from service_asx.delivery import NpServ
+from service_asx.delivery import NpServ, NpCabinetCl, TTN_to_Prom
+from service_asx import DeliveryOrderServ
 from api import EvoClient
 from dotenv import load_dotenv
 from api.nova_poshta.create_data import NpClient
 from telegram import TgClient
 from black import ProductAnaliticControl
+
+
+
+
 
 # log_formatter = logging.Formatter("%(asctime)s [%(processName)s: %(process)d] [%(threadName)s: %(thread)d] [%(levelname)s] %(name)s: %(message)s")
 log_formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(name)s: %(message)s")
@@ -36,8 +41,22 @@ np_cl = NpClient(token_np)
 ord_serv = OrderServ()
 np_serv = NpServ()
 prod_an_cntrl = ProductAnaliticControl()
+cab_cl = NpCabinetCl()
+ttn_to_prom = TTN_to_Prom()
+del_ord_serv = DeliveryOrderServ()
+del_ord_rep = DeliveryOrderRep()
+
 
 class OrderCntrl:
+    def load_all_order(self):
+        order = ord_rep.load_item_all()
+        return order
+
+    def load_confirmed_order(self):
+        item = ord_rep.load_for_np()
+        print(item)
+        return item
+
     def dublicate(self, order_id):
         item = ord_rep.load_item(order_id)
         dublicate_item = ord_rep.dublicate_item(item)
@@ -94,6 +113,39 @@ class OrderCntrl:
         order = ord_rep.search_for_all(search_request)
         result = ord_serv.search_for_phone(order)
         return result
+
+    def confirmed_order(self, order_id, status):
+        order = ord_rep.change_status(order_id, status)
+        update_analitic = prod_an_cntrl.product_in_order(order)
+        resp = {"success": False}
+        if order.delivery_method_id == 1:
+            resp = self.work_with_np(order)
+            dict_del_ord = del_ord_serv.create_dict(resp, order)
+            print(dict_del_ord)
+            data_del_ord = del_ord_rep.add_item(dict_del_ord)
+        return resp
+
+    def work_with_np(self, order):
+        resp = cab_cl.manager_data(
+            order)  # обработка зкаказа из срм создание ттн, телеграм курьеру заказ, додавання в пром ттн
+        if resp["success"] == True:
+            self.await_order_cab_tg(order, "crm_to_telegram")  # if telegram True send to telegram
+            invoice_ttn, order_id_sources = ttn_to_prom.main(order)
+            ev_cl.make_send_ttn(invoice_ttn, order_id_sources)
+        return resp
+
+    def await_order_cab_tg(self, order, flag=None, id=None): # дубль фукціі await_order щоб обійти діспетчер
+        print(f"see_flag {flag}")
+        resp = None
+        if flag == "Надіслати накладну":
+            resp = tgmn_cl.send_order_curier(order)
+        if flag == "crm_to_telegram":
+            resp = tgmn_cl.send(order)
+        return resp
+
+    def delete_order(self, id):
+        bool = ord_rep.delete_order(id)
+        return bool
 
 
 

@@ -170,11 +170,24 @@ class NpClient(object):
         resp = self._request_np(json_data)
         return resp
 
-    def AddDocumentsReg(self, data_ref, reg_ref):
+    def addDocumentsReg(self, data_ref, reg_ref):
         data = {
             "apiKey": self.token,
             "modelName": "ScanSheet",
             "calledMethod": "insertDocuments",
+            "methodProperties": {
+                "DocumentRefs": data_ref,
+                "Ref": reg_ref
+            }
+        }
+        resp = self.try_resp(data)
+        return resp
+
+    def removeDocumentsReg(self, data_ref, reg_ref):
+        data = {
+            "apiKey": self.token,
+            "modelName": "ScanSheet",
+            "calledMethod": "removeDocuments",
             "methodProperties": {
                 "DocumentRefs": data_ref,
                 "Ref": reg_ref

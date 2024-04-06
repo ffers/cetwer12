@@ -102,4 +102,15 @@ def update(id):
         return render_template(
             'cabinet_client/Products/update_product.html',
             user=current_user, product=product)
+
+@bp.route('/cabinet/products/delete/<int:id>', methods=['GET'])
+@login_required
+@admin_permission.require(http_exception=403)
+def delete_product(id):
+    product = prod_cntrl.delete_product(id)
+    print(f"Перевірка {product}")
+    flash('Продукт видалено', category='success')
+    return render_template(
+        'cabinet_client/Products/products.html',
+        user=current_user, product=product)
  

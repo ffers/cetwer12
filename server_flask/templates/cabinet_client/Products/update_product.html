@@ -1,4 +1,4 @@
-{% extends 'cabinet_client/Products/layout/base.html' %} {% block title %}Додати товар{% endblock %}
+{% extends 'cabinet_client/base.html' %} {% block title %}Додати товар{% endblock %}
 
 {% block head %}
 
@@ -7,7 +7,7 @@
 {% block body %}
 	<div class="content">
 		<h1 style="text-align: center;">
-			Оновлення Товару {{product.id}}
+			Оновлення Товару {{product.article}}
 		</h1>
 		<form action="/cabinet/products/update/{{product.id}}" method="post">
 			<div class="row">

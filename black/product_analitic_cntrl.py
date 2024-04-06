@@ -63,9 +63,13 @@ class ProductAnaliticControl():
 
     def product_in_order(self, order):
         for product in order.ordered_product:
-            self.add_product_analitic(product.product_idx   )
+            self.add_product_analitic(product.product_id)
             self.get_product_analitic(product.product_id)
         return True
+
+    def analitic_delete(self, id):
+        bool = prod_an_rep.delete_item(id)
+        return bool
 
 
 

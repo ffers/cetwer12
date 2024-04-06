@@ -50,6 +50,15 @@ class ProductRep():
             db.session.commit()
         return True
 
+    def delete_product(self, id):
+        task_to_delete = Products.query.get_or_404(id)
+        print(">>> Start delete in datebase")
+        db.session.delete(task_to_delete)
+        db.session.commit()
+        print(">>> Delete in datebase")
+        return True
+
+
 
 
 

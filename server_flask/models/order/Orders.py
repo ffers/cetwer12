@@ -30,6 +30,7 @@ class Orders(db.Model):
     client_id = db.Column(db.Integer)
     order_id_sources = db.Column(db.String(50))
     order_code = db.Column(db.String(50))
+    delivery_order = db.relationship("DeliveryOrder", back_populates="orders", uselist=False)
     prompay_status = db.relationship("PrompayStatus", back_populates="orders")
     prompay_status_id = db.Column(db.Integer, db.ForeignKey(
         'prompay_status.id', name='fk_orders_prompay_status_id'))

@@ -48,6 +48,8 @@ class ProductAnaliticRep():
 
     def get_sum_product_sale(self, product_id):
         sum_product_sale = db.session.query(func.sum(OrderedProduct.quantity)).filter(OrderedProduct.product_id == product_id).scalar()
+        if not sum_product_sale:
+            sum_product_sale = 0
         return sum_product_sale
 
     def get_money_sale_day(self):
@@ -58,6 +60,14 @@ class ProductAnaliticRep():
                       .filter(ProductAnalitic.timestamp >= start_time,
                         ProductAnalitic.timestamp <= current_time).scalar())
         return money_sale
+
+    def delete_item(self, id):
+        task_to_delete = ProductAnalitic.query.get_or_404(id)
+        print(">>> Start delete in datebase")
+        db.session.delete(task_to_delete)
+        db.session.commit()
+        print(">>> Delete in datebase")
+        return True
 
 
 

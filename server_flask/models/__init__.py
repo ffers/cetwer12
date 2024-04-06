@@ -26,3 +26,5 @@ from .analitic.ProductAnalitic import ProductAnalitic
 from .analitic.FinancAnalitic import FinancAnalitic
 from .product.Arrival import Arrival
 from .analitic.DayAnalitic import DayAnalitic
+from .delivery.DeliveryOrder import DeliveryOrder
+from .delivery.DeliveryStatus import DeliveryStatus

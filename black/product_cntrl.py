@@ -32,5 +32,9 @@ class ProductCntrl:
         resp_bool = prod_rep.update_after_arrival(combined_list)
         return resp_bool
 
+    def delete_product(self, id):
+        bool = prod_rep.delete_product(id)
+        return bool
+
 
 

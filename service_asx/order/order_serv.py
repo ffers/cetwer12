@@ -22,7 +22,7 @@ class OrderServ:
             product_text = ' '
             for product in item.ordered_product:
                 product_text += product.products.article + ' '
-
+     
             text = (item.order_id_sources + ' '
                     + item.client_lastname + ' '
                     + item.client_firstname + ' '

@@ -12,6 +12,20 @@ class OrderRep:
         item = Orders.query.all()
         return item
 
+    def load_all_for_searh_data(self, search_param, search_value):
+        if search_value is not None:
+            items = Orders.query.filter_by(**{search_param: search_value}).order_by(desc(Orders.timestamp)).all()
+        else:
+            items = Orders.query.order_by(desc(Orders.timestamp)).all()
+        return items
+
+    def load_for_np(self):
+        item = Orders.query.filter(
+            Orders.ordered_status_id == 2,
+            Orders.delivery_method_id == 1
+                                   ).all()
+        return item
+
     # def add_order(self, request):
     #     order = Orders(description=request.form['description'], city_name=request.form['CityName'],
     #                    city_ref=request.form['CityREF'],
@@ -74,6 +88,13 @@ class OrderRep:
         db.session.commit()
         return order
 
+    def change_status_list(self, order_id, status):
+        for item in order_id:
+            order = self.load_item(item)
+            order.ordered_status_id = status
+            db.session.commit()
+            return order
+
     def change_address(self, order_id, data):
         order = self.load_for_code(order_id)
         order.city_name = data["CityName"]
@@ -103,6 +124,13 @@ class OrderRep:
         ).all()
         return order
 
+    def delete_order(self, id):
+        task_to_delete = Orders.query.get_or_404(id)
+        print(">>> Start delete in datebase")
+        db.session.delete(task_to_delete)
+        db.session.commit()
+        print(">>> Delete in datebase")
+        return True
 
 
 
