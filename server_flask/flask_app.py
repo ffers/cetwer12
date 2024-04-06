@@ -75,6 +75,11 @@ def index():
     # print(current_user.id)
     return render_template('index.html', user=current_user)
 
+@flask_app.errorhandler(403)
+def handle_forbidden_error(error):
+    # Рендеринг шаблону для виведення зображення або повідомлення про помилку
+    return render_template('403.html'), 403
+
 @identity_loaded.connect_via(flask_app)
 def on_identity_loaded(sender, identity):
     # Get the user information from the db
