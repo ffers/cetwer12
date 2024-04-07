@@ -4,8 +4,8 @@ from telegram import TgClient
 from api.nova_poshta.create_data import RegistrDoc
 from api.nova_poshta.create_data import ListClient
 from api.nova_poshta import CreateNpData
-# from service_asx.delivery import NpCabinetCl
-from repository import OrderRep
+from repository import OrderRep, DeliveryOrderRep
+from service_asx import DeliveryOrderServ
 from dotenv import load_dotenv
 
 env_path = '../common_asx/.env'
@@ -27,6 +27,8 @@ crnp_cl = CreateNpData()
 # cab_cl = NpCabinetCl()
 ut_cl = Utils()
 ord_rep = OrderRep()
+del_ord_rep = DeliveryOrderRep()
+del_ord_serv = DeliveryOrderServ()
 
 chat_id_info = os.getenv("CHAT_ID_INFO")
 RESP = {}
@@ -150,8 +152,13 @@ class ManagerTTN:
             order.ttn_ref = ttn_ref
             order.ordered_status_id = 2
             db.session.commit()
+            self.add_del_ord(ttn_data, order)
             print("ттн додано до CRM")
             return True
         except:
             return False
 
+    def add_del_ord(self, first_data, order):
+        dict = del_ord_serv.create_dict(first_data, order)
+        del_ord_rep.add_item(dict)
+        return True

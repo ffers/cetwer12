@@ -99,7 +99,7 @@
 						value="{% if order.city_name %} {{order.city_name}} {%else%} Адреси нема {%endif%}" readonly><br></div>
 					<div class="col-sm"><input class="form-control   " style="text-align: center;" name="old_warehouse" rows="1" cols="50" placeholder="Відділення" value="{{order.warehouse_text}}" readonly><br></div>
 					<div class="col-sm"><input class="form-control   " style="text-align: center;" name="ttn" rows="1" cols="50" placeholder="TTN" 
-						value="{% if order.ttn %} {{order.ttn}} {%else%} ТТН нема {%endif%}" readonly><br></div>
+						value="{% if order.ttn %} {{order.ttn}};{{order.delivery_order.number_registr}} {%else%} ТТН нема {%endif%}" readonly><br></div>
 					
 				</div>
 		<div class="col-sm"><input type="button" class="text-button"  value="Змінити Адресу доставки" id="ChangeAddress"></div></br>

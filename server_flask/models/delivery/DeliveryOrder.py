@@ -10,7 +10,7 @@ class DeliveryOrder(db.Model):
     status_id = db.Column(db.Integer, db.ForeignKey(
         'delivery_status.id', name='fk_delivery_order_status_id'))
     order_id = db.Column(db.Integer, db.ForeignKey(
-        'orders.id', name='fk_delivery_order_order_id'), nullable=False)
+        'orders.id', name='fk_delivery_order_order_id'), nullable=False, unique=True)
 
     delivery_status = db.relationship("DeliveryStatus", back_populates="delivery_order")
     orders = db.relationship("Orders", back_populates="delivery_order")

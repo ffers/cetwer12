@@ -22,7 +22,7 @@ class DeliveryOrderRep:
     def update_registr(self, items, data):
         for item in items:
             item = self.load_item(item)
-            print(item)
+            print(f"update registr {item}, {data}")
             item.ref_registr = data["ref_registr"]
             item.number_registr = data["number_registr"]
             db.session.commit()
