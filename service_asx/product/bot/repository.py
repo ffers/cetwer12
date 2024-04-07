@@ -86,11 +86,11 @@ class ProductCounBot():
         count2 = self.count_all(updated_45)
         text = f"35:\n"
         for item in updated_35:
-            text += f"{item.color}x{item.quantity}, "
+            text += f"{item.color}х{item.quantity}, "
         text += f"\nКількість в 35: {count1} \n"
         text += f"\n45:\n"
         for item in updated_45:
-            text += f"{item.color}x{item.quantity}, "
+            text += f"{item.color}х{item.quantity}, "
         text += f"\nКількість в 45: {count2} \n"
         sum_count = count1 + count2
         text += f"\nЗагальна кількість: {sum_count}"
