@@ -53,7 +53,7 @@ class EvoClient(object):
         response = None
         while retries < max_retries:
             try:
-                # response = requests.request(method, url, data=body, headers=headers, timeout=timeout)
+                response = requests.request(method, url, data=body, headers=headers, timeout=timeout)
                 print(f"Відповідь пром {response}")
                 response.raise_for_status()  # Підняти виключення, якщо код статусу не 200
                 break

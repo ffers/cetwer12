@@ -63,11 +63,25 @@
 					<!-- Спосіб доставкі -->
 					{{order.delivery_method.name}}
 				</button></a></div> 
-		<div class="col-sm" style="text-align: center;"><a href="#">
-				<button type="button" class="col-sm btn btn-outline-success my-2 my-sm-0">
-					<!-- Спосіб доставкі -->
-					{{order.ordered_status.name}}
-				</button></a></div> 
+		<div class="col-sm" style="text-align: center;">
+			<select class="form-select btn my-2 my-sm-0" id="changeStatus"  
+			style="color: #198754; border: var(--bs-border-width) solid #198754;"
+			aria-label="Change status" >
+			<option selected>{{order.ordered_status.name}}</option>
+			<option value="1">Підтвердити</option>
+			<option value="2">Підтвержено</option>
+			<option value="3">Оплачено</option>
+			<option value="4">Несплачено</option>
+			<option value="5">Скасовано</option>
+			<option value="6">Предзамовлення</option>
+			<option value="7">Питання</option>
+			<option value="8">Відправлено</option>
+			<option value="9">Отримано</option>
+			<option value="10">Нове</option>
+			<option value="11">Очікує відправленя</option>
+			<option value="12">Виконано</option>
+			<option value="13">Тест</option>
+		  </select></div> 
 		</div><br>
 		<form id="myForm" action="/cabinet/orders/update/{{order.id}}" method="post">
 			<div class="row">
@@ -155,5 +169,6 @@
     <script src="{{url_for('static', filename='javascript/hiddenElement.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/submitFormUpdateOrd.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/add-button-product.js')}}"></script>
+	<script src="{{url_for('static', filename='javascript/changeStatus.js')}}"></script>
 
 {% endblock %}

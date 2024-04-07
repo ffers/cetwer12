@@ -1,11 +1,9 @@
 import os
 from dotenv import load_dotenv
-from manager import ManageReg
 from service_asx.order import search_reply_message, button_hand
 from service_asx import BotProductSrv
 
 pr_bt_srv = BotProductSrv()
-mg_reg = ManageReg()
 
 
 env_path = '../common_asx/.env'
@@ -27,7 +25,7 @@ class TelegramController():
                 command = data["message"]["entities"][0]["type"]
                 if "bot_command" in command:
                     print("Отримав команду боту")
-                    mg_reg.manage_reg(data)
+
 
         chat_id = data["message"]["chat"]["id"]
         print(chat_id)

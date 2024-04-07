@@ -80,6 +80,10 @@ def handle_forbidden_error(error):
     # Рендеринг шаблону для виведення зображення або повідомлення про помилку
     return render_template('403.html'), 403
 
+@flask_app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
 @identity_loaded.connect_via(flask_app)
 def on_identity_loaded(sender, identity):
     # Get the user information from the db

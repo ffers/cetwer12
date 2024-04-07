@@ -43,5 +43,10 @@ class OrderServ:
     def replace_phone(self, phone):
         return phone
 
+    def parse_dict_status(self, data):
+        orders = data["id"]
+        status = data["status"]
+        return orders, status
+
 
 

@@ -365,17 +365,50 @@ def order_draft():
         return render_template('cabinet_client/order_draft.html', pagination=pagination,
                                tasks_users=tasks_users, orders=data_subset,  user=current_user)
 
-@bp.route('/cabinet/orders/reg', methods=['POST', 'GET'])
+@bp.route('/cabinet/orders/del_reg', methods=['POST', 'GET'])
 @login_required
 @author_permission.require(http_exception=403)
 def reg():
     print(">>> Delete reg datebase")
     print(f"order_draft {request.json}")
     bool = del_ord_cntrl.delete_ttn_in_reg(request.json)
-    del_ord_cntrl.add_registr(request.form.getlist('selectedItems'))
+    # del_ord_cntrl.add_registr(request.form.getlist('selectedItems'))
     if bool:
         flash(f'Видалено з реєстру', category='success')
         return jsonify({"succes": True})
     else:
         flash(f'Невийшло', category='error')
         return jsonify({"succes": False})
+
+@bp.route('/cabinet/orders/changeStatus', methods=['POST', 'GET'])
+@login_required
+@author_permission.require(http_exception=403)
+def changeStatus():
+    print(">>> Change status")
+    print(f"order_draft {request.json}")
+    bool = ord_cntrl.change_status(request.json)
+    if bool:
+        flash(f'Змінено статус', category='success')
+        return jsonify({"succes": True})
+    else:
+        flash(f'Невийшло', category='error')
+        return jsonify({"succes": False})
+
+
+
+#  id |        name        | description
+# ----+--------------------+-------------
+#   1 | Підтвердити        |
+#   2 | Підтвержено        |
+#   3 | Оплачено           |
+#   4 | Несплачено         |
+#   5 | Скасовано          |
+#   6 | Предзамовлення     |
+#   7 | Питання            |
+#   8 | Відправлено        |
+#   9 | Отримано           |
+#  10 | Нове               |
+#  11 | Очікує відправленя |
+#  12 | Виконано           |
+#  13 | Тест               |
+

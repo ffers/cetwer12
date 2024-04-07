@@ -58,6 +58,12 @@ class ProductRep():
         print(">>> Delete in datebase")
         return True
 
+    def changeBodyPrice(self):
+        products = self.load_product_all()
+        for item in products:
+            if not item.body_product_price:
+                item.body_product_price = 0
+
 
 
 

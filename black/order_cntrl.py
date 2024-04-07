@@ -2,17 +2,17 @@ import os, logging, sys
 from repository import OrderRep, DeliveryOrderRep
 from service_asx.order.telegram.crm_to_telegram import CrmToTelegram
 from service_asx.order import ManagerTg, PromToCrm, UpdateToCrm, OrderServ
-from service_asx.delivery import NpServ, NpCabinetCl, TTN_to_Prom
+from service_asx.delivery import NpServ
 from service_asx import DeliveryOrderServ
 from api import EvoClient
 from dotenv import load_dotenv
 from api.nova_poshta.create_data import NpClient
 from telegram import TgClient
-from black import ProductAnaliticControl
+from .np_cntrl import NpCntrl
+from .product_analitic_cntrl import ProductAnaliticControl
 
-
-
-
+sys.path.append('../')
+from common_asx.utilits import Utils
 
 # log_formatter = logging.Formatter("%(asctime)s [%(processName)s: %(process)d] [%(threadName)s: %(thread)d] [%(levelname)s] %(name)s: %(message)s")
 log_formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(name)s: %(message)s")
@@ -41,10 +41,10 @@ np_cl = NpClient(token_np)
 ord_serv = OrderServ()
 np_serv = NpServ()
 prod_an_cntrl = ProductAnaliticControl()
-cab_cl = NpCabinetCl()
-ttn_to_prom = TTN_to_Prom()
+np_cntrl = NpCntrl()
 del_ord_serv = DeliveryOrderServ()
 del_ord_rep = DeliveryOrderRep()
+util_cntrl = Utils()
 
 
 class OrderCntrl:
@@ -82,8 +82,11 @@ class OrderCntrl:
                 OC_log.info(f"Обробка стандартна, ордер:{order_id}\n Інформація по адресі {delivery_provider_data} ")
                 self.update_address(order)
             except:
-                tg_cl.send_message_f(chat_id_helper, f"️❗️❗️❗️ Повторно адреси нема в № {order_id} ")
-                OC_log.info(f"Обробка ордера: {order_id}\n Інформація по адресі {delivery_provider_data} ")
+                tg_cl.send_message_f(chat_id_helper,
+                                f"️❗️❗️❗️ Повторно адреси нема в № {order_id} ")
+                OC_log.info(
+                    f"Обробка ордера: {order_id}\n "
+                    f"Інформація по адресі {delivery_provider_data} ")
 
     def update_address(self, order):
         war_ref = np_serv.examine_address_prom(order)
@@ -126,12 +129,17 @@ class OrderCntrl:
         return resp
 
     def work_with_np(self, order):
-        resp = cab_cl.manager_data(
+        resp = np_cntrl.manager_data(
             order)  # обработка зкаказа из срм создание ттн, телеграм курьеру заказ, додавання в пром ттн
         if resp["success"] == True:
             self.await_order_cab_tg(order, "crm_to_telegram")  # if telegram True send to telegram
-            invoice_ttn, order_id_sources = ttn_to_prom.main(order)
-            ev_cl.make_send_ttn(invoice_ttn, order_id_sources)
+            if order.source_order_id == 2:
+                invoice_ttn = order.ttn
+                order_id_sources = order.order_id_sources
+                dict_status_prom = {"order_id": order_id_sources, "declaration_id": invoice_ttn}
+                dict_ttn_prom = {"ids": [order_id_sources], "custom_status_id":  137639}
+                util_cntrl.change_status(dict_status_prom)
+                util_cntrl.change_ttn(dict_ttn_prom)
         return resp
 
     def await_order_cab_tg(self, order, flag=None, id=None): # дубль фукціі await_order щоб обійти діспетчер
@@ -145,6 +153,11 @@ class OrderCntrl:
 
     def delete_order(self, id):
         bool = ord_rep.delete_order(id)
+        return bool
+
+    def change_status(self, data):
+        orders, status = ord_serv.parse_dict_status(data)
+        bool = ord_rep.change_status_list(orders, status)
         return bool
 
 

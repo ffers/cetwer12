@@ -36,5 +36,9 @@ class ProductCntrl:
         bool = prod_rep.delete_product(id)
         return bool
 
+    def changeBodyPrice(self):
+        prod_rep.changeBodyPrice()
+        return True
+
 
 

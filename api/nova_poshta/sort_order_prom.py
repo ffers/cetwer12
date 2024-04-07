@@ -3,8 +3,6 @@ from os.path import join, dirname
 from dotenv import load_dotenv
 from .create_data import get_search_contact, time_now, WarehouseRefCl
 from .create_data import NpClient
-from .create_data import RegistrDoc
-from .create_data import ListClient
 
 
 env_path = '../common_asx/.env'

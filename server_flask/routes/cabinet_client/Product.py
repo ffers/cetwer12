@@ -113,4 +113,9 @@ def delete_product(id):
     return render_template(
         'cabinet_client/Products/products.html',
         user=current_user, product=product)
- 
+
+# @bp.route('/cabinet/orders/fd', methods=['POST', 'GET'])
+# def body_price():
+#     prod_cntrl.changeBodyPrice()
+#     return jsonify({"success": True})
+#

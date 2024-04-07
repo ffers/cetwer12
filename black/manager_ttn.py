@@ -6,7 +6,10 @@ from api.nova_poshta.create_data import ListClient
 from api.nova_poshta import CreateNpData
 # from service_asx.delivery import NpCabinetCl
 from repository import OrderRep
+from dotenv import load_dotenv
 
+env_path = '../common_asx/.env'
+load_dotenv(dotenv_path=env_path)
 from server_flask.db import db
 import sys,os
 
@@ -46,7 +49,8 @@ class ManagerTTN:
         try:
             ttn_data = create_ttn_button(order)
             if ttn_data["success"] == False:
-                tg_cl.send_message_f(chat_id_info, f"Замовленя {order_id}, не створенно!\n {ttn_data}")
+                tg_cl.send_message_f(chat_id_info,
+                            f"Замовленя {order_id}, не створенно!\n {ttn_data}")
             else:
                 ttn_data = self.manipulation_tnn(order_id, ttn_data)
                 return ttn_data

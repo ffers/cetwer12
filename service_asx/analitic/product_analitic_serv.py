@@ -7,6 +7,8 @@ class ProductAnanaliticServ:
         print(f"ANALITIC_BOX {body_price} {quantity}")
         if not quantity:
             quantity = 0
+        if not body_price:
+            body_price = 0
         sum_money = body_price * quantity
         print(sum_money)
         return sum_money      

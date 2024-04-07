@@ -7,3 +7,4 @@ from .day_analitic_cntrl import DayAnalitic
 from .order_cntrl import OrderCntrl
 from .manager_ttn import ManagerTTN
 from .delivery_order_cntrl import DeliveryOrderCntrl
+from .np_cntrl import NpCntrl

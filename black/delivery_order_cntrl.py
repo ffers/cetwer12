@@ -37,17 +37,6 @@ class DeliveryOrderCntrl:
         return bool
 
 
-    # def add_list_ref(self, data):
-    #     list_ref = []
-    #     for item in data:
-    #         order = del_ord_rep.load_item(item)
-    #         if data:
-    #             list_ref.append(order.ref_ttn)
-    #             print(list_ref)
-    #         else:
-    #             print(f"Нема ттн для ")
-    #     return list_ref
-
 
 
 

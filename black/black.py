@@ -1,20 +1,16 @@
 import os
 from dotenv import load_dotenv
-from manager import ManageReg
-from service_asx.delivery import NpCabinetCl
 from .manager_ttn import ManagerTTN
 from service_asx.order import ManagerTg, PromToCrm, UpdateToCrm
-from service_asx.delivery import TTN_to_Prom
 from service_asx.order.telegram.crm_to_telegram import CrmToTelegram
-from api.prom import EvoClient
 from repository import OrderRep
 from service_asx.order import OrderServ
 from .product_analitic_cntrl import ProductAnaliticControl
 
+
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
 ch_id_sk = os.getenv("CH_ID_SK")
-token = os.getenv("PROM_TOKEN")
 
 ord_serv = OrderServ()
 ord_rep = OrderRep()
@@ -22,11 +18,7 @@ crmtotg_cl = CrmToTelegram()
 crm_cl = PromToCrm()
 upd_crm = UpdateToCrm()
 mng_cl = ManagerTTN()
-mreg_cl = ManageReg()
 tgmn_cl = ManagerTg()
-cab_cl = NpCabinetCl()
-ttn_to_prom = TTN_to_Prom()
-ev_cl = EvoClient(token)
 prod_an_cntrl = ProductAnaliticControl()
 
 class Await:
@@ -46,9 +38,6 @@ class Await:
         ttn_data = mng_cl.create_ttn(order_id)
         resp_ok = mng_cl.add_ttn_crm(order_id, ttn_data)
         return ttn_data
-
-
-
 
     def await_cabinet_json(self, data):
         if "search_city" in data["name"]:

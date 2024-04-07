@@ -7,6 +7,7 @@ function processOrders(action) {
     for (var i = 0; i < checkboxes.length; i++) {
         if (checkboxes[i].checked) {
             selectedOrders.push(checkboxes[i].value);
+            var selectedOption = this.value;
         }
     }
 
@@ -27,7 +28,7 @@ function processOrders(action) {
            });
     } else if (action === 'del_reg') {
         // Логіка для відхилення замовлень
-        fetch('/cabinet/orders/reg', {
+        fetch('/cabinet/orders/del_reg', {
             method: 'POST',
             credentials: "same-origin",
             redirect: "follow",
@@ -35,6 +36,20 @@ function processOrders(action) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ id: selectedOrders})
+            })
+        .then(data => {
+             window.location.reload();
+            });
+    } else if (action === 'changeStatus1') {
+        // Логіка для відхилення замовлень
+        fetch('/cabinet/orders/changeStatus', {
+            method: 'POST',
+            credentials: "same-origin",
+            redirect: "follow",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: selectedOrders, status: selectedOption})
             })
         .then(data => {
              window.location.reload();

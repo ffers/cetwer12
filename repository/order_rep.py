@@ -5,7 +5,7 @@ from urllib.parse import unquote
 
 class OrderRep:
     def load_item(self, order_id):
-        item = Orders.query.get_or_404(order_id)
+        item = Orders.query.get_or_404(int(order_id))
         return item
 
     def load_item_all(self):
@@ -88,12 +88,12 @@ class OrderRep:
         db.session.commit()
         return order
 
-    def change_status_list(self, order_id, status):
-        for item in order_id:
+    def change_status_list(self, orders, status):
+        for item in orders:
             order = self.load_item(item)
             order.ordered_status_id = status
             db.session.commit()
-            return order
+        return True
 
     def change_address(self, order_id, data):
         order = self.load_for_code(order_id)

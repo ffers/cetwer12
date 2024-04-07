@@ -4,6 +4,7 @@ const selectAllCheckbox = document.getElementById('flexCheckDefault');
 
 const add_reg = document.getElementById('add_reg');
 const del_reg = document.getElementById('del_reg');
+const changeStatus = document.getElementById('changeStatus');
 
 // Додаємо обробник подій для головного чекбоксу
 selectAllCheckbox.addEventListener('change', function() {
@@ -18,19 +19,23 @@ checkboxes.forEach(checkbox => {
     checkbox.addEventListener('change', function() {
         // Перевіряємо, чи всі чекбокси вибрані
         const allChecked = [...checkboxes].every(cb => cb.checked);
-        // Встановлюємо стан головного чекбокса відповідно до стану всіх індивідуальних чекбоксів
         selectAllCheckbox.checked = allChecked;
-        add_reg.style.display = allChecked ? 'block' : 'none';
-        del_reg.style.display = allChecked ? 'block' : 'none';
+        // add_reg.style.display = allChecked ? 'block' : 'none';
+        // del_reg.style.display = allChecked ? 'block' : 'none';
+        // changeStatus.style.display = allChecked ? 'block' : 'none';
+        // перевіряємо чи якісь чекбокси обрані
+        const anyChecked = [...checkboxes].some(cb => cb.checked);
+        add_reg.style.display = anyChecked ? 'block' : 'none';
+        del_reg.style.display = anyChecked ? 'block' : 'none';
+        changeStatus.style.display = anyChecked ? 'block' : 'none';
+
+
     });
 });
   
-checkboxes.forEach(checkbox => {
-    checkbox.addEventListener('change', function() {
-        // Перевіряємо, чи обрано хоча б один чекбокс
-        const anyChecked = [...checkboxes].some(cb => cb.checked);
-        // Показуємо або приховуємо кнопку в залежності від стану чекбоксів
-        add_reg.style.display = anyChecked ? 'block' : 'none';
-        del_reg.style.display = anyChecked ? 'block' : 'none';
-    });
-});
+// checkboxes.forEach(checkbox => {
+//     checkbox.addEventListener('change', function() {
+//         // Перевіряємо, чи обрано хоча б один чекбокс
+        
+//     });
+// });
