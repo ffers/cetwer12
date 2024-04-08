@@ -14,18 +14,24 @@ function processOrders(action) {
     // Виконуємо певні дії з вибраними замовленнями в залежності від дії
     if (action === 'add_reg') {
         // Логіка для схвалення замовлень
-        fetch('/cabinet/order_draft', {
-            method: 'POST',
-            credentials: "same-origin",
-            redirect: "follow",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ id: selectedOrders})
-        })
-        .then(data => {
-            window.location.reload();
-           });
+        // fetch('/cabinet/order_draft', {
+        //     method: 'POST',
+        //     credentials: "same-origin",
+        //     redirect: "follow",
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({ id: selectedOrders})
+        // })
+        // .then(data => {
+            var modal = document.getElementById("exampleModal");
+            var modalMessage = document.getElementById("modalMessage");
+            modalMessage.textContent = data;
+            modal.style.display = "block";
+        //    });
+        // .then(data => {
+        //     window.location.reload();
+        //    });
     } else if (action === 'del_reg') {
         // Логіка для відхилення замовлень
         fetch('/cabinet/orders/del_reg', {

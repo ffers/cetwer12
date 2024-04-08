@@ -40,6 +40,16 @@ class DeliveryOrderCntrl:
             bool = del_ord_rep.reg_delete_in_item(order_id_list)
         return bool
 
+    def add_item(self, order_id, status):
+        resp = del_ord_rep.add_item(order_id, status)
+        return resp
+
+    def update_item(self, first_data, order_id):
+        dict_del_ord = del_ord_serv.create_dict(first_data, order_id)
+        print(dict_del_ord)
+        data_del_ord = del_ord_rep.update_ttn(order_id, dict_del_ord)
+        return True
+
 
 
 

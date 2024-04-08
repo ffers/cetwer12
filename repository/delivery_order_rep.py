@@ -2,22 +2,33 @@ from server_flask.db import db
 from server_flask.models import DeliveryOrder
 
 class DeliveryOrderRep:
-    def add_item(self, data):
+    def add_item(self, order_id, status):
         item = DeliveryOrder(
-            ref_ttn=data["ref_ttn"],
-            number_ttn=data["number_ttn"],
-            ref_registr=data["ref_registr"],
-            number_registr=data["number_registr"],
-            order_id=data["order_id"],
-            status_id=data["status_id"]
+            number_ttn="-",
+            ref_ttn="-",
+            number_registr="-",
+            order_id=order_id,
+            status_id=status
         )
         db.session.add(item)
         db.session.commit()
-        return item
+        db.session.close()
+        return True
 
     def load_item(self, order_id):
         item = DeliveryOrder.query.filter_by(order_id=order_id).first()
         return item
+
+    def update_ttn(self, order_id, data):
+        order = self.load_item(order_id)
+        if not order:
+            self.add_item(order_id, 1)
+            order = self.load_item(order_id)
+        order.ref_ttn = data["ref_ttn"],
+        order.number_ttn = data["number_ttn"]
+        db.session.commit()
+        db.session.close()
+        return True
 
     def update_registr(self, items, data):
         for item in items:
@@ -26,7 +37,8 @@ class DeliveryOrderRep:
             item.ref_registr = data["ref_registr"]
             item.number_registr = data["number_registr"]
             db.session.commit()
-            return True
+        db.session.close()
+        return True
 
     def reg_delete_in_item(self, items):
         for item in items:
@@ -34,7 +46,8 @@ class DeliveryOrderRep:
             v.ref_registr = ''
             v.number_registr = ''
             db.session.commit()
-            return True
+        db.session.close()
+        return True
 
     def load_item_filter_order(self, data):
         order_list = []

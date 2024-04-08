@@ -86,7 +86,7 @@ class OrderRep:
         order = self.load_item(order_id)
         order.ordered_status_id = status
         db.session.commit()
-        return order
+        return True
 
     def change_status_list(self, orders, status):
         for item in orders:

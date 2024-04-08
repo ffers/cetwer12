@@ -1,7 +1,7 @@
 import os, logging, sys
-from repository import OrderRep, DeliveryOrderRep
+from repository import OrderRep
 from service_asx.order.telegram.crm_to_telegram import CrmToTelegram
-from service_asx.order import ManagerTg, PromToCrm, UpdateToCrm, OrderServ
+from service_asx.order import ManagerTg, UpdateToCrm, OrderServ
 from service_asx.delivery import NpServ
 from service_asx import DeliveryOrderServ
 from api import EvoClient
@@ -10,6 +10,8 @@ from api.nova_poshta.create_data import NpClient
 from telegram import TgClient
 from .np_cntrl import NpCntrl
 from .product_analitic_cntrl import ProductAnaliticControl
+from .delivery_order_cntrl import DeliveryOrderCntrl
+from .add_order_to_crm import PromToCrm
 
 sys.path.append('../')
 from common_asx.utilits import Utils
@@ -43,7 +45,7 @@ np_serv = NpServ()
 prod_an_cntrl = ProductAnaliticControl()
 np_cntrl = NpCntrl()
 del_ord_serv = DeliveryOrderServ()
-del_ord_rep = DeliveryOrderRep()
+del_ord_cntrl = DeliveryOrderCntrl()
 util_cntrl = Utils()
 
 
@@ -68,7 +70,10 @@ class OrderCntrl:
     def add_order(self, order):
         data_for_tg = crmtotg_cl.manger(order)
         resp = order_prom_serv.add_order(order, data_for_tg)
-        resp_bool = self.examine_address(order)
+        order = ord_rep.load_for_code(order["id"])
+        print(f"add_order {order.id}")
+        bool_1 = del_ord_cntrl.add_item(order.id, 1)
+        bool_2 = self.examine_address(order)
         return resp
 
     def examine_address(self, order):
@@ -118,14 +123,13 @@ class OrderCntrl:
         return result
 
     def confirmed_order(self, order_id, status):
-        order = ord_rep.change_status(order_id, status)
+        order = ord_rep.load_item(order_id)
+        bool = ord_rep.change_status(order_id, status)
         update_analitic = prod_an_cntrl.product_in_order(order)
         resp = {"success": False}
         if order.delivery_method_id == 1:
             resp = self.work_with_np(order)
-            dict_del_ord = del_ord_serv.create_dict(resp, order)
-            print(dict_del_ord)
-            data_del_ord = del_ord_rep.add_item(dict_del_ord)
+            del_ord_cntrl.update_item(resp, order.id)
         return resp
 
     def work_with_np(self, order):

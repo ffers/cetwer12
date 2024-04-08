@@ -1,11 +1,12 @@
 import os
 from dotenv import load_dotenv
 from .manager_ttn import ManagerTTN
-from service_asx.order import ManagerTg, PromToCrm, UpdateToCrm
+from service_asx.order import ManagerTg, UpdateToCrm
 from service_asx.order.telegram.crm_to_telegram import CrmToTelegram
 from repository import OrderRep
 from service_asx.order import OrderServ
 from .product_analitic_cntrl import ProductAnaliticControl
+from .add_order_to_crm import PromToCrm
 
 
 env_path = '../common_asx/.env'

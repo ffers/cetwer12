@@ -7,6 +7,7 @@ from api.nova_poshta import CreateNpData
 from repository import OrderRep, DeliveryOrderRep
 from service_asx import DeliveryOrderServ
 from dotenv import load_dotenv
+from .delivery_order_cntrl import DeliveryOrderCntrl
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
@@ -27,8 +28,7 @@ crnp_cl = CreateNpData()
 # cab_cl = NpCabinetCl()
 ut_cl = Utils()
 ord_rep = OrderRep()
-del_ord_rep = DeliveryOrderRep()
-del_ord_serv = DeliveryOrderServ()
+del_ord_cntrl = DeliveryOrderCntrl()
 
 chat_id_info = os.getenv("CHAT_ID_INFO")
 RESP = {}
@@ -48,18 +48,18 @@ class ManagerTTN:
 
     def create_ttn(self, order):
         order_id = order["id"]
-        try:
-            ttn_data = create_ttn_button(order)
-            if ttn_data["success"] == False:
-                tg_cl.send_message_f(chat_id_info,
-                            f"Замовленя {order_id}, не створенно!\n {ttn_data}")
-            else:
-                ttn_data = self.manipulation_tnn(order_id, ttn_data)
-                return ttn_data
-        except:
-            exep_text = f"❗️❗️❗️ Замовлення {order_id} не створено НП"
-            print(exep_text)
-            tg_cl.send_message_f(chat_id_info, exep_text)
+        # try:
+        ttn_data = create_ttn_button(order)
+        if ttn_data["success"] == False:
+            tg_cl.send_message_f(chat_id_info,
+                        f"Замовленя {order_id}, не створенно!\n {ttn_data}")
+        else:
+            ttn_data = self.manipulation_tnn(order_id, ttn_data)
+            return ttn_data
+        # except:
+        #     exep_text = f"❗️❗️❗️ Замовлення {order_id} не створено НП"
+        #     print(exep_text)
+        #     tg_cl.send_message_f(chat_id_info, exep_text)
 
     def manipulation_tnn(self, order_id, ttn_data):
         ref = reg_cl.create_ref(ttn_data)
@@ -98,7 +98,7 @@ class ManagerTTN:
             if RESP["message"] != None:
                 error = RESP["message"]
             tg_cl.send_message_f(chat_id_info, f"Помилка валідації по замовленю {order_id}, ttn: {ttn}, помилка {error}")
-            evo_cl.get_set_status(dict_status_prom)
+            # evo_cl.get_set_status(dict_status_prom)
         else:
             status = ut_cl.change_status(dict_status_prom)
             return status
@@ -152,13 +152,14 @@ class ManagerTTN:
             order.ttn_ref = ttn_ref
             order.ordered_status_id = 2
             db.session.commit()
-            self.add_del_ord(ttn_data, order)
+            self.add_del_ord(ttn_data, order.id)
             print("ттн додано до CRM")
             return True
-        except:
+        except Exception as e:
+            print(f"В срм не додано {e}")
             return False
 
-    def add_del_ord(self, first_data, order):
-        dict = del_ord_serv.create_dict(first_data, order)
-        del_ord_rep.add_item(dict)
+    def add_del_ord(self, first_data, order_id):
+        print("add_del_ord")
+        del_ord_cntrl.update_item(first_data, order_id)
         return True

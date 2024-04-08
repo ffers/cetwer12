@@ -1,14 +1,14 @@
 
 
 class DeliveryOrderServ():
-    def create_dict(self, first_data, order):
+    def create_dict(self, first_data, order_id):
         data = first_data["data"][0]
         item = {
             "ref_ttn": data["Ref"],
             "number_ttn": data["IntDocNumber"],
             "ref_registr": None,
             "number_registr": "-",
-            "order_id": order.id,
+            "order_id": order_id,
             "status_id": 1
         }
         return item
