@@ -348,10 +348,11 @@ def order_draft():
         print(f"order_draft {request.json}")
         bool = del_ord_cntrl.add_registr(request.json)
         if bool:
-            flash(f'ТТН додано до реєстр', category='success')
+            print(f"bool {bool}")
+            # flash(f'ТТН додано до реєстр', category='success')
         else:
             flash(f'Невийшло', category='error')
-        return jsonify({"succes": True})
+        return jsonify(bool)
     else:
         tasks_orders = ord_cntrl.load_confirmed_order()
         tasks_users = Users.query.order_by(Users.timestamp).all()

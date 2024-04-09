@@ -17,13 +17,13 @@ class DeliveryOrderCntrl:
             print(f"list_ttn  {list_ttn}")
             resp = np_cl_api.insertDocumentsReg(list_ttn) # запит в нп на ствоерня реєстру
             print(resp)
-            bool = False
+            dict_reg = False
             if resp["success"]:
                 dict_reg = del_ord_serv.create_dict_reg(resp) # створення словаря на додавання в базу
                 print(f"dict_reg {dict_reg}")
                 bool = del_ord_rep.update_registr(order_id_list, dict_reg) #додано реф та номер реєстру в базу
                 ord_rep.change_status_list(order_id_list, 11) #змінюємо статус на "очікує відправленя"
-            return bool
+            return dict_reg
         # except:
         #     return False
 

@@ -4,7 +4,11 @@
 
 	<div class="content">
 		<h1 style="text-align: center; color: #7d7f85;">Додайте Замовлення</h1>
-		<button onclick="infoModalfunc()" class="btn btn-primary">Викликати модальне вікно</button>
+		<!-- <button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button> -->
+
+
+		  
+
 		<form id="myForm" action="{{ url_for('Order.add_order') }}" method="post">
 			<div class="row">
 				<div class="col-sm"><input type="tel" class="form-control  " name="phone" rows="1" cols="50" pattern="[0-9]{12}" style="text-align: center;" placeholder="*Номер телефону 380909009000" required><br></div>
@@ -96,13 +100,6 @@
 			</div>
 		  </div></div> -->
 		  <!-- <script type="module" src="{{url_for('static', filename='javascript/modal-window.js')}}"></script> -->
-		  <script type="module" src="{{url_for('static', filename='javascript/sendDataToServerFile.js')}}"></script>
-	<script type="module" src="{{url_for('static', filename='javascript/calculate.js')}}"></script>
-    <script src="{{url_for('static', filename='javascript/add-select2.js')}}"></script>
-    <script src="{{url_for('static', filename='javascript/hiddenElement.js')}}"></script>
-    <script src="{{url_for('static', filename='javascript/submitFormSelect2.js')}}"></script>
-	
-    <script type="module" src="{{url_for('static', filename='javascript/add-button-product.js')}}"></script>
 
 
 <!-- My Modal Add product -->
@@ -129,13 +126,21 @@
 				</div><br>
 			</div>
 			<div class="modal-footer">
-				<button id="submitBtn" class="btn btn-outline-success my-2 my-sm-0" onclick="sendDataToServer()" type="button">Додати Товар</button>
+				<button id="submitBtn" class="btn btn-outline-success my-2 my-sm-0" onclick="sendDataToServerW()" type="button">Додати Товар</button>
 			</form>
 		</div>
 		</div>
 	</div>	
 	</div>
 </div>
+
+<script src="{{url_for('static', filename='javascript/sendDataToServerFile.js')}}"></script>
+<script type="module" src="{{url_for('static', filename='javascript/calculate.js')}}"></script>
+<script src="{{url_for('static', filename='javascript/add-select2.js')}}"></script>
+<script src="{{url_for('static', filename='javascript/hiddenElement.js')}}"></script>
+<script src="{{url_for('static', filename='javascript/submitFormSelect2.js')}}"></script>
+
+<script type="module" src="{{url_for('static', filename='javascript/add-button-product.js')}}"></script>
 
 
 {% endblock %}		

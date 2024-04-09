@@ -99,10 +99,10 @@
 									<option value="13">Тест</option>
 							  	</select>
 							</li>
-							<li><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+							<!-- <li><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
 								Launch demo modal
 							  </button>
-							</li>
+							</li> -->
 
 							{% endif %}											
 					</ul>
@@ -174,12 +174,31 @@
 <!-- <script src="{{url_for('static', filename='javascript/checkboxAll.js')}}"></script> -->
 <script src="{{url_for('static', filename='javascript/button_registr.js')}}"></script>
 <script src="{{url_for('static', filename='javascript/changeStatus.js')}}"></script>
-<!-- <script src="{{url_for('static', filename='javascript/sendDataToServer.js')}}"></script> -->
 
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.19.4/dist/js/uikit.min.js" integrity="sha256-IdUsTC8QxXGINPUVxcbHAIfmCBpTGq9zqKmnDUNMuK4=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.19.4/dist/css/uikit.min.css" integrity="sha256-fBLKFnO/BTwalJts1kv18aCsPopD4rxou6DSgfjrGd4=" crossorigin="anonymous">
 
 </body>
+<div aria-live="polite" aria-atomic="true" class="position-relative">
 
+<div class="toast-container position-fixed top-0 end-0 start-50 translate-middle-x p-3 align-items-center">
 
+	<div id="liveToast" class="toast align-items-center text-bg-info border-2" role="alert" aria-live="assertive" aria-atomic="true">
+		<div id="toastNotificationMessageLite" class="toast-body">
+			<div id="toastNotificationMessage"><p id="textToCopy"></p></div>
+			<div class="mt-2 pt-2 border-top">
+			  <button id="buttonTextToast" type="button" class="btn btn-info btn-sm " ></button>
+			  <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">Сховати</button>
+			</div>
+		
+		  </div>
+	</div> 
+
+</div>
+</div>
+
+<script src="{{url_for('static', filename='javascript/copyText.js')}}"></script>
+<script src="{{url_for('static', filename='javascript/toast.js')}}"></script>
 <!-- Modal Notification-->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
