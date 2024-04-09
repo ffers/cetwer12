@@ -123,18 +123,18 @@ tr {
 }
 
 #notificationContainer {
-    color: #595c5f;
+    color: #36966a;
     position: absolute;
     width: 20%;
 
     /* transform: translate(-50%, -50%); */
-    background-color: #fff;
-    border: 1px #797474;
+    background-color: #0dcaf0;
+    border: 2px #357241;
     border-radius: 10px;
     padding: 20px;
     box-shadow: 9px 9px 10px rgba(0, 0, 0, 0.1);
-    top: 100px;
-    right: 108px;
+    top: 50px;
+    right: 500px;
     opacity: 0; /* Початкова прозорість 0 */
     transition: opacity 2s ease-in-out; /* Плавна анімація прозорості */
   }

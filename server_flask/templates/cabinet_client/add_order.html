@@ -1,8 +1,10 @@
 {% extends 'cabinet_client/base.html' %}
 
 {% block body %}
+
 	<div class="content">
 		<h1 style="text-align: center; color: #7d7f85;">Додайте Замовлення</h1>
+		<button onclick="infoModalfunc()" class="btn btn-primary">Викликати модальне вікно</button>
 		<form id="myForm" action="{{ url_for('Order.add_order') }}" method="post">
 			<div class="row">
 				<div class="col-sm"><input type="tel" class="form-control  " name="phone" rows="1" cols="50" pattern="[0-9]{12}" style="text-align: center;" placeholder="*Номер телефону 380909009000" required><br></div>
@@ -45,14 +47,17 @@
                 <div class="col-sm"></div>
                 <div class="col-sm"><input type="button" class="text-button"  value="Додати товар" id="addButton"></div>
 				<div class="col-sm"><input type="button" class="text-button"  value="Створити товар" data-bs-toggle="modal" data-bs-target="#myModal" ></div>
+
+				
                 <!-- <div class="col-sm"><a href="get_product/send_with_prom_test">Підвердити</a></div> -->
             </div><br>
 			<div class="row"><div class="col-sm"><textarea style="text-align: center;" class="  form-control" name="description" rows="3" cols="50" placeholder="Нотатки"></textarea><br></div></div>
 			<button class="btn btn-outline-success my-2 my-sm-0" onclick="submitForm()" type="submit">Зберегти Замовлення</button>
+			
 		</form>
 		
 		
-		<div class="modal fade" id="myModal"  style="background-color: transparent;" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<!-- <div class="modal fade" id="myModal"  style="background-color: transparent;" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog custom-modal-dialog"  >
 			<div class="modal-content ">
 				<div class="modal-header">
@@ -81,21 +86,56 @@
 				</div>
 			</div>	
 			</div>
-		</div>
+		</div> -->
 
-
+<!-- 
 		<div class="container-info text-center">
 			<div id="notificationContainer" >
-			<div id="notification">
-			  <!-- Зміст вашого уведомлення -->
-			  <p>Товар додано</p>
+			<div id="notification"> -->
+			  <!-- <p>modalMessage</p>
 			</div>
-		  </div></div>
-
+		  </div></div> -->
+		  <!-- <script type="module" src="{{url_for('static', filename='javascript/modal-window.js')}}"></script> -->
+		  <script type="module" src="{{url_for('static', filename='javascript/sendDataToServerFile.js')}}"></script>
 	<script type="module" src="{{url_for('static', filename='javascript/calculate.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/add-select2.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/hiddenElement.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/submitFormSelect2.js')}}"></script>
+	
     <script type="module" src="{{url_for('static', filename='javascript/add-button-product.js')}}"></script>
-    <script src="{{url_for('static', filename='javascript/modal-window.js')}}"></script>
+
+
+<!-- My Modal Add product -->
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+	<div class="modal-content ">
+		<div class="modal-header">
+		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	</div>
+	<div class="modal-body">
+		<div class="content text-center">
+			<h1 style="text-align: center;">
+				Створеня Товару
+			</h1>
+			<form id="dataForm">
+				<textarea class="form-control  " style="text-align: center;"  id="article" name="article" rows="1" cols="50" placeholder="* Артікул"></textarea><br>
+				<div class="row">									
+					<div class="col-sm "><textarea class="form-control  " style="text-align: center;" id="product_name" name="product_name" rows="1" cols="50" placeholder="* Назва"></textarea><br></div>
+				</div>
+				<div class="row">	
+					<div class="col-sm "><textarea class="form-control  " style="text-align: center;" id="description_prod" name="description" rows="1" cols="50" placeholder="Опис"></textarea><br></div>
+					<div class="col-sm "><input type="number" style="text-align: center;" class="  form-control" id="price_prod" name="price" min="1" placeholder="Ціна" required><br></div>
+					<div class="col-sm "><textarea class="form-control  "  style="text-align: center;"id="quantity_prod" name="quantity" rows="1" cols="50" placeholder="Кількість"></textarea><br></div>
+				</div><br>
+			</div>
+			<div class="modal-footer">
+				<button id="submitBtn" class="btn btn-outline-success my-2 my-sm-0" onclick="sendDataToServer()" type="button">Додати Товар</button>
+			</form>
+		</div>
+		</div>
+	</div>	
+	</div>
+</div>
+
+
 {% endblock %}		

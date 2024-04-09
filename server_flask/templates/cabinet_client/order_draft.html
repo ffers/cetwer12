@@ -1,8 +1,19 @@
 {% extends 'cabinet_client/base.html' %} {% block title %}Home{% endblock %}
-
 {% block body %}
 
 {% block header %}{% endblock %}
+
+
+
+<!-- <script type="module" src="{{url_for('static', filename='javascript/modal-window.js')}}"></script>
+<script src="{{url_for('static', filename='javascript/sendDataToServerFile.js')}}"></script> -->
+<script src="{{url_for('static', filename='javascript/animated-test.js')}}"></script>
+
+
+<!-- <script src="{{url_for('static', filename='javascript/button_registr.js')}}"></script> -->
+<script src="{{url_for('static', filename='javascript/changeStatus.js')}}"></script>
+			
+
 <div id="orders">
   
   <div class="table-responsive-sm" >
@@ -49,7 +60,7 @@
         <a href="/cabinet/orders/update/{{order.id}}"><button type="button" class="btn btn-info">{{ order.id }}</button></a>
             {% endif %}
         {% endfor %}</td>
-        <td><input class="form-check-input item_check" type="checkbox" name="selectedItems" value="{{order.id}}" id="flexCheckDefault"></td>
+        <td><input class="form-check-input item_check" type="checkbox" name="selectedItems" value="{{order.id}}" id="selectedItems"></td>
           <td >{% for product in order.ordered_product %}
             {{product.products.article}}-{{product.quantity}}шт. <br>{% endfor %}</td>
           <td>{{order.sum_price}}</td>
@@ -161,7 +172,9 @@
    <br/>
 </div>
 {% endif %}
+<script src="{{url_for('static', filename='javascript/checkboxAll.js')}}"></script>
+
 
 {% endblock %} {% endblock %}
 
-<script src="{{url_for('static', filename='javascript/checkboxAll.js')}}"></script>
+

@@ -85,6 +85,8 @@ class OrderCntrl:
             delivery_provider_data = order["delivery_provider_data"]
             try:
                 OC_log.info(f"Обробка стандартна, ордер:{order_id}\n Інформація по адресі {delivery_provider_data} ")
+                tg_cl.send_message_f(chat_id_helper,
+                                     f"Обробка стандартна, ордер:{order_id}\n Інформація по адресі {delivery_provider_data} ")
                 self.update_address(order)
             except:
                 tg_cl.send_message_f(chat_id_helper,

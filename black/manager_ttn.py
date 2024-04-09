@@ -4,8 +4,7 @@ from telegram import TgClient
 from api.nova_poshta.create_data import RegistrDoc
 from api.nova_poshta.create_data import ListClient
 from api.nova_poshta import CreateNpData
-from repository import OrderRep, DeliveryOrderRep
-from service_asx import DeliveryOrderServ
+from repository import OrderRep
 from dotenv import load_dotenv
 from .delivery_order_cntrl import DeliveryOrderCntrl
 
@@ -31,6 +30,8 @@ ord_rep = OrderRep()
 del_ord_cntrl = DeliveryOrderCntrl()
 
 chat_id_info = os.getenv("CHAT_ID_INFO")
+
+
 RESP = {}
 
 dict_ttn_prom = {

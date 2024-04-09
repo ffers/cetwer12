@@ -25,9 +25,9 @@ function processOrders(action) {
         // })
         // .then(data => {
             var modal = document.getElementById("exampleModal");
-            var modalMessage = document.getElementById("modalMessage");
-            modalMessage.textContent = data;
-            modal.style.display = "block";
+            var modalMessage = document.getElementById("modalNotificationMessage");
+            modalMessage.textContent = "dsad";
+            $(modal).modal('show');
         //    });
         // .then(data => {
         //     window.location.reload();

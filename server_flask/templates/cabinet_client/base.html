@@ -171,45 +171,16 @@
 
 <script src="{{url_for('static', filename='javascript/animated-test.js')}}"></script>
 <script src="{{url_for('static', filename='javascript/search-select2.js')}}"></script>
-<script src="{{url_for('static', filename='javascript/checkboxAll.js')}}"></script>
+<!-- <script src="{{url_for('static', filename='javascript/checkboxAll.js')}}"></script> -->
 <script src="{{url_for('static', filename='javascript/button_registr.js')}}"></script>
 <script src="{{url_for('static', filename='javascript/changeStatus.js')}}"></script>
+<!-- <script src="{{url_for('static', filename='javascript/sendDataToServer.js')}}"></script> -->
+
 
 </body>
-<!-- My Modal Notification -->
-<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-	<div class="modal-content ">
-		<div class="modal-header">
-		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	</div>
-	<div class="modal-body">
-		<div class="content text-center">
-			<h1 style="text-align: center;">
-				Створеня Товару
-			</h1>
-			<form id="dataForm">
-				<textarea class="form-control  " style="text-align: center;"  id="article" name="article" rows="1" cols="50" placeholder="* Артікул"></textarea><br>
-				<div class="row">									
-					<div class="col-sm "><textarea class="form-control  " style="text-align: center;" id="product_name" name="product_name" rows="1" cols="50" placeholder="* Назва"></textarea><br></div>
-				</div>
-				<div class="row">	
-					<div class="col-sm "><textarea class="form-control  " style="text-align: center;" id="description_prod" name="description" rows="1" cols="50" placeholder="Опис"></textarea><br></div>
-					<div class="col-sm "><input type="number" style="text-align: center;" class="  form-control" id="price_prod" name="price" min="1" placeholder="Ціна" required><br></div>
-					<div class="col-sm "><textarea class="form-control  "  style="text-align: center;"id="quantity_prod" name="quantity" rows="1" cols="50" placeholder="Кількість"></textarea><br></div>
-				</div><br>
-			</div>
-			<div class="modal-footer">
-				<button id="submitBtn" class="btn btn-outline-success my-2 my-sm-0" onclick="sendDataToServer()" type="button">Додати Товар</button>
-			</form>
-		</div>
-		</div>
-	</div>	
-	</div>
-</div>
 
 
-<!-- Modal -->
+<!-- Modal Notification-->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 	  <div class="modal-content">
@@ -218,7 +189,7 @@
 		  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		</div>
 		<div class="modal-body">
-			<p id="modalMessage">Тут</p>
+			<p id="modalNotificationMessage">Тут</p>
 		</div>
 		<div class="modal-footer">
 		  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -227,6 +198,14 @@
 	  </div>
 	</div>
   </div>
-  
+
+<!-- Modal Notification Slowly -->
+  <!-- <div class="container-info text-center">
+	<div id="notificationContainer" >
+	<div id="notification">
+	  <p id="modalMessageNotificationSlowly">Тут</p>
+	</div>
+  </div></div>
+   -->
 
 </html>

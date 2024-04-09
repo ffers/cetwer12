@@ -23,7 +23,7 @@
     }
 	</script>
 	<div class="content"> <div class="row">
-		<div class="col-sm"><h1 > Замовлення №<span id="textToCopy">{{order.order_id_sources}}</span> 
+		<div class="col-sm"><h1 > Замовлення №<span class="textToCopy">{{order.order_id_sources}}</span> 
 			<a onclick="copyText()"><i class="fa-regular fa-copy"></i></a> </h1><!-- Кнопка копіювання --></div>
 		</div>
 		<div class="row"> 
@@ -31,7 +31,7 @@
 			<small class="text-muted">Створено:</small> {{order.timestamp.strftime('%H:%M %d-%m-%Y')}}</p></div>
 		</div>
 
-
+<!-- 
     <script>
         function copyText() {
             var text = document.getElementById("textToCopy").innerText;
@@ -44,7 +44,7 @@
                     alert("Помилка копіювання тексту!");
                 });
         }
-    </script>
+    </script> -->
 	<div class="row">
 			{% if 1 == user.id %} 
 		<div class="col-sm" style="text-align: center;">
@@ -170,5 +170,6 @@
     <script src="{{url_for('static', filename='javascript/submitFormUpdateOrd.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/add-button-product.js')}}"></script>
 	<script src="{{url_for('static', filename='javascript/changeStatus.js')}}"></script>
+	<script src="{{url_for('static', filename='javascript/copyText.js')}}"></script>
 
 {% endblock %}
