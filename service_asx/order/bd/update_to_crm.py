@@ -1,7 +1,7 @@
 import os
 from server_flask.db import db
 from server_flask.models import Orders
-from telegram import TgClient
+from api.telegram import TgClient
 from dotenv import load_dotenv
 
 tg_cl = TgClient()

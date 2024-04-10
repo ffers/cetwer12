@@ -1,6 +1,6 @@
 from api.nova_poshta import create_ttn_button
 from api.prom import EvoClient
-from telegram import TgClient
+from api.telegram import TgClient
 from api.nova_poshta.create_data import RegistrDoc
 from api.nova_poshta.create_data import ListClient
 from api.nova_poshta import CreateNpData

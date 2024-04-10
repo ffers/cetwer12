@@ -7,7 +7,7 @@ from service_asx import DeliveryOrderServ
 from api import EvoClient
 from dotenv import load_dotenv
 from api.nova_poshta.create_data import NpClient
-from telegram import TgClient
+from api.telegram import TgClient
 from .np_cntrl import NpCntrl
 from .product_analitic_cntrl import ProductAnaliticControl
 from .delivery_order_cntrl import DeliveryOrderCntrl
@@ -20,7 +20,6 @@ from common_asx.utilits import Utils
 log_formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 order_cntrl_handler = logging.FileHandler("../common_asx/log/order_cntrl.log")
 order_cntrl_handler.setFormatter(log_formatter)
-
 OC_log = logging.getLogger("order_cntrl")
 OC_log.setLevel(logging.INFO)
 OC_log.addHandler(order_cntrl_handler)

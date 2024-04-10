@@ -1,4 +1,4 @@
-from telegram import TgClient
+from api.telegram import TgClient
 from helperkit import FileKit
 from dotenv import load_dotenv
 import os, json, requests

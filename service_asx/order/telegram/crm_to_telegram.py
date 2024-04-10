@@ -1,6 +1,6 @@
 import logging, os, sys
 from dotenv import load_dotenv
-from telegram import TgClient
+from api.telegram import TgClient
 from scrypt_order.current_changes_order import Changes
 
 env_path = '../common_asx/.env'

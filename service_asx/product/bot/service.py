@@ -1,5 +1,5 @@
 from .repository import ProductCounBot
-from telegram import TgClient
+from api.telegram import TgClient
 
 tg_cl = TgClient()
 pc_cl = ProductCounBot()

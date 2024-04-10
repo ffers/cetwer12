@@ -1,7 +1,7 @@
-from telegram import TgClient
+from api.telegram import TgClient
 from dotenv import load_dotenv
 import os, logging
-from server_flask.models import Orders
+
 # from order_bot import button_hand
 
 env_path = '../common_asx/.env'

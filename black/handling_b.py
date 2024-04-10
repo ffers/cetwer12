@@ -1,6 +1,6 @@
 import os, json, re
 from dotenv import load_dotenv
-from telegram import TgClient
+from api.telegram import TgClient
 from api.prom import EvoClient
 from black.manager_ttn import ManagerTTN
 from service_asx.order import ManagerTg

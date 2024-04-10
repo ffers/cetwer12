@@ -1,9 +1,8 @@
-import os, json, requests, logging, pytz, sys
-from os.path import join, dirname
+import os, json, requests, logging, pytz
 from dotenv import load_dotenv
 from .current_changes_order import Changes
 from scrypt_order.search_paym import process_order
-from telegram import TgClient
+from api.telegram import TgClient
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)

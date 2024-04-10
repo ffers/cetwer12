@@ -1,9 +1,11 @@
 import os
 from dotenv import load_dotenv
-from service_asx.order import search_reply_message, button_hand
+from .handling_b import search_reply_message, button_hand
 from service_asx import BotProductSrv
+from api import TgClient
 
 pr_bt_srv = BotProductSrv()
+tg_api = TgClient()
 
 
 env_path = '../common_asx/.env'
@@ -41,3 +43,7 @@ class TelegramController():
         if "callback_query" in data:
             button_hand(data)
         return '', 200
+
+    def sendPhoto(self):
+        resp = tg_api.sendPhoto(196584706, 'AgACAgIAAxkBAAIMl2YWFuaONHD9_7SWvzDiiK8vmNQSAAK31jEbGsoISBKbThvzHGUpAQADAgADbQADNAQ')
+        print(resp)

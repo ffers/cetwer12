@@ -1,7 +1,7 @@
-from telegram import TgClient
+from api.telegram import TgClient
 from helperkit import FileKit
 from dotenv import load_dotenv
-import os, json, requests
+import os
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)

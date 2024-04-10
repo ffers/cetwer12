@@ -83,3 +83,11 @@ class TgClient():
         keyboard_json = json.dumps(keyboard)
         print(keyboard_json)
         return keyboard_json
+
+    def sendPhoto(self, chat_id, photo):
+        method = "sendPhoto"
+        token = os.getenv("TELEGRAM_BOT_TOKEN")
+        url = f"https://api.telegram.org/bot{token}/{method}"
+        data = {"chat_id": chat_id, "photo": photo}
+        resp_json = requests.post(url, data=data).content
+        return json.loads(resp_json)
