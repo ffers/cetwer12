@@ -66,13 +66,13 @@ class OrderCntrl:
         self.add_order_code(dublicate_item)
         return True
 
-    def add_order(self, order):
-        data_for_tg = crmtotg_cl.manger(order)
-        resp = order_prom_serv.add_order(order, data_for_tg)
-        order = ord_rep.load_for_code(order["id"])
+    def add_order(self, order_js):
+        data_for_tg = crmtotg_cl.manger(order_js)
+        resp = order_prom_serv.add_order(order_js, data_for_tg)
+        order = ord_rep.load_for_code(order_js["id"])
         print(f"add_order {order.id}")
         bool_1 = del_ord_cntrl.add_item(order.id, 1)
-        bool_2 = self.examine_address(order)
+        bool_2 = self.examine_address(order_js)
         return resp
 
     def examine_address(self, order):

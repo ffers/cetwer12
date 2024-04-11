@@ -10,7 +10,7 @@ ord_rep = OrderRep()
 
 class DeliveryOrderCntrl:
     def add_registr(self, data):
-        # try:
+        try:
             order_id_list = del_ord_serv.load_dict_order(data) # чистий ліст order_id з отриманного словаря
             orders = del_ord_rep.load_item_filter_order(order_id_list)  # лист об`єктів ордерів загружені по order_id
             list_ttn = del_ord_serv.create_list_ttn(orders) # створений список ref_ttn
@@ -24,8 +24,8 @@ class DeliveryOrderCntrl:
                 bool = del_ord_rep.update_registr(order_id_list, dict_reg) #додано реф та номер реєстру в базу
                 ord_rep.change_status_list(order_id_list, 11) #змінюємо статус на "очікує відправленя"
             return dict_reg
-        # except:
-        #     return False
+        except:
+            return False
 
     def delete_ttn_in_reg(self, data):
         order_id_list = del_ord_serv.load_dict_order(data) # чистий ліст order_id з отриманного словаря

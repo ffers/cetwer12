@@ -16,8 +16,7 @@ function sendDataToServerW() {
     formData.append('article', article);
     formData.append('modal', 'modal');
 
-    var toastEl = document.querySelector('.toast');
-    var toast = new bootstrap.Toast(toastEl);
+
     // Відправка даних на сервер за допомогою AJAX-запиту
     fetch('/cabinet/products/add_product', {
         method: 'POST',
@@ -27,22 +26,20 @@ function sendDataToServerW() {
     .then(data => {
         console.log('Відповідь від сервера:', data);
         $('#myModal').modal('hide');
-        
+        var toastLite = document.getElementById('toastLite');
+        var textToastLite = document.getElementById("textToastLite");
+        textToastLite.textContent = "Продукт стоврено";
+        var toast = new bootstrap.Toast(toastLite);
         toast.show();
-        infoModalfunc();
+
     })
     .catch(error => {
         console.error('Помилка:', error);
         $('#myModal').modal('hide');
-        var toastMessage = document.getElementById("toastNotificationMessageLite");
-        toastMessage.textContent = "Помилка, можливо товар вже було создано";
-        var closeButton = document.createElement('button');
-        closeButton.classList.add('btn-close', 'btn-close-white', 'me-2', 'm-auto');
-        closeButton.setAttribute('type', 'button');
-        closeButton.setAttribute('data-bs-dismiss', 'toast');
-        closeButton.setAttribute('aria-label', 'Close');
-        toastMessage.appendChild(closeButton);
-        toast.show();
+        var toastLite = document.getElementById('toastLite');
+        var textToastLite = document.getElementById("textToastLite");
+        textToastLite.textContent = "Помилка, можливо товар вже було создано";
+        new bootstrap.Toast(toastLite).show();
 
     });
 }

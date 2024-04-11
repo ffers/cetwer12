@@ -23,66 +23,55 @@
     }
 	</script>
 	<div class="content"> <div class="row">
-		<div class="col-sm"><h1 > Замовлення №<span id="textToCopy">{{order.order_id_sources}}</span> 
-			<a onclick="copyText()"><i class="fa-regular fa-copy"></i></a> </h1><!-- Кнопка копіювання --></div>
+		<div class="col-sm"><h1 > Замовлення №<span class="textToCopy" data-text="{{order.order_id_sources}}">{{order.order_id_sources}} <i class="fa-regular fa-copy"></i></span>  </h1><!-- Кнопка копіювання --></div>
 		</div>
 		<div class="row"> 
 		<div class="col-sm"><p style="text-align: center;">
 			<small class="text-muted">Створено:</small> {{order.timestamp.strftime('%H:%M %d-%m-%Y')}}</p></div>
 		</div>
 
-<!-- 
+
     <script>
-        function copyText() {
-            var text = document.getElementById("textToCopy").innerText;
-            navigator.clipboard.writeText(text)
-                .then(function() {
-                    alert("Номер скопійовано до буферу обміну!");
-                })
-                .catch(function(err) {
-                    console.error('Помилка копіювання тексту: ', err);
-                    alert("Помилка копіювання тексту!");
-                });
-        }
-    </script> -->
+        document.querySelectorAll('.textToCopy').forEach(function(element) {
+    		element.addEventListener('click', function() {
+			var textToCopy = this.getAttribute('data-text');
+			copyText(textToCopy);
+			});
+		});
+    </script> 
 	<div class="row">
 			{% if 1 == user.id %} 
 		<div class="col-sm" style="text-align: center;">
 			<button type="button" onclick="confirmDelete({{order.id}})" 
-				class="btn btn-outline-success my-2 my-sm-0">
+				class="btn btn-outline-info my-2 my-sm-0">
 					Видалити Замовлення
 			</button>
 		</div>
 			{% endif %}
 		<div class="col-sm" style="text-align: center;"><a href="/cabinet/orders/dublicate/{{order.id}}">
-				<button type="button" class="col-sm btn btn-outline-success my-2 my-sm-0">
+				<button type="button" class="col-sm btn btn-outline-info my-2 my-sm-0">
 					Дублювати Замовлення
 				</button></a></div>
-		<div class="col-sm" style="text-align: center;"><a href="#">
-				<button type="button" class="col-sm btn btn-outline-success my-2 my-sm-0">
+		<div class="col-sm" style="text-align: center;"><a href="/cabinet/orders/confirmed/{{order.id}}">
+				<button type="button" class="col-sm btn btn-outline-info my-2 my-sm-0">
 					<!-- Спосіб доставкі -->
 					{{order.delivery_method.name}}
 				</button></a></div> 
+		<div class="col-sm" style="text-align: center;"><a href="#">
+			<button type="button" class="col-sm btn btn-outline-info my-2 my-sm-0">
+				<!-- Спосіб доставкі -->
+				{{order.ordered_status.name}}
+			</button></a></div> 
+	
+
+		
 		<div class="col-sm" style="text-align: center;">
-			<select class="form-select btn my-2 my-sm-0" id="changeStatus"  
-			style="color: #198754; border: var(--bs-border-width) solid #198754;"
-			aria-label="Change status" >
-			<option selected>{{order.ordered_status.name}}</option>
-			<option value="1">Підтвердити</option>
-			<option value="2">Підтвержено</option>
-			<option value="3">Оплачено</option>
-			<option value="4">Несплачено</option>
-			<option value="5">Скасовано</option>
-			<option value="6">Предзамовлення</option>
-			<option value="7">Питання</option>
-			<option value="8">Відправлено</option>
-			<option value="9">Отримано</option>
-			<option value="10">Нове</option>
-			<option value="11">Очікує відправленя</option>
-			<option value="12">Виконано</option>
-			<option value="13">Тест</option>
-		  </select></div> 
-		</div><br>
+			
+			<input class="form-check-input-info item_check" type="checkbox" 
+				name="selectedItems" value="{{order.id}}" id="selectedItems"><footer><small class="text-muted">Зміни:</small></footer>
+		</div>
+	
+	</div><br>
 		<form id="myForm" action="/cabinet/orders/update/{{order.id}}" method="post">
 			<div class="row">
 				<div class="col-sm"><input type="tel" class="form-control   " name="phone" rows="1" cols="50" pattern="[0-9]{12}" style="text-align: center;" placeholder="*Номер телефону 380909009000" value="{{order.phone}}" required><br></div>
@@ -99,8 +88,9 @@
 						value="{% if order.city_name %} {{order.city_name}} {%else%} Адреси нема {%endif%}" readonly><br></div>
 					<div class="col-sm"><input class="form-control   " style="text-align: center;" name="old_warehouse" rows="1" cols="50" placeholder="Відділення" value="{{order.warehouse_text}}" readonly><br></div>
 					<div class="col-sm"><input class="form-control   " style="text-align: center;" name="ttn" rows="1" cols="50" placeholder="TTN" 
-						value="{% if order.ttn %} {{order.ttn}};{{order.delivery_order.number_registr}} {%else%} ТТН нема {%endif%}" readonly><br></div>
-					
+						value="{% if order.ttn %} {{order.ttn}}{%else%} ТТН нема {%endif%}" readonly><br></div>
+					<div class="col-sm"><input class="form-control   " style="text-align: center;" name="ttn" rows="1" cols="50" placeholder="Реєстр" 
+						value="{% if order.delivery_order.number_registr %} {{order.delivery_order.number_registr}} {%else%} Реєстру нема {%endif%}" readonly><br></div>
 				</div>
 		<div class="col-sm"><input type="button" class="text-button"  value="Змінити Адресу доставки" id="ChangeAddress"></div></br>
 		</div>
@@ -159,7 +149,7 @@
                 <div class="col-sm"></div>
             </div><br> -->
 			<textarea style="text-align: center;" class="   form-control" name="description"  rows="3" cols="50" placeholder="Нотатки" >{{order.description}}</textarea><br>
-			<button class="btn btn-outline-success my-2 my-sm-0" onclick="submitForm()" type="submit">Оновити Замовлення</button> </br>	
+			<button class="btn btn-outline-info my-2 my-sm-0" onclick="submitForm()" type="submit">Оновити Замовлення</button> </br>	
 			
 		</form>
 	</div>
@@ -171,5 +161,6 @@
     <script src="{{url_for('static', filename='javascript/add-button-product.js')}}"></script>
 	<script src="{{url_for('static', filename='javascript/changeStatus.js')}}"></script>
 	<script src="{{url_for('static', filename='javascript/copyText.js')}}"></script>
+	<script src="{{url_for('static', filename='javascript/checkbox-item.js')}}"></script>
 
 {% endblock %}

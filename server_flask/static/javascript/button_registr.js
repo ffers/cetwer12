@@ -2,10 +2,12 @@
 function processOrders(action) {
     var checkboxes = document.getElementsByName('selectedItems');
     var selectedOrders = [];
+
     var toastEl = document.querySelector('.toast');
-    var toast = new bootstrap.Toast(toastEl);
     var toastMessage = document.getElementById('textToCopy');
-    var toastMessageLite = document.getElementById("toastNotificationMessageLite");
+
+    var toastLite = document.getElementById('toastLite');
+    var textToastLite = document.getElementById("textToastLite");
 
     // Проходимося по всіх чекбоксах і зберігаємо вибрані замовлення у масив
     for (var i = 0; i < checkboxes.length; i++) {
@@ -30,30 +32,27 @@ function processOrders(action) {
         .then(response => response.json())
         .then(data => {
             console.log(data)
-            toastMessage.textContent = data.number_registr;
+            toastMessage.textContent = data.number_registr; // data.number_registr;
             var button = document.getElementById("buttonTextToast");
-            if (button) {
-                // Додайте атрибут onclick до кнопки
-                button.setAttribute("onclick", "copyText()");
-                button.textContent = "Скопіювати";
-            } else {
-                console.error("Кнопку з заданим ідентифікатором не знайдено.");
-            }
-             
-            toast.show();
-           })
+            button.textContent = "Скопіювати";
+            [toastMessage, button].forEach(function(element) {
+                element.addEventListener("click", function() {
+                    copyText(data.number_registr);
+                });
+            });
+            new bootstrap.Toast(toastEl).show();
+        })
         // .then(data => {
         //     window.location.reload();
         //    });
         .catch(function(err) {
             console.error('Помилка додавання в реєєстр: ', err);
-            toastMessageLite.textContent = "Помилка додавання в реєєстр";
-            toastMessageLite.appendChild(closeButton);
-            var toast = new bootstrap.Toast(toastEl);
+            textToastLite.textContent = "Помилка додавання в реєєстр";
+            var toast = new bootstrap.Toast(toastLite);
             toast.show();
         });
     } else if (action === 'del_reg') {
-        // Логіка для відхилення замовлень
+        // Логіка для видалення з реєстру
         fetch('/cabinet/orders/del_reg', {
             method: 'POST',
             credentials: "same-origin",
@@ -64,7 +63,9 @@ function processOrders(action) {
             body: JSON.stringify({ id: selectedOrders})
             })
         .then(data => {
-             window.location.reload();
+            textToastLite.textContent = "Видаленно з реєстру";
+            var toast = new bootstrap.Toast(toastLite);
+            toast.show();
             });
     } else if (action === 'changeStatus1') {
         // Логіка для відхилення замовлень

@@ -25,7 +25,7 @@ class ProductServ:
         if input_value:
             quantity = int(input_value)
         else:
-            quantity = None
+            quantity = 0
         price_ch = req.form['price']
         print(price_ch)
         price = self.format_float(price_ch)

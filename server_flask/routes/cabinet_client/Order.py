@@ -375,10 +375,10 @@ def reg():
     bool = del_ord_cntrl.delete_ttn_in_reg(request.json)
     # del_ord_cntrl.add_registr(request.form.getlist('selectedItems'))
     if bool:
-        flash(f'Видалено з реєстру', category='success')
+        # flash(f'Видалено з реєстру', category='success')
         return jsonify({"succes": True})
     else:
-        flash(f'Невийшло', category='error')
+        # flash(f'Невийшло', category='error')
         return jsonify({"succes": False})
 
 @bp.route('/cabinet/orders/changeStatus', methods=['POST', 'GET'])
@@ -389,10 +389,10 @@ def changeStatus():
     print(f"order_draft {request.json}")
     bool = ord_cntrl.change_status(request.json)
     if bool:
-        flash(f'Змінено статус', category='success')
+        # flash(f'Змінено статус', category='success')
         return jsonify({"succes": True})
     else:
-        flash(f'Невийшло', category='error')
+        # flash(f'Невийшло', category='error')
         return jsonify({"succes": False})
 
 

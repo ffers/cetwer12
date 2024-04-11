@@ -4,7 +4,7 @@ const selectAllCheckbox = document.getElementById('flexCheckDefault');
 
 const add_reg = document.getElementById('add_reg');
 const del_reg = document.getElementById('del_reg');
-const changeStatus = document.getElementById('changeStatus');
+const changeStatus = document.getElementById('changeStatusSee');
 
 // Додаємо обробник подій для головного чекбоксу
 selectAllCheckbox.addEventListener('change', function() {

@@ -70,18 +70,19 @@
 									<select id="search-select2" class="col-sm" name="search" required>
 										<!-- ПОШУК SELECT -->
 									</select></div></li>
-							<li><button id="add_reg"
-								class="btn btn-outline-success my-2 my-sm-0"   
-								onclick="processOrders('add_reg')" style="display: none;">
+							<li id="add_reg" style="display: none;"><button 
+								class="btn btn-outline-info my-2 my-sm-0"   
+								onclick="processOrders('add_reg')" >
 								Додати в реєстр
 							</button></li>
-							<li><button id="del_reg"
-								class="btn btn-outline-success my-2 my-sm-0"  
-								onclick="processOrders('del_reg')" style="display: none;">
+							<li id="del_reg" style="display: none;"><button 
+								class="btn btn-outline-info my-2 my-sm-0"  
+								onclick="processOrders('del_reg')" >
 								Видалити з реєстру
 							  </button></li>
-							<li><select class="form-select btn my-2 my-sm-0" id="changeStatus"  
-									style="display: none; color: #198754; border: var(--bs-border-width) solid #198754;"
+							<li id="changeStatusSee"  style="display: none;">
+								<select id="changeStatus"  class="form-select btn my-2 my-sm-0"  
+									style=" color: #0dcaf0; border: var(--bs-border-width) solid #0dcaf0;"
 									aria-label="Change status" >
 									<option selected>Зміна статусу</option>
 									<option value="1">Підтвердити</option>
@@ -180,25 +181,31 @@
 
 </body>
 <div aria-live="polite" aria-atomic="true" class="position-relative">
+	<div class="toast-container position-fixed top-0 end-0 start-50 translate-middle-x p-3 align-items-center">
 
-<div class="toast-container position-fixed top-0 end-0 start-50 translate-middle-x p-3 align-items-center">
-
-	<div id="liveToast" class="toast align-items-center text-bg-info border-2" role="alert" aria-live="assertive" aria-atomic="true">
-		<div id="toastNotificationMessageLite" class="toast-body">
-			<div id="toastNotificationMessage"><p id="textToCopy"></p></div>
-			<div class="mt-2 pt-2 border-top">
-			  <button id="buttonTextToast" type="button" class="btn btn-info btn-sm " ></button>
-			  <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">Сховати</button>
+		<div id="liveToast" class="toast align-items-center text-bg-info border-2" role="alert" aria-live="assertive" aria-atomic="true">
+			<div id="toastNotificationMessageLite" class="toast-body">
+				<div id="toastNotificationMessage"><p id="textToCopy">liveTost</p></div>
+				<div class="mt-2 pt-2 border-top">
+				<button id="buttonTextToast" type="button" class="btn btn-info btn-sm " ></button>
+				<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">Сховати</button>
+				</div>
 			</div>
-		
-		  </div>
-	</div> 
+		</div> 
+		<div id="toastLite" class="toast align-items-center text-bg-info border-2" role="alert" aria-live="assertive" aria-atomic="true">
+			<div class="d-flex">
+			<div id="textToastLite"  class="toast-body">
+				...
+			</div>
+			<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+		</div>
 
+	</div>
 </div>
-</div>
-
 <script src="{{url_for('static', filename='javascript/copyText.js')}}"></script>
 <script src="{{url_for('static', filename='javascript/toast.js')}}"></script>
+<script src="{{url_for('static', filename='javascript/toastLite.js')}}"></script>
 <!-- Modal Notification-->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog">

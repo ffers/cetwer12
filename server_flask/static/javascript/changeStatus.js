@@ -23,6 +23,9 @@ document.getElementById("changeStatus").addEventListener("change", function() {
 
 
  function changeStatusFunc(data) {
+    var toastLite = document.getElementById('toastLite');
+    var toast = new bootstrap.Toast(toastLite);
+    var textToastLite = document.getElementById("textToastLite");
     fetch('/cabinet/orders/changeStatus', {
         method: 'POST',
         credentials: "same-origin",
@@ -34,11 +37,14 @@ document.getElementById("changeStatus").addEventListener("change", function() {
     })
     .then(response => response.json())
     .then(data => {
-        console.log('Дані успішно відправлено на сервер:', data);
-        window.location.reload();
+        textToastLite.textContent = "Статус змінено";
+        toast.show();
+        console.error('Все ОК: ', data);
     })
     .catch((error) => {
-        console.error('Сталася помилка:', error);
+        console.error('Сталася помилка: ', error);
+        textToastLite.textContent = "Сталася помилка";
+        toast.show();
     });
 } 
 
