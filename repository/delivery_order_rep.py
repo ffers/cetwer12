@@ -58,6 +58,16 @@ class DeliveryOrderRep:
             order_list.append(order)
         return order_list
 
+    def load_order_for_ref(self, number_ttn):
+        order = DeliveryOrder.query.filter_by(number_ttn=number_ttn).first()
+        return order
+
+    def load_registred(self):
+        item = DeliveryOrder.query.filter(
+            DeliveryOrder.orders.ordered_status_id == 11,
+            DeliveryOrder.orders.delivery_method_id == 1
+                                   ).all()
+        return item
 
 
 

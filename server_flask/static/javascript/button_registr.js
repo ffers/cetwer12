@@ -67,7 +67,7 @@ function processOrders(action) {
             var toast = new bootstrap.Toast(toastLite);
             toast.show();
             });
-    } else if (action === 'changeStatus1') {
+    } else if (action === 'vcvc') {
         // Логіка для відхилення замовлень
         fetch('/cabinet/orders/changeStatus', {
             method: 'POST',

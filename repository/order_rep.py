@@ -26,6 +26,13 @@ class OrderRep:
                                    ).all()
         return item
 
+    def load_registred(self):
+        item = Orders.query.filter(
+            Orders.ordered_status_id == 11,
+            Orders.delivery_method_id == 1
+                                   ).all()
+        return item
+
     # def add_order(self, request):
     #     order = Orders(description=request.form['description'], city_name=request.form['CityName'],
     #                    city_ref=request.form['CityREF'],
@@ -131,6 +138,7 @@ class OrderRep:
         db.session.commit()
         print(">>> Delete in datebase")
         return True
+
 
 
 

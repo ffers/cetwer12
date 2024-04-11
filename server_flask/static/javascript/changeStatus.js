@@ -4,13 +4,18 @@ document.getElementById("changeStatus").addEventListener("change", function() {
     var checkboxes = document.getElementsByName('selectedItems');
     var selectedOrders = [];
     // Проходимося по всіх чекбоксах і зберігаємо вибрані замовлення у масив
-    for (var i = 0; i < checkboxes.length; i++) {
-        if (checkboxes[i].checked) {
-            selectedOrders.push(checkboxes[i].value);
-            var selectedOption = this.value;
+    if (checkboxes && checkboxes.type === "checkbox" && checkboxes.checked) {
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                selectedOrders.push(checkboxes[i].value);
+                var selectedOption = this.value;
+            }
         }
+    } else {
+        var selectedOption = this.value;
+        selectedOrders.push(document.getElementById("selectedItems").value)
     }
-    
+
     var dataToSend = {
       status: selectedOption,
       id: selectedOrders
@@ -36,10 +41,10 @@ document.getElementById("changeStatus").addEventListener("change", function() {
         body: JSON.stringify(data),
     })
     .then(response => response.json())
-    .then(data => {
-        textToastLite.textContent = "Статус змінено";
-        toast.show();
+    .then(data => {        
         console.error('Все ОК: ', data);
+        localStorage.setItem("toastMessage", "Статус змінено");
+        window.location.reload();
     })
     .catch((error) => {
         console.error('Сталася помилка: ', error);

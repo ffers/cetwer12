@@ -269,3 +269,20 @@ class NpClient(object):
         resp = self.try_resp(data)
         return resp
 
+
+
+    def trackingDocument(self, list_ref):
+        data = {
+            "apiKey": self.token,
+            "modelName": "TrackingDocument",
+            "calledMethod": "getStatusDocuments",
+            "methodProperties": {"Documents": list_ref}
+                }
+        resp = self.try_resp(data)
+        return resp
+
+
+
+
+
+

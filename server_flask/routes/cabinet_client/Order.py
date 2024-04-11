@@ -395,6 +395,37 @@ def changeStatus():
         # flash(f'Невийшло', category='error')
         return jsonify({"succes": False})
 
+@bp.route('/cabinet/orders/filter/confirmeded', methods=['POST', 'GET'])
+@login_required
+@author_permission.require(http_exception=403)
+def confirmeded():
+    tasks_orders = ord_cntrl.load_confirmed_order()
+    tasks_users = Users.query.order_by(Users.timestamp).all()
+    page = request.args.get('page', default=1, type=int)
+    per_page = 50
+    total = len(tasks_orders)
+    pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap5')
+    offset = (page - 1) * per_page
+    data_subset = get_data(tasks_orders, offset=offset, per_page=per_page)
+
+    return render_template('cabinet_client/order_draft.html', pagination=pagination,
+                           tasks_users=tasks_users, orders=data_subset, user=current_user)
+
+@bp.route('/cabinet/orders/filter/registered', methods=['POST', 'GET'])
+@login_required
+@author_permission.require(http_exception=403)
+def registered():
+    tasks_orders = ord_cntrl.load_registred()
+    tasks_users = Users.query.order_by(Users.timestamp).all()
+    page = request.args.get('page', default=1, type=int)
+    per_page = 50
+    total = len(tasks_orders)
+    pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap5')
+    offset = (page - 1) * per_page
+    data_subset = get_data(tasks_orders, offset=offset, per_page=per_page)
+
+    return render_template('cabinet_client/order_draft.html', pagination=pagination,
+                           tasks_users=tasks_users, orders=data_subset, user=current_user)
 
 
 

@@ -1,3 +1,7 @@
+import time
+
+import schedule
+
 from .app import app
 from celery import Celery
 import logging, psycopg2, os, threading, uvicorn
@@ -8,6 +12,7 @@ from flask import Flask, render_template, request
 from flask_login import current_user, LoginManager, login_required
 from flask_migrate import Migrate
 from flask_principal import identity_loaded, RoleNeed, Principal, Identity, identity_changed
+
 
 from .db import db
 from server_flask.permission_registred import update_roles
@@ -53,6 +58,8 @@ login_manager.login_view = "auth.login"
 login_manager.init_app(flask_app)
 
 logging.info("НОВИЙ ЕТАП")
+
+
 
 def get_db_connection():
     conn = psycopg2.connect(host='localhost',
@@ -102,6 +109,15 @@ def load_indentity_session():
     if hasattr(current_user, 'id'):
         return Identity(current_user.id)
 
+# @celery.task
+# def schedule_task():
+#     schedule.every(3).seconds.do(st_del_script.load_track)
+#     print("Calary")
+#     while True:
+#         schedule.run_pending()
+#         time.sleep(1)
+#
+# schedule_task()
 
 
 

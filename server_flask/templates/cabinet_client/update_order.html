@@ -59,18 +59,14 @@
 				</button></a></div> 
 		<div class="col-sm" style="text-align: center;"><a href="#">
 			<button type="button" class="col-sm btn btn-outline-info my-2 my-sm-0">
-				<!-- Спосіб доставкі -->
+				<!-- Статус -->
 				{{order.ordered_status.name}}
 			</button></a></div> 
-	
-
-		
-		<div class="col-sm" style="text-align: center;">
-			
+		<!-- <div class="col-sm" style="text-align: center;">
 			<input class="form-check-input-info item_check" type="checkbox" 
 				name="selectedItems" value="{{order.id}}" id="selectedItems"><footer><small class="text-muted">Зміни:</small></footer>
-		</div>
-	
+		</div> -->
+		
 	</div><br>
 		<form id="myForm" action="/cabinet/orders/update/{{order.id}}" method="post">
 			<div class="row">
@@ -153,6 +149,13 @@
 			
 		</form>
 	</div>
+	<input type="hidden" name="selectedItems" id="selectedItems" value="{{order.id}}">
+	<script>
+		document.getElementById('changeStatusSee').style.display = 'block';
+		document.getElementById('add_reg').style.display = 'block';
+		document.getElementById('del_reg').style.display = 'block';
+	
+	</script>
 	<script src="{{url_for('static', filename='javascript/changeProductOld.js')}}"></script>
 	<script src="{{url_for('static', filename='javascript/changeAddressOld.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/add-select2.js')}}"></script>

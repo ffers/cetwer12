@@ -55,6 +55,10 @@ class OrderCntrl:
 
     def load_confirmed_order(self):
         item = ord_rep.load_for_np()
+        return item
+
+    def load_registred(self):
+        item = ord_rep.load_registred()
         print(item)
         return item
 
@@ -164,6 +168,7 @@ class OrderCntrl:
         orders, status = ord_serv.parse_dict_status(data)
         bool = ord_rep.change_status_list(orders, status)
         return bool
+
 
 
 

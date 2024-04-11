@@ -32,5 +32,15 @@ class DeliveryOrderServ():
             list_data.append(item.ref_ttn)
         return list_data
 
+    def create_list_for_orders(self, items):
+        list_data = []
+        for item in items:   # взяти ордери створити ліст
+            doc = { "DocumentNumber": item.delivery_order.number_ttn,"Phone": item.phone }
+            list_data.append(doc)
+
+        return list_data
+
+
+
 
 

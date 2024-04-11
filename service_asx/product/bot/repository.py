@@ -79,7 +79,6 @@ class ProductCounBot():
         return text
 
     def actual_count(self):
-        self
         updated_35 = Colorrep35.query.order_by(Colorrep35.color).all()
         updated_45 = Colorrep45.query.order_by(Colorrep45.color).all()
         count1 = self.count_all(updated_35)
