@@ -1,28 +1,30 @@
 import os
 from dotenv import load_dotenv
 from .manager_ttn import ManagerTTN
-from service_asx.order import ManagerTg, UpdateToCrm
-from service_asx.order.telegram.crm_to_telegram import CrmToTelegram
+from a_service.order import UpdateToCrm
+from a_service.manager_tg import mn_tg_cntrl
+from a_service import BotProductSrv
+from a_service.order import OrderServ
+from black.crm_to_telegram import CrmToTelegram
 from repository import OrderRep
-from service_asx.order import OrderServ
 from .product_analitic_cntrl import ProductAnaliticControl
 from .add_order_to_crm import PromToCrm
-
+from .handling_b import search_reply_message, button_hand
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
 ch_id_sk = os.getenv("CH_ID_SK")
 
+pr_bt_srv = BotProductSrv()
 ord_serv = OrderServ()
 ord_rep = OrderRep()
 crmtotg_cl = CrmToTelegram()
 crm_cl = PromToCrm()
 upd_crm = UpdateToCrm()
 mng_cl = ManagerTTN()
-tgmn_cl = ManagerTg()
 prod_an_cntrl = ProductAnaliticControl()
 
-class Await:
+class TgAnswerCntrl:
     def await_order(self, order, flag=None, id=None):
         print(f"ДИвимось флаг {flag}")
         resp = None
@@ -32,7 +34,7 @@ class Await:
         if flag == "update_to_crm":
             resp = upd_crm.manager(order)
         else:
-            tgmn_cl.see_flag(order, flag)
+            mn_tg_cntrl.see_flag(order, flag)
         return resp
 
     def await_interface(self, order_id):
@@ -48,12 +50,35 @@ class Await:
         print(f"see_flag {flag}")
         resp = None
         if flag == "Надіслати накладну":
-            resp = tgmn_cl.send_order_curier(order)
+            resp = mn_tg_cntrl.send_order_curier(order)
         if flag == "crm_to_telegram":
-            resp = tgmn_cl.send(order)
+            resp = mn_tg_cntrl.send(order)
         return resp
 
+    def await_tg_button(self, data):
+        if "message" in data:
+            search_reply_message(data)
+            self.await_telegram(data)
+        if "callback_query" in data:
+            button_hand(data)
+        return '', 200
 
+    def await_telegram(self, data):
+        if "text" in data["message"]:
+            print("Отримав повідомленя в тексті")
+            if "entities" in data["message"]:
+                command = data["message"]["entities"][0]["type"]
+                if "bot_command" in command:
+                    print("Отримав команду боту")
+        chat_id = data["message"]["chat"]["id"]
+        print(chat_id)
+        print(ch_id_sk)
+        if int(ch_id_sk) == chat_id:
+            print("Отримали повідомлення з Робочого чату")
+            pr_bt_srv.work_with_product(data)
+
+
+tg_answ_cntrl = TgAnswerCntrl()
 
 
 

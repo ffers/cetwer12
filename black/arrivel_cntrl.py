@@ -1,6 +1,6 @@
 from repository import ArrivalRep
 from itertools import zip_longest
-from service_asx.product import ArrivalServ
+from a_service.product import ArrivalServ
 from black.product_cntrl import ProductCntrl
 from black.product_analitic_cntrl import ProductAnaliticControl
 

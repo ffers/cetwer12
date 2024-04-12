@@ -5,7 +5,7 @@ from flask_login import login_required, current_user
 from flask_principal import Permission, RoleNeed
 from flask_paginate import Pagination
 from server_flask.db import db
-from black import Await
+from black import tg_answ_cntrl
 from helperkit.filekit import FileKit
 from itertools import zip_longest
 import logging, requests, json
@@ -33,7 +33,7 @@ def get_data(data, offset=0, per_page=10):
 
 ord_cntrl = OrderCntrl()
 fl_cl = FileKit()
-aw_cl = Await()
+
 del_ord_cntrl = DeliveryOrderCntrl()
 author_permission = Permission(RoleNeed('manager'))
 admin_permission = Permission(RoleNeed('admin'))
@@ -297,7 +297,7 @@ def get_update_order():
     print("Отримали запит від scrypt")
     if verify_token(token):
         if json_data:
-            resp = aw_cl.await_order(json_data, "update_to_crm")
+            resp = tg_answ_cntrl.await_order(json_data, "update_to_crm")
             return jsonify({'results': 'success', 'order_id': resp})
         else:
             return jsonify({'results': "Don`t have body"})

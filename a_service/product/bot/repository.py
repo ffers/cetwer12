@@ -2,9 +2,7 @@ from server_flask.db import db
 from server_flask.models import Colorrep35, Colorrep45
 from flask import current_app
 import re
-from api.telegram import TgClient
 
-tg_cl = TgClient()
 
 class ProductCounBot():
     def parse_text(self, text):

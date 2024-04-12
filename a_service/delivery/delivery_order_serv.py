@@ -19,6 +19,7 @@ class DeliveryOrderServ():
             "ref_registr": data["Ref"],
             "number_registr": data["Number"],
         }
+        print(item)
         return item
 
     def load_dict_order(self, data):
@@ -35,7 +36,8 @@ class DeliveryOrderServ():
     def create_list_for_orders(self, items):
         list_data = []
         for item in items:   # взяти ордери створити ліст
-            doc = { "DocumentNumber": item.delivery_order.number_ttn,"Phone": item.phone }
+            doc = {"DocumentNumber": item.delivery_order.number_ttn,
+                    "Phone": item.phone}
             list_data.append(doc)
 
         return list_data

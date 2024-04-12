@@ -1,17 +1,18 @@
 import os, logging, sys
 from repository import OrderRep
-from service_asx.order.telegram.crm_to_telegram import CrmToTelegram
-from service_asx.order import ManagerTg, UpdateToCrm, OrderServ
-from service_asx.delivery import NpServ
-from service_asx import DeliveryOrderServ
+from black.crm_to_telegram import CrmToTelegram
+from a_service.order import  UpdateToCrm, OrderServ
+from a_service.delivery import NpServ
+from a_service import DeliveryOrderServ
 from api import EvoClient
 from dotenv import load_dotenv
 from api.nova_poshta.create_data import NpClient
-from api.telegram import TgClient
+from .telegram_controller import tg_cntrl
 from .np_cntrl import NpCntrl
 from .product_analitic_cntrl import ProductAnaliticControl
 from .delivery_order_cntrl import DeliveryOrderCntrl
 from .add_order_to_crm import PromToCrm
+from a_service.manager_tg import mn_tg_cntrl
 
 sys.path.append('../')
 from common_asx.utilits import Utils
@@ -31,12 +32,10 @@ token_np = os.getenv("NP_TOKEN")
 chat_id_helper = os.getenv("CHAT_ID_HELPER")
 
 
-tg_cl = TgClient()
 crmtotg_cl = CrmToTelegram()
 ord_rep = OrderRep()
 order_prom_serv = PromToCrm()
 upd_crm = UpdateToCrm()
-tgmn_cl = ManagerTg()
 ev_cl = EvoClient(token_ev)
 np_cl = NpClient(token_np)
 ord_serv = OrderServ()
@@ -88,11 +87,11 @@ class OrderCntrl:
             delivery_provider_data = order["delivery_provider_data"]
             try:
                 OC_log.info(f"Обробка стандартна, ордер:{order_id}\n Інформація по адресі {delivery_provider_data} ")
-                tg_cl.send_message_f(chat_id_helper,
+                tg_cntrl.send_message_f(chat_id_helper,
                                      f"Обробка стандартна, ордер:{order_id}\n Інформація по адресі {delivery_provider_data} ")
                 self.update_address(order)
             except:
-                tg_cl.send_message_f(chat_id_helper,
+                tg_cntrl.send_message_f(chat_id_helper,
                                 f"️❗️❗️❗️ Повторно адреси нема в № {order_id} ")
                 OC_log.info(
                     f"Обробка ордера: {order_id}\n "
@@ -155,9 +154,9 @@ class OrderCntrl:
         print(f"see_flag {flag}")
         resp = None
         if flag == "Надіслати накладну":
-            resp = tgmn_cl.send_order_curier(order)
+            resp = mn_tg_cntrl.send_order_curier(order)
         if flag == "crm_to_telegram":
-            resp = tgmn_cl.send(order)
+            resp = mn_tg_cntrl.send(order)
         return resp
 
     def delete_order(self, id):
@@ -171,7 +170,7 @@ class OrderCntrl:
 
 
 
-
+ord_cntrl = OrderCntrl()
 
 
 

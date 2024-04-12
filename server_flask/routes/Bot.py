@@ -2,9 +2,8 @@ from flask import Blueprint, render_template, request, jsonify
 import os
 from flask_login import current_user
 from dotenv import load_dotenv
-from black import TelegramController
+from black import tg_answ_cntrl
 
-tg_cntrl = TelegramController()
 load_dotenv()
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 bp = Blueprint('Bot', __name__, template_folder='templates')
@@ -15,7 +14,7 @@ def bot():
         data = request.json
         print(request.json)
         try:
-            tg_cntrl.await_tg_button(data)
+            tg_answ_cntrl.await_tg_button(data)
         except:
             print("не вдалося отримати відповідь")
         return {'ok': True}

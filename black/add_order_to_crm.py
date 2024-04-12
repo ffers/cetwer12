@@ -3,9 +3,9 @@ from api.nova_poshta.create_data import NpClient
 from server_flask.db import db
 from server_flask.models import Orders, OrderedProduct, Products, TelegramOrdered, ConfirmedAddressTg
 from flask import current_app
-from api.telegram import TgClient
+from .telegram_controller import tg_cntrl
 from dotenv import load_dotenv
-from scrypt_order.current_changes_order import Changes
+
 
 log_formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 log_handler = logging.FileHandler("../common_asx/log/order_to_crm.log")
@@ -15,8 +15,8 @@ LOG = logging.getLogger("ord_to_crm")
 LOG.setLevel(logging.INFO)
 LOG.addHandler(log_handler)
 
-ch_cl = Changes()
-tg_cl = TgClient()
+
+
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
 chat_id_info = os.getenv("CHAT_ID_INFO")
@@ -104,7 +104,7 @@ class PromToCrm():
                 dict_parse.update(self.add_warehouse_method(dict_parse))
             except:
                 order_id = order["id"]
-                tg_cl.send_message_f(chat_id_helper, f"️❗️❗️❗️ Замовлення додано але адреси нема в № {order_id} ")
+                tg_cntrl.send_message_f(chat_id_helper, f"️❗️❗️❗️ Замовлення додано але адреси нема в № {order_id} ")
         return dict_parse
 
 

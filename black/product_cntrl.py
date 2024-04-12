@@ -1,5 +1,5 @@
 from repository import ProductRep
-from service_asx import ProductServ
+from a_service import ProductServ
 from black import ProductAnaliticControl
 
 prod_serv = ProductServ()

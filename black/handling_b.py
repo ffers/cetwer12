@@ -1,17 +1,18 @@
 import os, json, re
 from dotenv import load_dotenv
-from api.telegram import TgClient
 from api.prom import EvoClient
 from black.manager_ttn import ManagerTTN
-from service_asx.order import ManagerTg
+from a_service import mn_tg_cntrl
+from .telegram_controller import tg_cntrl
+
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
 TOKEN_PROM = os.getenv("PROM_TOKEN")
 prom_cl = EvoClient(TOKEN_PROM)
 # send_message_cl = SendMessage()
-tg_cl = TgClient()
-mg_tg = ManagerTg()
+
+
 mg_ttn = ManagerTTN()
 
 
@@ -51,42 +52,43 @@ def send_to_chat(order_id, status, data_in):
         order = api_example.get_order_id(order_id)
     except:
         order = None
-        tg_cl.send_message_f(chat_id_vp, f"❗️❗️❗️ НЕ ВИЙШЛО отримати замовлення {order_id} від prom спробуйте пізніше")
+        tg_cntrl.sendMessage(chat_id_vp, f"❗️❗️❗️ НЕ ВИЙШЛО отримати замовлення {order_id} від prom спробуйте пізніше")
         pass
     print(order)
     text = data_in["callback_query"]["message"]["text"]
-    mg_tg.send_order_curier(order["order"])
+    text_for_np = mn_tg_cntrl.send_order_curier(order["order"])
+    tg_cntrl.sendMessage(chat_id_np, text_for_np)
     delivery_option = order["order"]["delivery_option"]["id"]
     print(text)
     print(delivery_option)
     if delivery_option == 13013934: # нп
-        tg_cl.answerCallbackQuery(callback_query_id, f"Обробляю НП")
+        tg_cntrl.answerCallbackQuery(callback_query_id, f"Обробляю НП")
         print(delivery_option)
         ttn_data = mg_ttn.create_ttn(order["order"])
         resp_ok = mg_ttn.add_ttn_crm(order_id, ttn_data)
         ttn_number = ttn_data["data"][0]["IntDocNumber"]
         data_get_order = text.replace(";ТТН немає", f";{ttn_number}")
         print(data_get_order)
-        tg_cl.send_message_f(chat_id_np, data_get_order)
+        tg_cntrl.sendMessage(chat_id_np, data_get_order)
     if delivery_option == 14383961 or delivery_option == 15255183: # розетка мист
-        tg_cl.answerCallbackQuery(callback_query_id, f"Відсилаю в Розетку")
-        keyboard_rozet = tg_cl.keyboard_generate("Надіслати накладну", order_id)
-        tg_cl.send_message_f(chat_id_rozet, text, keyboard_rozet)
+        tg_cntrl.answerCallbackQuery(callback_query_id, f"Відсилаю в Розетку")
+        keyboard_rozet = tg_cntrl.keyboard_generate("Надіслати накладну", order_id)
+        tg_cntrl.sendMessage(chat_id_rozet, text, keyboard_rozet)
         print(status)
         try:
             resp_api = api_example.get_set_status(status)
         except:
             resp_api = "Статус не змінено"
-            tg_cl.send_message_f(chat_id_vp, f"Статус не змінено {order_id}")
+            tg_cntrl.sendMessage(chat_id_vp, f"Статус не змінено {order_id}")
         print(resp_api)
     if delivery_option == 13844336: # укрпошта
-        tg_cl.answerCallbackQuery(callback_query_id, f"Відсилаю в Укрпошту")
-        tg_cl.send_message_f(chat_id_ukr, text)
+        tg_cntrl.answerCallbackQuery(callback_query_id, f"Відсилаю в Укрпошту")
+        tg_cntrl.sendMessage(chat_id_ukr, text)
         try:
             resp_api = api_example.get_set_status(status)
         except:
             resp_api = "Статус не змінено"
-            tg_cl.send_message_f(chat_id_vp, f"Статус не змінено {order_id}")
+            tg_cntrl.sendMessage(chat_id_vp, f"Статус не змінено {order_id}")
         print(resp_api)
 
 def send_request_status(invoice_ttn, invoice_order):
@@ -97,16 +99,16 @@ def send_request_status(invoice_ttn, invoice_order):
     if "error" in resp["status"]:
         error = resp["message"]
         print("Помилка")
-        tg_cl.answerCallbackQuery(callback_query_id, f"{error}")
-        tg_cl.send_message_f(chat_id_vp, f"Розетка: {error}")
+        tg_cntrl.answerCallbackQuery(callback_query_id, f"{error}")
+        tg_cntrl.sendMessage(chat_id_vp, f"Розетка: {error}")
     else:
-        tg_cl.answerCallbackQuery(callback_query_id, f"Передано {invoice_order}")
-        tg_cl.send_message_f(chat_id_vp, f"Что то изменилось: {resp}")
+        tg_cntrl.answerCallbackQuery(callback_query_id, f"Передано {invoice_order}")
+        tg_cntrl.sendMessage(chat_id_vp, f"Что то изменилось: {resp}")
 
 def get_edit_message(data, text):
     chat_id = data["message"]["reply_to_message"]["chat"]["id"]
     message_id = data["message"]["reply_to_message"]["message_id"]
-    tg_cl.editMessageText(chat_id, message_id, text)
+    tg_cntrl.editMessageText(chat_id, message_id, text)
     print(chat_id, message_id, text)
 
 def replace_text_ttn(data, ttn_number):
@@ -159,12 +161,12 @@ def button_hand(data_in):
             responce = send_to_chat(order_id, status, data_in)
             print(responce)
         if 2 == data_keyb:
-            tg_cl.answerCallbackQuery(callback_query_id, "Питання")
+            tg_cntrl.answerCallbackQuery(callback_query_id, "Питання")
             resp_api = api_example.get_set_status(status)
             print(resp_api)
     if "Надіслати накладну" in text_data_back:
-        tg_cl.ForceReply(chat_id_vp)
-        tg_cl.answerCallbackQuery(callback_query_id, "Чекаю накладну")
+        tg_cntrl.forceReply(chat_id_vp)
+        tg_cntrl.answerCallbackQuery(callback_query_id, "Чекаю накладну")
         global invoice_order
         invoice_order = data_keyb
     return '', 200

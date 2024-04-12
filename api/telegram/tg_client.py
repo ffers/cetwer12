@@ -9,7 +9,7 @@ class TgClient():
         self.text1 = "Прийнято"
         self.text2 = "Питання"
 
-    def send_message_f(self, chat_id, text, keyboard_json=None):
+    def send_message_f(self, chat_id, text, keyboard_json):
         method = "sendMessage"
         token = os.getenv("TELEGRAM_BOT_TOKEN")
         url = f"https://api.telegram.org/bot{token}/{method}"
@@ -32,7 +32,7 @@ class TgClient():
         resp = requests.post(url, data=data)
         return resp
 
-    def ForceReply(self, chat_id, callback_query_id=None, text=None):
+    def forceReply(self, chat_id, callback_query_id, text):
         print(callback_query_id)
         # cache_time = 3
         method = "sendMessage"
@@ -71,7 +71,7 @@ class TgClient():
 
         return keyboard_json
 
-    def keyboard_generate(self, text1, callback_data1, text2=None, callback_data2=None):
+    def keyboard_generate(self, text1, callback_data1, text2, callback_data2):
         if text2:
             keyboard = {"inline_keyboard":[[
                 {"text": text1, "callback_data": callback_data1},
@@ -91,3 +91,5 @@ class TgClient():
         data = {"chat_id": chat_id, "photo": photo}
         resp_json = requests.post(url, data=data).content
         return json.loads(resp_json)
+
+tg_api = TgClient()

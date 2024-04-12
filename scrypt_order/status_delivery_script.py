@@ -1,6 +1,6 @@
 from api import NpClient
 from repository import OrderRep, DeliveryOrderRep
-from service_asx import DeliveryOrderServ
+from a_service import DeliveryOrderServ
 from server_flask.flask_app import flask_app
 
 np_cl_api = NpClient()

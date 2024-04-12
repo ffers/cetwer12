@@ -1,51 +1,50 @@
 import os
 from dotenv import load_dotenv
-from .handling_b import search_reply_message, button_hand
-from service_asx import BotProductSrv
-from api import TgClient
-
-pr_bt_srv = BotProductSrv()
-tg_api = TgClient()
-
+from api import tg_api
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
-
 chat_id_helper = os.getenv("CHAT_ID_HELPER") # вп: -421982888; розет: -1001822083358; укр: -1001173544690; нп: -1001391714237
-chat_id_np = "-1001391714237"#os.getenv("CH_ID_NP")
-chat_id_ukr = "-1001173544690"#os.getenv("CH_ID_UKR")
-chat_id_rozet = "-1001822083358"#os.getenv("CH_ID_ROZ")
+chat_id_np = os.getenv("CH_ID_NP")
+chat_id_ukr = os.getenv("CH_ID_UKR")
+chat_id_rozet = os.getenv("CH_ID_ROZ")
 chat_id_vp = os.getenv("CHAT_ID_INFO")
 ch_id_sk = os.getenv("CH_ID_SK")
 
-
 class TelegramController():
-    def await_telegram(self, data):
-        if "text" in data["message"]:
-            print("Отримав повідомленя в тексті")
-            if "entities" in data["message"]:
-                command = data["message"]["entities"][0]["type"]
-                if "bot_command" in command:
-                    print("Отримав команду боту")
-
-
-        chat_id = data["message"]["chat"]["id"]
-        print(chat_id)
-        print(ch_id_sk)
-        if int(ch_id_sk) == chat_id:
-            print("Отримали повідомлення з Робочого чату")
-            pr_bt_srv.work_with_product(data)
-
-    def await_tg_button(self, data):
-        if "message" in data:
-            search_reply_message(data)
-            self.await_telegram(data)
-        if "callback_query" in data:
-            button_hand(data)
-        return '', 200
+    def __init__(self):
+        self.chat_id_helper = os.getenv("CHAT_ID_HELPER")
+        self.chat_id_np = os.getenv("CH_ID_NP")
+        self.chat_id_ukr = os.getenv("CH_ID_UKR")
+        self.chat_id_rozet = os.getenv("CH_ID_ROZ")
+        self.chat_id_vp = os.getenv("CHAT_ID_INFO")
+        self.ch_id_sk = os.getenv("CH_ID_SK")
 
     def sendPhoto(self):
-        chat_list = [chat_id_ukr, chat_id_rozet, chat_id_np]
+        chat_list = [self.chat_id_ukr, self.chat_id_rozet, self.chat_id_np]
         for chat in chat_list:
             resp = tg_api.sendPhoto(chat, 'AgACAgIAAxkBAAIMl2YWFuaONHD9_7SWvzDiiK8vmNQSAAK31jEbGsoISBKbThvzHGUpAQADAgADbQADNAQ')
             print(resp)
+
+    def sendMessage(self, chat_id, text, keyboard_json=None):
+        resp = tg_api.send_message_f(chat_id, text, keyboard_json)
+        return resp
+
+    def answerCallbackQuery(self, callback_query_id, text):
+        resp = tg_api.answerCallbackQuery(callback_query_id, text)
+        return resp
+
+    def forceReply(self, chat_id, callback_query_id=None, text=None):
+        resp = tg_api.forceReply(chat_id, callback_query_id, text)
+        return resp
+
+    def editMessageText(self, chat_id, message_id, text):
+        resp = tg_api.editMessageText(chat_id, message_id, text)
+        return resp
+
+    def keyboard_generate(self, text1, callback_data1, text2=None, callback_data2=None):
+        resp = tg_api.keyboard_generate(text1, callback_data1, text2, callback_data2)
+        return resp
+
+tg_cntrl = TelegramController()
+

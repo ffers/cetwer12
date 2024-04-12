@@ -1,13 +1,12 @@
 import logging, os, sys
 from dotenv import load_dotenv
-from api.telegram import TgClient
-from scrypt_order.current_changes_order import Changes
+from .telegram_controller import tg_cntrl
+
 
 env_path = '../common_asx/.env'
 
 load_dotenv(dotenv_path=env_path)
-tg_cl = TgClient()
-ch_cl = Changes()
+
 
 class CrmToTelegram:
     def __init__(self):
@@ -60,11 +59,11 @@ class CrmToTelegram:
                 f"{formatted_text}\n\n=========================================================="
             )
             delivery_option = order["delivery_option"]["id"]
-            keyboard_json = tg_cl.keyboard_func(order_id, delivery_option)
+            keyboard_json = tg_cntrl.keyboard_func(order_id, delivery_option)
             size_j = sys.getsizeof(keyboard_json)
             print(keyboard_json)
             print(size_j)
-            resp_tg = tg_cl.send_message_f(self.chat_id_pid, data_get_order, keyboard_json)
+            resp_tg = tg_cntrl.send_message_f(self.chat_id_pid, data_get_order, keyboard_json)
             print(resp_tg)
             data_for_tg = self.bd_tg(resp_tg)
             print(f"data_for_tg {data_for_tg}")
@@ -81,7 +80,6 @@ class CrmToTelegram:
                 status_pay = "Повернуто!"
             else:
                 status_pay = "Несплачено"
-                ch_cl.search_pay()
         return status_pay
 
     def bd_tg(self, resp_tg):

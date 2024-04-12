@@ -1,4 +1,4 @@
-from service_asx.analitic import ProductAnanaliticServ
+from a_service.analitic import ProductAnanaliticServ
 from repository import ProductAnaliticRep
 
 prod_an_rep = ProductAnaliticRep()

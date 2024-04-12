@@ -1,6 +1,6 @@
 from repository import  ProductAnaliticRep
 from repository import DayAnaliticRep
-from service_asx.analitic import DayAnaliticServ
+from a_service.analitic import DayAnaliticServ
 
 d_serv = DayAnaliticServ()
 d_an = DayAnaliticRep()

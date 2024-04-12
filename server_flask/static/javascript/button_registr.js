@@ -10,12 +10,20 @@ function processOrders(action) {
     var textToastLite = document.getElementById("textToastLite");
 
     // Проходимося по всіх чекбоксах і зберігаємо вибрані замовлення у масив
-    for (var i = 0; i < checkboxes.length; i++) {
-        if (checkboxes[i].checked) {
-            selectedOrders.push(checkboxes[i].value);
-            var selectedOption = this.value;
+    if (checkboxes.length > 1 ) {
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                selectedOrders.push(checkboxes[i].value);
+                var selectedOption = this.value;
+                console.log("Перебираєм");
+            }
         }
+    } else if (document.getElementById("selectedItems")) {
+        console.log("selectedItems")
+        var selectedOption = this.value;
+        selectedOrders.push(document.getElementById("selectedItems").value)
     }
+
 
     // Виконуємо певні дії з вибраними замовленнями в залежності від дії
     if (action === 'add_reg') {
@@ -42,9 +50,6 @@ function processOrders(action) {
             });
             new bootstrap.Toast(toastEl).show();
         })
-        // .then(data => {
-        //     window.location.reload();
-        //    });
         .catch(function(err) {
             console.error('Помилка додавання в реєєстр: ', err);
             textToastLite.textContent = "Помилка додавання в реєєстр";
@@ -66,6 +71,7 @@ function processOrders(action) {
             textToastLite.textContent = "Видаленно з реєстру";
             var toast = new bootstrap.Toast(toastLite);
             toast.show();
+            window.location.reload();
             });
     } else if (action === 'vcvc') {
         // Логіка для відхилення замовлень

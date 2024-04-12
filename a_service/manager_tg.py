@@ -1,15 +1,9 @@
-from api.telegram import TgClient
+
 from dotenv import load_dotenv
 import os, logging
 
-# from order_bot import button_hand
-
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
-
-tg_cl = TgClient()
-
-chat_id_np = os.getenv("CH_ID_NP") #"-1001391714237" -421982888
 
 class ManagerTg():
     def __init__(self):
@@ -52,7 +46,7 @@ class ManagerTg():
 
         data_get_order = (
             f"🍎 {up_text} Cумма {sum_order}\n\n{client_notes}\n\n"
-            f"{delivery_address}\n\n🍎 Замовлення №{order_id}\n\n{phone_num};ТТН немає\n{client_name}\n{delivery_option}\n"
+            f"{delivery_address}\n\n🍎 Замовлення № {order_id}\n\n{phone_num};ТТН немає\n{client_name}\n{delivery_option}\n"
             f"Способ оплати - {payment_option}, {status} \n\n  На будь якій випадок:\n"
             f"{formatted_text}\n\n=========================================================="
         )
@@ -95,7 +89,7 @@ class ManagerTg():
             
             f"{product_text}\n=========================================================="
         )
-        tg_cl.send_message_f(chat_id_np, data_get_order)
+        return data_get_order
 
     def see_flag(self, order, flag=None):
         print(f"see_flag {flag}")
@@ -108,3 +102,5 @@ class ManagerTg():
     # def await_tg_button(self, data):
     #     resp = button_hand(data)
     #     return resp
+
+mn_tg_cntrl = ManagerTg()

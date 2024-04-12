@@ -1,5 +1,5 @@
 from repository import DeliveryOrderRep, OrderRep
-from service_asx import DeliveryOrderServ
+from a_service import DeliveryOrderServ
 from api import NpClient
 
 del_ord_serv = DeliveryOrderServ()
@@ -50,6 +50,8 @@ class DeliveryOrderCntrl:
         data_del_ord = del_ord_rep.update_ttn(order_id, dict_del_ord)
         return True
 
+
+del_ord_cntrl = DeliveryOrderCntrl()
 
 
 

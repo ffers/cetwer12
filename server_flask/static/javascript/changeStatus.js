@@ -4,8 +4,7 @@ document.getElementById("changeStatus").addEventListener("change", function() {
     var checkboxes = document.getElementsByName('selectedItems');
     var selectedOrders = [];
     // Проходимося по всіх чекбоксах і зберігаємо вибрані замовлення у масив
-    if (checkboxes.length > 0 ) {
-        console.log("FEEE")
+    if (checkboxes.length > 1 ) {
         for (var i = 0; i < checkboxes.length; i++) {
             if (checkboxes[i].checked) {
                 selectedOrders.push(checkboxes[i].value);
@@ -14,6 +13,7 @@ document.getElementById("changeStatus").addEventListener("change", function() {
             }
         }
     } else if (document.getElementById("selectedItems")) {
+        console.log("selectedItems")
         var selectedOption = this.value;
         selectedOrders.push(document.getElementById("selectedItems").value)
     }
@@ -33,6 +33,7 @@ document.getElementById("changeStatus").addEventListener("change", function() {
     var toastLite = document.getElementById('toastLite');
     var toast = new bootstrap.Toast(toastLite);
     var textToastLite = document.getElementById("textToastLite");
+    console.log(data)
     fetch('/cabinet/orders/changeStatus', {
         method: 'POST',
         credentials: "same-origin",
