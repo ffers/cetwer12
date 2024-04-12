@@ -106,7 +106,7 @@ class Changes:
     def send_http_json(self, order_id, flag):
         data = {"order_id": order_id, "flag": flag}
         json_data = json.dumps(data)
-        token = os.getenv("SEND_TO_CRM")
+        token = os.getenv("SEND_TO_CRM_TOKEN")
         try:
             headers = {'Content-Type': 'application/json', "Authorization": token}
             resp = requests.post(url_update, data=json_data, headers=headers)
