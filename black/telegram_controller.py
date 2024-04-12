@@ -12,9 +12,9 @@ env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
 
 chat_id_helper = os.getenv("CHAT_ID_HELPER") # вп: -421982888; розет: -1001822083358; укр: -1001173544690; нп: -1001391714237
-chat_id_np = "-1001391714237"
-chat_id_ukr = "-1001173544690"
-chat_id_rozet = "-1001822083358"
+chat_id_np = os.getenv("CH_ID_NP")
+chat_id_ukr = os.getenv("CH_ID_UKR")
+chat_id_rozet = os.getenv("CH_ID_ROZ")
 chat_id_vp = os.getenv("CHAT_ID_INFO")
 ch_id_sk = os.getenv("CH_ID_SK")
 
@@ -45,5 +45,7 @@ class TelegramController():
         return '', 200
 
     def sendPhoto(self):
-        resp = tg_api.sendPhoto(196584706, 'AgACAgIAAxkBAAIMl2YWFuaONHD9_7SWvzDiiK8vmNQSAAK31jEbGsoISBKbThvzHGUpAQADAgADbQADNAQ')
-        print(resp)
+        chat_list = [chat_id_ukr, chat_id_rozet, chat_id_np]
+        for chat in chat_list:
+            resp = tg_api.sendPhoto(chat, 'AgACAgIAAxkBAAIMl2YWFuaONHD9_7SWvzDiiK8vmNQSAAK31jEbGsoISBKbThvzHGUpAQADAgADbQADNAQ')
+            print(resp)

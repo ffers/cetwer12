@@ -4,14 +4,16 @@ document.getElementById("changeStatus").addEventListener("change", function() {
     var checkboxes = document.getElementsByName('selectedItems');
     var selectedOrders = [];
     // Проходимося по всіх чекбоксах і зберігаємо вибрані замовлення у масив
-    if (checkboxes && checkboxes.type === "checkbox" && checkboxes.checked) {
+    if (checkboxes.length > 0 ) {
+        console.log("FEEE")
         for (var i = 0; i < checkboxes.length; i++) {
             if (checkboxes[i].checked) {
                 selectedOrders.push(checkboxes[i].value);
                 var selectedOption = this.value;
+                console.log("Перебираєм");
             }
         }
-    } else {
+    } else if (document.getElementById("selectedItems")) {
         var selectedOption = this.value;
         selectedOrders.push(document.getElementById("selectedItems").value)
     }
@@ -44,7 +46,7 @@ document.getElementById("changeStatus").addEventListener("change", function() {
     .then(data => {        
         console.error('Все ОК: ', data);
         localStorage.setItem("toastMessage", "Статус змінено");
-        window.location.reload();
+        window.location.reload(); 
     })
     .catch((error) => {
         console.error('Сталася помилка: ', error);

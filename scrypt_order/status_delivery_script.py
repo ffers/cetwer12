@@ -26,7 +26,7 @@ class StatDelScript:
         for order in resp["data"]:
             number_ttn = order["Number"]
             print(number_ttn)
-            if order["StatusCode"] == "11":
+            if order["StatusCode"] == "5":
                 order_del = del_ord_rep.load_order_for_ref(number_ttn)
                 ord_rep.change_status_list([order_del.order_id], 8)
 
