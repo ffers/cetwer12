@@ -1,1 +1,1 @@
-from .oc_log import oc_log
+from .oc_log import UtilsAsx

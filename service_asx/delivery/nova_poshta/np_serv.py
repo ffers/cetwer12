@@ -1,6 +1,8 @@
-from utils import oc_log
+from utils import UtilsAsx
 
-OC_log = oc_log("../common_asx/log/np_serv.log", 'np_serv')
+ut_asx = UtilsAsx()
+
+OC_log = ut_asx.oc_log('np_serv')
 
 class NpServ:
     def create_address_dict_np(self, data):

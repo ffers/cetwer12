@@ -3,11 +3,15 @@ from dotenv import load_dotenv
 from .current_changes_order import Changes
 from scrypt_order.search_paym import process_order
 from api.telegram import TgClient
-
+from utils import UtilsAsx
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
 url_send = os.getenv("URL_TO_CRM")
 url_update = os.getenv("URL_TO_UPDATE")
+
+ut_asx = UtilsAsx()
+OC_log = ut_asx.oc_log("send_to_crm")
+
 
 
 ch_cl = Changes()
@@ -52,11 +56,16 @@ def send_order():
         if order_id not in processed_orders:
             try:
                 resp_crm = send_http_json(order, "create_order")
+                OC_log.info(f"send_to_crm_resp: {resp_crm}")
+                if not resp_crm:
+                    tg_cl.send_message_f(chat_id_helper, f"Сервер не відповідає замовленя не додано{order_id}")
+                else:
+                    processed_orders.add(order_id)
+                    save_processed_orders(processed_orders)
             except:
                 resp_crm = None
                 tg_cl.send_message_f(chat_id_helper, f"❗️❗️❗️ НЕ ВИЙШЛО ДОДАТИ замовлення {order_id} В CRM сторона scrypt")
-            processed_orders.add(order_id)
-            save_processed_orders(processed_orders)
+
 
 
 def send_http_json(data, flag):
@@ -74,6 +83,7 @@ def send_http_json(data, flag):
             resp_json = requests.post(url, data=json_data, headers=headers, timeout=5)
             resp = json.loads(resp_json.content)
             print(resp)
+            return resp
         except:
             print("Сервер не отвечаєт")
-        return resp
+            return False
