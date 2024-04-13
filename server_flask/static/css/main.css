@@ -122,6 +122,21 @@ tr {
     /* height: 100vh; */
 }
 
+.button_pult button {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.button-container {
+    display: flex;
+    margin-left: 10px;
+  }
+  
+  .button-container button, select {
+    margin-right: 10px; /* Встановлюємо відступ між кнопками */
+    
+  }
+
 #notificationContainer {
     color: #36966a;
     position: absolute;

@@ -2,8 +2,10 @@ import os, json, requests, logging, pytz
 from dotenv import load_dotenv
 from .current_changes_order import Changes
 from scrypt_order.search_paym import process_order
-from api.telegram import TgClient
+
 from utils import UtilsAsx
+from black import tg_cntrl
+
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
 url_send = os.getenv("URL_TO_CRM")
@@ -15,7 +17,6 @@ OC_log = ut_asx.oc_log("send_to_crm")
 
 
 ch_cl = Changes()
-tg_cl = TgClient()
 logging.basicConfig(filename='../common_asx/log_order.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 file_get_ord = "../common_asx/get_orders.json"
 file_load = "../common_asx/data.json"
@@ -58,13 +59,13 @@ def send_order():
                 resp_crm = send_http_json(order, "create_order")
                 OC_log.info(f"send_to_crm_resp: {resp_crm}")
                 if not resp_crm:
-                    tg_cl.send_message_f(chat_id_helper, f"Сервер не відповідає замовленя не додано{order_id}")
+                    tg_cntrl.sendMessage(chat_id_helper, f"Сервер не відповідає замовленя не додано{order_id}")
                 else:
                     processed_orders.add(order_id)
                     save_processed_orders(processed_orders)
             except:
                 resp_crm = None
-                tg_cl.send_message_f(chat_id_helper, f"❗️❗️❗️ НЕ ВИЙШЛО ДОДАТИ замовлення {order_id} В CRM сторона scrypt")
+                tg_cntrl.sendMessage(chat_id_helper, f"❗️❗️❗️ НЕ ВИЙШЛО ДОДАТИ замовлення {order_id} В CRM сторона scrypt")
 
 
 

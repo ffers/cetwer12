@@ -1,7 +1,7 @@
 import os, logging, sys
 from repository import OrderRep
 from black.crm_to_telegram import CrmToTelegram
-from a_service.order import  UpdateToCrm, OrderServ
+from a_service.order import  OrderServ
 from a_service.delivery import NpServ
 from a_service import DeliveryOrderServ
 from api import EvoClient
@@ -13,6 +13,7 @@ from .product_analitic_cntrl import ProductAnaliticControl
 from .delivery_order_cntrl import DeliveryOrderCntrl
 from .add_order_to_crm import PromToCrm
 from a_service.manager_tg import mn_tg_cntrl
+from a_service.update_to_crm import up_to_srm
 
 sys.path.append('../')
 from common_asx.utilits import Utils
@@ -35,7 +36,6 @@ chat_id_helper = os.getenv("CHAT_ID_HELPER")
 crmtotg_cl = CrmToTelegram()
 ord_rep = OrderRep()
 order_prom_serv = PromToCrm()
-upd_crm = UpdateToCrm()
 ev_cl = EvoClient(token_ev)
 np_cl = NpClient(token_np)
 ord_serv = OrderServ()
@@ -167,6 +167,12 @@ class OrderCntrl:
         orders, status = ord_serv.parse_dict_status(data)
         bool = ord_rep.change_status_list(orders, status)
         return bool
+
+    def load_order_for_code(self, order_code):
+        order = ord_rep.load_for_code(order_code)
+        return order.id
+
+
 
 
 

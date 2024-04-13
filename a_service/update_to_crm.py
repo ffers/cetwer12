@@ -1,14 +1,7 @@
 import os
 from server_flask.db import db
-from server_flask.models import Orders
-from api.telegram import TgClient
-from dotenv import load_dotenv
-
-tg_cl = TgClient()
-env_path = '../common_asx/.env'
-load_dotenv(dotenv_path=env_path)
-chat_id_info = os.getenv("CHAT_ID_INFO")
-
+# from black import tg_cntrl
+from repository import ord_rep
 
 class UpdateToCrm():
     def __init__(self):
@@ -27,14 +20,15 @@ class UpdateToCrm():
     def db_order(self, order_id, flag):
         try:
             print(f"ПОЧАЛОСЬ update {order_id}")
-            order = Orders.query.filter_by(order_id_sources=order_id).first()
+            order = ord_rep.load_for_code(order_id)
             self.change_order(order, flag)
             db.session.commit()
             db.session.close()
             print(f"ЗАКІНЧИВСЯ update {order_id}")
             return order_id
         except:
-            tg_cl.send_message_f(chat_id_info, f"️❗️❗️❗️ НЕ ВИЙШЛО ОНОВИТИ замовлення {order_id} В CRM сторона CRM")
+            pass
+            # tg_cntrl.sendMessage(tg_cntrl.chat_id_info, f"️❗️❗️❗️ НЕ ВИЙШЛО ОНОВИТИ замовлення {order_id} В CRM сторона CRM")
 
     def change_order(self, order, flag):
         print(f"flag {flag}")
@@ -50,5 +44,6 @@ class UpdateToCrm():
             order.ordered_status_id = 5
             order.prompay_status_id = 3
 
+up_to_srm = UpdateToCrm()
 
 

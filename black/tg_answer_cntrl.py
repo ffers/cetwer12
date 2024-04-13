@@ -1,7 +1,6 @@
 import os
 from dotenv import load_dotenv
 from .manager_ttn import ManagerTTN
-from a_service.order import UpdateToCrm
 from a_service.manager_tg import mn_tg_cntrl
 from a_service import BotProductSrv
 from a_service.order import OrderServ
@@ -20,7 +19,6 @@ ord_serv = OrderServ()
 ord_rep = OrderRep()
 crmtotg_cl = CrmToTelegram()
 crm_cl = PromToCrm()
-upd_crm = UpdateToCrm()
 mng_cl = ManagerTTN()
 prod_an_cntrl = ProductAnaliticControl()
 

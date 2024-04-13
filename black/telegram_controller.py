@@ -13,12 +13,13 @@ ch_id_sk = os.getenv("CH_ID_SK")
 
 class TelegramController():
     def __init__(self):
-        self.chat_id_helper = os.getenv("CHAT_ID_HELPER")
+        self.chat_id_info = os.getenv("CHAT_ID_HELPER")
         self.chat_id_np = os.getenv("CH_ID_NP")
         self.chat_id_ukr = os.getenv("CH_ID_UKR")
         self.chat_id_rozet = os.getenv("CH_ID_ROZ")
         self.chat_id_vp = os.getenv("CHAT_ID_INFO")
-        self.ch_id_sk = os.getenv("CH_ID_SK")
+        self.chat_id_sk = os.getenv("CH_ID_SK")
+
 
     def sendPhoto(self):
         chat_list = [self.chat_id_ukr, self.chat_id_rozet, self.chat_id_np]

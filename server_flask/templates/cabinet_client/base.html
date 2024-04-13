@@ -36,7 +36,7 @@
 
 <body>
 	<header>
-		<nav class="navbar navbar-expand-lg bg-body-tertiary " >
+		<nav class="navbar navbar-expand-sm bg-body-tertiary " >
 			<div class="container-fluid">
 				<a class="navbar-brand" style="margin-left: 30px;" href="/">ASX</a>
 					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,6 +48,7 @@
 							Товари</a></li>
 						<li><a class="nav-link" href="/cabinet/orders">
 							Замовлення</a></li>
+							{% if 1 == user.id %} 
 							<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"">
 							Меню
@@ -64,6 +65,7 @@
 									Облік Приходу</a></li>
 							</ul>
 							</li>
+							{% endif %}
 							{% if user.is_authenticated %}
 							<li class="nav-item active">
 								<div class="col-sm" >
@@ -123,17 +125,39 @@
 						</div>
 					</div>
 				</nav>
-				<br>
-				<div class="content">
-					<div class="row" >
-						<div class="col-sm">
-							<div id="add_reg" style="display: none;"><button 
+				<!-- <div class="button-container "> -->
+					<nav class="nav button_pult" style="margin-left: 10px;">
+
+					<div id="q" >
+						<select id="mySelect32" onchange="redirectToSelectedPage()" class="form-select btn my-2 my-sm-0"  
+							style=" color: #0dcaf0; border: var(--bs-border-width) solid #0dcaf0;"
+							aria-label="Change status" >
+							<option selected>Фільтр</option>
+							<option value="/1" >На 	Підвердженя</option>
+							<option value="/cabinet/order_draft">Підтвержені</option>
+							<option value="/cabinet/orders/filter/registered">В реєстрі</option>
+							<option value="/3">Оплачені</option> 
+							<option value="/4">Несплачені</option>
+							<option value="/5">Скасовані</option>
+							<option value="/6">Предзамовленні</option>
+							<option value="/7">Питання</option>
+							<option value="/8">Відправлені</option>
+							<option value="/9">Отримані</option>
+							<option value="/10">Нові</option>
+							<option value="/cabinet/ordermargin-right: 10px;s/filter/registered">Очікує відправленя</option>
+							<option value="/12">Виконано</option>
+							<option value="/13">Тест</option>
+						</select>
+					</div>
+					<!-- <div class="row">
+						<div class="col-sm"> -->
+							<div id="add_reg" style="display: none; margin-left: 10px;"><button 
 								class="btn btn-outline-info my-2 my-sm-0"   
 								onclick="processOrders('add_reg')" >
 								Додати в реєстр
 							</button></div>
-						</div>
-						<div class="col-sm">
+						<!-- </div>
+						<div class="col-sm"> -->
 							<div id="del_reg" style="display: none;">
 								<button 
 									class="btn btn-outline-info my-2 my-sm-0"  
@@ -142,9 +166,9 @@
 								</button>
 							</div>
 							
-						</div>
-						<div class="col-sm">
-							<div id="changeStatusSee"  style="display: none;">
+						<!-- </div> -->
+						<!-- <div class="col-sm"> -->
+							<div id="changeStatusSee"  style="display: none; ">
 								<select id="changeStatus"  class="form-select btn my-2 my-sm-0"  
 									style=" color: #0dcaf0; border: var(--bs-border-width) solid #0dcaf0;"
 									aria-label="Change status" >
@@ -164,34 +188,15 @@
 									<option value="13">Тест</option>
 								</select>
 							</div>
-						</div>
-							<div class="col-sm">
-								<div id="q" >
-									<select id="mySelect32" onchange="redirectToSelectedPage()" class="form-select btn my-2 my-sm-0"  
-										style=" color: #0dcaf0; border: var(--bs-border-width) solid #0dcaf0;"
-										aria-label="Change status" >
-										<option selected>Фільтр</option>
-										<option value="/1" >На 	Підвердженя</option>
-										<option value="/cabinet/order_draft">Підтвержені</option>
-										<option value="/cabinet/orders/filter/registered">В реєстрі</option>
-										<option value="/3">Оплачені</option> 
-										<option value="/4">Несплачені</option>
-										<option value="/5">Скасовані</option>
-										<option value="/6">Предзамовленні</option>
-										<option value="/7">Питання</option>
-										<option value="/8">Відправлені</option>
-										<option value="/9">Отримані</option>
-										<option value="/10">Нові</option>
-										<option value="/cabinet/orders/filter/registered">Очікує відправленя</option>
-										<option value="/12">Виконано</option>
-										<option value="/13">Тест</option>
-									</select>
-								</div>
-							</div>
+
+						</nav>
+						<!-- </div>
+							<div class="col-sm"> -->
+							<!-- </div>
 						</div>
 						</div>
-					</div>
-				</div>
+					</div> -->
+				<!-- </div> -->
 				<script>
 					
 					function redirectToSelectedPage() {

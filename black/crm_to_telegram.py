@@ -12,8 +12,11 @@ class CrmToTelegram:
     def __init__(self):
         self.chat_id_pid = os.getenv("CHAT_ID_CONFIRMATION")
     def manger(self, order):
-        data_for_tg = self.create(order)
-        return data_for_tg
+        try:
+            data_for_tg = self.create(order)
+            return data_for_tg
+        except:
+            tg_cntrl.sendMessage(tg_cntrl.chat_id_info, "Велика помилка")
 
     def create(self, order):
         order_id = order["id"]
@@ -59,11 +62,11 @@ class CrmToTelegram:
                 f"{formatted_text}\n\n=========================================================="
             )
             delivery_option = order["delivery_option"]["id"]
-            keyboard_json = tg_cntrl.keyboard_func(order_id, delivery_option)
+            keyboard_json = tg_cntrl.keyboard_generate(order_id, delivery_option)
             size_j = sys.getsizeof(keyboard_json)
             print(keyboard_json)
             print(size_j)
-            resp_tg = tg_cntrl.send_message_f(self.chat_id_pid, data_get_order, keyboard_json)
+            resp_tg = tg_cntrl.sendMessage(self.chat_id_pid, data_get_order, keyboard_json)
             print(resp_tg)
             data_for_tg = self.bd_tg(resp_tg)
             print(f"data_for_tg {data_for_tg}")
