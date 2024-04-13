@@ -1,12 +1,13 @@
+
 from api.nova_poshta import create_ttn_button
 from api.prom import EvoClient
-from api.telegram import TgClient
 from api.nova_poshta.create_data import RegistrDoc
 from api.nova_poshta.create_data import ListClient
 from api.nova_poshta import CreateNpData
 from repository import OrderRep
 from dotenv import load_dotenv
 from .delivery_order_cntrl import DeliveryOrderCntrl
+from .telegram_controller import tg_cntrl
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
@@ -18,7 +19,7 @@ from common_asx.utilits import Utils
 
 
 ttn_ref_list = "../common_asx/ttn_ref_list.json"
-tg_cl = TgClient()
+
 AUTH_TOKEN = os.getenv("PROM_TOKEN")
 evo_cl = EvoClient(AUTH_TOKEN)
 ls_cl = ListClient()
@@ -52,7 +53,7 @@ class ManagerTTN:
         # try:
         ttn_data = create_ttn_button(order)
         if ttn_data["success"] == False:
-            tg_cl.send_message_f(chat_id_info,
+            tg_cntrl.sendMessage(chat_id_info,
                         f"Замовленя {order_id}, не створенно!\n {ttn_data}")
         else:
             ttn_data = self.manipulation_tnn(order_id, ttn_data)
@@ -60,7 +61,7 @@ class ManagerTTN:
         # except:
         #     exep_text = f"❗️❗️❗️ Замовлення {order_id} не створено НП"
         #     print(exep_text)
-        #     tg_cl.send_message_f(chat_id_info, exep_text)
+        #     tg_cntrl.sendMessage(chat_id_info, exep_text)
 
     def manipulation_tnn(self, order_id, ttn_data):
         ref = reg_cl.create_ref(ttn_data)
@@ -72,9 +73,9 @@ class ManagerTTN:
         delivery_type = "nova_poshta"
         resp_prom = self.update_prom_order(ttn, order_id, delivery_type)
         if resp_prom == "Пром не відповідає":
-            tg_cl.send_message_f(chat_id_info, f"❗️❗️❗️ Створено 🥊{text} АЛЕ {resp_prom}!")
+            tg_cntrl.sendMessage(chat_id_info, f"❗️❗️❗️ Створено 🥊{text} АЛЕ {resp_prom}!")
         else:
-            tg_cl.send_message_f(chat_id_info,
+            tg_cntrl.sendMessage(chat_id_info,
                                  f"🥊 Створено - {text}🥊 ТТН додано!")
         print(ttn)
         return ttn_data
@@ -98,7 +99,7 @@ class ManagerTTN:
                 error = RESP["errors"]
             if RESP["message"] != None:
                 error = RESP["message"]
-            tg_cl.send_message_f(chat_id_info, f"Помилка валідації по замовленю {order_id}, ttn: {ttn}, помилка {error}")
+            tg_cntrl.sendMessage(chat_id_info, f"Помилка валідації по замовленю {order_id}, ttn: {ttn}, помилка {error}")
             # evo_cl.get_set_status(dict_status_prom)
         else:
             status = ut_cl.change_status(dict_status_prom)

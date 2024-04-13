@@ -56,8 +56,8 @@ def send_to_chat(order_id, status, data_in):
         pass
     print(order)
     text = data_in["callback_query"]["message"]["text"]
-    text_for_np = mn_tg_cntrl.send_order_curier(order["order"])
-    tg_cntrl.sendMessage(chat_id_np, text_for_np)
+    # text_for_np = mn_tg_cntrl.send_order_curier(order["order"])
+    # tg_cntrl.sendMessage(chat_id_np, text_for_np)
     delivery_option = order["order"]["delivery_option"]["id"]
     print(text)
     print(delivery_option)
@@ -65,25 +65,27 @@ def send_to_chat(order_id, status, data_in):
         tg_cntrl.answerCallbackQuery(callback_query_id, f"Обробляю НП")
         print(delivery_option)
         ttn_data = mg_ttn.create_ttn(order["order"])
-        resp_ok = mg_ttn.add_ttn_crm(order_id, ttn_data)
+        # resp_ok = mg_ttn.add_ttn_crm(order_id, ttn_data)
         ttn_number = ttn_data["data"][0]["IntDocNumber"]
+        print(f"ttn_number {ttn_number}")
         data_get_order = text.replace(";ТТН немає", f";{ttn_number}")
-        print(data_get_order)
-        tg_cntrl.sendMessage(chat_id_np, data_get_order)
+        print(f"data_get_order {data_get_order}")
+        resp = tg_cntrl.sendMessage(tg_cntrl.chat_id_np, data_get_order)
+        print(resp)
     if delivery_option == 14383961 or delivery_option == 15255183: # розетка мист
         tg_cntrl.answerCallbackQuery(callback_query_id, f"Відсилаю в Розетку")
         keyboard_rozet = tg_cntrl.keyboard_generate("Надіслати накладну", order_id)
-        tg_cntrl.sendMessage(chat_id_rozet, text, keyboard_rozet)
+        tg_cntrl.sendMessage(tg_cntrl.chat_id_rozet, text, keyboard_rozet)
         print(status)
         try:
             resp_api = api_example.get_set_status(status)
         except:
             resp_api = "Статус не змінено"
-            tg_cntrl.sendMessage(chat_id_vp, f"Статус не змінено {order_id}")
+            tg_cntrl.sendMessage(tg_cntrl.chat_id_vp, f"Статус не змінено {order_id}")
         print(resp_api)
     if delivery_option == 13844336: # укрпошта
         tg_cntrl.answerCallbackQuery(callback_query_id, f"Відсилаю в Укрпошту")
-        tg_cntrl.sendMessage(chat_id_ukr, text)
+        tg_cntrl.sendMessage(tg_cntrl.chat_id_ukr, text)
         try:
             resp_api = api_example.get_set_status(status)
         except:

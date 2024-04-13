@@ -164,6 +164,7 @@ class OrderCntrl:
         return resp
 
     def delete_order(self, id):
+        print(f"delete order {id}")
         bool = ord_rep.delete_order(id)
         return bool
 

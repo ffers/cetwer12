@@ -133,11 +133,14 @@ class OrderRep:
 
     def delete_order(self, id):
         task_to_delete = Orders.query.get_or_404(id)
-        print(">>> Start delete in datebase")
-        db.session.delete(task_to_delete)
-        db.session.commit()
-        print(">>> Delete in datebase")
-        return True
+        if task_to_delete:
+            print(">>> Start delete in datebase")
+            db.session.delete(task_to_delete)
+            db.session.commit()
+            print(">>> Delete in datebase")
+            return True
+        print(">>> Dont delete in datebase")
+        return False
 
 
 ord_rep = OrderRep()

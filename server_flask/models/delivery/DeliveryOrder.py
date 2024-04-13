@@ -13,4 +13,4 @@ class DeliveryOrder(db.Model):
         'orders.id', name='fk_delivery_order_order_id'), nullable=False, unique=True)
 
     delivery_status = db.relationship("DeliveryStatus", back_populates="delivery_order")
-    orders = db.relationship("Orders", back_populates="delivery_order")
+    orders = db.relationship("Orders", back_populates="delivery_order", passive_deletes=True)

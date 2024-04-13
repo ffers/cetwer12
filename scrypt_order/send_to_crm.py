@@ -1,7 +1,7 @@
 import os, json, requests, logging, pytz
 from dotenv import load_dotenv
-from .current_changes_order import Changes
 from scrypt_order.search_paym import process_order
+from black import ord_cntrl
 
 from utils import UtilsAsx
 from black import tg_cntrl
@@ -15,8 +15,6 @@ ut_asx = UtilsAsx()
 OC_log = ut_asx.oc_log("send_to_crm")
 
 
-
-ch_cl = Changes()
 logging.basicConfig(filename='../common_asx/log_order.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 file_get_ord = "../common_asx/get_orders.json"
 file_load = "../common_asx/data.json"
@@ -66,6 +64,9 @@ def send_order():
             except:
                 resp_crm = None
                 tg_cntrl.sendMessage(chat_id_helper, f"❗️❗️❗️ НЕ ВИЙШЛО ДОДАТИ замовлення {order_id} В CRM сторона scrypt")
+
+def send_order_dubl():
+    ord_cntrl.load_order_for_code()
 
 
 

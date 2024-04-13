@@ -63,6 +63,7 @@ class PromToCrm():
         OC_log.info(dict_parse)
         new_order = Orders(
             order_id_sources=str(order["id"]),
+            order_code = str(order["id"]),
             description=dict_parse["description"],
             city_name=dict_parse["CityName"],
             city_ref=dict_parse["CityRef"],
@@ -84,9 +85,14 @@ class PromToCrm():
             source_order_id=2,
             author_id=55
             )
-        db.session.add(new_order)
-        db.session.commit()
-        return new_order
+        try:
+            db.session.add(new_order)
+            db.session.commit()
+            return new_order
+        except Exception as e:
+            OC_log.warning(f"Ордер не додано в базу: {e}")
+            pass
+
 
     def add_address_dict_np(self, order, dict_parse):
         if dict_parse["delivery_method_id"] == 1:
