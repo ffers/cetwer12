@@ -1,21 +1,13 @@
-import os, re, logging
+import os, re
 from api.nova_poshta.create_data import NpClient
 from server_flask.db import db
 from server_flask.models import Orders, OrderedProduct, Products, TelegramOrdered, ConfirmedAddressTg
 from flask import current_app
 from .telegram_controller import tg_cntrl
 from dotenv import load_dotenv
+from utils import util_asx
 
-
-log_formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(name)s: %(message)s")
-log_handler = logging.FileHandler("../common_asx/log/order_to_crm.log")
-log_handler.setFormatter(log_formatter)
-
-LOG = logging.getLogger("ord_to_crm")
-LOG.setLevel(logging.INFO)
-LOG.addHandler(log_handler)
-
-
+OC_log = util_asx.oc_log('order_to_crm')
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
@@ -28,18 +20,18 @@ class PromToCrm():
 
     def add_order(self, json_order, data_for_tg):
         try:
-            LOG.info(f"НАЧАЛОСЬ {json_order}")
+            OC_log.info(f"НАЧАЛОСЬ {json_order}")
             order = self.parse_order(json_order)
             order_id = order.id
             product = self.parse_product(json_order, order)
             self.add_ordered_telegram(data_for_tg, order_id)
             db.session.close()
-            LOG.info(f"ЗАКІНЧИЛОСЬ {order}")
+            OC_log.info(f"ЗАКІНЧИЛОСЬ {order}")
             return order_id
         except Exception as e:
             order_id = json_order["id"]
-            LOG.info(f"Спрацював exept {e}")
-            tg_cl.send_message_f(chat_id_helper, f"️❗️❗️❗️ НЕ ВИЙШЛО ДОДАТИ замовлення {order_id} В CRM сторона CRM")
+            OC_log.info(f"Спрацював exept {e}")
+            tg_cntrl.sendMessage(tg_cntrl.chat_id_info, f"️❗️❗️❗️ НЕ ВИЙШЛО ДОДАТИ замовлення {order_id} В CRM сторона CRM")
 
     def parse_order(self, order):
         prompay_status_id = self.add_prompay_status(order)
@@ -68,7 +60,7 @@ class PromToCrm():
         return order
 
     def prepare_for_db(self, order, dict_parse):
-        LOG.info(dict_parse)
+        OC_log.info(dict_parse)
         new_order = Orders(
             order_id_sources=str(order["id"]),
             description=dict_parse["description"],
@@ -104,7 +96,7 @@ class PromToCrm():
                 dict_parse.update(self.add_warehouse_method(dict_parse))
             except:
                 order_id = order["id"]
-                tg_cntrl.send_message_f(chat_id_helper, f"️❗️❗️❗️ Замовлення додано але адреси нема в № {order_id} ")
+                tg_cntrl.sendMessage(tg_cntrl.chat_id_info, f"️❗️❗️❗️ Замовлення додано але адреси нема в № {order_id} ")
         return dict_parse
 
 
@@ -177,7 +169,7 @@ class PromToCrm():
         payment_option = order["payment_option"]["id"]
         if payment_option == 7547964:
             payment_data = order["payment_data"]
-            LOG.info(payment_data)
+            OC_log.info(payment_data)
             if payment_data != None:
                 if "paid" == payment_data["status"]:
                     status_id = 1
@@ -185,14 +177,14 @@ class PromToCrm():
                     status_id = 3
                 else:
                     status_id = 2
-                LOG.info(status_id)
+                OC_log.info(status_id)
                 return status_id
             else:
                 status_id = 2
         return status_id
 
     def add_order_status(self, prompay_status_id):
-        LOG.info(f"Статус промоплати {prompay_status_id}")
+        OC_log.info(f"Статус промоплати {prompay_status_id}")
         status_order = 10
         if prompay_status_id == 1:
             status_order = 3
@@ -261,7 +253,7 @@ class PromToCrm():
             return "Неправильний формат числа"
 
     def add_ordered_telegram(self, data_for_tg, order_id):
-        LOG.info(f"data_for_tg {data_for_tg}")
+        OC_log.info(f"data_for_tg {data_for_tg}")
         tg_ord = TelegramOrdered(
             text=data_for_tg["text"],
             order_id=order_id)
@@ -274,4 +266,7 @@ class PromToCrm():
         )
         db.session.add(conf_addr_tg)
         db.session.commit()
-        LOG.info("НАЧЕ ДОДАНО")
+        OC_log.info("НАЧЕ ДОДАНО")
+
+
+pr_to_crm_cntr = PromToCrm()

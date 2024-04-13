@@ -11,7 +11,7 @@ from .telegram_controller import tg_cntrl
 from .np_cntrl import NpCntrl
 from .product_analitic_cntrl import ProductAnaliticControl
 from .delivery_order_cntrl import DeliveryOrderCntrl
-from .add_order_to_crm import PromToCrm
+from .add_order_to_crm import pr_to_crm_cntr
 from a_service.manager_tg import mn_tg_cntrl
 from a_service.update_to_crm import up_to_srm
 
@@ -35,7 +35,7 @@ chat_id_helper = os.getenv("CHAT_ID_HELPER")
 
 crmtotg_cl = CrmToTelegram()
 ord_rep = OrderRep()
-order_prom_serv = PromToCrm()
+
 ev_cl = EvoClient(token_ev)
 np_cl = NpClient(token_np)
 ord_serv = OrderServ()
@@ -70,14 +70,18 @@ class OrderCntrl:
         return True
 
     def add_order(self, order_js):
-        data_for_tg = crmtotg_cl.manger(order_js)
-        resp = order_prom_serv.add_order(order_js, data_for_tg)
-        order = ord_rep.load_for_code(order_js["id"])
-        print(f"add_order {order.id}")
-        bool_1 = del_ord_cntrl.add_item(order.id, 1)
-        bool_2 = self.examine_address(order_js)
-        return resp
-
+        order_code = order_js["id"]
+        try:
+            data_for_tg = crmtotg_cl.manger(order_js)
+            resp = pr_to_crm_cntr.add_order(order_js, data_for_tg)
+            print(order_js)
+            order = ord_rep.load_for_code(order_js["id"])
+            print(f"add_order {order.id}")
+            bool_1 = del_ord_cntrl.add_item(order.id, 1)
+            bool_2 = self.examine_address(order_js)
+            return resp
+        except:
+            OC_log.info(f"Замовленя не додано в CRM {order_code}")
     def examine_address(self, order):
         resp_bool = np_serv.examine_address_prom(order)
         if not resp_bool:

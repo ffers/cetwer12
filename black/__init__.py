@@ -10,4 +10,5 @@ from .np_cntrl import NpCntrl
 from .order_cntrl import ord_cntrl
 from .tg_answer_cntrl import tg_answ_cntrl
 from .telegram_controller import tg_cntrl
+from .add_order_to_crm import pr_to_crm_cntr
 

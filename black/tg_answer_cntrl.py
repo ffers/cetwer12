@@ -9,6 +9,7 @@ from repository import OrderRep
 from .product_analitic_cntrl import ProductAnaliticControl
 from .add_order_to_crm import PromToCrm
 from .handling_b import search_reply_message, button_hand
+from a_service.update_to_crm import up_to_srm
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
@@ -30,7 +31,7 @@ class TgAnswerCntrl:
             data_for_tg = crmtotg_cl.manger(order)
             resp = crm_cl.add_order(order, data_for_tg)
         if flag == "update_to_crm":
-            resp = upd_crm.manager(order)
+            resp = up_to_srm.manager(order)
         else:
             mn_tg_cntrl.see_flag(order, flag)
         return resp
