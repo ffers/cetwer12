@@ -189,28 +189,28 @@ def send_cab(id):
 @login_required
 @author_permission.require(http_exception=403)
 def get_cities():
-    try:
-        search_query = request.args.get('q', '').lower()
-        count = 0
-        for item in search_query:
-            count += 1
-        if count > 3:
-            # print(count)
-            cities_data = fl_cl.directory_load_json("api/nova_poshta/create_data/warehouses")
-            print(f"warehouse_option {request.args}")
-            print(cities_data)
-            # Фільтрація даних за текстовим запитом
-            filtered_data = next((item for item in cities_data["City"] if search_query in item["City"].lower()), None)
-            if filtered_data:  # print(f"данні отриманні {filtered_data}")
-                return jsonify({'results': filtered_data})
-            else:
-                return jsonify({'results': []})
-
+    # try:
+        search_query = request.args.get('q', ' ').lower()
+        # print(count)
+        city_data = fl_cl.directory_load_json("api/nova_poshta/create_data/warehouses")
+        # print(f"warehouse_option {request.args}")
+        # print(city_data)
+        # Фільтрація даних за текстовим запитом
+        filtered_data = None
+        for item in city_data["CityList"]:
+            if search_query.lower() in item["City"].lower():
+                word = item
+                # print(word)
+                filtered_data = [word]
+        if filtered_data:  # print(f"данні отриманні {filtered_data}")
+            return jsonify({'results': filtered_data})
         else:
             return jsonify({'results': []})
-    except Exception as e:
-        OC_log.info("Помилка пошуку міста %s", e)
-        return jsonify({'results': []})
+
+
+    # except Exception as e:
+    #     OC_log.info("Помилка пошуку міста %s", e)
+    #     return jsonify({'results': []})
 
 
 

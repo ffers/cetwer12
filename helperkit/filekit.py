@@ -24,17 +24,20 @@ class FileKit:
 
 
     def directory_load_json(self, path, flag=0):
-        dataSave = {"City": []}
+        dataSave = {"CityList": []}
         try:
             files = os.listdir(path)  # откриваєм папку словарей городов
             files.sort()
+            count = 0
             for filename in files:  # перебираем файли
                 # print(filename)
                 filepath = self.search_data_in_files(path, filename)  # первий файл
                 if filepath:  # если найден
                     json_data = self.load_file_json(filepath)
                     if "City" in json_data:
-                        dataSave["City"].extend(json_data["City"])
+                        dataSave["CityList"].extend(json_data["City"])
+
+
             return dataSave
         except FileNotFoundError:
             print("File not found")
