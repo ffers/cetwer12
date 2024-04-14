@@ -13,8 +13,9 @@ from urllib.parse import unquote
 from pytz import timezone, utc
 from datetime import datetime
 from black import OrderCntrl, DeliveryOrderCntrl
+from utils import util_asx
 
-
+OC_log = util_asx.oc_log("order")
 
 def format_float(num_str):
     try:
@@ -187,15 +188,21 @@ def send_cab(id):
 @login_required
 @author_permission.require(http_exception=403)
 def get_cities():
-    search_query = request.args.get('q', '').lower()
-    cities_data = fl_cl.directory_load_json("api/nova_poshta/create_data/warehouses")
-    print(f"warehouse_option {request.args}")
-    # Фільтрація даних за текстовим запитом
-    filtered_data = [item for item in cities_data["City"] if search_query in item["City"].lower()]
+    try:
+        search_query = request.args.get('q', '').lower()
+        cities_data = fl_cl.directory_load_json("api/nova_poshta/create_data/warehouses")
+        print(f"warehouse_option {request.args}")
+        # Фільтрація даних за текстовим запитом
+        filtered_data = [item for item in cities_data["City"] if search_query in item["City"].lower()]
+        if filtered_data:  # print(f"данні отриманні {filtered_data}")
+            return jsonify({'results': filtered_data})
+        else:
+            return jsonify({'results': []})
+    except Exception as e:
+        OC_log.info("Помилка пошуку міста %s", e)
+        return False
 
-    # print(f"данні отриманні {filtered_data}")
 
-    return jsonify({'results': filtered_data})
 
 @bp.route('/cabinet/orders/get_warehouse', methods=['POST', 'GET'])
 @login_required
