@@ -135,9 +135,9 @@ class OrderCntrl:
         bool = ord_rep.change_status(order_id, status)
         update_analitic = prod_an_cntrl.product_in_order(order)
         resp = {"success": False}
-        # if order.delivery_method_id == 1:
-        #     resp = self.work_with_np(order)
-        #     del_ord_cntrl.update_item(resp, order.id)
+        if order.delivery_method_id == 1:
+            resp = self.work_with_np(order)
+            del_ord_cntrl.update_item(resp, order.id)
         return resp
 
     def work_with_np(self, order):
