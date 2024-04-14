@@ -198,12 +198,14 @@ def get_cities():
             # print(count)
             cities_data = fl_cl.directory_load_json("api/nova_poshta/create_data/warehouses")
             print(f"warehouse_option {request.args}")
+            print(cities_data)
             # Фільтрація даних за текстовим запитом
-            filtered_data = [item for item in cities_data["City"] if search_query in item["City"].lower()]
+            filtered_data = next((item for item in cities_data["City"] if search_query in item["City"].lower()), None)
             if filtered_data:  # print(f"данні отриманні {filtered_data}")
                 return jsonify({'results': filtered_data})
             else:
-                 return jsonify({'results': []})
+                return jsonify({'results': []})
+
         else:
             return jsonify({'results': []})
     except Exception as e:
