@@ -190,10 +190,10 @@ def send_cab(id):
 @author_permission.require(http_exception=403)
 def get_cities():
     # try:
-        search_query = request.args.get('q', ' ').lower()
+        search_query = request.args.get('q')
         # print(count)
         city_data = fl_cl.directory_load_json("api/nova_poshta/create_data/warehouses")
-        # print(f"warehouse_option {request.args}")
+        print(f"warehouse_option {search_query}")
         # print(city_data)
         # Фільтрація даних за текстовим запитом
         filtered_data = None

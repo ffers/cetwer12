@@ -1,7 +1,7 @@
 from .repository import ProductCounBot
-from api.telegram import TgClient
+from black.telegram_controller import tg_cntrl
 
-tg_cl = TgClient()
+
 pc_cl = ProductCounBot()
 
 class BotProductSrv():
@@ -10,4 +10,4 @@ class BotProductSrv():
         chat_id = data["message"]["chat"]["id"]
         print(text)
         update_color = pc_cl.manager_bot(text)
-        tg_cl.send_message_f(chat_id, update_color)
+        tg_cntrl.sendMessage(chat_id, update_color)
