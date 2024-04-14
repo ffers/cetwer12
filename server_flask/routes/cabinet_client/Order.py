@@ -226,7 +226,7 @@ def get_warehouse():
     cities_data = fl_cl.directory_load_json("api/nova_poshta/create_data/warehouses")
 
     # Фільтрація даних за текстовим запитом
-    city_data = next((item for item in cities_data["City"] if city_ref in item["CityRef"].lower()), None)
+    city_data = next((item for item in cities_data["CityList"] if city_ref in item["CityRef"].lower()), None)
     # print(f"дивимось {city_data}")
     if city_data:
         # Здійснити пошук відділень в даному місті
@@ -248,7 +248,7 @@ def get_post():
     cities_data = fl_cl.directory_load_json("api/nova_poshta/create_data/warehouses")
 
     # Фільтрація даних за текстовим запитом
-    city_data = next((item for item in cities_data["City"] if city_ref in item["CityRef"].lower()), None)
+    city_data = next((item for item in cities_data["CityList"] if city_ref in item["CityRef"].lower()), None)
 
     # print(f"дивимось {city_data}")
     if city_data:
