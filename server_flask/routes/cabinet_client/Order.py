@@ -14,6 +14,7 @@ from pytz import timezone, utc
 from datetime import datetime
 from black import OrderCntrl, DeliveryOrderCntrl
 from utils import util_asx
+from collections import Counter
 
 OC_log = util_asx.oc_log("order")
 
@@ -190,12 +191,17 @@ def send_cab(id):
 def get_cities():
     try:
         search_query = request.args.get('q', '').lower()
-        cities_data = fl_cl.directory_load_json("api/nova_poshta/create_data/warehouses")
-        print(f"warehouse_option {request.args}")
-        # Фільтрація даних за текстовим запитом
-        filtered_data = [item for item in cities_data["City"] if search_query in item["City"].lower()]
-        if filtered_data:  # print(f"данні отриманні {filtered_data}")
-            return jsonify({'results': filtered_data})
+        count = 0
+        for item in search_query:
+            count += 1
+        if count > 3:
+            # print(count)
+            cities_data = fl_cl.directory_load_json("api/nova_poshta/create_data/warehouses")
+            print(f"warehouse_option {request.args}")
+            # Фільтрація даних за текстовим запитом
+            filtered_data = [item for item in cities_data["City"] if search_query in item["City"].lower()]
+            if filtered_data:  # print(f"данні отриманні {filtered_data}")
+                return jsonify({'results': filtered_data})
         else:
             return jsonify({'results': []})
     except Exception as e:
