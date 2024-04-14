@@ -4,7 +4,7 @@ import psycopg2, os
 from dotenv import load_dotenv
 from markupsafe import escape
 from fastapi.middleware.wsgi import WSGIMiddleware
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from flask_login import current_user, LoginManager
 from flask_migrate import Migrate
 from flask_principal import identity_loaded, RoleNeed, Principal, Identity
@@ -96,6 +96,12 @@ def on_identity_loaded(sender, identity):
         # Save the user somewhere so we only look it up once
         identity.user = user
         update_roles()
+
+@flask_app.errorhandler(ValueError)
+def handle_value_error(error):
+    response = jsonify({'message': str(error)})
+    response.status_code = 400  # Встановлення коду статусу відповіді
+    return response
 
 @principal.identity_loader
 def load_indentity_session():

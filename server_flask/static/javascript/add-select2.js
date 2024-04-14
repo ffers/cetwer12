@@ -23,7 +23,7 @@ ajax: {
 placeholder: 'Місто',
 minimumInputLength: 1,
 templateResult: function (result) {
-    return result.text || result.City; // Виведення тексту міста
+    return result.text || result.text; // Виведення тексту міста
 }
 }).on('change', function (e) {
 // Отримати обране місто

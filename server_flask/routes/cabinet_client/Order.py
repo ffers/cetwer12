@@ -202,11 +202,13 @@ def get_cities():
             filtered_data = [item for item in cities_data["City"] if search_query in item["City"].lower()]
             if filtered_data:  # print(f"данні отриманні {filtered_data}")
                 return jsonify({'results': filtered_data})
+            else:
+                 return jsonify({'results': []})
         else:
             return jsonify({'results': []})
     except Exception as e:
         OC_log.info("Помилка пошуку міста %s", e)
-        return False
+        return jsonify({'results': []})
 
 
 
