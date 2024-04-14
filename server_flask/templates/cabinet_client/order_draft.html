@@ -57,7 +57,7 @@
           
           <td>{% for user_t in tasks_users %}
             {% if user_t.id == order.author_id %}
-        <a href="/cabinet/orders/update/{{order.id}}"><button type="button" class="btn btn-info">{{ order.id }}</button></a>
+        <a href="/cabinet/orders/update/{{order.id}}"><button type="button" class="btn btn-info"><i class="fa-solid fa-pen"></i></button></a>
             {% endif %}
         {% endfor %}</td>
         <td><input class="form-check-input item_check" type="checkbox" name="selectedItems" value="{{order.id}}" id="selectedItems"></td>

@@ -196,12 +196,13 @@ def get_cities():
         print(f"warehouse_option {search_query}")
         # print(city_data)
         # Фільтрація даних за текстовим запитом
-        filtered_data = None
+        filtered_data = []
         for item in city_data["CityList"]:
             if search_query.lower() in item["City"].lower():
                 word = item
                 # print(word)
-                filtered_data = [word]
+                filtered_data.append(item)
+                # print("filtered_data", filtered_data)
         if filtered_data:  # print(f"данні отриманні {filtered_data}")
             return jsonify({'results': filtered_data})
         else:
