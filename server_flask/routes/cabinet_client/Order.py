@@ -316,11 +316,11 @@ def verify_token(token):
 @login_required
 @admin_permission.require(http_exception=403)
 def delete(id):
-    # try:
+    try:
         task_to_delete = ord_cntrl.delete_order(id)
         flash(f'Замовлення видалено', category='success')
         return redirect('/cabinet/orders')
-    # except:
+    except:
         return 'Це замовлення вже було видаленно'
 
 

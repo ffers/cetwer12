@@ -126,70 +126,71 @@
 					</div>
 				</nav>
 				<!-- <div class="button-container "> -->
-					<nav class="nav button_pult" style="margin-left: 10px;">
+					<div class="button-container">
+					<nav class="nav button_pult">
 
-					<div id="q" >
-						<select id="mySelect32" onchange="redirectToSelectedPage()" class="form-select btn my-2 my-sm-0"  
-							style=" color: #0dcaf0; border: var(--bs-border-width) solid #0dcaf0;"
-							aria-label="Change status" >
-							<option selected>Фільтр</option>
-							<option value="/1" >На 	Підвердженя</option>
-							<option value="/cabinet/order_draft">Підтвержені</option>
-							<option value="/cabinet/orders/filter/registered">В реєстрі</option>
-							<option value="/3">Оплачені</option> 
-							<option value="/4">Несплачені</option>
-							<option value="/5">Скасовані</option>
-							<option value="/6">Предзамовленні</option>
-							<option value="/7">Питання</option>
-							<option value="/8">Відправлені</option>
-							<option value="/9">Отримані</option>
-							<option value="/10">Нові</option>
-							<option value="/cabinet/ordermargin-right: 10px;s/filter/registered">Очікує відправленя</option>
-							<option value="/12">Виконано</option>
-							<option value="/13">Тест</option>
-						</select>
-					</div>
-					<!-- <div class="row">
-						<div class="col-sm"> -->
-							<div id="add_reg" style="display: none; margin-left: 10px;"><button 
-								class="btn btn-outline-info my-2 my-sm-0"   
-								onclick="processOrders('add_reg')" >
-								Додати в реєстр
-							</button></div>
-						<!-- </div>
-						<div class="col-sm"> -->
-							<div id="del_reg" style="display: none;">
-								<button 
-									class="btn btn-outline-info my-2 my-sm-0"  
-									onclick="processOrders('del_reg')" >
-									Видалити з реєстру
-								</button>
-							</div>
-							
-						<!-- </div> -->
-						<!-- <div class="col-sm"> -->
-							<div id="changeStatusSee"  style="display: none; ">
-								<select id="changeStatus"  class="form-select btn my-2 my-sm-0"  
-									style=" color: #0dcaf0; border: var(--bs-border-width) solid #0dcaf0;"
-									aria-label="Change status" >
-									<option selected>Зміна статусу</option>
-									<option value="1">Підтвердити</option>
-									<option value="2">Підтвержено</option>
-									<option value="3">Оплачено</option> 
-									<option value="4">Несплачено</option>
-									<option value="5">Скасовано</option>
-									<option value="6">Предзамовлення</option>
-									<option value="7">Питання</option>
-									<option value="8">Відправлено</option>
-									<option value="9">Отримано</option>
-									<option value="10">Нове</option>
-									<option value="11">Очікує відправленя</option>
-									<option value="12">Виконано</option>
-									<option value="13">Тест</option>
-								</select>
-							</div>
-
-						</nav>
+								<div id="q" >
+									<select id="mySelect32" onchange="redirectToSelectedPage()" class="form-select btn my-2 my-sm-0"  
+										style=" color: #0dcaf0; border: var(--bs-border-width) solid #0dcaf0;"
+										aria-label="Change status" >
+										<option selected>Фільтр</option>
+										<option value="/1" >На 	Підвердженя</option>
+										<option value="/cabinet/order_draft">Підтвержені</option>
+										<option value="/cabinet/orders/filter/registered">В реєстрі</option>
+										<option value="/3">Оплачені</option> 
+										<option value="/4">Несплачені</option>
+										<option value="/5">Скасовані</option>
+										<option value="/6">Предзамовленні</option>
+										<option value="/7">Питання</option>
+										<option value="/8">Відправлені</option>
+										<option value="/9">Отримані</option>
+										<option value="/10">Нові</option>
+										<option value="/cabinet/ordermargin-right: 10px;s/filter/registered">Очікує відправленя</option>
+										<option value="/12">Виконано</option>
+										<option value="/13">Тест</option>
+									</select>
+								</div>
+						<!-- <div class="row">
+							<div class="col-sm"> -->
+								<div id="add_reg" style="display: none;"><button 
+									class="btn btn-outline-info my-2 my-sm-0"   
+									onclick="processOrders('add_reg')" >
+									Додати в реєстр
+								</button></div>
+							<!-- </div>
+							<div class="col-sm"> -->
+								<div id="del_reg" style="display: none;">
+									<button 
+										class="btn btn-outline-info my-2 my-sm-0"  
+										onclick="processOrders('del_reg')" >
+										Видалити з реєстру
+									</button>
+								</div>
+								
+							<!-- </div> -->
+							<!-- <div class="col-sm"> -->
+								<div id="changeStatusSee"  style="display: none; ">
+									<select id="changeStatus"  class="form-select btn my-2 my-sm-0"  
+										style=" color: #0dcaf0; border: var(--bs-border-width) solid #0dcaf0;"
+										aria-label="Change status" >
+										<option selected>Зміна статусу</option>
+										<option value="1">Підтвердити</option>
+										<option value="2">Підтвержено</option>
+										<option value="3">Оплачено</option> 
+										<option value="4">Несплачено</option>
+										<option value="5">Скасовано</option>
+										<option value="6">Предзамовлення</option>
+										<option value="7">Питання</option>
+										<option value="8">Відправлено</option>
+										<option value="9">Отримано</option>
+										<option value="10">Нове</option>
+										<option value="11">Очікує відправленя</option>
+										<option value="12">Виконано</option>
+										<option value="13">Тест</option>
+									</select>
+								</div>
+							</nav>
+						</div>
 						<!-- </div>
 							<div class="col-sm"> -->
 							<!-- </div>

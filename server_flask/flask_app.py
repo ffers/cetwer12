@@ -1,33 +1,33 @@
-import time
-
-import schedule
-
 from .app import app
 from celery import Celery
-import logging, psycopg2, os, threading, uvicorn
+import psycopg2, os
 from dotenv import load_dotenv
 from markupsafe import escape
 from fastapi.middleware.wsgi import WSGIMiddleware
 from flask import Flask, render_template, request
-from flask_login import current_user, LoginManager, login_required
+from flask_login import current_user, LoginManager
 from flask_migrate import Migrate
-from flask_principal import identity_loaded, RoleNeed, Principal, Identity, identity_changed
-
-
-from .db import db
+from flask_principal import identity_loaded, RoleNeed, Principal, Identity
 from server_flask.permission_registred import update_roles
+from .db import db
 from .routes import Blog, Auth, Comment, User_post, Bot, \
     Order, Cabinet, Admin, Products, Analitic, \
     Arrival
+from utils import util_asx
+OC_log = util_asx.oc_log("flas_app")
 
 load_dotenv()
-flask_app = Flask(__name__)
+try:
+    flask_app = Flask(__name__)
+except Exception as e:
+    # Запис повідомлення про помилку у журнал
+    OC_log.exception("Помилка при створенні екземпляра додатку: %s", e)
+
 principal = Principal(flask_app)
 migrate = Migrate(flask_app, db, directory='../common_asx/migrations')
 user_db = os.getenv('DB_USERNAME')
 password_db = os.getenv('DB_PASSWORD')
 
-logging.getLogger('sqlalchemy.engine').setLevel(logging.WARNING)
 flask_app.config['SECRET_KEY'] = os.getenv("SECRET_KEY_FLASK")
 flask_app.config["SQLALCHEMY_DATABASE_URI"] = f"postgresql://{user_db}:{password_db}@localhost:5432/flask_db"
 flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -51,15 +51,10 @@ flask_app.register_blueprint(Products)
 flask_app.register_blueprint(Analitic)
 flask_app.register_blueprint(Arrival)
 
-
 from .models import Users
 login_manager = LoginManager()
 login_manager.login_view = "auth.login"
 login_manager.init_app(flask_app)
-
-logging.info("НОВИЙ ЕТАП")
-
-
 
 def get_db_connection():
     conn = psycopg2.connect(host='localhost',
@@ -78,8 +73,6 @@ def index():
         print(request.json)
         return {'ok':True}
     print(f"Hello Task Celery !!!!!")
-    # identity_changed.send(flask_app, identity=Identity(current_user.id))
-    # print(current_user.id)
     return render_template('index.html', user=current_user)
 
 @flask_app.errorhandler(403)
@@ -121,10 +114,9 @@ def load_indentity_session():
 
 
 
-
-app.mount("/", WSGIMiddleware(flask_app))
-
-# if __name__ == "__main__":
-#     uvicorn.run(app, host="0.0.0.0", port=8000)
-
+try:
+    app.mount("/", WSGIMiddleware(flask_app))
+except Exception as e:
+    # Запис повідомлення про помилку у журнал
+    OC_log.exception("Помилка при монтуванні flask_app: %s", e)
 

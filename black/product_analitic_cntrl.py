@@ -41,6 +41,8 @@ class ProductAnaliticControl():
 
     def get_product_analitic(self, product_id):
         prod_item = prod_an_rep.search_an_product_id(product_id)
+        # money_in_product = pr_an_serv.count_sum(prod_item.quantity, prod_item.body_price)
+        # sum_sale = pr_an_serv.count_sum(prod_item.quantity_sale, prod_item.price)
         if prod_item:
             resp_bool_money = self.update_product_analitic(product_id)
             return resp_bool_money

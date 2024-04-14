@@ -26,6 +26,11 @@ form textarea {
     width: 100%;
     padding: 10px;
 }
+
+.form-control {
+    text-align: center;
+}
+
 .button_cor {
 
     margin: 2px;
@@ -128,8 +133,7 @@ tr {
 }
 
 .button-container {
-    display: flex;
-    margin-left: 10px;
+    margin: 10px;
   }
   
   .button-container button, select {

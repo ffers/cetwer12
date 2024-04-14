@@ -28,3 +28,4 @@ from .product.Arrival import Arrival
 from .analitic.DayAnalitic import DayAnalitic
 from .delivery.DeliveryOrder import DeliveryOrder
 from .delivery.DeliveryStatus import DeliveryStatus
+from .product.ProductRelate import ProductRelate

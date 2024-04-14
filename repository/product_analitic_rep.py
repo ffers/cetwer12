@@ -54,6 +54,7 @@ class ProductAnaliticRep():
 
     def get_money_sale_day(self):
         current_time = datetime.now()
+        print(f"current_time {current_time}")
         start_time = current_time - timedelta(days=1)
         start_time = start_time.replace(hour=17, minute=0, second=0, microsecond=0)
         money_sale = (db.session.query(func.count(ProductAnalitic.money_in_sale))
@@ -69,6 +70,7 @@ class ProductAnaliticRep():
         print(">>> Delete in datebase")
         return True
 
+prod_an_rep = ProductAnaliticRep()
 
 
 

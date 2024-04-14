@@ -1,5 +1,5 @@
 from server_flask.db import db
-from server_flask.models import Products, ProductAnalitic
+from server_flask.models import Products, ProductAnalitic, ProductRelate
 
 
 class ProductRep():
@@ -28,7 +28,7 @@ class ProductRep():
         return product
 
     def update_product_item(self, data, id):
-        # try:
+        try:
             product = Products.query.get_or_404(id)
             product.article = data[0]
             product.product_name = data[1]
@@ -38,8 +38,8 @@ class ProductRep():
             product.body_product_price = data[5]
             db.session.commit()
             return True
-        # except:
-        #     return False
+        except:
+            return False
 
     def update_after_arrival(self, combined_list):
         for item in combined_list:
@@ -64,9 +64,34 @@ class ProductRep():
             if not item.body_product_price:
                 item.body_product_price = 0
 
+    # relate product
 
+    def add_product_relate(self, *args):
+        try:
+            item = ProductRelate(
+                article=args[0],
+                name=args[1],
+                quantity=args[2],
+                product_id=[3]
+            )
+            db.session.add(item)
+            db.session.commit()
+            db.session.close()
+            return True
+        except:
+            return False
 
-
+    def update_product_relate(self, data, id):
+        try:
+            product = ProductRelate.query.get_or_404(id)
+            product.article = data[0]
+            product.name = data[1]
+            product.quantity = data[2],
+            product.product_id = data[3]
+            db.session.commit()
+            return True
+        except:
+            return False
 
 
 

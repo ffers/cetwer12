@@ -31,3 +31,26 @@ class ProductServ:
         price = self.format_float(price_ch)
         print(price, product_name)
         return (article, product_name, description, quantity, price, body_product_price)
+
+    def add_product_relate(self, request):
+        article = request.form['article']
+        name = request.form['product_name']
+        quantity = request.form['description']
+        product_id = request.form['quantity']
+        args = [article, name, quantity, product_id]
+        return args
+
+    def create_data_req(self, req):
+        data = [
+            req.form["product"],
+            req.form["name"],
+            req.form["article"],
+            req.form["quantity"]
+        ]
+        return data
+
+
+
+
+
+prod_serv = ProductServ()

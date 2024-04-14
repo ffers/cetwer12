@@ -1,8 +1,7 @@
 from repository import ProductRep
-from a_service import ProductServ
+from a_service import prod_serv
 from black import ProductAnaliticControl
 
-prod_serv = ProductServ()
 prod_rep = ProductRep()
 analitic_cntrl = ProductAnaliticControl()
 
@@ -40,5 +39,18 @@ class ProductCntrl:
         prod_rep.changeBodyPrice()
         return True
 
+    # relate product
 
+    def add_product_relate(self, request):
+        args = prod_serv.add_product_relate(request)
+        resp = prod_rep.add_product_relate(args)
+        return resp
+
+    def update_product_relate(self, req, id):
+        data = prod_serv.create_data_req(req)
+        prod_rep.update_product_relate(data, id)
+
+
+
+prod_cntrl = ProductCntrl()
 

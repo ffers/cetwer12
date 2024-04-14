@@ -1,12 +1,12 @@
-from repository import  ProductAnaliticRep
+from repository import  prod_an_rep
 from repository import DayAnaliticRep
 from a_service.analitic import DayAnaliticServ
 
 d_serv = DayAnaliticServ()
 d_an = DayAnaliticRep()
-pr_an = ProductAnaliticRep()
+
 
 class DayAnalitic:
     def main(self):
-        torg = pr_an.get_money_sale_day()
+        torg = prod_an_rep.get_money_sale_day()
         return torg

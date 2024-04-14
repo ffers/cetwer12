@@ -11,7 +11,13 @@ class ProductAnanaliticServ:
             body_price = 0
         sum_money = body_price * quantity
         print(sum_money)
-        return sum_money      
+        return sum_money
+
+    def count_sum(self, number_a, number_b):
+        sum_resp = number_a * number_b
+        return sum_resp
 
 
+
+prod_an_serv = ProductAnanaliticServ()
 

@@ -3,6 +3,8 @@ from typing import Annotated
 from fastapi import Depends, FastAPI
 from fastapi.security import OAuth2PasswordBearer
 
+from utils import util_asx
+
 import uvicorn, multiprocessing, logging
 logging.basicConfig(
     level=logging.INFO,
@@ -13,6 +15,7 @@ logging.basicConfig(
     ]
 )
 
+OC_log = util_asx.oc_log("fast_api")
 
 app = FastAPI()
 
@@ -26,8 +29,12 @@ async def read_items(token: Annotated[str, Depends(oauth2_scheme)]):
     return {"token": token}
 
 def main():
-    uvicorn.run(
-        "server_flask.flask_app:app",
-        log_level="debug",
-        reload=True
-    )
+    try:
+        uvicorn.run(
+            "server_flask.flask_app:app",
+            log_level="debug",
+            reload=True
+        )
+    except Exception as e:
+        # Запис повідомлення про помилку у журнал
+        OC_log.exception("Помилка при створенні екземпляра фаст додатку: %s", e)
