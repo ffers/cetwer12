@@ -144,7 +144,8 @@ class OrderCntrl:
         resp = np_cntrl.manager_data(
             order)  # обработка зкаказа из срм создание ттн, телеграм курьеру заказ, додавання в пром ттн
         if resp["success"] == True:
-            self.await_order_cab_tg(order, "crm_to_telegram")  # if telegram True send to telegram
+            data_tg_dict = self.await_order_cab_tg(order, "crm_to_telegram")  # if telegram True send to telegram
+            tg_cntrl.sendMessage(tg_cntrl.chat_id_np, data_tg_dict)
             if order.source_order_id == 2:
                 invoice_ttn = order.ttn
                 order_id_sources = order.order_id_sources
