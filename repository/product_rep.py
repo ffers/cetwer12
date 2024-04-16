@@ -93,5 +93,13 @@ class ProductRep():
         except:
             return False
 
+    def load_product_relate(self):
+        products = ProductRelate.query.order_by(ProductRelate.timestamp).all()
+        return products
+
+
+
+prod_rep = ProductRep()
+
 
 

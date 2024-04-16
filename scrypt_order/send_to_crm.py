@@ -57,7 +57,7 @@ def send_order():
                 resp_crm = send_http_json(order, "create_order")
                 OC_log.info(f"send_to_crm_resp: {resp_crm}")
                 if not resp_crm:
-                    tg_cntrl.sendMessage(chat_id_helper, f"Сервер не відповідає замовленя не додано{order_id}")
+                    tg_cntrl.sendMessage(chat_id_helper, f"Сервер не відповідає замовленя не додано {order_id}")
                 else:
                     processed_orders.add(order_id)
                     save_processed_orders(processed_orders)

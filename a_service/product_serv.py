@@ -40,7 +40,7 @@ class ProductServ:
         args = [article, name, quantity, product_id]
         return args
 
-    def create_data_req(self, req):
+    def create_data_relate_req(self, req):
         data = [
             req.form["product"],
             req.form["name"],

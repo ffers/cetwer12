@@ -122,31 +122,28 @@ def delete_product(id):
 
 @bp.route('/cabinet/products/add_product_relate', methods=['POST', 'GET'])
 @login_required
-@manager_permission.require(http_exception=403)
+@admin_permission.require(http_exception=403)
 def add_product_relate():
     if request.method == 'POST':
-        # resp_bool = prod_cntrl.add_product(request)
+        resp_bool = prod_cntrl.add_product_relate(request)
         resp_bool = True
         for item in request.form:
             print(item)
         if resp_bool == True:
             print("Product added successfully")
-            if "modal" in request.form:
-                responce_data = {'status': 'success', 'message': 'Product relate added successfully'}
-                print(responce_data)
-                return jsonify(responce_data)
-            else:
-                print(request.form)
-                print("НЕВИЙШЛО!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-                return redirect(url_for('Products.add_product_relate'))
+            responce_data = {'status': 'success', 'message': 'Product relate added successfully'}
+            print(responce_data)
+            return jsonify(responce_data)
         else:
-            print("!!! Product don`t added! Unsuccessfully")
+            print(request.form)
+            print("НЕВИЙШЛО!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            return redirect(url_for('Products.add_product_relate'))
     return render_template('cabinet_client/Products/add_product_relate.html', user=current_user )
 
 
 @bp.route('/cabinet/products/update_product_relate/<int:id>', methods=['POST', 'GET'])
 @login_required
-@manager_permission.require(http_exception=403)
+@admin_permission.require(http_exception=403)
 def update_product_relate(id):
     if request.method == 'POST':
         # resp_bool = prod_cntrl.add_product(request)
@@ -155,17 +152,20 @@ def update_product_relate(id):
             print(item)
         if resp_bool == True:
             print("Product added successfully")
-            if "modal" in request.form:
-                responce_data = {'status': 'success', 'message': 'Product relate added successfully'}
-                print(responce_data)
-                return jsonify(responce_data)
-            else:
-                print(request.form)
-                print("НЕВИЙШЛО!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-                return redirect(url_for('Products.add_product_relate'))
         else:
-            print("!!! Product don`t added! Unsuccessfully")
-    return render_template('cabinet_client/Products/add_product_relate.html', user=current_user )
+            print(request.form)
+            print("НЕВИЙШЛО!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            return redirect(url_for('Products.update_product_relate'))
+    return render_template('cabinet_client/Products/update_product_relate.html', user=current_user )
+
+@bp.route('/cabinet/products/product_relate', methods=['POST', 'GET'])
+@login_required
+@admin_permission.require(http_exception=403)
+def product_relate():
+    items = prod_cntrl.load_product_relate()
+    return render_template('cabinet_client/Products/product_relate.html',
+                           user=current_user, items=items)
+
 
 
 #     article = db.Column(db.String(50))

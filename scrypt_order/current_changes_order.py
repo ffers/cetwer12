@@ -1,4 +1,4 @@
-from api.telegram import TgClient
+from black import tg_cntrl
 from helperkit import FileKit
 from dotenv import load_dotenv
 import os, json, requests
@@ -6,7 +6,7 @@ import os, json, requests
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
 fl_cl = FileKit()
-tg_cl = TgClient()
+
 elements_to_remove = set()
 
 payment_option_test = "../common_asx/payment_option_test.json"
@@ -32,11 +32,11 @@ class Changes:
                     canceled_order.add(order_id)
                     order_list = list(canceled_order)
                     fl_cl.save_file_json(canceled_order_file, order_list)
-                    tg_cl.send_message_f(chat_id, f"Скасовано {order_id}")
+                    tg_cntrl.sendMessage(chat_id, f"Скасовано {order_id}")
                     try:
                         self.send_http_json(order_id, "canceled") # відправляєм в базу данних
                     except:
-                        tg_cl.send_message_f(chat_id, f"не вийшло додати в crm: Скасовано {order_id}")
+                        tg_cntrl.sendMessage(chat_id, f"не вийшло додати в crm: Скасовано {order_id}")
 
 
     def writeOrderUnpay(self, file, order, processed_orders):
@@ -44,7 +44,7 @@ class Changes:
         try:
             self.send_http_json(order_id, "unpaid")  # відправляєм в базу данних
         except:
-            tg_cl.send_message_f(chat_id, f"не вийшло додати в crm: Скасовано {order_id}")
+            tg_cntrl.sendMessage(chat_id, f"не вийшло додати в crm: Скасовано {order_id}")
         processed_orders.add(order_id)
         list_order = list(processed_orders)
         fl_cl.save_file_json(file, list_order)
@@ -87,7 +87,7 @@ class Changes:
                     if order_data["payment_data"]:
                         if order_data["payment_data"]["status"] == "paid":
                             print("Прийшла оплата")
-                            tg_cl.send_message_f(chat_id, f"Оплачено {order}")
+                            tg_cntrl.sendMessage(chat_id, f"Оплачено {order}")
                             elements_to_remove.add(order)
                             self.send_http_json(order, "paid")
                             break

@@ -12,7 +12,7 @@ class DeliveryOrderRep:
         )
         db.session.add(item)
         db.session.commit()
-        db.session.close()
+        # db.session.close()
         return True
 
     def load_item(self, order_id):
@@ -27,7 +27,7 @@ class DeliveryOrderRep:
         order.ref_ttn = data["ref_ttn"],
         order.number_ttn = data["number_ttn"]
         db.session.commit()
-        db.session.close()
+        # db.session.close()
         return True
 
     def update_registr(self, items, data):
@@ -37,7 +37,7 @@ class DeliveryOrderRep:
             item.ref_registr = data["ref_registr"]
             item.number_registr = data["number_registr"]
             db.session.commit()
-        db.session.close()
+        # db.session.close()
         return True
 
     def reg_delete_in_item(self, items):
@@ -46,7 +46,7 @@ class DeliveryOrderRep:
             v.ref_registr = ''
             v.number_registr = ''
             db.session.commit()
-        db.session.close()
+        # db.session.close()
         return True
 
     def load_item_filter_order(self, data):

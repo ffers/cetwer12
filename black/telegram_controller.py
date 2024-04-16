@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 from api import tg_api
+from a_service import tg_serv
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
@@ -43,8 +44,12 @@ class TelegramController():
         resp = tg_api.editMessageText(chat_id, message_id, text)
         return resp
 
-    def keyboard_generate(self, order_id, delivery_option):
+    def keyboard_func(self, order_id, delivery_option):
         resp = tg_api.keyboard_func(order_id, delivery_option)
+        return resp
+
+    def keyboard_generate(self,  text1, callback_data1, text2=None, callback_data2=None):
+        resp = tg_api.keyboard_generate(text1, callback_data1, text2, callback_data2)
         return resp
 
 tg_cntrl = TelegramController()

@@ -25,7 +25,6 @@ class PromToCrm():
             order_id = order.id
             product = self.parse_product(json_order, order)
             self.add_ordered_telegram(data_for_tg, order_id)
-            db.session.close()
             OC_log.info(f"ЗАКІНЧИЛОСЬ {order}")
             return order_id
         except Exception as e:

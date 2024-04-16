@@ -13,7 +13,8 @@ class NpCntrl():
         self.runup_recepient(order)
         print(self.data)
         resp = np_cl_api.runup_doc(self.data)
-        self.add_ttn_crm(resp, order)
+        if resp["success"]:
+            self.add_ttn_crm(resp, order)
         return resp
 
     def runup_recepient(self, order):

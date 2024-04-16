@@ -1,6 +1,4 @@
-{% extends 'cabinet_client/Products/layout/base.html' %}
-
-{% block title %}Прихід Товару{% endblock %}
+{% extends 'cabinet_client/base.html' %} {% block title %}Прихід Товару{% endblock %}
 
 {% block head %}
 <!-- Підключення стилів Flatpickr -->
@@ -40,6 +38,7 @@
                         <div class="col-sm">
                             <select  class="form-control product-select" 
                                 name="product" 
+                                value="{{}}"
                                 required>
                             </select><br>
                         </div>
@@ -50,6 +49,7 @@
                                 style="text-align: center;" 
                                 id="name" 
                                 name="name"
+                                value="{{}}"
                                 > 
                                 <br>
                         </div>
@@ -59,14 +59,16 @@
                                 class="form-control" 
                                 style="text-align: center;" 
                                 id="article" 
-                                name="article"                    
+                                name="article"    
+                                value="{{}}"                
                                 > 
                                 <br>
                         </div>
                         <div class="col-sm col-lg-2">
                             <input style="text-align: center;" class="quantity form-control" 
                             id="quantity" name="quantity"  min="1" max="10000" 
-                            placeholder="* Кількість" required><br>
+                            placeholder="* Кількість" required
+                            value="{{}}"><br>
                         </div>
                         
                     </div>                

@@ -2,7 +2,7 @@ import os, json, re
 from dotenv import load_dotenv
 from api.prom import EvoClient
 from black.manager_ttn import ManagerTTN
-from a_service import mn_tg_cntrl
+from a_service import tg_serv
 from .telegram_controller import tg_cntrl
 
 

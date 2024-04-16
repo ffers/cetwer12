@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 from .manager_ttn import ManagerTTN
-from a_service.manager_tg import mn_tg_cntrl
+from a_service.tg_serv import tg_serv
 from a_service import BotProductSrv
 from a_service.order import OrderServ
 from black.crm_to_telegram import CrmToTelegram
@@ -10,6 +10,7 @@ from .product_analitic_cntrl import ProductAnaliticControl
 from .add_order_to_crm import PromToCrm
 from .handling_b import search_reply_message, button_hand
 from a_service.update_to_crm import up_to_srm
+from .telegram_controller import tg_cntrl
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
@@ -33,7 +34,7 @@ class TgAnswerCntrl:
         if flag == "update_to_crm":
             resp = up_to_srm.manager(order)
         else:
-            mn_tg_cntrl.see_flag(order, flag)
+            tg_serv.see_flag(order, flag)
         return resp
 
     def await_interface(self, order_id):
@@ -49,9 +50,9 @@ class TgAnswerCntrl:
         print(f"see_flag {flag}")
         resp = None
         if flag == "Надіслати накладну":
-            resp = mn_tg_cntrl.send_order_curier(order)
+            resp = tg_serv.send_order_curier(order)
         if flag == "crm_to_telegram":
-            resp = mn_tg_cntrl.send(order)
+            resp = tg_serv.send(order)
         return resp
 
     def await_tg_button(self, data):
@@ -74,8 +75,8 @@ class TgAnswerCntrl:
         print(ch_id_sk)
         if int(ch_id_sk) == chat_id:
             print("Отримали повідомлення з Робочого чату")
-            pr_bt_srv.work_with_product(data)
-
+            text_colour = pr_bt_srv.work_with_product(data)
+            tg_cntrl.sendMessage(tg_cntrl.chat_id_sk, text_colour)
 
 tg_answ_cntrl = TgAnswerCntrl()
 

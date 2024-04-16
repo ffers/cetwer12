@@ -138,6 +138,11 @@ class EvoClient(object):
             return status
 
 
+prom_api = EvoClient(get_from_env("PROM_TOKEN"))
+
+
+
+
 
 
 

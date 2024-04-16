@@ -15,31 +15,32 @@ class OrderServ:
     #             used_values.add(new_digits)  # Додаємо нове значення до множини використаних
     #             return new_digits  # Повертаємо унікальне значення
 
-    def search_for_phone(self, order):
+    def search_for_order(self, order):
         order_list = []
-
-        for item in order:
-            product_text = ' '
-            for product in item.ordered_product:
-                product_text += product.products.article + ' '
-     
-            text = (item.order_id_sources + ' '
-                    + item.client_lastname + ' '
-                    + item.client_firstname + ' '
-                    + product_text + ' ' )
-            item_data = {
-                'id': item.id,
-                'text': text
-            }
-            order_list.append(item_data)
-        print(order_list)
-        if order_list:
-            # Здійснити пошук відділень в даному місті
-
-            print(f"дивимось ордер  {order_list}")
+        if order:
+            for item in order:
+                if item.order_id_sources:
+                    item_data = self.create_text(item)
+                    order_list.append(item_data)
+                    print(order_list)
             return jsonify({'results': order_list})
-        else:
-            return jsonify({'results': []})
+        return jsonify({'results': []})
+
+
+    def create_text(self, item):
+        product_text = ' '
+        for product in item.ordered_product:
+            product_text += product.products.article + ' '
+        text = (item.order_id_sources + ' '
+                + item.client_lastname + ' '
+                + item.client_firstname + ' '
+                + product_text + ' ')
+        item_data = {
+            'id': item.id,
+            'text': text
+        }
+        return item_data
+
     def replace_phone(self, phone):
         return phone
 

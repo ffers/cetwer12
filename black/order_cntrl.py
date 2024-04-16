@@ -4,7 +4,6 @@ from black.crm_to_telegram import CrmToTelegram
 from a_service.order import  OrderServ
 from a_service.delivery import NpServ
 from a_service import DeliveryOrderServ
-from api import EvoClient
 from dotenv import load_dotenv
 from api.nova_poshta.create_data import NpClient
 from .telegram_controller import tg_cntrl
@@ -12,19 +11,14 @@ from .np_cntrl import NpCntrl
 from .product_analitic_cntrl import ProductAnaliticControl
 from .delivery_order_cntrl import DeliveryOrderCntrl
 from .add_order_to_crm import pr_to_crm_cntr
-from a_service.manager_tg import mn_tg_cntrl
-from a_service.update_to_crm import up_to_srm
+from a_service import tg_serv
+from .prom_cntrl import prom_cntrl
+from utils import util_asx
 
 sys.path.append('../')
 from common_asx.utilits import Utils
 
 # log_formatter = logging.Formatter("%(asctime)s [%(processName)s: %(process)d] [%(threadName)s: %(thread)d] [%(levelname)s] %(name)s: %(message)s")
-log_formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(name)s: %(message)s")
-order_cntrl_handler = logging.FileHandler("../common_asx/log/order_cntrl.log")
-order_cntrl_handler.setFormatter(log_formatter)
-OC_log = logging.getLogger("order_cntrl")
-OC_log.setLevel(logging.INFO)
-OC_log.addHandler(order_cntrl_handler)
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
@@ -32,11 +26,13 @@ token_ev = os.getenv("PROM_TOKEN")
 token_np = os.getenv("NP_TOKEN")
 chat_id_helper = os.getenv("CHAT_ID_HELPER")
 
+OC_log = util_asx.oc_log("order_cntrl_test")
+
 
 crmtotg_cl = CrmToTelegram()
 ord_rep = OrderRep()
 
-ev_cl = EvoClient(token_ev)
+
 np_cl = NpClient(token_np)
 ord_serv = OrderServ()
 np_serv = NpServ()
@@ -85,7 +81,7 @@ class OrderCntrl:
     def examine_address(self, order):
         resp_bool = np_serv.examine_address_prom(order)
         if not resp_bool:
-            order_dr = ev_cl.get_order_id(order["id"])
+            order_dr = prom_cntrl.get_order(order["id"])
             order = order_dr["order"]
             order_id = order["id"]
             delivery_provider_data = order["delivery_provider_data"]
@@ -127,25 +123,38 @@ class OrderCntrl:
         search_request = req.args.get('q', '').lower()
         print(search_request)
         order = ord_rep.search_for_all(search_request)
-        result = ord_serv.search_for_phone(order)
+        result = ord_serv.search_for_order(order)
         return result
 
     def confirmed_order(self, order_id, status):
         order = ord_rep.load_item(order_id)
         bool = ord_rep.change_status(order_id, status)
+        bool_prom = prom_cntrl.change_status(order_id, 1)
         update_analitic = prod_an_cntrl.product_in_order(order)
-        resp = {"success": False}
-        if order.delivery_method_id == 1:
-            resp = self.work_with_np(order)
-            del_ord_cntrl.update_item(resp, order.id)
+        resp = self.check_del_method(order)
         return resp
 
-    def work_with_np(self, order):
+    def check_del_method(self, order):
+        resp = {"success": False}
+        print("deliveri method", order.delivery_method_id)
+        if order.delivery_method_id == 1:
+            resp = self.del_method_np(order)
+        elif order.delivery_method_id == 2 or 4:
+            print("Розетка")
+            resp = self.del_method_roz(order)
+        elif order.delivery_method_id == 3:
+            resp = self.del_method_ukr(order)
+        return resp
+
+
+    def del_method_np(self, order):
         resp = np_cntrl.manager_data(
             order)  # обработка зкаказа из срм создание ттн, телеграм курьеру заказ, додавання в пром ттн
         if resp["success"] == True:
-            data_tg_dict = self.await_order_cab_tg(order, "crm_to_telegram")  # if telegram True send to telegram
+            order = ord_rep.load_item(order.id)
+            data_tg_dict = tg_serv.create_text_order(order)  # if telegram True send to telegram
             tg_cntrl.sendMessage(tg_cntrl.chat_id_np, data_tg_dict)
+            del_ord_cntrl.update_item(resp, order.id)
             if order.source_order_id == 2:
                 invoice_ttn = order.ttn
                 order_id_sources = order.order_id_sources
@@ -153,15 +162,36 @@ class OrderCntrl:
                 dict_ttn_prom = {"ids": [order_id_sources], "custom_status_id":  137639}
                 util_cntrl.change_status(dict_status_prom)
                 util_cntrl.change_ttn(dict_ttn_prom)
+        if 'OptionsSeat is empty' in resp["errors"]:
+            resp = {"success": "Поштомат зайнятий"}
+            tg_cntrl.sendMessage(tg_cntrl.chat_id_np,
+                                 "❗️❗️❗️ ТТН не створено - поштомат зайнятий")
         return resp
+
+    def del_method_roz(self, order):
+        data_tg_dict = tg_serv.create_text_order(order)
+        print(f"data_tg_dict {data_tg_dict}" )
+        print(order.order_code)
+        # tg_cntrl.answerCallbackQuery(callback_query_id, f"Відсилаю в Розетку")
+        keyboard_rozet = tg_cntrl.keyboard_generate("Надіслати накладну", order.order_code)
+        resp = tg_cntrl.sendMessage(tg_cntrl.chat_id_rozet, data_tg_dict, keyboard_rozet)
+        print(resp)
+        return {"success": True}
+
+    def del_method_ukr(self, order):
+        data_tg_dict = tg_serv.create_text_order(order)
+        # tg_cntrl.answerCallbackQuery(callback_query_id, f"Відсилаю в Розетку")
+        # keyboard_rozet = tg_cntrl.keyboard_generate("Надіслати накладну", order.order_code)
+        resp = tg_cntrl.sendMessage(tg_cntrl.chat_id_rozet, data_tg_dict)
+        return {"success": True}
 
     def await_order_cab_tg(self, order, flag=None, id=None): # дубль фукціі await_order щоб обійти діспетчер
         print(f"see_flag {flag}")
         resp = None
         if flag == "Надіслати накладну":
-            resp = mn_tg_cntrl.send_order_curier(order)
+            resp = tg_serv.send_order_curier(order)
         if flag == "crm_to_telegram":
-            resp = mn_tg_cntrl.send(order)
+            resp = tg_serv.create_text_order(order)
         return resp
 
     def delete_order(self, id):

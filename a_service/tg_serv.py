@@ -5,7 +5,7 @@ import os, logging
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
 
-class ManagerTg():
+class TgServ():
     def __init__(self):
         logging.basicConfig(filename='../common_asx/log_order.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -65,8 +65,9 @@ class ManagerTg():
             payment_data = "Несплачено"
         return payment_data
 
-    def send(self, order):
+    def create_text_order(self, order):
         order_product = order.ordered_product
+        ttn = order.ttn if order.ttn else "ТТН немає"
         if order.description:
             description = "🍏 Нотатка:\n" + order.description
         else:
@@ -84,12 +85,18 @@ class ManagerTg():
         data_get_order = (
             f"{product_article} Сумма: {order.sum_price} \n\n{description}\n\n"
             f"{order.city_name}, {order.warehouse_text} \n\n🍏 Замовлення {order.source_order.name} №{order.order_id_sources}\n"
-            f"\n{order.phone};{order.ttn}\n{order.client_lastname} {order.client_firstname}\n"
+            f"\n{order.phone};{ttn}\n{order.client_lastname} {order.client_firstname}\n"
             f"Способ оплати - {payment_method.name}, {sum_check} \n\n"
             
             f"{product_text}\n=========================================================="
         )
         return data_get_order
+
+    def check_ttn(self, order):
+        ttn = "ТТН немає"
+        if order.ttn:
+            ttn = order.ttn
+        return ttn
 
     def see_flag(self, order, flag=None):
         print(f"see_flag {flag}")
@@ -103,4 +110,4 @@ class ManagerTg():
     #     resp = button_hand(data)
     #     return resp
 
-mn_tg_cntrl = ManagerTg()
+tg_serv = TgServ()

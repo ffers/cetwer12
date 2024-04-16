@@ -1,0 +1,27 @@
+
+
+
+
+class PromServ:
+    def create_status_get(self, order_id, status_order):
+        dict_status_prom = None
+        print(status_order)
+        if 2 == status_order: # питання
+            dict_status_prom = {
+                "custom_status_id": 142216,
+                "ids": [order_id]
+            }
+        if 1 == status_order: # прийнято
+            dict_status_prom = {
+                "status": "received",
+                "ids": [order_id]
+            }
+        if 3 == status_order: # прийнято
+            dict_status_prom = {
+                "custom_status_id": 137639,
+                "ids": [order_id]
+            }
+        return dict_status_prom
+
+
+prom_serv = PromServ()

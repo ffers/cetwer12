@@ -180,9 +180,9 @@ def send_cab(id):
         print(f"Працює {id}")
         resp = ord_cntrl.confirmed_order(id, 2)
         if resp["success"] == True:
-            flash('Замовлення НП створено', category='success')
+            flash('Замовлення підтвержено', category='success')
         else:
-            flash('Замовлення НП нестворено', category='error')
+            flash('Замовлення підтверджено але ттн не створено: ' + resp["success"], category='error')
         return redirect('/cabinet/orders')
 
 @bp.route('/cabinet/orders/get_cities', methods=['POST', 'GET'])
@@ -473,3 +473,11 @@ def registered():
 #   5 |      | На шляху до одержувача                                                  |  101
 #   6 |      | Відмова одержувача (отримувач відмовився від відправлення)              |  103
 # https://api.telegram.org/bot603175634:AAHNHBKy56g37S1WiS1KZuw_a-aZjahqD7o/getFile?file_id=AgACAgIAAxkBAAIMl2YWFuaONHD9_7SWvzDiiK8vmNQSAAK31jEbGsoISBKbThvzHGUpAQADAgADbQADNAQ
+
+#  id |         name         | description
+# ----+----------------------+-------------
+#   1 | Нова Пошта           |
+#   3 | Укрпошта             |
+#   5 | Самовивіз            |
+#   4 | Meest                |
+#   2 | Точка видачі Rozetka |
