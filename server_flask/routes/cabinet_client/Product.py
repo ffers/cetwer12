@@ -229,8 +229,11 @@ def update_product_source(id):
 @admin_permission.require(http_exception=403)
 def product_source():
     items = prod_cntrl.load_product_source_all()
+    money = 0
+    for item in items:
+        money = item.money + money
     return render_template('cabinet_client/Products/product_source.html',
-                           user=current_user, items=items)
+                           user=current_user, items=items, money=money)
 
 @bp.route('/cabinet/products/delete_source/<int:id>', methods=['GET'])
 @login_required
