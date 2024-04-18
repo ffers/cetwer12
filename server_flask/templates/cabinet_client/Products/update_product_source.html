@@ -14,7 +14,7 @@
             Додати Компонент
         </h1>
 		
-			<form action="/cabinet/products/update_product_relate/{{item.id}}" method="post">
+			<form action="/cabinet/products/update_product_source/{{item.id}}" method="post">
                 <div id="product-container">
                     <div class="row">   
                         <div class="col-sm col-lg-2">
@@ -32,27 +32,6 @@
                             defaultDate: 'today', 
                             });
                         </script>
-
-                        <div class="col-sm col-lg-2">
-                            <input 
-                            placeholder="Связь" 
-                            class="form-control" 
-                            style="text-align: center;" 
-                            id="article_product" 
-                            name="article_product" 
-                            value="{{item.products.article}}"                   
-                            > 
-                        </div>
-                        <div class="col-sm col-lg-2">
-                            <input 
-                            placeholder="Связь" 
-                            class="form-control" 
-                            style="text-align: center;" 
-                            id="product" 
-                            name="product" 
-                            value="{{item.products.id}}"                   
-                            > 
-                        </div>
                       
         
                         <!-- Товар та кількість -->

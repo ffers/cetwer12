@@ -1,5 +1,8 @@
 from server_flask.db import db
-from server_flask.models import Products, ProductAnalitic, ProductRelate
+from server_flask.models import (Products,
+                                 ProductAnalitic,
+                                 ProductRelate,
+                                 ProductSource)
 
 
 class ProductRep():
@@ -66,13 +69,13 @@ class ProductRep():
 
     # relate product
 
-    def add_product_relate(self, *args):
+    def add_product_relate(self, data_list):
         try:
             item = ProductRelate(
-                article=args[0],
-                name=args[1],
-                quantity=args[2],
-                product_id=[3]
+                article=data_list[0],
+                name=data_list[1],
+                quantity=data_list[2],
+                product_id=data_list[3]
             )
             db.session.add(item)
             db.session.commit()
@@ -96,6 +99,90 @@ class ProductRep():
     def load_product_relate(self):
         products = ProductRelate.query.order_by(ProductRelate.timestamp).all()
         return products
+
+    def load_product_relate_item(self, product_id):
+        item = ProductRelate.query.get_or_404(product_id)
+        return item
+
+    def load_prod_relate_product_id(self, id):
+        item = ProductRelate.query.filter_by(product_id=id).first()
+        return item
+
+    def load_prod_relate_product_id_all(self, id):
+        item = ProductRelate.query.filter_by(product_id=id).all()
+        return item
+
+    def load_product_source_item(self, product_id):
+        product = ProductSource.query.get_or_404(product_id)
+        return product
+
+    def delete_product_relate(self, id):
+        task_to_delete = ProductRelate.query.get_or_404(id)
+        print(">>> Start delete in datebase")
+        db.session.delete(task_to_delete)
+        db.session.commit()
+        print(">>> Delete in datebase")
+        return True
+
+    def load_product_source_all(self):
+        products = ProductSource.query.order_by(ProductSource.timestamp).all()
+        return products
+
+    def load_product_source_item(self, product_id):
+        product = ProductSource.query.get_or_404(product_id)
+        return product
+
+    def load_product_source_article(self, article):
+        item = ProductSource.query.filter_by(article=article).first()
+        return item
+
+
+    def add_product_source(self, data_list):
+        # try:
+            item = ProductSource(
+                article=data_list[0],
+                name=data_list[1],
+                price=data_list[2],
+                quantity=data_list[3],
+                money=data_list[4]
+            )
+            db.session.add(item)
+            db.session.commit()
+            db.session.close()
+            return True
+        # except:
+        #     return False
+
+    def update_product_source(self, id, data):
+        try:
+            product = ProductSource.query.get_or_404(id)
+            product.article = data[0]
+            product.name = data[1]
+            product.price = data[2]
+            product.quantity = data[3]
+            product.money = data[4]
+            db.session.commit()
+            return True
+        except:
+            return False
+
+    def update_prod_sour_quan(self, id, quantity):
+        # try:
+            product = ProductSource.query.get_or_404(id)
+            product.quantity = quantity
+            db.session.commit()
+            return True
+        # except:
+        #     return False
+
+    def delete_product_source(self, id):
+        task_to_delete = ProductSource.query.get_or_404(id)
+        print(">>> Start delete in datebase")
+        db.session.delete(task_to_delete)
+        db.session.commit()
+        print(">>> Delete in datebase")
+        return True
+
 
 
 

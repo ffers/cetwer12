@@ -9,5 +9,5 @@ class ProductRelate(db.Model):
     name = db.Column(db.String(150))
     quantity = db.Column(db.Integer)
     product_id = db.Column(db.Integer, db.ForeignKey(
-        'products.id', name='fk_product_relate_products_id'))
+        'products.id', name='fk_product_relate_products_id'), nullable=False)
     products = db.relationship('Products', back_populates='product_relate')

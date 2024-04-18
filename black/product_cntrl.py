@@ -45,13 +45,59 @@ class ProductCntrl:
         resp = prod_rep.add_product_relate(args)
         return resp
 
-    def update_product_relate(self, req, id):
-        data = prod_serv.create_data_relate_req(req)
-        prod_rep.update_product_relate(data, id)
+    def update_prod_relate(self, id, req):
+        data = prod_serv.add_product_relate(req)
+        resp = prod_rep.update_product_relate(data, id)
+        return resp
 
     def load_product_relate(self):
         data = prod_rep.load_product_relate()
         return data
+
+    def load_product_relate_item(self, product_id):
+        item = prod_rep.load_product_relate_item(product_id)
+        return item
+    def load_prod_relate_product_id_all(self, product_id):
+        items = prod_rep.load_prod_relate_product_id_all(product_id)
+        return items
+
+
+    def delete_product_relate(self, id):
+        bool = prod_rep.delete_product_relate(id)
+        return bool
+
+    def add_product_source(self, request):
+        args = prod_serv.add_product_source(request)
+        resp = prod_rep.add_product_source(args)
+        return resp
+
+    def update_product_source(self, id, req):
+        data = prod_serv.add_product_source(req)
+        resp = prod_rep.update_product_source(id, data)
+        return resp
+
+    def load_product_source_all(self):
+        data = prod_rep.load_product_source_all()
+        return data
+
+    def load_product_source_item(self, product_id):
+        resp = prod_rep.load_product_source_item(product_id)
+        return resp
+
+    def update_prod_sour_quan(self, id, quantity):
+        resp = prod_rep.update_prod_sour_quan(id, quantity)
+        return resp
+
+
+    def load_product_source_article(self, article):
+        item = prod_rep.load_product_source_article(article)
+        return item
+
+    def delete_product_source(self, id):
+        bool = prod_rep.delete_product_source(id)
+        return bool
+
+
 
 
 

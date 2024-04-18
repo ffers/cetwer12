@@ -12,3 +12,4 @@ from .tg_answer_cntrl import tg_answ_cntrl
 from .telegram_controller import tg_cntrl
 from .add_order_to_crm import pr_to_crm_cntr
 from .prom_cntrl import prom_cntrl
+from .sour_an_cntrl import sour_an_cntrl

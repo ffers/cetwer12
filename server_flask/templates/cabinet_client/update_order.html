@@ -23,11 +23,17 @@
     }
 	</script>
 	<div class="content"> <div class="row">
-		<div class="col-sm"><h1 > Замовлення №<span class="textToCopy" data-text="{{order.order_id_sources}}">{{order.order_id_sources}} <i class="fa-regular fa-copy"></i></span>  </h1><!-- Кнопка копіювання --></div>
+		<div class="col-sm"><h1 > Замовлення №
+			<span class="textToCopy" data-text="{{order.order_id_sources}}">{{order.order_id_sources}} 
+				<i class="fa-regular fa-copy"></i>
+			</span>  </h1><!-- Кнопка копіювання --></div>
 		</div>
 		<div class="row"> 
 		<div class="col-sm"><p style="text-align: center;">
-			<small class="text-muted">Створено:</small> {{order.timestamp.strftime('%H:%M %d-%m-%Y')}}</p></div>
+			<small class="text-muted">
+				Створено:
+			</small> {{order.timestamp.strftime('%H:%M %d-%m-%Y')}}</p>
+		</div>
 		</div>
 
 
@@ -47,7 +53,12 @@
 					Видалити Замовлення
 			</button>
 		</div>
-			{% endif %}
+		{% endif %}
+		<div class="col-sm" style="text-align: center;"><a href="/cabinet/orders/return/{{order.id}}">
+			<button type="button" class="col-sm btn btn-outline-info my-2 my-sm-0">
+				Повернення Замовлення
+			</button></a></div>
+			
 		<div class="col-sm" style="text-align: center;"><a href="/cabinet/orders/dublicate/{{order.id}}">
 				<button type="button" class="col-sm btn btn-outline-info my-2 my-sm-0">
 					Дублювати Замовлення

@@ -1,4 +1,6 @@
-{% extends 'cabinet_client/Products/layout/base.html' %} {% block title %}Прихід Товару{% endblock %}
+{% extends 'cabinet_client/Products/layout/base.html' %}
+
+{% block title %}Прихід Товару{% endblock %}
 
 {% block head %}
 <!-- Підключення стилів Flatpickr -->
@@ -11,10 +13,10 @@
 {% block body %}
 	<div class="content">
 		<h1 style="text-align: center;">
-            Додати Компонент
+            Додати Ісходнік
         </h1>
 		
-			<form action="/cabinet/products/update_product_relate/{{item.id}}" method="post">
+			<form action="{{ url_for('Products.add_product_source') }}" method="post">
                 <div id="product-container">
                     <div class="row">   
                         <div class="col-sm col-lg-2">
@@ -23,7 +25,7 @@
                                 to set attributes.-->
                             <input class="form-control" 
                                 type="text" id="event_date" name="event_date"/>                       
-                        </div>
+                            </div>
                     
                         <script>
                             flatpickr('#event_date', {
@@ -32,29 +34,7 @@
                             defaultDate: 'today', 
                             });
                         </script>
-
-                        <div class="col-sm col-lg-2">
-                            <input 
-                            placeholder="Связь" 
-                            class="form-control" 
-                            style="text-align: center;" 
-                            id="article_product" 
-                            name="article_product" 
-                            value="{{item.products.article}}"                   
-                            > 
-                        </div>
-                        <div class="col-sm col-lg-2">
-                            <input 
-                            placeholder="Связь" 
-                            class="form-control" 
-                            style="text-align: center;" 
-                            id="product" 
-                            name="product" 
-                            value="{{item.products.id}}"                   
-                            > 
-                        </div>
-                      
-        
+                      </br>
                         <!-- Товар та кількість -->
                         <div class="col-sm col-lg-2">
                             <input 
@@ -62,42 +42,34 @@
                             class="form-control" 
                             style="text-align: center;" 
                             id="article" 
-                            name="article" 
-                            value="{{item.article}}"                   
+                            name="article"                    
                             > 
-                        </div>
                             <br>
-                        <div class="col-sm col-lg-2">
-                            <input 
-                                placeholder="Назва" 
-                                class="form-control  " 
-                                style="text-align: center;" 
-                                id="name" 
-                                name="name"
-                                value="{{item.name}}"
-                                > 
-                                <br>
                         </div>
                         <div class="col-sm col-lg-2">
                             <input 
-                                placeholder="Ціна" 
-                                class="form-control" 
-                                style="text-align: center;" 
-                                id="price" 
-                                name="price"    
-                                value="{{item.price}}"                
-                                > 
-                                <br>
+                            placeholder="Назва" 
+                            class="form-control  " 
+                            style="text-align: center;" 
+                            id="name" 
+                            name="name"
+                            > 
+                            <br>
                         </div>
+                        <div class="col-sm col-lg-2" >
+                            <input style="text-align: 
+                            center;" class=" price form-control" 
+                            id="price" name="price" 
+                            min="1" placeholder="Ціна вхідна" 
+                            required><br>
+                        </div>	
                         <div class="col-sm col-lg-2">
-                            <input style="text-align: center;"
-                             class="quantity form-control" 
+                            <input style="text-align: center;" class="quantity form-control" 
                             id="quantity" name="quantity"  min="1" max="10000" 
-                            placeholder="* Кількість" required
-                            value="{{item.quantity}}"><br>
+                            placeholder="* Кількість" required><br>
                         </div>
-                        
-                    </div>                
+                    </div>
+                               
                 </div></br>
 
             <div class="row">

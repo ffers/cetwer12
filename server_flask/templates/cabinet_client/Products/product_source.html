@@ -4,7 +4,7 @@
 
 {% block body %}
 
-<h1 align="center">{% block header %}Компоненти{% endblock %}</h1>
+<h1 align="center">{% block header %}Ісходникі     Сумма: {{money_all}}{% endblock %}</h1>
 
   
  
@@ -15,29 +15,29 @@
         <thead>
           <tr >
             <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col">Связь</th>
             <th scope="col">Артікль</th>
             <th scope="col">Назва</th>
+            <th scope="col">Ціна</th>
             <th scope="col">Кількість</th>
+            <th scope="col">Гроші</th>
           </tr>
         </thead>
         <tbody >
                      {% for item in items %}
           <tr>
-            <td></td>   
             <td>
-              <a href="/cabinet/products/update_product_relate/{{item.id}}">
+              <a href="/cabinet/products/update_product_source/{{item.id}}">
                 <button type="button" class="btn btn-info">
                   <i class="fa-solid fa-pen"></i>
                 </button>
               </a>
             </td>
-            <td>{{item.products.article}}</td>     
             <td>{{item.article}}</td>
             <td>{{item.name}}</td>
+            <td>{{item.price}}</td>
             <td>{{item.quantity}}</td>
-        </tr>
+            <td>{{item.money}}</td>            
+          </tr>
       
                           {% endfor %}    
         </tbody>

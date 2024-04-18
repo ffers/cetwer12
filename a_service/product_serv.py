@@ -33,12 +33,14 @@ class ProductServ:
         return (article, product_name, description, quantity, price, body_product_price)
 
     def add_product_relate(self, request):
+        print("add_product_relate")
         article = request.form['article']
-        name = request.form['product_name']
-        quantity = request.form['description']
-        product_id = request.form['quantity']
-        args = [article, name, quantity, product_id]
-        return args
+        name = request.form['name']
+        quantity = request.form['quantity']
+        product_id = request.form['product']
+        list_data = [article, name, quantity, product_id]
+        print(list_data)
+        return list_data
 
     def create_data_relate_req(self, req):
         data = [
@@ -48,6 +50,26 @@ class ProductServ:
             req.form["quantity"]
         ]
         return data
+
+    def create_data_source_req(self, req):
+        data = [
+            req.form["article"],
+            req.form["name"],
+            req.form["price"],
+            req.form["quantity"]
+        ]
+        return data
+
+    def add_product_source(self, request):
+        print("add_product_source")
+        article = request.form['article']
+        name = request.form['name']
+        price = request.form['price']
+        quantity = request.form['quantity']
+        money = self.format_float(price) * int(quantity)
+        list_data = [article, name, price, quantity, money]
+        print(list_data)
+        return list_data
 
 
 

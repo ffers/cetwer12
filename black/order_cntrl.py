@@ -14,6 +14,7 @@ from .add_order_to_crm import pr_to_crm_cntr
 from a_service import tg_serv
 from .prom_cntrl import prom_cntrl
 from utils import util_asx
+from .sour_an_cntrl import sour_an_cntrl
 
 sys.path.append('../')
 from common_asx.utilits import Utils
@@ -131,8 +132,18 @@ class OrderCntrl:
         bool = ord_rep.change_status(order_id, status)
         bool_prom = prom_cntrl.change_status(order_id, 1)
         update_analitic = prod_an_cntrl.product_in_order(order)
+        resp_sour = sour_an_cntrl.confirmed(order)
         resp = self.check_del_method(order)
         return resp
+
+    def return_order(self, order_id, status):
+        order = ord_rep.load_item(order_id)
+        bool = ord_rep.change_status(order_id, status)
+        bool_prom = prom_cntrl.change_status(order_id, 2)
+        # update_analitic = prod_an_cntrl.product_in_order(order)
+        resp_sour = sour_an_cntrl.return_prod(order)
+        # resp = self.check_del_method(order)
+        return bool
 
     def check_del_method(self, order):
         resp = {"success": False}

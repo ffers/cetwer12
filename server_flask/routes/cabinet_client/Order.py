@@ -185,6 +185,22 @@ def send_cab(id):
             flash('Замовлення підтверджено але ттн не створено: ' + resp["success"], category='error')
         return redirect('/cabinet/orders')
 
+
+@bp.route('/cabinet/orders/return/<int:id>', methods=['POST', 'GET'])
+@login_required
+@admin_permission.require(http_exception=403)
+def return_order(id):
+    if request.method == 'POST':
+        return redirect('/cabinet/orders')
+    else:
+        print(f"Працює {id}")
+        resp = ord_cntrl.return_order(id, 14)
+        if resp == True:
+            flash('Замовлення повернено', category='success')
+        else:
+            flash('Замовлення підтверджено але ттн не створено: ' + resp["success"], category='error')
+        return redirect('/cabinet/orders')
+
 @bp.route('/cabinet/orders/get_cities', methods=['POST', 'GET'])
 @login_required
 @author_permission.require(http_exception=403)

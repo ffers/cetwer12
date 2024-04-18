@@ -125,38 +125,42 @@ def delete_product(id):
 @admin_permission.require(http_exception=403)
 def add_product_relate():
     if request.method == 'POST':
+        print("ПРацюєм")
         resp_bool = prod_cntrl.add_product_relate(request)
-        resp_bool = True
         for item in request.form:
             print(item)
         if resp_bool == True:
             print("Product added successfully")
             responce_data = {'status': 'success', 'message': 'Product relate added successfully'}
-            print(responce_data)
-            return jsonify(responce_data)
+            flash('Продукт створено!', category='success')
+            return redirect(url_for('Products.product_relate'))
         else:
             print(request.form)
             print("НЕВИЙШЛО!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             return redirect(url_for('Products.add_product_relate'))
     return render_template('cabinet_client/Products/add_product_relate.html', user=current_user )
 
-
 @bp.route('/cabinet/products/update_product_relate/<int:id>', methods=['POST', 'GET'])
 @login_required
 @admin_permission.require(http_exception=403)
 def update_product_relate(id):
+    item = prod_cntrl.load_product_relate_item(id)
     if request.method == 'POST':
-        # resp_bool = prod_cntrl.add_product(request)
+        resp_bool = prod_cntrl.update_prod_relate(id, request)
         resp_bool = True
         for item in request.form:
             print(item)
         if resp_bool == True:
             print("Product added successfully")
+            flash('Продукт оновлено!', category='success')
+            return redirect(url_for(f'Products.product_relate'))
         else:
             print(request.form)
             print("НЕВИЙШЛО!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            return redirect(url_for('Products.update_product_relate'))
-    return render_template('cabinet_client/Products/update_product_relate.html', user=current_user )
+            return redirect(url_for(f'Products.product_source'))
+    return render_template('cabinet_client/Products/update_product_relate.html',
+                           user=current_user, item=item )
+
 
 @bp.route('/cabinet/products/product_relate', methods=['POST', 'GET'])
 @login_required
@@ -165,6 +169,79 @@ def product_relate():
     items = prod_cntrl.load_product_relate()
     return render_template('cabinet_client/Products/product_relate.html',
                            user=current_user, items=items)
+
+@bp.route('/cabinet/products/delete_relate/<int:id>', methods=['GET'])
+@login_required
+@admin_permission.require(http_exception=403)
+def delete_product_relate(id):
+    product = prod_cntrl.delete_product_relate(id)
+    print(f"Перевірка {product}")
+    flash('Продукт видалено', category='success')
+    return render_template(
+        'cabinet_client/Products/product_relate.html',
+        user=current_user, product=product)
+
+
+@bp.route('/cabinet/products/add_product_source', methods=['POST', 'GET'])
+@login_required
+@admin_permission.require(http_exception=403)
+def add_product_source():
+    if request.method == 'POST':
+        print("ПРацюєм")
+        resp_bool = prod_cntrl.add_product_source(request)
+        for item in request.form:
+            print(item)
+        if resp_bool == True:
+            print("Product added successfully")
+            responce_data = {'status': 'success', 'message': 'Product relate added successfully'}
+            flash('Продукт створено!', category='success')
+            return redirect(url_for('Products.product_source'))
+        else:
+            print(request.form)
+            print("НЕВИЙШЛО!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            return redirect(url_for('Products.add_product_relate'))
+    return render_template('cabinet_client/Products/add_product_source.html', user=current_user )
+
+
+@bp.route('/cabinet/products/update_product_source/<int:id>', methods=['POST', 'GET'])
+@login_required
+@admin_permission.require(http_exception=403)
+def update_product_source(id):
+    item = prod_cntrl.load_product_source_item(id)
+    if request.method == 'POST':
+        resp_bool = prod_cntrl.update_product_source(id, request)
+        resp_bool = True
+        for item in request.form:
+            print(item)
+        if resp_bool == True:
+            print("Product added successfully")
+            flash('Продукт оновлено!', category='success')
+            return redirect(url_for(f'Products.product_source'))
+        else:
+            print(request.form)
+            print("НЕВИЙШЛО!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            return redirect(url_for(f'Products.product_source'))
+    return render_template('cabinet_client/Products/update_product_source.html',
+                           user=current_user, item=item )
+
+@bp.route('/cabinet/products/product_source', methods=['POST', 'GET'])
+@login_required
+@admin_permission.require(http_exception=403)
+def product_source():
+    items = prod_cntrl.load_product_source_all()
+    return render_template('cabinet_client/Products/product_source.html',
+                           user=current_user, items=items)
+
+@bp.route('/cabinet/products/delete_source/<int:id>', methods=['GET'])
+@login_required
+@admin_permission.require(http_exception=403)
+def delete_product_source(id):
+    product = prod_cntrl.delete_product_source(id)
+    print(f"Перевірка {product}")
+    flash('Продукт видалено', category='success')
+    return render_template(
+        'cabinet_client/Products/product_source.html',
+        user=current_user, product=product)
 
 
 
