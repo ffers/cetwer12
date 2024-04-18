@@ -11,6 +11,7 @@ from .add_order_to_crm import PromToCrm
 from .handling_b import search_reply_message, button_hand
 from a_service.update_to_crm import up_to_srm
 from .telegram_controller import tg_cntrl
+from .order_cntrl import ord_cntrl
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
@@ -60,7 +61,8 @@ class TgAnswerCntrl:
             search_reply_message(data)
             self.await_telegram(data)
         if "callback_query" in data:
-            button_hand(data)
+            # button_hand(data)
+            self.await_button(data)
         return '', 200
 
     def await_telegram(self, data):
@@ -77,6 +79,31 @@ class TgAnswerCntrl:
             print("Отримали повідомлення з Робочого чату")
             text_colour = pr_bt_srv.work_with_product(data)
             tg_cntrl.sendMessage(tg_cntrl.chat_id_sk, text_colour)
+
+
+    def await_button(self, data):
+        chat_confirm = data["callback_query"]["from"]["id"]
+        if int(tg_cntrl.chat_id_confirm) == chat_confirm:
+            key = data["callback_query"]["message"]["reply_markup"]
+            if "inline_keyboard" in key:
+                text_order, data_keyb, text_data_back = tg_serv.await_button_parse(data)
+                print(f"need {key}")
+                order_id = tg_serv.search_order_number(text_order)
+                order_obj = ord_cntrl.load_for_order_code(order_id)
+                resp = self.defintion_status(data_keyb, order_obj.id)
+                return resp
+
+    def defintion_status(self, data_keyb, order_id):
+        resp = None
+        print(f"data_keyb {data_keyb}")
+        if "1" == data_keyb:
+            resp = ord_cntrl.confirmed_order(order_id)
+            print(resp)
+        if "2" == data_keyb:
+            resp = ord_cntrl.question_order(order_id)
+        return resp
+
+
 
 tg_answ_cntrl = TgAnswerCntrl()
 

@@ -178,7 +178,7 @@ def send_cab(id):
         return redirect('/cabinet/orders')
     else:
         print(f"Працює {id}")
-        resp = ord_cntrl.confirmed_order(id, 2)
+        resp = ord_cntrl.confirmed_order(id)
         if resp["success"] == True:
             flash('Замовлення підтвержено', category='success')
         else:

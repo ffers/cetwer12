@@ -1,6 +1,6 @@
 
 from dotenv import load_dotenv
-import os, logging
+import os, logging, re
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
@@ -104,6 +104,26 @@ class TgServ():
             self.send_order_curier(order)
         if flag == "crm_to_telegram":
             self.send(order)
+
+    def search_order_number(self, text_message):
+        print(f"text_message {text_message}")
+        if "Замовлення №" in text_message:
+            pattern = r'Замовлення № (\d+)'
+            number_order = re.search(pattern, text_message)
+            print(number_order)
+            return number_order.group(1).strip()
+
+    def await_button_parse(self, data):
+        text_order = data["callback_query"]["message"]["text"]
+        data_keyb = data['callback_query']['data']
+        text_data_back = data["callback_query"]["message"]["reply_markup"]\
+            ["inline_keyboard"][0][0]["text"]
+        return text_order, data_keyb, text_data_back
+
+    def replace_text_ttn(self, data, ttn_number):
+        text = data["message"]["reply_to_message"]["text"]
+        new_text = text.replace(";ТТН немає", f";{ttn_number}")
+        return new_text
 
 
     # def await_tg_button(self, data):

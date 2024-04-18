@@ -20,6 +20,7 @@ class TelegramController():
         self.chat_id_rozet = os.getenv("CH_ID_ROZ")
         self.chat_id_vp = os.getenv("CHAT_ID_INFO")
         self.chat_id_sk = os.getenv("CH_ID_SK")
+        self.chat_id_confirm = os.getenv("CHAT_ID_CONFIRMATION")
 
 
     def sendPhoto(self):

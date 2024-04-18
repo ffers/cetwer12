@@ -58,6 +58,14 @@ class OrderCntrl:
         print(item)
         return item
 
+    def load_order_for_code(self, order_code):
+        order = ord_rep.load_for_code(order_code)
+        return order.id
+
+    def load_for_order_code(self, order_code):
+        order = ord_rep.load_for_order_code(order_code)
+        return order
+
     def dublicate(self, order_id):
         item = ord_rep.load_item(order_id)
         dublicate_item = ord_rep.dublicate_item(item)
@@ -127,14 +135,28 @@ class OrderCntrl:
         result = ord_serv.search_for_order(order)
         return result
 
-    def confirmed_order(self, order_id, status):
+    def confirmed_order(self, order_id):
+        print("first")
         order = ord_rep.load_item(order_id)
-        bool = ord_rep.change_status(order_id, status)
-        bool_prom = prom_cntrl.change_status(order_id, 1)
+        bool = ord_rep.change_status(order_id, 2)
+        bool_prom = self.definition_source(order, 1)
         update_analitic = prod_an_cntrl.product_in_order(order)
         resp_sour = sour_an_cntrl.confirmed(order)
         resp = self.check_del_method(order)
         return resp
+
+    def question_order(self, order_id):
+        order = ord_rep.load_item(order_id)
+        bool = ord_rep.change_status(order_id, 7)
+        bool_prom = self.definition_source(order, 2)
+        return bool
+
+    def definition_source(self, order, status):
+        bool_prom = False
+        if order.source_order_id == 2:
+            bool_prom = prom_cntrl.change_status(order.order_code, status)
+        return bool_prom
+
 
     def return_order(self, order_id, status):
         order = ord_rep.load_item(order_id)
@@ -215,9 +237,7 @@ class OrderCntrl:
         bool = ord_rep.change_status_list(orders, status)
         return bool
 
-    def load_order_for_code(self, order_code):
-        order = ord_rep.load_for_code(order_code)
-        return order.id
+
 
 
 

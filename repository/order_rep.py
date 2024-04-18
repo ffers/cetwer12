@@ -76,6 +76,10 @@ class OrderRep:
         item_all = OrderedProduct.query.filter_by(order_id=id).all()
         return item_all
 
+    def load_for_order_code(self, id):
+        item = Orders.query.filter_by(order_code=id).first()
+        return item
+
     def load_for_code(self, id):
         item = Orders.query.filter_by(order_id_sources=str(id)).order_by(desc(Orders.timestamp)).first()
         return item
