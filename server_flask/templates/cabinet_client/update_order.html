@@ -53,11 +53,18 @@
 					Видалити Замовлення
 			</button>
 		</div>
+
+		<div class="col-sm" style="text-align: center;"><a href="/cabinet/orders/send_storage/{{order.id}}">
+			<button type="button" class="col-sm btn btn-outline-info my-2 my-sm-0">
+				Провести на склад
+			</button></a>
+		</div>
 		{% endif %}
 		<div class="col-sm" style="text-align: center;"><a href="/cabinet/orders/return/{{order.id}}">
 			<button type="button" class="col-sm btn btn-outline-info my-2 my-sm-0">
 				Повернення Замовлення
-			</button></a></div>
+			</button></a>
+		</div>
 			
 		<div class="col-sm" style="text-align: center;"><a href="/cabinet/orders/dublicate/{{order.id}}">
 				<button type="button" class="col-sm btn btn-outline-info my-2 my-sm-0">

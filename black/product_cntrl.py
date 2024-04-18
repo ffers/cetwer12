@@ -61,7 +61,6 @@ class ProductCntrl:
         items = prod_rep.load_prod_relate_product_id_all(product_id)
         return items
 
-
     def delete_product_relate(self, id):
         bool = prod_rep.delete_product_relate(id)
         return bool

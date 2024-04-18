@@ -167,6 +167,11 @@ class OrderCntrl:
         # resp = self.check_del_method(order)
         return bool
 
+    def send_storage(self, order_id):
+        order = ord_rep.load_item(order_id)
+        resp_sour = sour_an_cntrl.confirmed(order)
+        return resp_sour
+
     def check_del_method(self, order):
         resp = {"success": False}
         print("deliveri method", order.delivery_method_id)
@@ -236,6 +241,7 @@ class OrderCntrl:
         orders, status = ord_serv.parse_dict_status(data)
         bool = ord_rep.change_status_list(orders, status)
         return bool
+
 
 
 

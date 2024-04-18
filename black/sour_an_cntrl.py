@@ -2,8 +2,6 @@ from .product_cntrl import prod_cntrl
 from a_service import sour_an_serv
 
 
-
-
 class SourAnCntrl:
     def confirmed(self, order):
         for product in order.ordered_product:

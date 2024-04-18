@@ -461,6 +461,12 @@ def registered():
     return render_template('cabinet_client/order_draft.html', pagination=pagination,
                            tasks_users=tasks_users, orders=data_subset, user=current_user)
 
+@bp.route('/cabinet/orders/send_storage/<int:id>', methods=['GET', 'POST'])
+@login_required
+@author_permission.require(http_exception=403)
+def send_storage(id):
+    resp = ord_cntrl.send_storage(id)
+    return jsonify({"success": True})
 
 
 
