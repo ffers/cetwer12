@@ -12,8 +12,8 @@ class SourAnCntrl:
                     prod_source = prod_cntrl.load_product_source_article(prod_comp.article)
                     new_quantity = prod_source.quantity - sale_quantity
                     resp = prod_cntrl.update_prod_sour_quan(prod_source.id, new_quantity)
-                return resp
-            return False
+        return resp
+
 
     def return_prod(self, order):
         for product in order.ordered_product:
@@ -26,8 +26,7 @@ class SourAnCntrl:
                     new_quantity = prod_source.quantity + sale_quantity
                     print(f"new_quantity {new_quantity}")
                     resp = prod_cntrl.update_prod_sour_quan(prod_source.id, new_quantity)
-                return resp
-            return False
+        return resp
 
 
 sour_an_cntrl = SourAnCntrl()
