@@ -127,7 +127,7 @@ tr {
     /* height: 100vh; */
 }
 
-.button_pult button select {
+.button_pult button, select {
     margin-right: 10px;
 }
 

@@ -242,6 +242,13 @@ class OrderCntrl:
         bool = ord_rep.change_status_list(orders, status)
         return bool
 
+    def test_order(self, order_id):
+        order = ord_rep.load_item(order_id)
+        bool = sour_an_cntrl.count_income(order)
+        if not bool:
+            tg_cntrl.sendMessage(tg_cntrl.chat_id_info, "Немає такого компоненту ")
+        return bool
+
 
 
 

@@ -469,6 +469,14 @@ def send_storage(id):
     return jsonify({"success": True})
 
 
+@bp.route('/cabinet/orders/test/<int:id>', methods=['GET', 'POST'])
+@login_required
+@author_permission.require(http_exception=403)
+def test_order(id):
+    resp = ord_cntrl.test_order(id)
+    return jsonify({"success": resp})
+
+
 
 #  id |        name        | description
 # ----+--------------------+-------------

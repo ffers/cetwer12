@@ -59,6 +59,11 @@
 				Провести на склад
 			</button></a>
 		</div>
+		<div class="col-sm" style="text-align: center;"><a href="/cabinet/orders/test/{{order.id}}">
+			<button type="button" class="col-sm btn btn-outline-info my-2 my-sm-0">
+				Тест ордер
+			</button></a>
+		</div>
 		{% endif %}
 		<div class="col-sm" style="text-align: center;"><a href="/cabinet/orders/return/{{order.id}}">
 			<button type="button" class="col-sm btn btn-outline-info my-2 my-sm-0">
@@ -84,6 +89,19 @@
 			<input class="form-check-input-info item_check" type="checkbox" 
 				name="selectedItems" value="{{order.id}}" id="selectedItems"><footer><small class="text-muted">Зміни:</small></footer>
 		</div> -->
+
+		<div class="col-sm"><h3 > Замовлення №
+			<span class="textToCopy" data-text="{{order.order_id_sources}}">{{order.order_id_sources}} 
+				<i class="fa-regular fa-copy"></i>
+			</span>  </h3><!-- Кнопка копіювання --></div>
+		</div>
+		<div class="row"> 
+		<div class="col-sm"><p style="text-align: center;">
+			<small class="text-muted">
+				Створено:
+			</small> {{order.timestamp.strftime('%H:%M %d-%m-%Y')}}</p>
+		</div>
+		</div>
 		
 	</div><br>
 		<form id="myForm" action="/cabinet/orders/update/{{order.id}}" method="post">
