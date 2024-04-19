@@ -13,10 +13,10 @@ def bot():
     if request.method == 'POST':
         data = request.json
         print(request.json)
-        try:
-            tg_answ_cntrl.await_tg_button(data)
-        except:
-            print("не вдалося отримати відповідь")
+        # try:
+        tg_answ_cntrl.await_tg_button(data)
+        # except:
+        #     print("не вдалося отримати відповідь")
         return {'success': True}
     return render_template('index.html', user=current_user)
 
