@@ -84,7 +84,7 @@ class TgServ():
             product_text += f" {product.products.product_name}\n"
         data_get_order = (
             f"{product_article} Сумма: {order.sum_price} \n\n{description}\n\n"
-            f"{order.city_name}, {order.warehouse_text} \n\n🍏 Замовлення {order.source_order.name} №{order.order_id_sources}\n"
+            f"{order.city_name}, {order.warehouse_text} \n\n🍏 Замовлення {order.source_order.name} № {order.order_id_sources}\n"
             f"\n{order.phone};{ttn}\n{order.client_lastname} {order.client_firstname}\n"
             f"Способ оплати - {payment_method.name}, {sum_check} \n\n"
             

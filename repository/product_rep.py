@@ -128,10 +128,6 @@ class ProductRep():
         products = ProductSource.query.order_by(ProductSource.timestamp).all()
         return products
 
-    def load_product_source_item(self, product_id):
-        product = ProductSource.query.get_or_404(product_id)
-        return product
-
     def load_product_source_article(self, article):
         item = ProductSource.query.filter_by(article=article).first()
         return item

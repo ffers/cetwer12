@@ -1,15 +1,14 @@
-from a_service.analitic import ProductAnanaliticServ
-from repository import ProductAnaliticRep
+from a_service.analitic import product_analitic_serv as prod_an_serv
+from repository import prod_an_rep
+from repository import prod_rep
 
-prod_an_rep = ProductAnaliticRep()
 
-pr_an_serv = ProductAnanaliticServ()
 
 class ProductAnaliticControl():
     def sum_money_in_product(self, product_id):
         body_price = prod_an_rep.body_product_price(product_id)
         quantity = prod_an_rep.quantity_product(product_id)
-        sum_money = pr_an_serv.sum_money(body_price, quantity)
+        sum_money = prod_an_serv.sum_money(body_price, quantity)
         return sum_money
 
     def sum_quantity_sale(self, product_id):
@@ -20,7 +19,7 @@ class ProductAnaliticControl():
     def money_in_sale(self, product_id):
         body_price = prod_an_rep.body_product_price(product_id)
         quantity_sale = prod_an_rep.get_sum_product_sale(product_id)
-        sum_money = pr_an_serv.sum_money(body_price, quantity_sale)
+        sum_money = prod_an_serv.sum_money(body_price, quantity_sale)
         return sum_money
 
     def item_product_analitic(self, product_id):
@@ -72,6 +71,13 @@ class ProductAnaliticControl():
     def analitic_delete(self, id):
         bool = prod_an_rep.delete_item(id)
         return bool
+
+    def count_income(self):
+        prod_ords = prod_an_rep.load_prod_order()
+        prod_sour = prod_rep.load_product_source_all()
+        # for prod in prod_ords:
+        #     a = prod.price -
+        pass
 
 
 

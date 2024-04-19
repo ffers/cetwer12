@@ -70,6 +70,11 @@ class ProductAnaliticRep():
         print(">>> Delete in datebase")
         return True
 
+    def load_prod_order(self):
+        items = OrderedProduct.query.order_by(OrderedProduct.timestamp.desc()).all
+        return items
+
+
 prod_an_rep = ProductAnaliticRep()
 
 

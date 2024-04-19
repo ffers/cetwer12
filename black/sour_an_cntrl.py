@@ -16,6 +16,7 @@ class SourAnCntrl:
 
 
     def return_prod(self, order):
+        resp = None
         for product in order.ordered_product:
             prod_comps = prod_cntrl.load_prod_relate_product_id_all(product.product_id)
             if prod_comps:
@@ -26,6 +27,18 @@ class SourAnCntrl:
                     new_quantity = prod_source.quantity + sale_quantity
                     print(f"new_quantity {new_quantity}")
                     resp = prod_cntrl.update_prod_sour_quan(prod_source.id, new_quantity)
+        return resp
+
+    def count_income(self, order):
+        resp = None
+        for product in order.ordered_product:
+            prod_comps = prod_cntrl.load_prod_relate_product_id_all(product.product_id)
+            if prod_comps:
+                for prod_comp in prod_comps:
+                    sale_quantity = prod_comp.quantity * product.quantity
+                    prod_source = prod_cntrl.load_product_source_article(prod_comp.article)
+                    mon_income = prod_source.price * sale_quantity
+                    resp = prod_cntrl.update_prod_sour_quan(prod_source.id, mon_income)
         return resp
 
 
