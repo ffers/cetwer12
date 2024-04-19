@@ -4,6 +4,7 @@ from a_service import sour_an_serv
 
 class SourAnCntrl:
     def confirmed(self, order):
+        resp = None
         for product in order.ordered_product:
             prod_comps = prod_cntrl.load_prod_relate_product_id_all(product.product_id)
             if prod_comps:
