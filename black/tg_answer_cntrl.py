@@ -82,7 +82,7 @@ class TgAnswerCntrl:
 
 
     def await_button(self, data):
-        chat_confirm = data["callback_query"]["from"]["id"]
+        chat_confirm = data["callback_query"]["message"]["chat"]["id"]
         if int(tg_cntrl.chat_id_confirm) == chat_confirm:
             key = data["callback_query"]["message"]["reply_markup"]
             if "inline_keyboard" in key:
