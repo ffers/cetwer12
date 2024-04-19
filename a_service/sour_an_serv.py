@@ -5,8 +5,4 @@ class SourAnServ:
         new_quantity = prod_source.quantity - sale_quantity
         return new_quantity
 
-
-
-
-
 sour_an_serv = SourAnServ()

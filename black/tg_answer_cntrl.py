@@ -61,7 +61,7 @@ class TgAnswerCntrl:
             search_reply_message(data)
             self.await_telegram(data)
         if "callback_query" in data:
-            # button_hand(data)
+            button_hand(data)
             self.await_button(data)
         return '', 200
 

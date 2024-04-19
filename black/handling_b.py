@@ -2,7 +2,7 @@ import os, json, re
 from dotenv import load_dotenv
 from api.prom import EvoClient
 from black.manager_ttn import ManagerTTN
-from a_service import tg_serv
+
 from .telegram_controller import tg_cntrl
 
 
@@ -10,7 +10,7 @@ env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
 TOKEN_PROM = os.getenv("PROM_TOKEN")
 prom_cl = EvoClient(TOKEN_PROM)
-# send_message_cl = SendMessage()
+
 
 
 mg_ttn = ManagerTTN()
@@ -119,6 +119,7 @@ def replace_text_ttn(data, ttn_number):
     return new_text
 
 def search_invoice_ttn(data):
+    print("Шукаю розетку ттн")
     invoice_pattern = r'PRM-\d+'
     text = data["message"]["text"]
     search_ttn_pattern = re.findall(invoice_pattern, text)
@@ -127,8 +128,8 @@ def search_invoice_ttn(data):
 
 def search_order_number(text_message):
     print(f"text_message {text_message}")
-    if "Замовлення №" in text_message:
-        pattern = r'Замовлення № (\d+)'
+    if "Замовлення PROM" in text_message:
+        pattern = r'PROM № (\d+)'
         number_order = re.search(pattern, text_message)
         print(number_order)
         return number_order.group(1).strip()
@@ -146,14 +147,14 @@ def search_reply_message(data):
             return None
 
 def button_hand(data_in):
-    AUTH_TOKEN = os.getenv("PROM_TOKEN")
-    api_example = EvoClient(AUTH_TOKEN)
-    invoice_pattern = r'PRM-\d+'
-    global callback_query_id
-    callback_query_id = data_in["callback_query"]["id"]
-    data_keyb = json.loads(data_in['callback_query']['data'])
-    text_data_back = data_in["callback_query"]["message"]["reply_markup"]["inline_keyboard"][0][0]["text"]
-
+    # AUTH_TOKEN = os.getenv("PROM_TOKEN")
+    # api_example = EvoClient(AUTH_TOKEN)
+    # invoice_pattern = r'PRM-\d+'
+    # global callback_query_id
+    # callback_query_id = data_in["callback_query"]["id"]
+    # data_keyb = json.loads(data_in['callback_query']['data'])
+    # text_data_back = data_in["callback_query"]["message"]["reply_markup"]["inline_keyboard"][0][0]["text"]
+    search_invoice_ttn(data_in)
 
     # if "Прийнято" in text_data_back:
     #     status = create_status_get(data_keyb, order_id)
@@ -166,11 +167,11 @@ def button_hand(data_in):
     #         tg_cntrl.answerCallbackQuery(callback_query_id, "Питання")
     #         resp_api = api_example.get_set_status(status)
     #         print(resp_api)
-    if "Надіслати накладну" in text_data_back:
-        tg_cntrl.forceReply(chat_id_vp)
-        tg_cntrl.answerCallbackQuery(callback_query_id, "Чекаю накладну")
-        global invoice_order
-        invoice_order = data_keyb
+    # if "Надіслати накладну" in text_data_back:
+    #     tg_cntrl.forceReply(chat_id_vp)
+    #     tg_cntrl.answerCallbackQuery(callback_query_id, "Чекаю накладну")
+    #     global invoice_order
+    #     invoice_order = data_keyb
     return '', 200
 
 
