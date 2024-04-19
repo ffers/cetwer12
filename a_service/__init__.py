@@ -6,3 +6,4 @@ from .analitic.product_analitic_serv import prod_an_serv
 from .product_serv import prod_serv
 from .prom_serv import prom_serv
 from .sour_an_serv import sour_an_serv
+from .analitic.product_analitic_serv import prod_an_serv

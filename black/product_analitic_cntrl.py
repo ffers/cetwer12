@@ -1,4 +1,4 @@
-from a_service.analitic import product_analitic_serv as prod_an_serv
+from a_service import prod_an_serv
 from repository import prod_an_rep
 from repository import prod_rep
 
