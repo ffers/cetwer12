@@ -11,9 +11,9 @@ def reg_16_00():
         load_orders = ord_cntrl.load_confirmed_order()
         print(load_orders)
         list_dict = create_list_dict(load_orders)
-        # dict_order = del_ord_cntrl.add_registr(list_dict)
-        # tg_cntrl.sendPhoto()
-        # tg_cntrl.sendMessage(tg_cntrl.chat_id_np, dict_order["number_registr"])
+        dict_order = del_ord_cntrl.add_registr(list_dict)
+        tg_cntrl.sendPhoto()
+        tg_cntrl.sendMessage(tg_cntrl.chat_id_np, dict_order["number_registr"])
         OC_log.info("Виконую завдання")
 
 def create_list_dict(orders):

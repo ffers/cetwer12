@@ -1,7 +1,6 @@
 import os, json, re
 from dotenv import load_dotenv
 from api.prom import EvoClient
-from black.manager_ttn import ManagerTTN
 
 from .telegram_controller import tg_cntrl
 
@@ -13,7 +12,6 @@ prom_cl = EvoClient(TOKEN_PROM)
 
 
 
-mg_ttn = ManagerTTN()
 
 
 # вп: -421982888; розет: -1001822083358; укр: -1001173544690; нп: -1001391714237
@@ -145,34 +143,6 @@ def search_reply_message(data):
             get_edit_message(data, text)
         else:
             return None
-
-def button_hand(data_in):
-    # AUTH_TOKEN = os.getenv("PROM_TOKEN")
-    # api_example = EvoClient(AUTH_TOKEN)
-    # invoice_pattern = r'PRM-\d+'
-    # global callback_query_id
-    # callback_query_id = data_in["callback_query"]["id"]
-    # data_keyb = json.loads(data_in['callback_query']['data'])
-    # text_data_back = data_in["callback_query"]["message"]["reply_markup"]["inline_keyboard"][0][0]["text"]
-    search_invoice_ttn(data_in)
-
-    # if "Прийнято" in text_data_back:
-    #     status = create_status_get(data_keyb, order_id)
-    #     print(status)
-    #     print(data_keyb)
-    #     if 1 == data_keyb:
-    #         responce = send_to_chat(order_id, status, data_in)
-    #         print(responce)
-    #     if 2 == data_keyb:
-    #         tg_cntrl.answerCallbackQuery(callback_query_id, "Питання")
-    #         resp_api = api_example.get_set_status(status)
-    #         print(resp_api)
-    # if "Надіслати накладну" in text_data_back:
-    #     tg_cntrl.forceReply(chat_id_vp)
-    #     tg_cntrl.answerCallbackQuery(callback_query_id, "Чекаю накладну")
-    #     global invoice_order
-    #     invoice_order = data_keyb
-    return '', 200
 
 
 

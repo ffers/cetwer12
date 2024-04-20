@@ -138,12 +138,24 @@ class OrderCntrl:
     def confirmed_order(self, order_id):
         print("first")
         order = ord_rep.load_item(order_id)
-        bool = ord_rep.change_status(order_id, 2)
+        crm_status = ord_rep.change_status(order_id, 2)
         bool_prom = self.definition_source(order, 1)
         update_analitic = prod_an_cntrl.product_in_order(order)
         resp_sour = sour_an_cntrl.confirmed(order)
-        resp = self.check_del_method(order)
-        return resp
+        delivery = self.check_del_method(order)
+        result = self.result(crm_status, bool_prom,
+                             update_analitic, resp_sour, delivery)
+        return result
+
+    def result(self, *args):
+        result = {
+            "crm_status": args[0],
+            "bool_prom": args[1],
+            "update_analitic": args[2],
+            "resp_sour": args[3],
+            "delivery": args[4]
+        }
+        return result
 
     def question_order(self, order_id):
         order = ord_rep.load_item(order_id)
@@ -152,7 +164,7 @@ class OrderCntrl:
         return bool
 
     def definition_source(self, order, status):
-        bool_prom = False
+        bool_prom = True
         if order.source_order_id == 2:
             bool_prom = prom_cntrl.change_status(order.order_code, status)
         return bool_prom
@@ -173,7 +185,7 @@ class OrderCntrl:
         return resp_sour
 
     def check_del_method(self, order):
-        resp = {"success": False}
+        resp = False
         print("deliveri method", order.delivery_method_id)
         if order.delivery_method_id == 1:
             resp = self.del_method_np(order)
@@ -186,13 +198,15 @@ class OrderCntrl:
 
 
     def del_method_np(self, order):
-        resp = np_cntrl.manager_data(
+        resp = False
+        np_resp = np_cntrl.manager_data(
             order)  # обработка зкаказа из срм создание ттн, телеграм курьеру заказ, додавання в пром ттн
-        if resp["success"] == True:
+        if np_resp["success"] == True:
             order = ord_rep.load_item(order.id)
             data_tg_dict = tg_serv.create_text_order(order)  # if telegram True send to telegram
             tg_cntrl.sendMessage(tg_cntrl.chat_id_np, data_tg_dict)
-            del_ord_cntrl.update_item(resp, order.id)
+            del_ord_cntrl.update_item(np_resp, order.id)
+            resp = True
             if order.source_order_id == 2:
                 invoice_ttn = order.ttn
                 order_id_sources = order.order_id_sources
@@ -200,8 +214,8 @@ class OrderCntrl:
                 dict_ttn_prom = {"ids": [order_id_sources], "custom_status_id":  137639}
                 util_cntrl.change_status(dict_status_prom)
                 util_cntrl.change_ttn(dict_ttn_prom)
-        if 'OptionsSeat is empty' in resp["errors"]:
-            resp = {"success": "Поштомат зайнятий"}
+        if 'OptionsSeat is empty' in np_resp["errors"]:
+            resp = "Поштомат зайнятий"
             tg_cntrl.sendMessage(tg_cntrl.chat_id_np,
                                  "❗️❗️❗️ ТТН не створено - поштомат зайнятий")
         return resp
@@ -214,14 +228,14 @@ class OrderCntrl:
         keyboard_rozet = tg_cntrl.keyboard_generate("Надіслати накладну", order.order_code)
         resp = tg_cntrl.sendMessage(tg_cntrl.chat_id_rozet, data_tg_dict, keyboard_rozet)
         print(resp)
-        return {"success": True}
+        return True
 
     def del_method_ukr(self, order):
         data_tg_dict = tg_serv.create_text_order(order)
         # tg_cntrl.answerCallbackQuery(callback_query_id, f"Відсилаю в Розетку")
         # keyboard_rozet = tg_cntrl.keyboard_generate("Надіслати накладну", order.order_code)
         resp = tg_cntrl.sendMessage(tg_cntrl.chat_id_rozet, data_tg_dict)
-        return {"success": True}
+        return True
 
     def await_order_cab_tg(self, order, flag=None, id=None): # дубль фукціі await_order щоб обійти діспетчер
         print(f"see_flag {flag}")

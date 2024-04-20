@@ -13,3 +13,4 @@ from .telegram_controller import tg_cntrl
 from .add_order_to_crm import pr_to_crm_cntr
 from .prom_cntrl import prom_cntrl
 from .sour_an_cntrl import sour_an_cntrl
+from .jour_ch_cntrl import jour_ch_cntrl

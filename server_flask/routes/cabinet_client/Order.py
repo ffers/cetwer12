@@ -179,7 +179,7 @@ def send_cab(id):
     else:
         print(f"Працює {id}")
         resp = ord_cntrl.confirmed_order(id)
-        if resp["success"] == True:
+        if resp["delivery"] == True:
             flash('Замовлення підтвержено', category='success')
         else:
             flash('Замовлення підтверджено але ттн не створено: ' + resp["success"], category='error')

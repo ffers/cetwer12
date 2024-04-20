@@ -24,7 +24,7 @@ class TelegramController():
 
 
     def sendPhoto(self):
-        chat_list = [self.chat_id_ukr, self.chat_id_rozet, self.chat_id_np]
+        chat_list = [self.chat_id_rozet, self.chat_id_np]
         for chat in chat_list:
             resp = tg_api.sendPhoto(chat, 'AgACAgIAAxkBAAIMl2YWFuaONHD9_7SWvzDiiK8vmNQSAAK31jEbGsoISBKbThvzHGUpAQADAgADbQADNAQ')
             print(resp)

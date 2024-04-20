@@ -8,10 +8,11 @@ from black.crm_to_telegram import CrmToTelegram
 from repository import OrderRep
 from .product_analitic_cntrl import ProductAnaliticControl
 from .add_order_to_crm import PromToCrm
-from .handling_b import search_reply_message, button_hand
+from .handling_b import search_reply_message
 from a_service.update_to_crm import up_to_srm
 from .telegram_controller import tg_cntrl
 from .order_cntrl import ord_cntrl
+from a_service import tg_answer_serv as serv
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
@@ -60,18 +61,12 @@ class TgAnswerCntrl:
         if "message" in data:
             search_reply_message(data)
             self.await_telegram(data)
+            # button_hand(data)
         if "callback_query" in data:
-            button_hand(data)
             self.await_button(data)
         return '', 200
 
     def await_telegram(self, data):
-        if "text" in data["message"]:
-            print("Отримав повідомленя в тексті")
-            if "entities" in data["message"]:
-                command = data["message"]["entities"][0]["type"]
-                if "bot_command" in command:
-                    print("Отримав команду боту")
         chat_id = data["message"]["chat"]["id"]
         print(chat_id)
         print(ch_id_sk)

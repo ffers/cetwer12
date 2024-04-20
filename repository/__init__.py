@@ -6,3 +6,4 @@ from .day_analitic_rep import DayAnaliticRep
 from .delivery_order_rep import DeliveryOrderRep
 from .order_rep import ord_rep
 from .product_analitic_rep import prod_an_rep
+from .jour_ch_rep import jour_ch_rep
