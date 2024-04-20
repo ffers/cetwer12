@@ -208,12 +208,8 @@ class OrderCntrl:
             del_ord_cntrl.update_item(np_resp, order.id)
             resp = True
             if order.source_order_id == 2:
-                invoice_ttn = order.ttn
-                order_id_sources = order.order_id_sources
-                dict_status_prom = {"order_id": order_id_sources, "declaration_id": invoice_ttn}
-                dict_ttn_prom = {"ids": [order_id_sources], "custom_status_id":  137639}
-                util_cntrl.change_status(dict_status_prom)
-                util_cntrl.change_ttn(dict_ttn_prom)
+                resp_prom_ttn = prom_cntrl.send_ttn(order.order_code, order.ttn, "nova_poshta")
+                resp_prom_status = prom_cntrl.change_status(order.order_code, 137639)
         if 'OptionsSeat is empty' in np_resp["errors"]:
             resp = "Поштомат зайнятий"
             tg_cntrl.sendMessage(tg_cntrl.chat_id_np,

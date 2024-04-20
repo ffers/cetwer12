@@ -23,5 +23,13 @@ class PromServ:
             }
         return dict_status_prom
 
+    def dict_invoice(self, order_id, invoice, delivery):
+        dict_ttn_prom = {
+            "order_id": order_id,
+            "declaration_id": invoice,
+            "delivery_type": delivery
+        }
+        return dict_ttn_prom
+
 
 prom_serv = PromServ()

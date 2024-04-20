@@ -41,7 +41,6 @@ class EvoClient(object):
 
     def make_request(self, method, url, body=None):
         url = HOST + url
-
         headers = {'Authorization': 'Bearer {}'.format(self.token),
                    'Content-type': 'application/json'}
         if body:
@@ -50,7 +49,6 @@ class EvoClient(object):
         max_retries = 5  # Максимальна кількість спроб
         retries = 0
         timeout = 10
-        response = None
         while retries < max_retries:
             try:
                 response = requests.request(method, url, data=body, headers=headers, timeout=timeout)
