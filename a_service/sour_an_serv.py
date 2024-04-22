@@ -102,7 +102,9 @@ class SourAnServ:
 
     def income_func(self):
         resp = self.rep.load_article("income")
-        return resp.money
+        if resp:
+            return resp.money
+        return 0
 
 
 
