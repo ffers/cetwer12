@@ -22,20 +22,6 @@
         // Наприклад, можна використати jQuery для цього: $('#elementId').remove();
     }
 	</script>
-	<div class="content"> <div class="row">
-		<div class="col-sm"><h1 > Замовлення №
-			<span class="textToCopy" data-text="{{order.order_id_sources}}">{{order.order_id_sources}} 
-				<i class="fa-regular fa-copy"></i>
-			</span>  </h1><!-- Кнопка копіювання --></div>
-		</div>
-		<div class="row"> 
-		<div class="col-sm"><p style="text-align: center;">
-			<small class="text-muted">
-				Створено:
-			</small> {{order.timestamp.strftime('%H:%M %d-%m-%Y')}}</p>
-		</div>
-		</div>
-
 
     <script>
         document.querySelectorAll('.textToCopy').forEach(function(element) {
@@ -45,65 +31,69 @@
 			});
 		});
     </script> 
-	<div class="row">
-			{% if 1 == user.id %} 
-		<div class="col-sm" style="text-align: center;">
-			<button type="button" onclick="confirmDelete({{order.id}})" 
-				class="btn btn-outline-info my-2 my-sm-0">
-					Видалити Замовлення
-			</button>
-		</div>
+	<div class="button-container">
+		<nav class="nav">
+				{% if 1 == user.id %} 
+			<div class="button-pult">
+				<button type="button" onclick="confirmDelete({{order.id}})" 
+					class="btn btn-outline-info my-2 my-sm-0">
+						Видалити Замовлення
+				</button>
+			</div>
 
-		<div class="col-sm" style="text-align: center;"><a href="/cabinet/orders/send_storage/{{order.id}}">
-			<button type="button" class="col-sm btn btn-outline-info my-2 my-sm-0">
-				Провести на склад
-			</button></a>
-		</div>
-		<div class="col-sm" style="text-align: center;"><a href="/cabinet/orders/test/{{order.id}}">
-			<button type="button" class="col-sm btn btn-outline-info my-2 my-sm-0">
-				Тест ордер
-			</button></a>
-		</div>
-		{% endif %}
-		<div class="col-sm" style="text-align: center;"><a href="/cabinet/orders/return/{{order.id}}">
-			<button type="button" class="col-sm btn btn-outline-info my-2 my-sm-0">
-				Повернення Замовлення
-			</button></a>
-		</div>
-			
-		<div class="col-sm" style="text-align: center;"><a href="/cabinet/orders/dublicate/{{order.id}}">
+			<div class="button-pult"><a href="/cabinet/orders/send_storage/{{order.id}}">
 				<button type="button" class="col-sm btn btn-outline-info my-2 my-sm-0">
-					Дублювати Замовлення
-				</button></a></div>
-		<div class="col-sm" style="text-align: center;"><a href="/cabinet/orders/confirmed/{{order.id}}">
+					Провести на склад
+				</button></a>
+			</div>
+			<div class="button-pult"><a href="/cabinet/orders/test/{{order.id}}">
 				<button type="button" class="col-sm btn btn-outline-info my-2 my-sm-0">
-					<!-- Спосіб доставкі -->
-					{{order.delivery_method.name}}
-				</button></a></div> 
-		<div class="col-sm" style="text-align: center;"><a href="#">
-			<button type="button" class="col-sm btn btn-outline-info my-2 my-sm-0">
-				<!-- Статус -->
-				{{order.ordered_status.name}}
-			</button></a></div> 
-		<!-- <div class="col-sm" style="text-align: center;">
-			<input class="form-check-input-info item_check" type="checkbox" 
-				name="selectedItems" value="{{order.id}}" id="selectedItems"><footer><small class="text-muted">Зміни:</small></footer>
-		</div> -->
-
-		<div class="col-sm"><h3 > Замовлення №
-			<span class="textToCopy" data-text="{{order.order_id_sources}}">{{order.order_id_sources}} 
-				<i class="fa-regular fa-copy"></i>
-			</span>  </h3><!-- Кнопка копіювання --></div>
-		</div>
+					Тест ордер
+				</button></a>
+			</div>
+			{% endif %}
+			<div class="button-pult"><a href="/cabinet/orders/return/{{order.id}}">
+				<button type="button" class="col-sm btn btn-outline-info my-2 my-sm-0">
+					Повернення Замовлення
+				</button></a>
+			</div>
+				
+			<div class="button-pult"><a href="/cabinet/orders/dublicate/{{order.id}}">
+					<button type="button" class="col-sm btn btn-outline-info my-2 my-sm-0">
+						Дублювати Замовлення
+					</button></a>
+			</div>
+			<div class="button-pult"><a href="/cabinet/orders/confirmed/{{order.id}}">
+					<button type="button" class="col-sm btn btn-outline-info my-2 my-sm-0">
+						<!-- Спосіб доставкі -->
+						{{order.delivery_method.name}}
+					</button></a>
+			</div> 
+			<div class="button-pult"><a href="#">
+				<button type="button" class="col-sm btn btn-outline-info my-2 my-sm-0">
+					<!-- Статус -->
+					{{order.ordered_status.name}}
+				</button></a>
+			</div> 
+		</nav>
+	</div>
+		<br>
 		<div class="row"> 
-		<div class="col-sm"><p style="text-align: center;">
-			<small class="text-muted">
-				Створено:
-			</small> {{order.timestamp.strftime('%H:%M %d-%m-%Y')}}</p>
-		</div>
+			<div class="col-sm"><h3 style="text-align: center;" > Замовлення №
+				<span class="textToCopy" data-text="{{order.order_id_sources}}">{{order.order_id_sources}} 
+					<i class="fa-regular fa-copy"></i>
+				</span>  </h3><!-- Кнопка копіювання --></div>
 		</div>
 		
-	</div><br>
+		<div class="row"> 
+			<div class="col-sm"><p style="text-align: center;">
+				<small class="text-muted">
+					Створено:
+				</small> {{order.timestamp.strftime('%H:%M %d-%m-%Y')}}</p>
+			</div>
+		</div>
+		
+	<br>
 		<form id="myForm" action="/cabinet/orders/update/{{order.id}}" method="post">
 			<div class="row">
 				<div class="col-sm"><input type="tel" class="form-control   " name="phone" rows="1" cols="50" pattern="[0-9]{12}" style="text-align: center;" placeholder="*Номер телефону 380909009000" value="{{order.phone}}" required><br></div>

@@ -1,0 +1,66 @@
+{% extends 'cabinet_client/Products/layout/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+
+<h1 align="center">{% block header %}Журнал{{money}}{% endblock %}</h1>
+
+  
+ 
+
+<div id="arrival-list">
+    <div class="table-responsive-sm" >
+      <table class="table table-hover table-striped " >
+        <thead>
+          <tr >
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col">Час</th>
+            <th scope="col">Действие</th>
+            <th scope="col">Артікль</th>
+            <th scope="col">Кількість</th>
+            <th scope="col">Тіло</th>
+            <th scope="col">Залишок</th>
+          </tr>
+        </thead>
+        <tbody >
+                     {% for item in items %}
+          <tr>
+            <td></td>
+            <td>
+              <a href="/cabinet/products/update_product_source/{{item.id}}">
+                <button type="button" class="btn btn-info">
+                  <i class="fa-solid fa-pen"></i>
+                </button>
+              </a>
+            </td>
+            <td>{{item.timestamp}}</td>
+            <td>{{item.status}}</td>
+            <td>{{item.product.article}}</td>
+            <td>{{item.quantity}}</td>
+            <td>{{item.body}}</td>
+            <td>{{item.quantity_stock}}</td>             
+          </tr>
+      
+                          {% endfor %}    
+        </tbody>
+        </table>
+            </div>
+            
+          </div>  
+          {% endblock %}
+{% block footer %}
+{% if analitic_product == none %}
+<div class="text-center">
+  <a href="/cabinet/products/add_product">
+    <button type="button" class="btn btn-info btn-lg">
+      Створити Продукт
+    </button></a
+  >
+   <br/>
+   <br/>
+</div>
+{% endif %}
+
+{% endblock %}

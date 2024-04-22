@@ -6,6 +6,10 @@ class JourChCntrl:
         resp = rep.add_(data)
         return resp
 
+    def load_all(self):
+        resp = rep.load_all()
+        return resp
+
     # def update_(self, id, req):
     #     data = prod_serv.add_product_source(req)
     #     resp = prod_rep.update_product_source(id, data)
@@ -37,6 +41,7 @@ class JourChCntrl:
 jour_ch_cntrl = JourChCntrl()
 
 
+# journal
 #     id = db.Column(db.Integer, primary_key=True)
 #     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 #     status = db.Column(db.String(50))

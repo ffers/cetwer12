@@ -35,7 +35,7 @@ class ProductServ:
     def add_product_relate(self, request):
         print("add_product_relate")
         article = request.form['article']
-        name = request.form['name']
+        name = ""
         quantity = request.form['quantity']
         product_id = request.form['product']
         list_data = [article, name, quantity, product_id]

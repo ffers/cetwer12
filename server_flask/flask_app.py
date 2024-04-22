@@ -12,7 +12,7 @@ from server_flask.permission_registred import update_roles
 from .db import db
 from .routes import Blog, Auth, Comment, User_post, Bot, \
     Order, Cabinet, Admin, Products, Analitic, \
-    Arrival
+    Arrival, JourChRout, ProductSource
 from utils import util_asx
 OC_log = util_asx.oc_log("flas_app")
 
@@ -50,6 +50,8 @@ flask_app.register_blueprint(Admin)
 flask_app.register_blueprint(Products)
 flask_app.register_blueprint(Analitic)
 flask_app.register_blueprint(Arrival)
+flask_app.register_blueprint(JourChRout)
+flask_app.register_blueprint(ProductSource)
 
 from .models import Users
 login_manager = LoginManager()

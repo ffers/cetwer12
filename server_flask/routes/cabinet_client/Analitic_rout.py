@@ -2,10 +2,11 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
 from flask_login import login_required, current_user
 from flask_principal import Permission, RoleNeed
 from black import ProductAnaliticControl
-from black import DayAnalitic
+from black import an_cntrl
+from black import sour_an_cntrl
 
 prod_an_cntrl = ProductAnaliticControl()
-d_an_cntrl = DayAnalitic()
+
 
 author_permission = Permission(RoleNeed('manager'))
 admin_permission = Permission(RoleNeed('admin'))
@@ -15,21 +16,21 @@ bp = Blueprint('Analitic', __name__, template_folder='templates')
 @bp.route("/cabinet/analitic", methods=['POST', 'GET'])
 @login_required
 @admin_permission.require(http_exception=403)
-def analitic():
+def analitic_test():
     if request.method == 'GET':
         all_product_analitic = prod_an_cntrl.all_product_analitic()
         print("Починаєм аналітику!")
         return render_template('cabinet_client/analitic/product_analitic.html',
                                user=current_user, all_product_analitic=all_product_analitic)
-@bp.route("/cabinet/day_analitic", methods=['POST', 'GET'])
+@bp.route("/cabinet/analitic/all", methods=['POST', 'GET'])
 @login_required
 @admin_permission.require(http_exception=403)
-def day_analitic():
+def analitic():
     if request.method == 'GET':
-        data = d_an_cntrl.main()
+        items = an_cntrl.load_all()
         print("Починаєм аналітику!")
-        return render_template('cabinet_client/analitic/day_analitic.html',
-                               user=current_user, data=data)
+        return render_template('cabinet_client/analitic/analitic.html',
+                               user=current_user, items=items)
 
 @bp.route('/cabinet/analitic/delete/<int:id>', methods=['GET'])
 @login_required
@@ -38,4 +39,24 @@ def delete_product(id):
     product = prod_an_cntrl.analitic_delete(id)
     print(f"Перевірка {product}")
     flash('Аналітику видалено', category='success')
-    return redirect('/cabinet/analitic')
+    return redirect('/cabinet/analitic/all')
+
+
+@bp.route('/cabinet/analitic/update_all', methods=['GET'])
+@login_required
+@admin_permission.require(http_exception=403)
+def update_all():
+    product = sour_an_cntrl.sort_analitic("all")
+    print(f"Перевірка {product}")
+    flash('Аналітику оновлено ALL', category='success')
+    return redirect('/cabinet/analitic/all')
+
+@bp.route('/cabinet/analitic/update_day', methods=['GET'])
+@login_required
+@admin_permission.require(http_exception=403)
+def update_day():
+    product = sour_an_cntrl.sort_analitic("day")
+    print(f"Перевірка {product}")
+    flash('Аналітику оновлено DAY', category='success')
+    return redirect('/cabinet/analitic/all')
+

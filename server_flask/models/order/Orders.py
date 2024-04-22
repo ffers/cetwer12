@@ -28,6 +28,7 @@ class Orders(db.Model):
     description_delivery = db.Column(db.String(50))
     cpa_commission = db.Column(db.String(50))
     client_id = db.Column(db.Integer)
+    send_time = db.Column(db.DateTime)
     order_id_sources = db.Column(db.String(50))
     order_code = db.Column(db.String(50), unique=True)
     delivery_order = db.relationship("DeliveryOrder", back_populates="orders", uselist=False, cascade="all, delete-orphan")

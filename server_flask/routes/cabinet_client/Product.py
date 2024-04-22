@@ -248,6 +248,9 @@ def delete_product_source(id):
 
 
 
+
+
+
 #     article = db.Column(db.String(50))
 #     name = db.Column(db.String(150))
 #     quantity = db.Column(db.Integer)

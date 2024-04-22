@@ -1,2 +1,1 @@
 from .product_analitic_serv import ProductAnanaliticServ
-from .day_analitic_serv import DayAnaliticServ

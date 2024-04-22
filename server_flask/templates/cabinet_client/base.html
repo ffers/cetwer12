@@ -54,9 +54,7 @@
 							Меню
 						</a>										
 							<ul class="dropdown-menu">
-								<li><a class="dropdown-item" style="text-align: center;" href="/cabinet/order_draft">
-									Нова Пошта</a></li>
-								<li><a class="dropdown-item" style="text-align: center;" href="/cabinet/analitic">
+								<li><a class="dropdown-item" style="text-align: center;" href="/cabinet/analitic/all">
 									Аналітика</a></li>
 								<li><hr class="dropdown-divider"></li>
 								<li><a class="dropdown-item" style="text-align: center;"  href="/cabinet/products/add_arrival">
@@ -74,6 +72,9 @@
 								</li>
 								<li><a class="dropdown-item" style="text-align: center;" href="/cabinet/products/product_source">
 									Исходникі</a>
+								</li>
+								<li><a class="dropdown-item" style="text-align: center;" href="/cabinet/journal/all">
+									Журнал</a>
 								</li>
 							</ul>
 							</li>
@@ -133,33 +134,40 @@
 				</nav>
 
 					<div class="button-container">
-						<nav class="nav button_pult">
+						
+						<nav class="nav">
+							<div class="button-pult">
 								<div id="q" class="">
 									<select id="mySelect32" onchange="redirectToSelectedPage()" class="form-select btn my-2 my-sm-0"  
 										style=" color: #0dcaf0; border: var(--bs-border-width) solid #0dcaf0;"
 										aria-label="Change status" >
 										<option selected>Фільтр</option>
-										<option value="/1" >На 	Підвердженя</option>
-										<option value="/cabinet/order_draft">Підтвержені</option>
+										<option value="/cabinet/orders/filter/registered/1" >На Підвердженя</option>
+										<option value="/cabinet/order_draft">Підтвержені НП</option>
 										<option value="/cabinet/orders/filter/registered">В реєстрі</option>
-										<option value="/3">Оплачені</option> 
-										<option value="/4">Несплачені</option>
-										<option value="/5">Скасовані</option>
-										<option value="/6">Предзамовленні</option>
-										<option value="/7">Питання</option>
-										<option value="/8">Відправлені</option>
-										<option value="/9">Отримані</option>
-										<option value="/10">Нові</option>
-										<option value="/cabinet/order/filter/registered">Очікує відправленя</option>
-										<option value="/12">Виконано</option>
-										<option value="/13">Тест</option>
+										<option value="/cabinet/orders/filter/registered/3">Оплачені</option> 
+										<option value="/cabinet/orders/filter/registered/4">Несплачені</option>
+										<option value="/cabinet/orders/filter/registered/5">Скасовані</option>
+										<option value="/cabinet/orders/filter/registered/6">Предзамовленні</option>
+										<option value="/cabinet/orders/filter/registered/7">Питання</option>
+										<option value="/cabinet/orders/filter/registered/8">Відправлені</option>
+										<option value="/cabinet/orders/filter/registered/9">Отримані</option>
+										<option value="/cabinet/orders/filter/registered/10">Нові</option>
+										<option value="/cabinet/orders/filter/registered/11">Очікує відправленя</option>
+										<option value="/cabinet/orders/filter/registered/12">Виконано</option>
+										<option value="/cabinet/orders/filter/registered/13">Тест</option>
+										<option value="/cabinet/orders/filter/registered/14">Тест</option>
 									</select>
 								</div>
+							</div>
+							<div class="button-pult">
 								<div id="add_reg" style="display: none;"><button 
 									class="btn btn-outline-info my-2 my-sm-0"   
 									onclick="processOrders('add_reg')" >
 									Додати в реєстр
 								</button></div>
+							</div>
+							<div class="button-pult">
 								<div id="del_reg" style="display: none;">
 									<button 
 										class="btn btn-outline-info my-2 my-sm-0"  
@@ -167,7 +175,8 @@
 										Видалити з реєстру
 									</button>
 								</div>
-								
+							</div>
+							<div class="button-pult">
 								<div id="changeStatusSee"  style="display: none; ">
 									<select id="changeStatus"  class="form-select btn my-2 my-sm-0"  
 										style=" color: #0dcaf0; border: var(--bs-border-width) solid #0dcaf0;"
@@ -188,8 +197,9 @@
 										<option value="13">Тест</option>
 									</select>
 								</div>
-							</nav>
-						</div>
+							</div>
+						</nav>
+					</div>
 						<!-- </div>
 							<div class="col-sm"> -->
 							<!-- </div>

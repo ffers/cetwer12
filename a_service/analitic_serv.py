@@ -8,3 +8,5 @@ class DayAnaliticServ:
             if item.money_in_sale:
                 torg = item.money_in_sale + torg
         return torg
+
+an_serv = DayAnaliticServ()

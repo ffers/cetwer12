@@ -9,3 +9,5 @@ from .cabinet_client.Admin import bp as Admin
 from .cabinet_client.Product import bp as Products
 from .cabinet_client.Analitic_rout import bp as Analitic
 from .cabinet_client.Arrival_rout import bp as Arrival
+from .cabinet_client.JourChRout import bp as JourChRout
+from .cabinet_client.SourProdRout import bp as ProductSource

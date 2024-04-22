@@ -1,11 +1,11 @@
 from server_flask.db import db
 from server_flask.models import JournalChange
-
+from sqlalchemy import desc
 
 class JourChRep:
     def load_all(self):
-        products = JournalChange.query.order_by(JournalChange.timestamp).all()
-        return products
+        items = JournalChange.query.order_by(desc(JournalChange.timestamp)).all()
+        return items
 
 
     def load_article(self, article):
@@ -16,11 +16,14 @@ class JourChRep:
     def add_(self, data):
         try:
             item = JournalChange(
-                body=data[0]
+                status=data[0],
+                quantity=data[1],
+                body=data[2],
+                product_id=data[3],
+                quantity_stock=data[4]
             )
             db.session.add(item)
             db.session.commit()
-            db.session.close()
             return True
         except Exception as e:
             return False, e

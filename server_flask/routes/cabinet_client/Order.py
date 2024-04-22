@@ -179,10 +179,10 @@ def send_cab(id):
     else:
         print(f"Працює {id}")
         resp = ord_cntrl.confirmed_order(id)
-        if resp["delivery"] == True:
+        if resp["delivery"]:
             flash('Замовлення підтвержено', category='success')
         else:
-            flash('Замовлення підтверджено але ттн не створено: ' + resp["success"], category='error')
+            flash('Замовлення підтверджено але ттн не створено: ' + resp["delivery"], category='error')
         return redirect('/cabinet/orders')
 
 
@@ -445,11 +445,11 @@ def confirmeded():
     return render_template('cabinet_client/order_draft.html', pagination=pagination,
                            tasks_users=tasks_users, orders=data_subset, user=current_user)
 
-@bp.route('/cabinet/orders/filter/registered', methods=['POST', 'GET'])
+@bp.route('/cabinet/orders/filter/registered/<int:id>', methods=['POST', 'GET'])
 @login_required
 @author_permission.require(http_exception=403)
-def registered():
-    tasks_orders = ord_cntrl.load_registred()
+def registered(id):
+    tasks_orders = ord_cntrl.load_status_id(id)
     tasks_users = Users.query.order_by(Users.timestamp).all()
     page = request.args.get('page', default=1, type=int)
     per_page = 50
@@ -474,7 +474,8 @@ def send_storage(id):
 @author_permission.require(http_exception=403)
 def test_order(id):
     resp = ord_cntrl.test_order(id)
-    return jsonify({"success": resp})
+    print(resp)
+    return jsonify({"error": resp[1], "success": resp[0]})
 
 
 

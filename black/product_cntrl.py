@@ -44,7 +44,7 @@ class ProductCntrl:
         args = prod_serv.add_product_relate(request)
         resp = prod_rep.add_product_relate(args)
         return resp
-
+   
     def update_prod_relate(self, id, req):
         data = prod_serv.add_product_relate(req)
         resp = prod_rep.update_product_relate(data, id)

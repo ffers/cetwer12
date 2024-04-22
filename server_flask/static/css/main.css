@@ -127,17 +127,12 @@ tr {
     /* height: 100vh; */
 }
 
-.button_pult button, select {
-    margin-right: 10px;
+.button-pult {
+    margin-left: 10px;
 }
 
 .button-container {
     margin: 10px;
-  }
-  
-  .button-container button, select {
-    margin-right: 10px; /* Встановлюємо відступ між кнопками */
-    
   }
 
 #notificationContainer {

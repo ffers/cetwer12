@@ -8,6 +8,7 @@ class JournalChange(db.Model):
     quantity = db.Column(db.Integer)
     body = db.Column(db.Numeric(precision=8, scale=2))
     income = db.Column(db.Numeric(precision=8, scale=2))
+    quantity_stock = db.Column(db.Integer)
     product_id = db.Column(db.Integer, db.ForeignKey(
         'product_source.id', name='fk_journal_change_product_source_id'))
     product = db.relationship('ProductSource', backref='journal_change')

@@ -1,0 +1,115 @@
+{% extends 'cabinet_client/Products/layout/base.html' %} {% block title %}Home{% endblock %}
+
+{% block body %}
+
+<div class="button-container">
+						
+  <nav class="nav">
+    <div class="button-pult">
+      <div id="q" class="">
+        
+      </div>
+    </div>
+    <div class="button-pult">
+      <a href="/cabinet/analitic/update_day">
+        <button type="button" class="col-sm btn btn-outline-info my-2 my-sm-0">
+          Оновити день
+        </button>
+      </a>
+    </div>
+      <div class="button-pult">
+      <a href="/cabinet/analitic/update_all">
+        <button type="button" class="col-sm btn btn-outline-info my-2 my-sm-0">
+          Оновити ALL
+        </button>
+      </a>
+    </div>
+
+  </nav>
+</div>
+
+<h1 align="center">{% block header %}Аналітика{% endblock %}</h1>
+
+  
+
+
+<div id="arrival-list">
+    <div class="table-responsive-sm" >
+      <table class="table table-hover table-striped ">
+        <thead>
+          <tr >
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col">Період</th>
+            <th scope="col">Час</th>
+            <th scope="col">Торг</th>
+            <th scope="col">Тіло</th>
+            <th scope="col">Робочі</th>
+            <th scope="col">Замовлень</th>
+            <th scope="col">Пром</th>
+            <th scope="col">Rozet</th>
+            <th scope="col">Google</th>
+            <th scope="col">Insta</th>
+            <th scope="col">Дохід</th>
+            <th scope="col">Баланс</th>
+            <th scope="col">Очікуєм</th>
+            <th scope="col">Склад</th>
+            <th scope="col">Прихід</th>
+            <th scope="col">В роботі</th>
+            <th scope="col">ЗП</th>
+          </tr>
+        </thead>
+        <tbody >
+          {% for item in items %}
+          <tr>
+            <td></td>
+            <td>
+              <a href="/cabinet/products/update_product_source/{{item.id}}">
+                <button type="button" class="btn btn-info">
+                  <i class="fa-solid fa-pen"></i>
+                </button>
+              </a>
+            </td>
+            <td>{{item.period}}</td>
+            <td>{{item.timestamp}}</td>
+            <td>{{item.torg}}</td>
+            <td>{{item.body}}</td>
+            <td>{{item.worker}}</td>
+            <td>{{item.orders}}</td>              
+            <td>{{item.prom}}</td>
+            <td>{{item.rozet}}</td>  
+            <td>{{item.google_shop}}</td>  
+            <td>{{item.insta}}</td> 
+            <td>{{item.profit}}</td> 
+            <td>{{item.balance}}</td> 
+            <td>{{item.wait}}</td> 
+            <td>{{item.stock}}</td> 
+            <td>{{item.income}}</td> 
+            <td>{{item.inwork}}</td> 
+            <td>{{item.salary}}</td> 
+
+
+          </tr>
+      
+                          {% endfor %}    
+    
+        </tbody>
+        </table>
+            </div>
+            
+          </div>  
+          {% endblock %}
+{% block footer %}
+{% if analitic_product == none %}
+<div class="text-center">
+  <a href="/cabinet/products/add_product">
+    <button type="button" class="btn btn-info btn-lg">
+      Створити Продукт
+    </button></a
+  >
+   <br/>
+   <br/>
+</div>
+{% endif %}
+
+{% endblock %}

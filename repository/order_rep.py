@@ -2,8 +2,14 @@ from server_flask.models import Orders, OrderedProduct
 from server_flask.db import db
 from sqlalchemy import desc
 from urllib.parse import unquote
+from datetime import datetime, timedelta
+
+
 
 class OrderRep:
+
+    def my_time(self):
+        yield (datetime.utcnow())
     def load_item(self, order_id):
         item = Orders.query.get_or_404(int(order_id))
         return item
@@ -11,6 +17,25 @@ class OrderRep:
     def load_item_all(self):
         item = Orders.query.all()
         return item
+
+    def load_period_all(self):
+        return Orders.query.filter_by(ordered_status_id=8).all()
+
+    def load_status_id(self, id):
+        return Orders.query.filter_by(ordered_status_id=id).all()
+
+    def load_item_days(self):
+        current_time = next(self.my_time())
+        print(current_time)
+        start_time = current_time - timedelta(days=1)
+        start_time = start_time.replace(hour=14, minute=0, second=0,
+                                        microsecond=0)
+        items = Orders.query.filter(
+            Orders.send_time >= start_time,
+            Orders.send_time <= current_time,
+            Orders.ordered_status_id == 8
+            ).all()
+        return items
 
     def load_all_for_searh_data(self, search_param, search_value):
         if search_value is not None:
@@ -47,6 +72,16 @@ class OrderRep:
     #                    description_delivery="Одяг Jemis")
     #     db.session.add(order)
     #     db.session.commit()
+
+    def update_time_send(self, id, send_time):
+        try:
+            item = self.load_item(id)
+            item.send_time = send_time
+            db.session.commit()
+            return True, None
+        except Exception as e:
+            return False, str(e)
+
 
     def dublicate_item(self, item):
         order = Orders(description=item.description,

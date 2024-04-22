@@ -15,6 +15,7 @@ from a_service import tg_serv
 from .prom_cntrl import prom_cntrl
 from utils import util_asx
 from .sour_an_cntrl import sour_an_cntrl
+from datetime import datetime
 
 sys.path.append('../')
 from common_asx.utilits import Utils
@@ -57,6 +58,9 @@ class OrderCntrl:
         item = ord_rep.load_registred()
         print(item)
         return item
+
+    def load_status_id(self, id):
+        return ord_rep.load_status_id(id)
 
     def load_order_for_code(self, order_code):
         order = ord_rep.load_for_code(order_code)
@@ -141,10 +145,10 @@ class OrderCntrl:
         crm_status = ord_rep.change_status(order_id, 2)
         bool_prom = self.definition_source(order, 1)
         update_analitic = prod_an_cntrl.product_in_order(order)
-        resp_sour = sour_an_cntrl.confirmed(order)
+
         delivery = self.check_del_method(order)
         result = self.result(crm_status, bool_prom,
-                             update_analitic, resp_sour, delivery)
+                             update_analitic, delivery)
         return result
 
     def result(self, *args):
@@ -152,8 +156,7 @@ class OrderCntrl:
             "crm_status": args[0],
             "bool_prom": args[1],
             "update_analitic": args[2],
-            "resp_sour": args[3],
-            "delivery": args[4]
+            "delivery": args[3]
         }
         return result
 
@@ -168,7 +171,6 @@ class OrderCntrl:
         if order.source_order_id == 2:
             bool_prom = prom_cntrl.change_status(order.order_code, status)
         return bool_prom
-
 
     def return_order(self, order_id, status):
         order = ord_rep.load_item(order_id)
@@ -195,7 +197,6 @@ class OrderCntrl:
         elif order.delivery_method_id == 3:
             resp = self.del_method_ukr(order)
         return resp
-
 
     def del_method_np(self, order):
         resp = False
@@ -252,17 +253,14 @@ class OrderCntrl:
         bool = ord_rep.change_status_list(orders, status)
         return bool
 
+    def my_time(self): yield (datetime.now())
+
     def test_order(self, order_id):
-        order = ord_rep.load_item(order_id)
-        bool = sour_an_cntrl.count_income(order)
-        if not bool:
+        orders = ord_rep.load_item_all()
+        resp_sour = None
+        if not resp_sour:
             tg_cntrl.sendMessage(tg_cntrl.chat_id_info, "Немає такого компоненту ")
-        return bool
-
-
-
-
-
+        return resp_sour
 
 
 
