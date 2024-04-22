@@ -21,13 +21,14 @@ class SourAnCntrl:
                 prod_comps = prod_cntrl.load_prod_relate_product_id_all(product.product_id)
                 if prod_comps:
                     for prod_comp in prod_comps:
-                        prod_source = prod_cntrl.load_product_source_article(prod_comp.article)
-                        new_quantity = self.sour_an_serv.count_new_quantity(prod_comp, prod_source, product)
-                        resp = prod_cntrl.update_prod_sour_quan(prod_source.id, new_quantity)
-                        if prod_source:
-                            list_val = self.sour_an_serv.journal_func(prod_comp, prod_source, product)
-                            print(f"list_val {list_val}")
-                            resp = journal.add_(list_val)
+                        if prod_comp:
+                            prod_source = prod_cntrl.load_product_source_article(prod_comp.article)
+                            if prod_source:
+                                new_quantity = self.sour_an_serv.count_new_quantity(prod_comp, prod_source, product)
+                                resp = prod_cntrl.update_prod_sour_quan(prod_source.id, new_quantity)
+                                list_val = self.sour_an_serv.journal_func(prod_comp, prod_source, product)
+                                print(f"list_val {list_val}")
+                                resp = journal.add_(list_val)
                 else:
                     resp = f"Немає такого компоненту {product.products.article}"
             print(resp)
