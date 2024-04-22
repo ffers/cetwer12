@@ -19,6 +19,8 @@ class ArrivalServ:
         print(f"get_req_arr {datetime_new}, {product_id}, {quantity}, {price}, {total}")
         return (datetime_new, product_id, quantity, price, total)
 
+
+
     def format_decimal(self, num):
         try:
             if isinstance(num, int):

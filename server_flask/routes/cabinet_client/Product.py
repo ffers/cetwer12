@@ -182,25 +182,6 @@ def delete_product_relate(id):
         user=current_user, product=product)
 
 
-@bp.route('/cabinet/products/add_product_source', methods=['POST', 'GET'])
-@login_required
-@admin_permission.require(http_exception=403)
-def add_product_source():
-    if request.method == 'POST':
-        print("ПРацюєм")
-        resp_bool = prod_cntrl.add_product_source(request)
-        for item in request.form:
-            print(item)
-        if resp_bool == True:
-            print("Product added successfully")
-            responce_data = {'status': 'success', 'message': 'Product relate added successfully'}
-            flash('Продукт створено!', category='success')
-            return redirect(url_for('Products.product_source'))
-        else:
-            print(request.form)
-            print("НЕВИЙШЛО!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            return redirect(url_for('Products.add_product_relate'))
-    return render_template('cabinet_client/Products/add_product_source.html', user=current_user )
 
 
 @bp.route('/cabinet/products/update_product_source/<int:id>', methods=['POST', 'GET'])

@@ -7,12 +7,18 @@ from datetime import datetime
 from repository import sour_an_rep as rep
 
 
+
 class SourAnCntrl:
     def __init__(self):
         self.sour_an_serv = SourAnServ(prod_cntrl, journal, an_cntrl, rep, ord_rep)
 
     def my_time(self):
         yield (datetime.utcnow())
+
+    def add_source(self, request):
+        args = self.sour_an_serv.add_source(request)
+        resp = rep.add_product_source(args)
+        return resp
 
     def confirmed(self, order):
             resp = None
@@ -22,21 +28,32 @@ class SourAnCntrl:
                 if prod_comps:
                     for prod_comp in prod_comps:
                         if prod_comp:
-                            prod_source = prod_cntrl.load_product_source_article(prod_comp.article)
-                            if prod_source:
-                                new_quantity = self.sour_an_serv.count_new_quantity(prod_comp, prod_source, product)
-                                resp = prod_cntrl.update_prod_sour_quan(prod_source.id, new_quantity)
-                                list_val = self.sour_an_serv.journal_func(prod_comp, prod_source, product)
-                                print(f"list_val {list_val}")
-                                resp = journal.add_(list_val)
+                            sale_quantity = self.sour_an_serv.count_new_quantity(prod_comp, product)
+                            resp = self.stock_journal(prod_comp.article, -sale_quantity)
                 else:
                     resp = f"Немає такого компоненту {product.products.article}"
             print(resp)
             return resp
+
+    def add_arrival(self, req):
+        list_data = self.sour_an_serv.add_arrival(req)
+        resp = self.stock_journal(list_data[0], list_data[1])
+        return resp
+
         # except Exception as e:
         #     resp = f"При рахувані исходника щось пішло не так: {e}"
         #     print(resp)
         #     return resp
+    def stock_journal(self, article, quantity):
+        resp = False
+        prod_source = prod_cntrl.load_product_source_article(article)
+        if prod_source:
+            new_quantity = self.sour_an_serv.new_qauntity(prod_source, quantity)
+            resp = prod_cntrl.update_prod_sour_quan(prod_source.id, new_quantity)
+            list_val = self.sour_an_serv.journal_func(prod_source, quantity)
+            print(f"list_val {list_val}")
+            resp = journal.add_(list_val)
+        return resp
 
     def return_prod(self, order):
         resp = None
@@ -105,6 +122,7 @@ class SourAnCntrl:
             work_an = self.work_analitic()
             resp = an_cntrl.add_(data + work_an)
         elif period == "day":
+            print(period)
             orders = ord_rep.load_item_days()
             print(orders)
             item = an_cntrl.load_day()

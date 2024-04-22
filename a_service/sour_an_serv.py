@@ -1,3 +1,4 @@
+from decimal import Decimal
 
 class SourAnServ:
     def __init__(self, prod_cntrl, journal, an_cntrl, rep, ord_rep):
@@ -7,14 +8,51 @@ class SourAnServ:
         self.rep = rep
         self.ord_rep = ord_rep
 
-    def count_new_quantity(self, prod_comp, prod_source, product):
+    def format_float(self, num):
+        try:
+            if isinstance(num, int):
+                num_format = str(f"{int(num)}.00")
+                # Конвертуємо int у Decimal
+                return Decimal(num_format)
+            else:
+                num_format = float(num)
+                # Конвертуємо float у Decimal
+                return Decimal(str(f"{num_format: .2f}"))
+        except ValueError:
+            return None
 
+    def add_source(self, request):
+        print("add_product_source")
+        article = request.form['article']
+        name = request.form['name']
+        price = request.form['price']
+        quantity = request.form['quantity']
+        money = self.format_float(price) * int(quantity)
+        list_data = [article, name, price, quantity, money]
+        print(list_data)
+        return list_data
+
+    def add_arrival(self, req):
+        print(req)
+        article = req.form['article']
+        # name = req.form['name']
+        # price = req.form['price']
+        quantity = req.form['quantity']
+        # money = self.format_float(price) * int(quantity)
+        list_data = [article, int(quantity)]
+        print(list_data)
+        return list_data
+
+
+    def count_new_quantity(self, prod_comp, product):
         sale_quantity = prod_comp.quantity * product.quantity
-        new_quantity = prod_source.quantity - sale_quantity
+        return sale_quantity
+
+    def new_qauntity(self, prod_source, sale_quantity):
+        new_quantity = prod_source.quantity + sale_quantity
         return new_quantity
 
-    def journal_func(self, prod_comp, prod_source, product):
-        sale_quantity = prod_comp.quantity * product.quantity
+    def journal_func(self, prod_source, sale_quantity):
         body = prod_source.price * sale_quantity
         quantity_stock = prod_source.quantity
         print(quantity_stock)
@@ -105,6 +143,8 @@ class SourAnServ:
         if resp:
             return resp.money
         return 0
+
+
 
 
 

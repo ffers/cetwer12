@@ -60,16 +60,7 @@ class ProductServ:
         ]
         return data
 
-    def add_product_source(self, request):
-        print("add_product_source")
-        article = request.form['article']
-        name = request.form['name']
-        price = request.form['price']
-        quantity = request.form['quantity']
-        money = self.format_float(price) * int(quantity)
-        list_data = [article, name, price, quantity, money]
-        print(list_data)
-        return list_data
+
 
 
 

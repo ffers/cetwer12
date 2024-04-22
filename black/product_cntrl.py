@@ -44,7 +44,7 @@ class ProductCntrl:
         args = prod_serv.add_product_relate(request)
         resp = prod_rep.add_product_relate(args)
         return resp
-   
+
     def update_prod_relate(self, id, req):
         data = prod_serv.add_product_relate(req)
         resp = prod_rep.update_product_relate(data, id)
@@ -64,11 +64,6 @@ class ProductCntrl:
     def delete_product_relate(self, id):
         bool = prod_rep.delete_product_relate(id)
         return bool
-
-    def add_product_source(self, request):
-        args = prod_serv.add_product_source(request)
-        resp = prod_rep.add_product_source(args)
-        return resp
 
     def update_product_source(self, id, req):
         data = prod_serv.add_product_source(req)
