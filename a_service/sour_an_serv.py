@@ -84,7 +84,7 @@ class SourAnServ:
                 if prod_comps:
                     for prod_comp in prod_comps:
                         try:
-                            prod_source = self.prod_cntrl.load_product_source_article(prod_comp.article)
+                            prod_source = self.rep.load_article(prod_comp.article)
                             if prod_source:
                                 body += self.body(prod_comp, prod_source, product)
                         except Exception as e:
@@ -117,17 +117,15 @@ class SourAnServ:
 
     def stock_func(self):
         stock = 0
-        items = self.prod_cntrl.load_product_source_all()
+        items = self.rep.load_all()
         for item in items:
             stock += item.money
         return stock
 
     def inwork_func(self):
         income = 0
-        items = self.an_cntrl.load_all()
-        # for item in items:
-        #     income += item.wait + item.stock + item.balance
-
+        item = self.an_cntrl.load_period("all")[0]
+        income += item.wait + item.stock + item.balance
         return income
 
     def salary_func(self):

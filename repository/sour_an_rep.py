@@ -18,6 +18,18 @@ class SourAnRep:
         except Exception as e:
             return False, e
 
+    def update_source(self, id, data):
+        try:
+            product = ProductSource.query.get_or_404(id)
+            product.article = data[0]
+            product.name = data[1]
+            product.price = data[2]
+            product.quantity = data[3]
+            product.money = data[4]
+            db.session.commit()
+            return True
+        except Exception as e:
+            return False, e
 
     # def add_(self, *data):
     #     try:
@@ -75,5 +87,34 @@ class SourAnRep:
             return True
         except Exception as e:
             return False, e
+
+    def load_item(self, product_id):
+        product = ProductSource.query.get_or_404(product_id)
+        return product
+
+
+    def add_product_source(self, data_list):
+        # try:
+            item = ProductSource(
+                article=data_list[0],
+                name=data_list[1],
+                price=data_list[2],
+                quantity=data_list[3],
+                money=data_list[4]
+            )
+            db.session.add(item)
+            db.session.commit()
+            db.session.close()
+            return True
+        # except:
+        #     return False
+
+    def delete_product_source(self, id):
+        task_to_delete = ProductSource.query.get_or_404(id)
+        print(">>> Start delete in datebase")
+        db.session.delete(task_to_delete)
+        db.session.commit()
+        print(">>> Delete in datebase")
+        return True
 
 sour_an_rep = SourAnRep()

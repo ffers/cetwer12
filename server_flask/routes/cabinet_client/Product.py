@@ -184,50 +184,6 @@ def delete_product_relate(id):
 
 
 
-@bp.route('/cabinet/products/update_product_source/<int:id>', methods=['POST', 'GET'])
-@login_required
-@admin_permission.require(http_exception=403)
-def update_product_source(id):
-    item = prod_cntrl.load_product_source_item(id)
-    if request.method == 'POST':
-        resp_bool = prod_cntrl.update_product_source(id, request)
-        resp_bool = True
-        for item in request.form:
-            print(item)
-        if resp_bool == True:
-            print("Product added successfully")
-            flash('Продукт оновлено!', category='success')
-            return redirect(url_for(f'Products.product_source'))
-        else:
-            print(request.form)
-            print("НЕВИЙШЛО!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            return redirect(url_for(f'Products.product_source'))
-    return render_template('cabinet_client/Products/update_product_source.html',
-                           user=current_user, item=item )
-
-@bp.route('/cabinet/products/product_source', methods=['POST', 'GET'])
-@login_required
-@admin_permission.require(http_exception=403)
-def product_source():
-    items = prod_cntrl.load_product_source_all()
-    money = 0
-    for item in items:
-        money = item.money + money
-    return render_template('cabinet_client/Products/product_source.html',
-                           user=current_user, items=items, money=money)
-
-@bp.route('/cabinet/products/delete_source/<int:id>', methods=['GET'])
-@login_required
-@admin_permission.require(http_exception=403)
-def delete_product_source(id):
-    product = prod_cntrl.delete_product_source(id)
-    print(f"Перевірка {product}")
-    flash('Продукт видалено', category='success')
-    return render_template(
-        'cabinet_client/Products/product_source.html',
-        user=current_user, product=product)
-
-
 
 
 

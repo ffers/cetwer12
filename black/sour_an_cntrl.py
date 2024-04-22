@@ -5,6 +5,7 @@ from .analitic_cntrl import an_cntrl
 from repository import ord_rep
 from datetime import datetime
 from repository import sour_an_rep as rep
+from .telegram_controller import tg_cntrl
 
 
 
@@ -15,13 +16,38 @@ class SourAnCntrl:
     def my_time(self):
         yield (datetime.utcnow())
 
-    def add_source(self, request):
+    def add(self, request):
         args = self.sour_an_serv.add_source(request)
         resp = rep.add_product_source(args)
         return resp
 
+    def update(self, id, req):
+        data = self.sour_an_serv.add_source(req)
+        resp = rep.update_source(id, data)
+        return resp
+
+    def load_all(self):
+        data = rep.load_all()
+        return data
+
+    def load_item(self, product_id):
+        resp = rep.load_item(product_id)
+        return resp
+
+    def update_prod_sour_quan(self, id, quantity):
+        resp = rep.update_quantity(id, quantity)
+        return resp
+
+    def load_article(self, article):
+        item = rep.load_article(article)
+        return item
+
+    def delete(self, id):
+        bool = rep.delete_(id)
+        return bool
+
     def confirmed(self, order):
-            resp = None
+            resp = False
         # try:
             for product in order.ordered_product:
                 prod_comps = prod_cntrl.load_prod_relate_product_id_all(product.product_id)
@@ -31,7 +57,9 @@ class SourAnCntrl:
                             sale_quantity = self.sour_an_serv.count_new_quantity(prod_comp, product)
                             resp = self.stock_journal(prod_comp.article, -sale_quantity)
                 else:
-                    resp = f"Немає такого компоненту {product.products.article}"
+                    resp_tg = f"Немає такого компоненту {product.products.article}"
+                    tg_cntrl.sendMessage(tg_cntrl.chat_id_info, resp_tg)
+
             print(resp)
             return resp
 
@@ -46,10 +74,10 @@ class SourAnCntrl:
         #     return resp
     def stock_journal(self, article, quantity):
         resp = False
-        prod_source = prod_cntrl.load_product_source_article(article)
+        prod_source = rep.load_article(article)
         if prod_source:
             new_quantity = self.sour_an_serv.new_qauntity(prod_source, quantity)
-            resp = prod_cntrl.update_prod_sour_quan(prod_source.id, new_quantity)
+            resp = rep.update_quantity(prod_source.id, new_quantity)
             list_val = self.sour_an_serv.journal_func(prod_source, quantity)
             print(f"list_val {list_val}")
             resp = journal.add_(list_val)
@@ -63,11 +91,11 @@ class SourAnCntrl:
                 for prod_comp in prod_comps:
                     sale_quantity = prod_comp.quantity * product.quantity
                     print(f"sale_quantity {sale_quantity}")
-                    prod_source = prod_cntrl.load_product_source_article(prod_comp.article)
+                    prod_source = rep.load_article(prod_comp.article)
                     new_quantity = prod_source.quantity + sale_quantity
                     print(f"new_quantity {new_quantity}")
-                    resp = prod_cntrl.update_prod_sour_quan(prod_source.id, new_quantity)
-                    prod_source = prod_cntrl.load_product_source_article(prod_comp.article)
+                    resp = rep.update_quantity(prod_source.id, new_quantity)
+                    prod_source = rep.load_article(prod_comp.article)
             else:
                 resp = f"Немає такого компоненту {product.products.article}"
         return resp
@@ -98,9 +126,10 @@ class SourAnCntrl:
         for order in orders:
             if not order.send_time:
                 print("Щось оновлено")
-                self.confirmed(order)
-                ord_rep.update_time_send(order.id, next(self.my_time()))
-                resp = True, "Щось оновлено в искходниках"
+                confirmed = self.confirmed(order)
+                if confirmed:
+                    ord_rep.update_time_send(order.id, next(self.my_time()))
+                    resp = True, "Щось оновлено в искходниках"
             else:
                 print("Є час в ордері")
         return resp

@@ -65,31 +65,7 @@ class ProductCntrl:
         bool = prod_rep.delete_product_relate(id)
         return bool
 
-    def update_product_source(self, id, req):
-        data = prod_serv.add_product_source(req)
-        resp = prod_rep.update_product_source(id, data)
-        return resp
 
-    def load_product_source_all(self):
-        data = prod_rep.load_product_source_all()
-        return data
-
-    def load_product_source_item(self, product_id):
-        resp = prod_rep.load_product_source_item(product_id)
-        return resp
-
-    def update_prod_sour_quan(self, id, quantity):
-        resp = prod_rep.update_prod_sour_quan(id, quantity)
-        return resp
-
-
-    def load_product_source_article(self, article):
-        item = prod_rep.load_product_source_article(article)
-        return item
-
-    def delete_product_source(self, id):
-        bool = prod_rep.delete_product_source(id)
-        return bool
 
 
 
