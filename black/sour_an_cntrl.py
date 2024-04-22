@@ -103,7 +103,7 @@ class SourAnCntrl:
                 return resp
             data = self.all_analitic(orders, period)
             work_an = self.work_analitic()
-            resp = an_cntrl.update_(item.id, data + work_an)
+            resp = an_cntrl.add_(data + work_an)
         elif period == "day":
             orders = ord_rep.load_item_days()
             print(orders)
