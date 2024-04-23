@@ -54,7 +54,7 @@ class SourAnCntrl:
                 if prod_comps:
                     for prod_comp in prod_comps:
                         if prod_comp:
-                            description = order.order_code + ' ' + product.products.article
+                            description = order.order_id_sources + ' ' + product.products.article
                             sale_quantity = self.sour_an_serv.count_new_quantity(prod_comp, product)
                             resp = self.stock_journal(prod_comp.article, -sale_quantity, description)
                 else:
