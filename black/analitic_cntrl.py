@@ -6,13 +6,21 @@ class AnCntrl:
     #     torg = prod_an_rep.get_money_sale_day()
     #     return torg
 
-    def add_(self, args):
+    def add_first(self, args):
         print(args)
-        resp = rep.add_(args)
+        resp = rep.add_first(args)
+        return resp
+
+    def add_work_an(self, args):
+        print(args)
+        resp = rep.add_work_an(args)
         return resp
 
     def update_(self, id, args):
         return rep.update_(id, args)
+
+    def update_work(self, id, args):
+        return rep.update_work(id, args)
 
     def load_all(self):
         resp = rep.load_all()

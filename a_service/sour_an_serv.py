@@ -93,6 +93,20 @@ class SourAnServ:
                     resp = False
         return body
 
+    def cpa_com_f(self, orders):
+        cpa_commission = 0
+        for order in orders:
+            if order.cpa_commission:
+                cpa_commission += self.format_float(order.cpa_commission)
+        return cpa_commission
+
+    def rozet_f(self, orders):
+        rozet = 0
+        for order in orders:
+            if order.delivery_method_id == 2:
+                print(order.delivery_method.name)
+                rozet += 30
+        return rozet
     def balance_func(self):
         balance = 0
         items = self.an_cntrl.load_period("all")
@@ -141,6 +155,14 @@ class SourAnServ:
         if resp:
             return resp.money
         return 0
+
+    def profit_f(self):
+        profit = 0
+        items = self.an_cntrl.load_all()
+        for item in items:
+            profit += item.torg - item.body
+        return profit
+
 
 
 

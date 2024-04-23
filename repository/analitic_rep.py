@@ -41,7 +41,7 @@ class AnaliticRep():
             ).first()
         return item
 
-    def add_(self, args):
+    def add_first(self, args):
         try:
             print(args)
             item = Analitic(
@@ -54,13 +54,24 @@ class AnaliticRep():
                 insta=args[6],
                 profit=args[7],
                 period=args[8],
-                orders=args[9],
-                balance=args[10],
-                wait=args[11],
-                stock=args[12],
-                inwork=args[13],
-                salary=args[14],
-                income=args[15]
+                orders=args[9]
+            )
+            db.session.add(item)
+            db.session.commit()
+            return True, None
+        except Exception as e:
+            return False, str(e)
+
+    def add_work_an(self, args):
+        try:
+            print(args)
+            item = Analitic(
+                balance=args[0],
+                wait=args[1],
+                stock=args[2],
+                inwork=args[3],
+                salary=args[4],
+                income=args[5]
             )
             db.session.add(item)
             db.session.commit()
@@ -82,12 +93,20 @@ class AnaliticRep():
             product.profit = args[7]
             product.period = args[8]
             product.orders = args[9]
-            product.balance = args[10]
-            product.wait = args[11]
-            product.stock = args[12]
-            product.inwork = args[13]
-            product.salary = args[14]
-            product.income = args[15]
+            db.session.commit()
+            return True, None
+        except Exception as e:
+            return False, str(e)
+
+    def update_work(self, id, args):
+        try:
+            product = Analitic.query.get_or_404(id)
+            product.balance = args[0]
+            product.wait = args[1]
+            product.stock = args[2]
+            product.inwork = args[3]
+            product.salary = args[4]
+            product.income = args[5]
             db.session.commit()
             return True, None
         except Exception as e:

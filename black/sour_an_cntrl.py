@@ -100,14 +100,16 @@ class SourAnCntrl:
                 resp = f"Немає такого компоненту {product.products.article}"
         return resp
 
-    def all_analitic(self, orders, period):
+    def first_an(self, orders, period):
         orders_quan = len(orders)
         torg_sum = self.sour_an_serv.torg_func(orders)
         body = self.sour_an_serv.body_func(orders)
         workers_mon = orders_quan * 27
         profit = torg_sum - body
-        print(f"рахуєм: {orders_quan} {torg_sum} {body} {workers_mon} {profit}")
-        resp = (torg_sum, body, workers_mon, 0.00, 0.00, 0.00, 0.00, profit, period, orders_quan)
+        cpa_com = self.sour_an_serv.cpa_com_f(orders)
+        rozet = self.sour_an_serv.rozet_f(orders)
+        print(f"рахуєм: {orders_quan} {torg_sum} {body} {workers_mon} {profit} {cpa_com}")
+        resp = (torg_sum, body, workers_mon, cpa_com, rozet, 0.00, 0.00, profit, period, orders_quan)
         print(resp)
         return resp
 
@@ -140,42 +142,57 @@ class SourAnCntrl:
         self.sort_send_time()
         if period == "all":
             orders = ord_rep.load_period_all()
-            item = an_cntrl.load_period(period)
+            item = an_cntrl.load_period(period)[0]
             if item:
-                data = self.all_analitic(orders, period)
+                data = self.first_an(orders, period)
                 work_an = self.work_analitic()
                 print(data+work_an)
-                resp = an_cntrl.update_(item[0].id, data+work_an)
+                resp = an_cntrl.update_(item.id, data)
+                resp_work = an_cntrl.update_work(item.id, work_an)
                 return resp
-            data = self.all_analitic(orders, period)
+            data = self.first_an(orders, period)
             work_an = self.work_analitic()
-            resp = an_cntrl.add_(data + work_an)
+            resp_first = an_cntrl.add_first(data)
+            resp_work = an_cntrl.add_work_an(work_an)
         elif period == "day":
-            print(period)
             orders = ord_rep.load_item_days()
-            print(orders)
             item = an_cntrl.load_day()
             if item:
-                data = self.all_analitic(orders, period)
+                data = self.first_an(orders, period)
                 work_an = self.work_analitic()
-                print(data + work_an)
-                resp = an_cntrl.update_(item.id, data + work_an)
+                resp = an_cntrl.update_(item.id, data)
+                resp_work = an_cntrl.update_work(item.id, work_an)
                 return resp
-            data = self.all_analitic(orders, period)
+            data = self.first_an(orders, period)
             work_an = self.work_analitic()
-            resp = an_cntrl.add_(data + work_an)
+            resp_first = an_cntrl.add_first(data)
+            resp_work = an_cntrl.add_work_an(work_an)
         elif period == "week":
+            orders = ord_rep.load_item_days()
             item = an_cntrl.load_day()
             if item:
-                resp = an_cntrl.update_(item.id, self.all_analitic(orders, period))
+                data = self.first_an(orders, period)
+                work_an = self.work_analitic()
+                resp = an_cntrl.update_(item.id, data)
+                resp_work = an_cntrl.update_work(item.id, work_an)
                 return resp
-            an_cntrl.add_(self.all_analitic(orders, period))
+            data = self.first_an(orders, period)
+            work_an = self.work_analitic()
+            resp_first = an_cntrl.add_first(data)
+            resp_work = an_cntrl.add_work_an(work_an)
         elif period == "month":
+            orders = ord_rep.load_item_days()
             item = an_cntrl.load_day()
             if item:
-                resp = an_cntrl.update_(item.id, self.all_analitic(orders, period))
+                data = self.first_an(orders, period)
+                work_an = self.work_analitic()
+                resp = an_cntrl.update_(item.id, data)
+                resp_work = an_cntrl.update_work(item.id, work_an)
                 return resp
-            resp = an_cntrl.add_(self.all_analitic(orders, period))
+            data = self.first_an(orders, period)
+            work_an = self.work_analitic()
+            resp_first = an_cntrl.add_first(data)
+            resp_work = an_cntrl.add_work_an(work_an)
         return resp
 
 
