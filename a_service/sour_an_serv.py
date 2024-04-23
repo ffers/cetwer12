@@ -138,17 +138,20 @@ class SourAnServ:
         return stock
 
     def inwork_func(self):
-        income = 0
-        item = self.an_cntrl.load_period("all")[0]
-        income += item.wait + item.stock + item.balance
-        return income
+        inwork = 0
+        item = self.an_cntrl.load_period("all")
+        if item and item[0].wait:
+            item = item[0]
+            inwork += item.wait + item.stock + item.balance
+        return inwork
 
     def salary_func(self, period):
         salary = 0
         items = self.an_cntrl.load_period(period)
         for item in items:
-            salary += item.profit - item.worker \
-            - item.prom - item.rozet - item.insta
+            if item and item.profit:
+                salary += item.profit - item.worker \
+                - item.prom - item.rozet - item.insta
         return salary
 
     def income_func(self):

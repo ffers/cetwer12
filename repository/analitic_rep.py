@@ -19,7 +19,8 @@ class AnaliticRep():
         items = []
         if period == "day":
             item = self.load_day()
-            items.append(item)
+            if item:
+                items.append(item)
         if period == "all":
             items = Analitic.query.filter_by(
                 period=period
@@ -37,8 +38,7 @@ class AnaliticRep():
         start_time = current_time - timedelta(hours=14)
         start_time = start_time.replace(hour=14, minute=0, second=0,
                                         microsecond=0)
-        stop_time = current_time.replace(hour=14, minute=0, second=0,
-                                         microsecond=0)
+        stop_time = start_time + timedelta(days=1)
         item = Analitic.query.filter(
             Analitic.timestamp >= start_time,
             Analitic.timestamp <= stop_time,
@@ -60,23 +60,6 @@ class AnaliticRep():
                 profit=args[7],
                 period=args[8],
                 orders=args[9]
-            )
-            db.session.add(item)
-            db.session.commit()
-            return True, None
-        except Exception as e:
-            return False, str(e)
-
-    def add_work_an(self, args):
-        try:
-            print(args)
-            item = Analitic(
-                balance=args[0],
-                wait=args[1],
-                stock=args[2],
-                inwork=args[3],
-                salary=args[4],
-                income=args[5]
             )
             db.session.add(item)
             db.session.commit()
@@ -110,8 +93,18 @@ class AnaliticRep():
             product.wait = args[1]
             product.stock = args[2]
             product.inwork = args[3]
-            product.salary = args[4]
-            product.income = args[5]
+            product.income = args[4]
+            db.session.commit()
+            return True, None
+        except Exception as e:
+            return False, str(e)
+
+    def update_salary(self, id, args):
+        try:
+            product = Analitic.query.get_or_404(id)
+
+            product.salary = args
+
             db.session.commit()
             return True, None
         except Exception as e:

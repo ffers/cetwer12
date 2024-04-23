@@ -24,13 +24,21 @@ class OrderRep:
     def load_status_id(self, id):
         return Orders.query.filter_by(ordered_status_id=id).all()
 
+    def load_period(self, period):
+        items = []
+        if period == "day":
+            items = self.load_item_days()
+        if period == "all":
+            items = Orders.query.filter_by(
+                ordered_status_id=8).all()
+        return items
+
     def load_item_days(self):
         current_time = next(self.my_time())
         start_time = current_time - timedelta(hours=14)
         start_time = start_time.replace(hour=14, minute=0, second=0,
                                         microsecond=0)
-        stop_time = current_time.replace(hour=14, minute=0, second=0,
-                                        microsecond=0)
+        stop_time = start_time + timedelta(days=1)
         print(start_time)
         print(stop_time)
         items = Orders.query.filter(
@@ -157,6 +165,7 @@ class OrderRep:
 
     def add_order_code(self, order, code):
         order.order_id_sources = code
+        order.order_code = code
         db.session.commit()
         return True
 
