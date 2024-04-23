@@ -54,8 +54,9 @@ class SourAnCntrl:
                 if prod_comps:
                     for prod_comp in prod_comps:
                         if prod_comp:
+                            description = order.code + ' ' + product.products.article
                             sale_quantity = self.sour_an_serv.count_new_quantity(prod_comp, product)
-                            resp = self.stock_journal(prod_comp.article, -sale_quantity)
+                            resp = self.stock_journal(prod_comp.article, -sale_quantity, description)
                 else:
                     resp_tg = f"Немає такого компоненту {product.products.article}"
                     tg_cntrl.sendMessage(tg_cntrl.chat_id_info, resp_tg)
@@ -65,20 +66,21 @@ class SourAnCntrl:
 
     def add_arrival(self, req):
         list_data = self.sour_an_serv.add_arrival(req)
-        resp = self.stock_journal(list_data[0], list_data[1])
+        resp = self.stock_journal(list_data[0], list_data[1], list_data[2])
+        resp_an = self.sort_analitic("day")
         return resp
 
         # except Exception as e:
         #     resp = f"При рахувані исходника щось пішло не так: {e}"
         #     print(resp)
         #     return resp
-    def stock_journal(self, article, quantity):
+    def stock_journal(self, article, quantity, description):
         resp = False
         prod_source = rep.load_article(article)
         if prod_source:
             new_quantity = self.sour_an_serv.new_qauntity(prod_source, quantity)
             resp = rep.update_quantity(prod_source.id, new_quantity)
-            list_val = self.sour_an_serv.journal_func(prod_source, quantity)
+            list_val = self.sour_an_serv.journal_func(prod_source, quantity, description)
             print(f"list_val {list_val}")
             resp = journal.add_(list_val)
         return resp
@@ -113,12 +115,12 @@ class SourAnCntrl:
         print(resp)
         return resp
 
-    def work_analitic(self):
+    def work_analitic(self, period):
         balance = self.sour_an_serv.balance_func()
         wait = self.sour_an_serv.wait_func()
         stock = self.sour_an_serv.stock_func()
         inwork = self.sour_an_serv.inwork_func()
-        salary = self.sour_an_serv.salary_func()
+        salary = self.sour_an_serv.salary_func(period)
         income = self.sour_an_serv.income_func()
         return (balance, wait, stock, inwork, salary, income)
 
@@ -145,13 +147,13 @@ class SourAnCntrl:
             item = an_cntrl.load_period(period)[0]
             if item:
                 data = self.first_an(orders, period)
-                work_an = self.work_analitic()
+                work_an = self.work_analitic(period)
                 print(data+work_an)
                 resp = an_cntrl.update_(item.id, data)
                 resp_work = an_cntrl.update_work(item.id, work_an)
                 return resp
             data = self.first_an(orders, period)
-            work_an = self.work_analitic()
+            work_an = self.work_analitic(period)
             resp_first = an_cntrl.add_first(data)
             resp_work = an_cntrl.add_work_an(work_an)
         elif period == "day":
@@ -159,12 +161,13 @@ class SourAnCntrl:
             item = an_cntrl.load_day()
             if item:
                 data = self.first_an(orders, period)
-                work_an = self.work_analitic()
+                work_an = self.work_analitic(period)
                 resp = an_cntrl.update_(item.id, data)
                 resp_work = an_cntrl.update_work(item.id, work_an)
+                print(work_an)
                 return resp
             data = self.first_an(orders, period)
-            work_an = self.work_analitic()
+            work_an = self.work_analitic(period)
             resp_first = an_cntrl.add_first(data)
             resp_work = an_cntrl.add_work_an(work_an)
         elif period == "week":
@@ -172,12 +175,12 @@ class SourAnCntrl:
             item = an_cntrl.load_day()
             if item:
                 data = self.first_an(orders, period)
-                work_an = self.work_analitic()
+                work_an = self.work_analitic(period)
                 resp = an_cntrl.update_(item.id, data)
                 resp_work = an_cntrl.update_work(item.id, work_an)
                 return resp
             data = self.first_an(orders, period)
-            work_an = self.work_analitic()
+            work_an = self.work_analitic(period)
             resp_first = an_cntrl.add_first(data)
             resp_work = an_cntrl.add_work_an(work_an)
         elif period == "month":
@@ -185,12 +188,12 @@ class SourAnCntrl:
             item = an_cntrl.load_day()
             if item:
                 data = self.first_an(orders, period)
-                work_an = self.work_analitic()
+                work_an = self.work_analitic(period)
                 resp = an_cntrl.update_(item.id, data)
                 resp_work = an_cntrl.update_work(item.id, work_an)
                 return resp
             data = self.first_an(orders, period)
-            work_an = self.work_analitic()
+            work_an = self.work_analitic(period)
             resp_first = an_cntrl.add_first(data)
             resp_work = an_cntrl.add_work_an(work_an)
         return resp

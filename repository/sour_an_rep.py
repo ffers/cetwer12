@@ -94,7 +94,7 @@ class SourAnRep:
 
 
     def add_product_source(self, data_list):
-        # try:
+        try:
             item = ProductSource(
                 article=data_list[0],
                 name=data_list[1],
@@ -106,15 +106,18 @@ class SourAnRep:
             db.session.commit()
             db.session.close()
             return True
-        # except:
-        #     return False
+        except Exception as e:
+            return False, e
 
     def delete_product_source(self, id):
-        task_to_delete = ProductSource.query.get_or_404(id)
-        print(">>> Start delete in datebase")
-        db.session.delete(task_to_delete)
-        db.session.commit()
-        print(">>> Delete in datebase")
-        return True
+        try:
+            task_to_delete = ProductSource.query.get_or_404(id)
+            print(">>> Start delete in datebase")
+            db.session.delete(task_to_delete)
+            db.session.commit()
+            print(">>> Delete in datebase")
+            return True
+        except Exception as e:
+            return False, e
 
 sour_an_rep = SourAnRep()

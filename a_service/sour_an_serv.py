@@ -35,13 +35,11 @@ class SourAnServ:
     def add_arrival(self, req):
         print(req)
         article = req.form['article']
-        # name = req.form['name']
+        description = req.form['description']
         # price = req.form['price']
         quantity = req.form['quantity']
         # money = self.format_float(price) * int(quantity)
-        list_data = [article, int(quantity)]
-        print(list_data)
-        return list_data
+        return article, int(quantity), description
 
 
     def count_new_quantity(self, prod_comp, product):
@@ -52,11 +50,11 @@ class SourAnServ:
         new_quantity = prod_source.quantity + sale_quantity
         return new_quantity
 
-    def journal_func(self, prod_source, sale_quantity):
+    def journal_func(self, prod_source, sale_quantity, description):
         body = prod_source.price * sale_quantity
         quantity_stock = prod_source.quantity
         print(quantity_stock)
-        return "-", sale_quantity, body, prod_source.id, quantity_stock
+        return description, sale_quantity, body, prod_source.id, quantity_stock
 
     def torg(self, product):
         torg = 0
@@ -110,10 +108,13 @@ class SourAnServ:
     def balance_func(self):
         balance = 0
         items = self.an_cntrl.load_period("all")
+        balance_w = self.rep.load_article("balance")
         for item in items:
             if item.income:
                 print(item.income)
                 balance += item.income
+                if balance_w:
+                    balance += balance_w.money
             else:
                 balance += 0
         return balance
@@ -142,9 +143,9 @@ class SourAnServ:
         income += item.wait + item.stock + item.balance
         return income
 
-    def salary_func(self):
+    def salary_func(self, period):
         salary = 0
-        items = self.an_cntrl.load_all()
+        items = self.an_cntrl.load_period(period)
         for item in items:
             salary += item.profit - item.worker \
             - item.prom - item.rozet - item.insta

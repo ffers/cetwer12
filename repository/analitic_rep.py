@@ -16,9 +16,14 @@ class AnaliticRep():
         return items
 
     def load_period(self, period):
-        items = Analitic.query.filter_by(
-            period=period
-            ).all()
+        items = []
+        if period == "day":
+            item = self.load_day()
+            items.append(item)
+        if period == "all":
+            items = Analitic.query.filter_by(
+                period=period
+                ).all()
         return items
 
     def load_article(self, article):
@@ -29,14 +34,14 @@ class AnaliticRep():
     def load_day(self):
         current_time = next(self.my_time())
         print(current_time)
-        start_time = current_time - timedelta(days=1)
-        start_time = start_time.replace(
-            hour=17, minute=0,
-            second=0, microsecond=0
-            )
+        start_time = current_time - timedelta(hours=14)
+        start_time = start_time.replace(hour=14, minute=0, second=0,
+                                        microsecond=0)
+        stop_time = current_time.replace(hour=14, minute=0, second=0,
+                                         microsecond=0)
         item = Analitic.query.filter(
             Analitic.timestamp >= start_time,
-            Analitic.timestamp <= current_time,
+            Analitic.timestamp <= stop_time,
             Analitic.period == "day"
             ).first()
         return item
