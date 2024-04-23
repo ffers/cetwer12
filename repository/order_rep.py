@@ -27,9 +27,9 @@ class OrderRep:
     def load_item_days(self):
         current_time = next(self.my_time())
         start_time = current_time - timedelta(days=1)
-        start_time = start_time.replace(hour=16, minute=0, second=0,
+        start_time = start_time.replace(hour=13, minute=0, second=0,
                                         microsecond=0)
-        stop_time = current_time.replace(hour=17, minute=0, second=0,
+        stop_time = current_time.replace(hour=14, minute=0, second=0,
                                         microsecond=0)
         print(start_time)
         print(stop_time)
