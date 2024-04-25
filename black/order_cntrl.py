@@ -143,7 +143,7 @@ class OrderCntrl:
         print("first")
         order = ord_rep.load_item(order_id)
         crm_status = ord_rep.change_status(order_id, 2)
-        bool_prom = self.definition_source(order, 1)
+        bool_prom = self.definition_source(order, 3)
         update_analitic = prod_an_cntrl.product_in_order(order)
 
         delivery = self.check_del_method(order)
@@ -203,6 +203,8 @@ class OrderCntrl:
         np_resp = np_cntrl.manager_data(
             order)  # обработка зкаказа из срм создание ттн, телеграм курьеру заказ, додавання в пром ттн
         if np_resp["success"] == True:
+            doc_ttn = np_resp["data"][0]["IntDocNumber"]
+            resp_ttn = self.add_ttn_crm(order.id, doc_ttn)
             order = ord_rep.load_item(order.id)
             data_tg_dict = tg_serv.create_text_order(order)  # if telegram True send to telegram
             tg_cntrl.sendMessage(tg_cntrl.chat_id_np, data_tg_dict)
@@ -215,6 +217,10 @@ class OrderCntrl:
             resp = "Поштомат зайнятий"
             tg_cntrl.sendMessage(tg_cntrl.chat_id_np,
                                  "❗️❗️❗️ ТТН не створено - поштомат зайнятий")
+        return resp
+
+    def add_ttn_crm(self, order_id, ttn):
+        resp = ord_rep.add_ttn_crm(order_id, ttn)
         return resp
 
     def del_method_roz(self, order):
@@ -252,6 +258,10 @@ class OrderCntrl:
         orders, status = ord_serv.parse_dict_status(data)
         bool = ord_rep.change_status_list(orders, status)
         return bool
+
+    def change_status_item(self, id, status):
+        resp = ord_rep.change_status(id, status)
+        return resp
 
     def my_time(self): yield (datetime.now())
 

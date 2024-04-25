@@ -16,7 +16,7 @@ class PromServ:
                 "status": "received",
                 "ids": [order_id]
             }
-        if 3 == status_order: # прийнято
+        if 3 == status_order: # підтверженно
             dict_status_prom = {
                 "custom_status_id": 137639,
                 "ids": [order_id]

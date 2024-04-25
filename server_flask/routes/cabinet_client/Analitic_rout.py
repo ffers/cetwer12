@@ -60,3 +60,30 @@ def update_day():
     flash('Аналітику оновлено DAY', category='success')
     return redirect('/cabinet/analitic/all')
 
+@bp.route('/cabinet/analitic/update_week', methods=['GET'])
+@login_required
+@admin_permission.require(http_exception=403)
+def update_week():
+    product = sour_an_cntrl.sort_analitic("week")
+    print(f"Перевірка {product}")
+    flash('Аналітику оновлено week', category='success')
+    return redirect('/cabinet/analitic/all')
+
+@bp.route('/cabinet/analitic/update_month', methods=['GET'])
+@login_required
+@admin_permission.require(http_exception=403)
+def update_month():
+    product = sour_an_cntrl.sort_analitic("month")
+    print(f"Перевірка {product}")
+    flash('Аналітику оновлено month', category='success')
+    return redirect('/cabinet/analitic/all')
+
+@bp.route('/cabinet/analitic/update_year', methods=['GET'])
+@login_required
+@admin_permission.require(http_exception=403)
+def update_year():
+    product = sour_an_cntrl.sort_analitic("year")
+    print(f"Перевірка {product}")
+    flash('Аналітику оновлено week', category='success')
+    return redirect('/cabinet/analitic/all')
+

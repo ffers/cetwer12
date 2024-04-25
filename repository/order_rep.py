@@ -24,13 +24,12 @@ class OrderRep:
     def load_status_id(self, id):
         return Orders.query.filter_by(ordered_status_id=id).all()
 
-    def load_period(self, period):
-        items = []
-        if period == "day":
-            items = self.load_item_days()
-        if period == "all":
-            items = Orders.query.filter_by(
-                ordered_status_id=8).all()
+    def load_period(self, start, stop):
+        items = Orders.query.filter(
+            Orders.send_time >= start,
+            Orders.send_time <= stop,
+            Orders.ordered_status_id == 8
+        ).all()
         return items
 
     def load_item_days(self):
@@ -39,6 +38,24 @@ class OrderRep:
         start_time = start_time.replace(hour=14, minute=0, second=0,
                                         microsecond=0)
         stop_time = start_time + timedelta(days=1)
+        print(start_time)
+        print(stop_time)
+        items = Orders.query.filter(
+            Orders.send_time >= start_time,
+            Orders.send_time <= stop_time,
+            Orders.ordered_status_id == 8
+            ).all()
+
+        return items
+
+    def load_item_month(self):
+        current_time = next(self.my_time())
+        start_time = current_time - timedelta(hours=14)
+        start_time = start_time.replace(day=1, hour=14, minute=0, second=0,
+                                        microsecond=0)
+        next_month = start_time.replace(day=28) + timedelta(days=4)
+        stop_time = next_month - timedelta(days=next_month.day)
+
         print(start_time)
         print(stop_time)
         items = Orders.query.filter(
@@ -84,6 +101,15 @@ class OrderRep:
     #                    description_delivery="Одяг Jemis")
     #     db.session.add(order)
     #     db.session.commit()
+
+    def add_ttn_crm(self, id, ttn):
+        try:
+            order = self.load_item(id)
+            order.ttn = ttn
+            db.session.commit()
+            return True, None
+        except Exception as e:
+            return False, str(e)
 
     def update_time_send(self, id, send_time):
         try:

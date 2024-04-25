@@ -1,12 +1,13 @@
 from decimal import Decimal
 
 class SourAnServ:
-    def __init__(self, prod_cntrl, journal, an_cntrl, rep, ord_rep):
+    def __init__(self, prod_cntrl, journal, an_cntrl, rep, ord_rep, w_time_cntrl):
         self.prod_cntrl = prod_cntrl
         self.journal = journal
         self.an_cntrl = an_cntrl
         self.rep = rep
         self.ord_rep = ord_rep
+        self.w_time_cntrl = w_time_cntrl
 
     def format_float(self, num):
         try:
@@ -40,6 +41,19 @@ class SourAnServ:
         quantity = req.form['quantity']
         # money = self.format_float(price) * int(quantity)
         return article, int(quantity), description
+
+    def get_search(self, req):
+        search_query = req.args.get('q', '').lower()
+        items = self.rep.load_all()
+        result = []
+        for item in items:
+            if search_query in item.article.lower() or search_query in item.name.lower():
+                prod_data = {
+                    'id': item.article,
+                    'article': item.article + ' - ' + item.name
+                }
+                result.append(prod_data)
+        return result
 
 
     def count_new_quantity(self, prod_comp, product):
@@ -147,10 +161,10 @@ class SourAnServ:
 
     def salary_func(self, period):
         salary = 0
-        items = self.an_cntrl.load_period(period)
-        for item in items:
-            if item and item.profit:
-                salary += item.profit - item.worker \
+        start_time, stop_time = self.w_time_cntrl.load_work_time(period)
+        item = self.an_cntrl.load_period_sec(period, start_time, stop_time)
+        if item and item.profit:
+            salary += item.profit - item.worker \
                 - item.prom - item.rozet - item.insta
         return salary
 

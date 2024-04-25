@@ -281,19 +281,17 @@ def get_post():
 @author_permission.require(http_exception=403)
 def get_product():
     search_query = request.args.get('q', '').lower()
-    tasks_products = Products.query.order_by(Products.timestamp).all()
-    products_list = []
-    for prod in tasks_products:
-        prod_data = {
-            'id': prod.id,
-            'article': prod.article + ' - ' + prod.product_name
-        }
-        products_list.append(prod_data)
-    print(products_list)
-    if products_list:
-        # Здійснити пошук відділень в даному місті
-        result = [warehouse for warehouse in products_list if search_query in warehouse['article'].lower()]
+    items = Products.query.order_by(Products.timestamp).all()
+    result = []
+    for item in items:
+        if search_query in item.article.lower() or search_query in item.product_name.lower():
+            prod_data = {
+                'id': item.id,
+                'article': item.article + ' - ' + item.product_name
+            }
+            result.append(prod_data)
         print(f"дивимось продукти  {result}")
+    if result:
         return jsonify({'results': result})
     else:
         return jsonify({'results': []})
@@ -493,7 +491,8 @@ def test_order(id):
 #  10 | Нове               |
 #  11 | Очікує відправленя |
 #  12 | Виконано           |
-#  13 | Тест               |
+#  13 | Тест
+#  14 | Повернення
 
 #  id | name |                               description                               | code
 # ----+------+-------------------------------------------------------------------------+------

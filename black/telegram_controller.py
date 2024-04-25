@@ -33,7 +33,7 @@ class TelegramController():
         resp = tg_api.send_message_f(chat_id, text, keyboard_json)
         return resp
 
-    def answerCallbackQuery(self, callback_query_id, text):
+    def answerCallbackQuery(self, callback_query_id: str, text: str) -> bool:
         resp = tg_api.answerCallbackQuery(callback_query_id, text)
         return resp
 

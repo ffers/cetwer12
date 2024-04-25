@@ -6,12 +6,15 @@ from repository import ord_rep
 from datetime import datetime
 from repository import sour_an_rep as rep
 from .telegram_controller import tg_cntrl
-
+from .work_time_cntrl import WorkTimeCntrl
 
 
 class SourAnCntrl:
     def __init__(self):
-        self.sour_an_serv = SourAnServ(prod_cntrl, journal, an_cntrl, rep, ord_rep)
+        self.w_time_cntrl = WorkTimeCntrl()
+        self.sour_an_serv = SourAnServ(prod_cntrl,
+                                       journal, an_cntrl,
+                                       rep, ord_rep, self.w_time_cntrl)
 
     def my_time(self):
         yield (datetime.utcnow())
@@ -34,13 +37,17 @@ class SourAnCntrl:
         resp = rep.load_item(product_id)
         return resp
 
-    def update_prod_sour_quan(self, id, quantity):
-        resp = rep.update_quantity(id, quantity)
-        return resp
-
     def load_article(self, article):
         item = rep.load_article(article)
         return item
+
+    def get_search(self, req):
+        result = self.sour_an_serv.get_search(req)
+        return result
+
+    def update_prod_sour_quan(self, id, quantity):
+        resp = rep.update_quantity(id, quantity)
+        return resp
 
     def delete(self, id):
         bool = rep.delete_(id)
@@ -154,13 +161,20 @@ class SourAnCntrl:
         print(resp_salary)
         return resp
 
+
+
+
     def sort_analitic(self, period):
         resp = False, "Не спрацювало"
+        print(period)
         self.sort_send_time()
-        orders = ord_rep.load_period(period)
-        item = an_cntrl.load_period(period)
+        start_time, stop_time = self.w_time_cntrl.load_work_time(period)
+        print(start_time,' ', stop_time)
+        orders = ord_rep.load_period(start_time, stop_time)
+        print(orders)
+        item = an_cntrl.load_period_sec(period, start_time, stop_time)
         if item:
-            item = item[0]
+            # item = item
             print(f"update {item}")
             resp = self.update_analitic(orders, item, period)
             return resp
@@ -168,8 +182,8 @@ class SourAnCntrl:
         data = self.first_an(orders, period)
         resp_first = an_cntrl.add_first(data)
         print(resp_first)
-        item = an_cntrl.load_period(period)
-        resp = self.update_analitic(orders, item[0], period)
+        item = an_cntrl.load_period_sec(period, start_time, stop_time)
+        resp = self.update_analitic(orders, item, period)
         return resp
         # if period == "day":
         #     orders = ord_rep.load_item_days()

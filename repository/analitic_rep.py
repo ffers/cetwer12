@@ -46,6 +46,14 @@ class AnaliticRep():
             ).first()
         return item
 
+    def load_period_sec(self, period, start, stop):
+        item = Analitic.query.filter(
+            Analitic.timestamp >= start,
+            Analitic.timestamp <= stop,
+            Analitic.period == period
+            ).first()
+        return item
+
     def add_first(self, args):
         try:
             print(args)

@@ -59,7 +59,9 @@ class TgAnswerCntrl:
 
     def await_tg_button(self, data):
         if "message" in data:
-            search_reply_message(data)
+            if ("reply_to_message" in data["message"] and
+                    "text" in data["message"]["reply_to_message"]):
+                search_reply_message(data)
             self.await_telegram(data)
             # button_hand(data)
         if "callback_query" in data:
@@ -80,6 +82,8 @@ class TgAnswerCntrl:
         chat_confirm = data["callback_query"]["message"]["chat"]["id"]
         if int(tg_cntrl.chat_id_confirm) == chat_confirm:
             key = data["callback_query"]["message"]["reply_markup"]
+            call_back_id = data["callback_query"]["id"]
+            tg_cntrl.answerCallbackQuery(call_back_id, "Працюю")
             if "inline_keyboard" in key:
                 text_order, data_keyb, text_data_back = tg_serv.await_button_parse(data)
                 print(f"need {key}")

@@ -15,17 +15,7 @@ bp = Blueprint('ProductSource', __name__, template_folder='templates')
 @login_required
 @admin_permission.require(http_exception=403)
 def get_source():
-    search_query = request.args.get('q', '').lower()
-    items = rep.load_all()
-    result = []
-    for item in items:
-        if search_query in item.article.lower():
-            prod_data = {
-                'id': item.article,
-                'article': item.article + ' - ' + item.name
-            }
-            result.append(prod_data)
-    print(f"дивимось продукти  {result}")
+    result = cntrl.get_search(request)
     if result:
         return jsonify({'results': result})
     else:

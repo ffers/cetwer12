@@ -28,6 +28,10 @@ class AnCntrl:
         resp = rep.load_period(period)
         return resp
 
+    def load_period_sec(self, period, start_time, stop_time):
+        resp = rep.load_period_sec(period, start_time, stop_time)
+        return resp
+
     def load_day(self):
         return rep.load_day()
 

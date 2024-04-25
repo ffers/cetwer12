@@ -13,8 +13,6 @@ class NpCntrl():
         self.runup_recepient(order)
         print(self.data)
         resp = np_cl_api.runup_doc(self.data)
-        if resp["success"]:
-            self.add_ttn_crm(resp, order)
         return resp
 
     def runup_recepient(self, order):
@@ -25,10 +23,6 @@ class NpCntrl():
         self.contact_recipient(data)
         print(f"runup {data}")
         pass
-
-    def add_ttn_crm(self, resp, order):
-        order.ttn = resp["data"][0]["IntDocNumber"]
-        db.session.commit()
 
     def parse_data(self, order):
         self.data.clear()

@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 from api.prom import EvoClient
 
 from .telegram_controller import tg_cntrl
-
+from .order_cntrl import ord_cntrl
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
@@ -111,8 +111,7 @@ def get_edit_message(data, text):
     tg_cntrl.editMessageText(chat_id, message_id, text)
     print(chat_id, message_id, text)
 
-def replace_text_ttn(data, ttn_number):
-    text = data["message"]["reply_to_message"]["text"]
+def replace_text_ttn(text, ttn_number):
     new_text = text.replace(";ТТН немає", f";{ttn_number}")
     return new_text
 
@@ -132,17 +131,34 @@ def search_order_number(text_message):
         print(number_order)
         return number_order.group(1).strip()
 
+def update_order(invoice_ttn, invoice_order):
+    order = ord_cntrl.load_for_order_code(invoice_order)
+    if order:
+        order_id = order.id
+        resp_ttn = ord_cntrl.add_ttn_crm(order_id, invoice_ttn)
+        resp_status = ord_cntrl.change_status_item(order_id, 8)
+        return True, None
+    else:
+        print("Нема такого замовлення")
+        return False, "Нема такого замовлення"
+
+def update_text_tg(data, text_message, invoice_ttn):
+    text = replace_text_ttn(text_message, invoice_ttn)
+    get_edit_message(data, text)
+    return True
+
 def search_reply_message(data):
-    if "reply_to_message" in data["message"] and "text" in data["message"]["reply_to_message"]:
         text_message = data["message"]["reply_to_message"]["text"]
         invoice_order = search_order_number(text_message)
         invoice_ttn = search_invoice_ttn(data)
         if invoice_order and invoice_ttn:
-            send_request_status(invoice_ttn, invoice_order)
-            text = replace_text_ttn(data, invoice_ttn)
-            get_edit_message(data, text)
+            resp_update = update_order(invoice_ttn, invoice_order)
+            resp_tg = update_text_tg(data, text_message, invoice_ttn)
+            resp_prom = send_request_status(invoice_ttn, invoice_order)
         else:
             return None
+
+
 
 
 
