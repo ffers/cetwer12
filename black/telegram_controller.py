@@ -21,13 +21,16 @@ class TelegramController():
         self.chat_id_vp = os.getenv("CHAT_ID_INFO")
         self.chat_id_sk = os.getenv("CH_ID_SK")
         self.chat_id_confirm = os.getenv("CHAT_ID_CONFIRMATION")
+        self.chat_id_cash = os.getenv("CH_ID_CASH")
 
 
-    def sendPhoto(self):
+    def sendPhoto(self, id_photo):
         chat_list = [self.chat_id_rozet, self.chat_id_np]
+        resp = None
         for chat in chat_list:
-            resp = tg_api.sendPhoto(chat, 'AgACAgIAAxkBAAIMl2YWFuaONHD9_7SWvzDiiK8vmNQSAAK31jEbGsoISBKbThvzHGUpAQADAgADbQADNAQ')
+            resp = tg_api.sendPhoto(chat, id_photo)
             print(resp)
+        return resp
 
     def sendMessage(self, chat_id, text, keyboard_json=None):
         resp = tg_api.send_message_f(chat_id, text, keyboard_json)
@@ -52,6 +55,10 @@ class TelegramController():
     def keyboard_generate(self,  text1, callback_data1, text2=None, callback_data2=None):
         resp = tg_api.keyboard_generate(text1, callback_data1, text2, callback_data2)
         return resp
+
+    def loadPhoto(self, chat_id):
+        return tg_api.loadPhoto(chat_id)
+
 
 tg_cntrl = TelegramController()
 

@@ -8,6 +8,7 @@ class TgClient():
     def __init__(self):
         self.text1 = "Прийнято"
         self.text2 = "Питання"
+        self.token = os.getenv("TELEGRAM_BOT_TOKEN")
 
     def send_message_f(self, chat_id, text, keyboard_json):
         method = "sendMessage"
@@ -86,10 +87,31 @@ class TgClient():
 
     def sendPhoto(self, chat_id, photo):
         method = "sendPhoto"
-        token = os.getenv("TELEGRAM_BOT_TOKEN")
-        url = f"https://api.telegram.org/bot{token}/{method}"
+
+        url = f"https://api.telegram.org/bot{self.token}/{method}"
         data = {"chat_id": chat_id, "photo": photo}
         resp_json = requests.post(url, data=data).content
-        return json.loads(resp_json)
+        if json.loads(resp_json)["ok"]:
+            return json.loads(resp_json)
+        else:
+            load = self.loadPhoto(chat_id)
+            return load
+
+
+
+    def loadPhoto(self, chat_id):
+        file = r"/home/ff/python_program/dev_asx/asx/server_flask/static/images/OS.png"
+
+        files = {
+            'photo': open(file, 'rb')
+        }
+        print(files)
+        message = ('https://api.telegram.org/bot' + self.token + '/sendPhoto?chat_id='
+                   + chat_id)
+        send = requests.post(message, files=files).content
+        print(send)
+        return send
+
+
 
 tg_api = TgClient()

@@ -31,38 +31,6 @@ class SourAnRep:
         except Exception as e:
             return False, e
 
-    # def add_(self, *data):
-    #     try:
-    #         item = ProductSource(
-    #             status=data[0],
-    #             quantity=data[1],
-    #             body=data[2],
-    #             product_id=data[3],
-    #             quantity_stock=data[4]
-    #         )
-    #         db.session.add(item)
-    #         db.session.commit()
-    #         return True
-    #     except Exception as e:
-    #         return False, e
-
-
-    # except:
-    #     return False
-
-    # def update_(self, id, data):
-    #     try:
-    #         product = ProductSource.query.get_or_404(id)
-    #         product.article = data[0]
-    #         product.name = data[1]
-    #         product.price = data[2]
-    #         product.quantity = data[3]
-    #         product.money = data[4]
-    #         db.session.commit()
-    #         return True
-    #     except:
-    #         return False
-
 
     def update_quantity(self, id, quantity):
         try:
@@ -73,9 +41,6 @@ class SourAnRep:
         except Exception as e:
             return False, e
 
-
-    # except:
-    #     return False
 
     def delete_(self, id):
         try:

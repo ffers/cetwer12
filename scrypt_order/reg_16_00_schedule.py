@@ -12,7 +12,9 @@ def reg_16_00():
         print(load_orders)
         list_dict = create_list_dict(load_orders)
         dict_order = del_ord_cntrl.add_registr(list_dict)
-        tg_cntrl.sendPhoto()
+        id_photo = 'AgACAgIAAxkBAAIMl2YWFuaONHD9_7SWvzDiiK8vmNQSAAK31jEbGsoISBKbThvzHGUpAQADAgADbQADNAQ'
+        resp = tg_cntrl.sendPhoto(id_photo)
+        OC_log.info(resp)
         tg_cntrl.sendMessage(tg_cntrl.chat_id_np, dict_order["number_registr"])
         OC_log.info("Виконую завдання")
 

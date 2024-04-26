@@ -127,6 +127,7 @@ def add_product_relate():
     if request.method == 'POST':
         print("ПРацюєм")
         resp_bool = prod_cntrl.add_product_relate(request)
+        print(resp_bool)
         for item in request.form:
             print(item)
         if resp_bool == True:

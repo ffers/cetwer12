@@ -35,31 +35,6 @@ class AnCntrl:
     def load_day(self):
         return rep.load_day()
 
-    # def update_(self, id, req):
-    #     data = prod_serv.add_product_source(req)
-    #     resp = prod_rep.update_product_source(id, data)
-    #     return resp
-    #
-    # def load_all(self):
-    #     data = prod_rep.load_product_source_all()
-    #     return data
-    #
-    # def load_item(self, product_id):
-    #     resp = prod_rep.load_product_source_item(product_id)
-    #     return resp
-    #
-    # def update_quan(self, id, quantity):
-    #     resp = prod_rep.update_prod_sour_quan(id, quantity)
-    #     return resp
-    #
-    #
-    # def load_article(self, article):
-    #     item = prod_rep.load_product_source_article(article)
-    #     return item
-    #
-    # def delete_(self, id):
-    #     bool = prod_rep.delete_product_source(id)
-    #     return bool
 
 
 

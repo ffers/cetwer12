@@ -7,6 +7,7 @@ from datetime import datetime
 from repository import sour_an_rep as rep
 from .telegram_controller import tg_cntrl
 from .work_time_cntrl import WorkTimeCntrl
+from repository import SourAnRep
 
 
 class SourAnCntrl:
@@ -15,6 +16,7 @@ class SourAnCntrl:
         self.sour_an_serv = SourAnServ(prod_cntrl,
                                        journal, an_cntrl,
                                        rep, ord_rep, self.w_time_cntrl)
+        self.rep = SourAnRep()
 
     def my_time(self):
         yield (datetime.utcnow())
@@ -77,12 +79,10 @@ class SourAnCntrl:
         resp_an = self.sort_analitic("all")
         return resp
 
-        # except Exception as e:
-        #     resp = f"При рахувані исходника щось пішло не так: {e}"
-        #     print(resp)
-        #     return resp
+
     def stock_journal(self, article, quantity, description):
         resp = False
+        new_quantity = 0
         prod_source = rep.load_article(article)
         if prod_source:
             new_quantity = self.sour_an_serv.new_qauntity(prod_source, quantity)
@@ -90,7 +90,7 @@ class SourAnCntrl:
             list_val = self.sour_an_serv.journal_func(prod_source, quantity, description)
             print(f"list_val {list_val}")
             resp = journal.add_(list_val)
-        return resp
+        return resp, new_quantity
 
     def return_prod(self, order):
         resp = None
@@ -185,48 +185,6 @@ class SourAnCntrl:
         item = an_cntrl.load_period_sec(period, start_time, stop_time)
         resp = self.update_analitic(orders, item, period)
         return resp
-        # if period == "day":
-        #     orders = ord_rep.load_item_days()
-        #     print(orders)
-        #     item = an_cntrl.load_period(period)[0]
-        #     if item:
-        #         data = self.first_an(orders, period)
-        #         resp = an_cntrl.update_(item.id, data)
-        #         work_an = self.work_analitic()
-        #         resp_work = an_cntrl.update_work(item.id, work_an)
-        #         print(work_an)
-        #         salary = self.salary_f(period)
-        #         resp_salary = an_cntrl.update_salary(item.id, salary)
-        #         return resp
-        #     data = self.first_an(orders, period)
-        #     resp_first = an_cntrl.add_first(data)
-        # elif period == "week":
-        #     orders = ord_rep.load_item_days()
-        #     item = an_cntrl.load_day()
-        #     if item:
-        #         data = self.first_an(orders, period)
-        #         resp = an_cntrl.update_(item.id, data)
-        #         work_an = self.work_analitic(period)
-        #         resp_work = an_cntrl.update_work(item.id, work_an)
-        #         return resp
-        #     data = self.first_an(orders, period)
-        #     work_an = self.work_analitic(period)
-        #     resp_first = an_cntrl.add_first(data)
-        #     resp_work = an_cntrl.add_work_an(work_an)
-        # elif period == "month":
-        #     orders = ord_rep.load_item_days()
-        #     item = an_cntrl.load_day()
-        #     if item:
-        #         data = self.first_an(orders, period)
-        #         work_an = self.work_analitic(period)
-        #         resp = an_cntrl.update_(item.id, data)
-        #         resp_work = an_cntrl.update_work(item.id, work_an)
-        #         return resp
-        #     data = self.first_an(orders, period)
-        #     work_an = self.work_analitic(period)
-        #     resp_first = an_cntrl.add_first(data)
-        #     resp_work = an_cntrl.add_work_an(work_an)
-        #
 
 
 

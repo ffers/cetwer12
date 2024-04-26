@@ -13,6 +13,8 @@ from a_service.update_to_crm import up_to_srm
 from .telegram_controller import tg_cntrl
 from .order_cntrl import ord_cntrl
 from a_service import tg_answer_serv as serv
+from .telegram_cntrl.tg_cash_cntrl import TgCashCntrl
+
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
@@ -27,6 +29,9 @@ mng_cl = ManagerTTN()
 prod_an_cntrl = ProductAnaliticControl()
 
 class TgAnswerCntrl:
+    def __init__(self):
+        self.arrival = TgCashCntrl()
+
     def await_order(self, order, flag=None, id=None):
         print(f"ДИвимось флаг {flag}")
         resp = None
@@ -70,12 +75,13 @@ class TgAnswerCntrl:
 
     def await_telegram(self, data):
         chat_id = data["message"]["chat"]["id"]
-        print(chat_id)
-        print(ch_id_sk)
         if int(ch_id_sk) == chat_id:
             print("Отримали повідомлення з Робочого чату")
             text_colour = pr_bt_srv.work_with_product(data)
             tg_cntrl.sendMessage(tg_cntrl.chat_id_sk, text_colour)
+        if int(tg_cntrl.chat_id_cash) == chat_id:
+            print("Hello")
+            self.arrival.sort(data)
 
 
     def await_button(self, data):

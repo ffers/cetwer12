@@ -8,4 +8,4 @@ from .order_rep import ord_rep
 from .product_analitic_rep import prod_an_rep
 from .jour_ch_rep import jour_ch_rep
 from .analitic_rep import an_rep
-from .sour_an_rep import sour_an_rep
+from .sour_an_rep import sour_an_rep, SourAnRep

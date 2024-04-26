@@ -1,23 +1,25 @@
-from a_service import TgArrivalServ
+from a_service import TgCashServ
 from black.sour_an_cntrl import SourAnCntrl
 from black.telegram_controller import TelegramController
 
-class TgArrivalCntrl:
+class TgCashCntrl:
     def __init__(self):
-        self.serv = TgArrivalServ()
+        self.serv = TgCashServ()
         self.source = SourAnCntrl()
         self.cntrl = TelegramController()
 
+    def text_f(self, data):
+        return data["message"]["text"]
 
     def sort(self, data):
         text = self.text_f(data)
         if "#add" in text:
-            self.add(text)
+            self.add_f(text)
         elif "#quan" in text:
-            pass
+            self.quan_f(text)
 
-    def add(self, text):
-        data_dict = self.serv.article(text)
+    def add_f(self, text):
+        data_dict = self.serv.arrival(text)
         print(data_dict)
         if data_dict:
             for item in data_dict:
@@ -32,16 +34,22 @@ class TgArrivalCntrl:
             return False, 200
 
     def quan_f(self, text):
-        article = None
-        quan = self.source.rep.load_article(article)
-        self.cntrl.sendMessage(self.cntrl.chat_id_cash, quan)
+        articles = self.serv.quan_f(text)
+        text = ''
+        if articles:
+            for article in articles:
+                quan = self.source.rep.load_article(article["article"])
+                print(quan)
+                text += f"{quan.article}={quan.quantity}\n"
+            print(text)
+            self.cntrl.sendMessage(self.cntrl.chat_id_cash, text)
+        else:
+            print(False)
+            return False
 
 
 
-    def text_f(self, data):
-        text = data["message"]["text"]
-        print(text)
-        return text
+
 
 
 
