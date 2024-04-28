@@ -8,7 +8,7 @@ from repository import sour_an_rep as rep
 from .telegram_controller import tg_cntrl
 from .work_time_cntrl import WorkTimeCntrl
 from repository import SourAnRep
-
+from a_service import CacheService
 
 class SourAnCntrl:
     def __init__(self):
@@ -17,6 +17,7 @@ class SourAnCntrl:
                                        journal, an_cntrl,
                                        rep, ord_rep, self.w_time_cntrl)
         self.rep = SourAnRep()
+        self.cash = CacheService()
 
     def my_time(self):
         yield (datetime.utcnow())
@@ -118,21 +119,20 @@ class SourAnCntrl:
         cpa_com = self.sour_an_serv.cpa_com_f(orders)
         rozet = self.sour_an_serv.rozet_f(orders)
         print(f"рахуєм: {orders_quan} {torg_sum} {body} {workers_mon} {profit} {cpa_com}")
-        resp = (torg_sum, body, workers_mon, cpa_com, rozet, 0.00, 0.00, profit, period, orders_quan)
-        print(resp)
+        resp = (torg_sum, body, workers_mon, cpa_com, rozet, 0, 0, profit, period, orders_quan)
+        if period == "all":
+            self.cash.create_set(resp)
+            print(f"итого кеш: {self.cash.get_all()}")
         return resp
 
-    def work_analitic(self):
-        balance = self.sour_an_serv.balance_func()
-        wait = self.sour_an_serv.wait_func()
-        stock = self.sour_an_serv.stock_func()
-        inwork = self.sour_an_serv.inwork_func()
-        income = self.sour_an_serv.income_func()
-        return (balance, wait, stock, inwork, income)
-
-    def salary_f(self, period):
-        salary = self.sour_an_serv.salary_func(period)
-        return salary
+    def work_analitic(self, period):
+        stock = self.cash.stock_func(self.load_all())
+        income = self.cash.income_func(rep.load_article("income"))
+        balance = self.cash.balance_func(self.rep.load_article("balance"))
+        wait = self.cash.wait_func()
+        inwork = self.cash.inwork_func()
+        data = (balance, wait, stock, inwork, income)
+        return data
 
     def sort_send_time(self):
         resp = False
@@ -152,11 +152,11 @@ class SourAnCntrl:
     def update_analitic(self, orders, item, period):
         data = self.first_an(orders, period)
         resp = an_cntrl.update_(item.id, data)
-        work_an = self.work_analitic()
+        work_an = self.work_analitic(period)
         print(work_an)
         resp_work = an_cntrl.update_work(item.id, work_an)
         print(resp_work)
-        salary = self.salary_f(period)
+        salary = self.cash.salary_func()
         resp_salary = an_cntrl.update_salary(item.id, salary)
         print(resp_salary)
         return resp

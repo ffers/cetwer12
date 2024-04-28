@@ -3,11 +3,12 @@ sys.path.append('../')
 current_directory = os.getcwd()
 
 
-from common_asx.schedule_main import run_scheduler
+from common_asx.schedule_main import ScheduleCntrl
 
 
 
 if __name__ == "__main__":
-    run_scheduler()
+    sh_cntrl = ScheduleCntrl()
+    sh_cntrl.run_scheduler()
 
 

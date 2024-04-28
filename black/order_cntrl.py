@@ -46,6 +46,9 @@ util_cntrl = Utils()
 
 
 class OrderCntrl:
+    def my_time(self):
+        yield (datetime.now())
+
     def load_all_order(self):
         order = ord_rep.load_item_all()
         return order
@@ -56,6 +59,11 @@ class OrderCntrl:
 
     def load_registred(self):
         item = ord_rep.load_registred()
+        print(item)
+        return item
+
+    def load_registred_roz(self):
+        item = ord_rep.load_registred_roz()
         print(item)
         return item
 
@@ -263,7 +271,13 @@ class OrderCntrl:
         resp = ord_rep.change_status(id, status)
         return resp
 
-    def my_time(self): yield (datetime.now())
+    def change_status_roz(self):
+        orders = ord_rep.load_registred_roz()
+        if orders:
+            for order in orders:
+                self.change_status_item(order.id, 8)
+
+
 
     def test_order(self, order_id):
         orders = ord_rep.load_item_all()

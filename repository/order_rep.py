@@ -87,6 +87,13 @@ class OrderRep:
                                    ).all()
         return item
 
+    def load_registred_roz(self):
+        item = Orders.query.filter(
+            Orders.ordered_status_id == 11,
+            Orders.delivery_method_id == 2
+                                   ).all()
+        return item
+
     # def add_order(self, request):
     #     order = Orders(description=request.form['description'], city_name=request.form['CityName'],
     #                    city_ref=request.form['CityREF'],

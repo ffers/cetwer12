@@ -10,3 +10,4 @@ from .analitic.product_analitic_serv import prod_an_serv
 from a_service.analitic_serv import an_serv
 from .tg_answer_serv import tg_answer_serv
 from .tg_cash_serv import TgCashServ
+from .cash_serv import CacheService

@@ -136,7 +136,7 @@ def update_order(invoice_ttn, invoice_order):
     if order:
         order_id = order.id
         resp_ttn = ord_cntrl.add_ttn_crm(order_id, invoice_ttn)
-        resp_status = ord_cntrl.change_status_item(order_id, 8)
+        resp_status = ord_cntrl.change_status_item(order_id, 11)
         return True, None
     else:
         print("Нема такого замовлення")
