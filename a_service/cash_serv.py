@@ -82,8 +82,7 @@ class CacheService:
         return wait
 
     def inwork_func(self): # зависит от всего в последнюю очередь
-        inwork = self.get("wait") + self.get("stock") \
-                      + self.get("balance")
+        inwork = self.get("wait") + self.get("stock")
         self.set("inwork", inwork)
         return inwork
 
