@@ -7,7 +7,7 @@ load_dotenv(dotenv_path=env_path)
 class TgClient():
     def __init__(self):
         self.text1 = "Прийнято"
-        self.text2 = "Питання"
+        self.text2 = "Скасувати"
         self.token = os.getenv("TELEGRAM_BOT_TOKEN")
 
     def send_message_f(self, chat_id, text, keyboard_json):

@@ -8,8 +8,10 @@ class PromServ:
         print(status_order)
         if 2 == status_order: # питання
             dict_status_prom = {
-                "custom_status_id": 142216,
-                "ids": [order_id]
+                "status": "canceled",
+                "ids": [order_id],
+                "cancellation_reason": "not_available",
+                "cancellation_text": "Не виходить дозвонитися"
             }
         if 1 == status_order: # прийнято
             dict_status_prom = {
