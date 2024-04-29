@@ -87,8 +87,9 @@ class CacheService:
         return inwork
 
     def salary_func(self):
-
-        salary = self.get("profit") - self.get("workers") - self.get("cpa") - self.get("rozet") - self.get("google") - self.get("insta")
+        salary = self.get("profit") - self.get("workers") \
+                 - self.get("cpa") - self.get("rozet") \
+                 - self.get("google") - self.get("insta")
         self.set("salary", salary)
         return salary
 

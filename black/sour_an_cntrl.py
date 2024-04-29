@@ -120,18 +120,25 @@ class SourAnCntrl:
         rozet = self.sour_an_serv.rozet_f(orders)
         print(f"рахуєм: {orders_quan} {torg_sum} {body} {workers_mon} {profit} {cpa_com}")
         resp = (torg_sum, body, workers_mon, cpa_com, rozet, 0, 0, profit, period, orders_quan)
-        if period == "all":
-            self.cash.create_set(resp)
-            print(f"итого кеш: {self.cash.get_all()}")
+        self.cash.create_set(resp)
+        print(f"итого кеш: {self.cash.get_all()}")
         return resp
 
     def work_analitic(self, period):
-        stock = self.cash.stock_func(self.load_all())
-        income = self.cash.income_func(rep.load_article("income"))
-        balance = self.cash.balance_func(self.rep.load_article("balance"))
-        wait = self.cash.wait_func()
-        inwork = self.cash.inwork_func()
-        data = (balance, wait, stock, inwork, income)
+        if period == "all":
+            stock = self.cash.stock_func(self.load_all())
+            income = self.cash.income_func(rep.load_article("income"))
+            balance = self.cash.balance_func(self.rep.load_article("balance"))
+            wait = self.cash.wait_func()
+            inwork = self.cash.inwork_func()
+            data = (balance, wait, stock, inwork, income)
+        else:
+            stock = self.cash.get("stock")
+            income = self.cash.get("income")
+            balance = self.cash.get("balance")
+            wait = self.cash.get("wait")
+            inwork = self.cash.get("inwork")
+            data = (balance, wait, stock, inwork, income)
         return data
 
     def sort_send_time(self):
