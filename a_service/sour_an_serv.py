@@ -1,4 +1,5 @@
 from decimal import Decimal
+from itertools import zip_longest
 
 class SourAnServ:
     def __init__(self, prod_cntrl, journal, an_cntrl, rep, ord_rep, w_time_cntrl):
@@ -39,9 +40,13 @@ class SourAnServ:
         description = req.form['description']
         # price = req.form['price']
         quantity = req.form['quantity']
+        article = req.form.getlist('article')
+        description = req.form.getlist('description')
+        quantity = req.form.getlist('quantity')
+        combined_list = list(zip_longest(article, quantity, description, fillvalue=None))
         # money = self.format_float(price) * int(quantity)
-        return article, int(quantity), description
-
+        return combined_list        
+         
     def get_search(self, req):
         search_query = req.args.get('q', '').lower()
         items = self.rep.load_all()

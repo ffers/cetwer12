@@ -50,8 +50,22 @@
                                 required>
                         </div>
                         <br>					
-                        <div class="col-sm"><select  class="form-control select-source" name="article" required></select><br></div>
-                        <div class="col-sm col-lg-2"><input style="text-align: center;" class=" quantity form-control" id="quantity" name="quantity"  min="1" max="10000" placeholder="* Кількість" required><br></div>
+                        <div class="col-sm">
+                            <select  
+                                class="form-control select-source" 
+                                name="article" 
+                                required>
+                            </select><br>
+                        </div>
+                        <div class="col-sm col-lg-2">
+                            <input 
+                            style="text-align: center;" 
+                            class=" quantity form-control" 
+                            id="quantity" name="quantity"  
+                            min="1" max="10000" 
+                            placeholder="* Кількість" 
+                            required><br>
+                        </div>
                         <!-- <div class="col-sm col-lg-2"><input style="text-align: center;" class="total form-control" id="total	" name="total" min="1" placeholder="Сумма" required><br></div> -->
                         <!-- <div class="col-sm col-lg-2"><input style="text-align: center;  display: none;" class="totalall form-control" id="total-all" name="total-all" min="1" placeholder="Сумма" required><br></div> -->
                     </div>                
@@ -72,9 +86,10 @@
 	</div>
 
     <script src="{{url_for('static', filename='javascript/select_source.js')}}"></script>
-	<script type="module" src="{{url_for('static', filename='javascript/calculate.js')}}"></script>
-    <script src="{{url_for('static', filename='javascript/hiddenElement.js')}}"></script>
+	<!-- <script type="module" src="{{url_for('static', filename='javascript/calculate.js')}}"></script> -->
+    <!-- <script src="{{url_for('static', filename='javascript/hiddenElement.js')}}"></script> -->
     <!-- <script src="{{url_for('static', filename='javascript/submitFormSelect2.js')}}"></script> -->
-    <script type="module" src="{{url_for('static', filename='javascript/add_product_arrival.js')}}"></script>
+    <!-- <script type="module" src="{{url_for('static', filename='javascript/add_product_arrival.js')}}"></script> -->
+    <script src="{{url_for('static', filename='javascript/add-input-arrival.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/modal-window.js')}}"></script>
 {% endblock %}

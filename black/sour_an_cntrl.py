@@ -76,9 +76,11 @@ class SourAnCntrl:
 
     def add_arrival(self, req):
         list_data = self.sour_an_serv.add_arrival(req)
-        resp = self.stock_journal(list_data[0], list_data[1], list_data[2])
+        print(list_data)
+        for item in list_data:
+            resp = self.stock_journal(item[0], int(item[1]), item[2])
         resp_an = self.sort_analitic("all")
-        return resp
+        return resp_an
 
 
     def stock_journal(self, article, quantity, description):

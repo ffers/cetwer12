@@ -36,7 +36,6 @@
                         </script>
                       </div></br>
                     <div class="row">
-                        <!-- Товар та кількість -->
                         <div class="col-sm">
                             <select  class="form-control product-select" 
                                 name="product" 
@@ -45,10 +44,10 @@
                         </div>
                         <div class="col-sm col-lg-2">
                             <select  class="form-control select-source" 
-                                name="article" 
-                                required>
-                            </select><br>
-                        </div>
+                            name="article" 
+                            required>
+                        </select><br>
+                    </div>
                         <div class="col-sm col-lg-2">
                             <input style="text-align: center;" class="quantity form-control" 
                             id="quantity" name="quantity"  min="1" max="10000" 
@@ -72,11 +71,12 @@
 
 	</div>
 
-	<script type="module" src="{{url_for('static', filename='javascript/calculate.js')}}"></script>
+
     <script src="{{url_for('static', filename='javascript/add-select2.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/select_source.js')}}"></script>
-    <script src="{{url_for('static', filename='javascript/hiddenElement.js')}}"></script>
-    <script src="{{url_for('static', filename='javascript/submitFormSelect2.js')}}"></script>
-    <script type="module" src="{{url_for('static', filename='javascript/add_product_arrival.js')}}"></script>
-    <script src="{{url_for('static', filename='javascript/modal-window.js')}}"></script>
+    <script src="{{url_for('static', filename='javascript/add-input-relate.js')}}"></script>
+
+    
+
+
 {% endblock %}
