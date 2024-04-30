@@ -11,7 +11,7 @@ class RegSchedulleSrv():
         self.sour = SourAnCntrl()
         self.ord = OrderCntrl()
 
-    def reg_16_00(self):
+    def reg_17_00(self):
         with flask_app.app_context():
             load_orders = self.ord.load_confirmed_order()
             print(load_orders)
@@ -41,3 +41,11 @@ class RegSchedulleSrv():
             # изменить статус розетки
             # провести аналитику
 
+    def reg_16_58(self):
+        with flask_app.app_context():
+            self.sour.sort_analitic("all")
+            self.sour.sort_analitic("day")
+            self.sour.sort_analitic("week")
+            self.sour.sort_analitic("month")
+            self.sour.sort_analitic("year")
+            print("Успіх")
