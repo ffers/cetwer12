@@ -1,5 +1,5 @@
 from decimal import Decimal
-
+from itertools import zip_longest
 
 class ProductServ:
     def format_float(self, num):
@@ -32,24 +32,22 @@ class ProductServ:
         print(price, product_name)
         return (article, product_name, description, quantity, price, body_product_price)
 
-    def add_product_relate(self, request):
+    def add_product_relate(self, req):
         print("add_product_relate")
-        article = request.form['article']
         name = ""
-        quantity = request.form['quantity']
-        product_id = request.form['product']
-        list_data = [article, name, quantity, product_id]
-        print(list_data)
-        return list_data
-
+        article = req.form.getlist('article')
+        quantity = req.form.getlist('quantity')
+        product_id = req.form.getlist('product')
+        combined_list = list(zip_longest(article, quantity, product_id, fillvalue=None))
+        return combined_list
     def create_data_relate_req(self, req):
-        data = [
-            req.form["product"],
-            req.form["name"],
-            req.form["article"],
-            req.form["quantity"]
-        ]
-        return data
+            data = [
+                req.form["product"],
+                req.form["name"],
+                req.form["article"],
+                req.form["quantity"]
+            ]
+            return data
 
     def create_data_source_req(self, req):
         data = [

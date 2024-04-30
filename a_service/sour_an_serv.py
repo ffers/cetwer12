@@ -36,15 +36,10 @@ class SourAnServ:
 
     def add_arrival(self, req):
         print(req)
-        article = req.form['article']
-        description = req.form['description']
-        # price = req.form['price']
-        quantity = req.form['quantity']
         article = req.form.getlist('article')
         description = req.form.getlist('description')
         quantity = req.form.getlist('quantity')
         combined_list = list(zip_longest(article, quantity, description, fillvalue=None))
-        # money = self.format_float(price) * int(quantity)
         return combined_list        
          
     def get_search(self, req):

@@ -73,9 +73,9 @@ class ProductRep():
         try:
             item = ProductRelate(
                 article=data_list[0],
-                name=data_list[1],
-                quantity=data_list[2],
-                product_id=data_list[3]
+                name="",
+                quantity=int(data_list[1]),
+                product_id=data_list[2]
             )
             db.session.add(item)
             db.session.commit()

@@ -41,8 +41,10 @@ class ProductCntrl:
     # relate product
 
     def add_product_relate(self, request):
-        args = prod_serv.add_product_relate(request)
-        resp = prod_rep.add_product_relate(args)
+        resp = False, "компонент не додано"
+        list_data = prod_serv.add_product_relate(request)
+        for item in list_data:
+            resp = prod_rep.add_product_relate(item)
         return resp
 
     def update_prod_relate(self, id, req):

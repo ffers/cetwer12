@@ -71,7 +71,7 @@ $('#addButton').on('click', function() {
         })   
  
     
-    newProduct.find('.product-select').select2({
+    newField.find('.product-select').select2({
         width: '100%',
         theme: 'bootstrap-5',
         language: {
