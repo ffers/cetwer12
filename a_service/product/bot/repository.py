@@ -95,9 +95,10 @@ class ProductCounBot():
         return text
 
     def exect_text(self, text):
-        data35_and_45 = re.search(r'35:(.*?45:|$)', text, re.DOTALL)
-        data45 = re.findall(r'45:(.*?)(?:\d+х-*\d+:|$)', text, re.DOTALL)
-        return data35_and_45[0], data45[0]
+            data35_and_45 = re.search(r'35:(.*?45:|$)', text, re.DOTALL)
+            data45 = re.findall(r'45:(.*?)(?:\d+х-*\d+:|$)', text, re.DOTALL)
+            return data35_and_45[0], data45[0]
+
 
     def crete_two(self, text):
         data35, data45 = self.exect_text(text)
@@ -119,16 +120,19 @@ class ProductCounBot():
                 print("ПРАЦЮЄ")
                 data = self.parse_text(text)
                 flag = self.count_flag(text)
-                if "35:" in text and "45:" in text:
-                    clean_35, clean_45 = self.crete_two(text)
-                    self.update_base(clean_35, Colorrep35, flag)
-                    self.update_base(clean_45, Colorrep45, flag)
-                else:
-                    print(data)
-                    base, size = self.count_size(text)
-                    self.update_base(data, base, flag)
-                    print(f"ОСЬ ВИЙШЛО {data, flag, size}")
-                create_response = self.actual_count()
-                return create_response
+                try:
+                    if "35:" in text and "45:" in text:
+                        clean_35, clean_45 = self.crete_two(text)
+                        self.update_base(clean_35, Colorrep35, flag)
+                        self.update_base(clean_45, Colorrep45, flag)
+                    else:
+                        print(data)
+                        base, size = self.count_size(text)
+                        self.update_base(data, base, flag)
+                        print(f"ОСЬ ВИЙШЛО {data, flag, size}")
+                    create_response = self.actual_count()
+                    return create_response
+                except:
+                    return "Неправильно сформульоване повідомлення"
 
 
