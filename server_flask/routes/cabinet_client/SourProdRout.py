@@ -101,6 +101,4 @@ def delete_product_source(id):
     product = cntrl.delete(id)
     print(f"Перевірка {product}")
     flash('Продукт видалено', category='success')
-    return render_template(
-        'cabinet_client/Products/product_source.html',
-        user=current_user, product=product)
+    return redirect(url_for(f'ProductSource.all'))

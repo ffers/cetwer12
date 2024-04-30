@@ -206,13 +206,14 @@ class OrderRep:
         order = Orders.query.filter_by(phone=phone).all()
         return order
 
-    def search_for_all(self, phone):
+    def search_for_all(self, data):
         order = Orders.query.filter(
-            (Orders.phone.ilike(f'%{phone}%')) |
-            (Orders.client_lastname.ilike(f'%{phone}%')) |
-            (Orders.client_surname.ilike(f'%{phone}%')) |
-            (Orders.client_firstname.ilike(f'%{phone}%')) |
-            (Orders.order_id_sources.ilike(f'%{phone}%'))
+            (Orders.phone.ilike(f'%{data}%')) |
+            (Orders.client_lastname.ilike(f'%{data}%')) |
+            (Orders.client_surname.ilike(f'%{data}%')) |
+            (Orders.client_firstname.ilike(f'%{data}%')) |
+            (Orders.order_id_sources.ilike(f'%{data}%')) |
+            (Orders.ttn.ilike(f'%{data}%'))
         ).all()
         return order
 

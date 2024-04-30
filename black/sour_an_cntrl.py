@@ -103,11 +103,12 @@ class SourAnCntrl:
                 for prod_comp in prod_comps:
                     sale_quantity = prod_comp.quantity * product.quantity
                     print(f"sale_quantity {sale_quantity}")
-                    prod_source = rep.load_article(prod_comp.article)
-                    new_quantity = prod_source.quantity + sale_quantity
-                    print(f"new_quantity {new_quantity}")
-                    resp = rep.update_quantity(prod_source.id, new_quantity)
-                    prod_source = rep.load_article(prod_comp.article)
+                    self.stock_journal(prod_comp.article, sale_quantity, f"Возврат: {order.order_code}, {product.products.article}")
+                    # prod_source = rep.load_article(prod_comp.article)
+                    # new_quantity = prod_source.quantity + sale_quantity
+                    # print(f"new_quantity {new_quantity}")
+                    # resp = rep.update_quantity(prod_source.id, new_quantity)
+                    # prod_source = rep.load_article(prod_comp.article)
             else:
                 resp = f"Немає такого компоненту {product.products.article}"
         return resp

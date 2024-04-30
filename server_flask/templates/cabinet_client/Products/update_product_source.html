@@ -11,8 +11,17 @@
 {% block body %}
 	<div class="content">
 		<h1 style="text-align: center;">
-            Додати Компонент
+            Змінити Ісходник
         </h1>
+            <nav class="nav">
+            
+                <div class="button-pult">
+                    <button type="button" onclick="confirmDelete({{item.id}}, '/cabinet/source/delete/')" 
+                        class="btn btn-outline-info my-2 my-sm-0">
+                            Видалити Ісходник
+                    </button>
+                </div>
+            </nav><br> 
 		
 			<form action="/cabinet/source/update/{{item.id}}" method="post">
                 <div id="product-container">
@@ -95,6 +104,7 @@
 
 	<script type="module" src="{{url_for('static', filename='javascript/calculate.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/add-select2.js')}}"></script>
+    <script src="{{url_for('static', filename='javascript/confirmDelete.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/hiddenElement.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/submitFormSelect2.js')}}"></script>
     <script type="module" src="{{url_for('static', filename='javascript/add_product_arrival.js')}}"></script>
