@@ -33,10 +33,10 @@ class RegSchedulleSrv():
         with flask_app.app_context():
             self.ord.change_status_roz()
             self.sour.sort_analitic("all")
-            self.sour.sort_analitic("day")
-            self.sour.sort_analitic("week")
-            self.sour.sort_analitic("month")
             self.sour.sort_analitic("year")
+            self.sour.sort_analitic("month")
+            self.sour.sort_analitic("week")
+            self.sour.sort_analitic("day")
             print("Успіх")
             # изменить статус розетки
             # провести аналитику
@@ -44,8 +44,8 @@ class RegSchedulleSrv():
     def reg_16_58(self):
         with flask_app.app_context():
             self.sour.sort_analitic("all")
-            self.sour.sort_analitic("day")
-            self.sour.sort_analitic("week")
-            self.sour.sort_analitic("month")
             self.sour.sort_analitic("year")
+            self.sour.sort_analitic("month")
+            self.sour.sort_analitic("week")
+            self.sour.sort_analitic("day")
             print("Успіх")

@@ -217,14 +217,18 @@ class OrderCntrl:
             data_tg_dict = tg_serv.create_text_order(order)  # if telegram True send to telegram
             tg_cntrl.sendMessage(tg_cntrl.chat_id_np, data_tg_dict)
             del_ord_cntrl.update_item(np_resp, order.id)
-            resp = True
+            resp = True, ""
             if order.source_order_id == 2:
                 resp_prom_ttn = prom_cntrl.send_ttn(order.order_code, order.ttn, "nova_poshta")
                 resp_prom_status = prom_cntrl.change_status(order.order_code, 137639)
-        if 'OptionsSeat is empty' in np_resp["errors"]:
+        elif 'OptionsSeat is empty' in np_resp["errors"]:
             resp = "Поштомат зайнятий"
-            tg_cntrl.sendMessage(tg_cntrl.chat_id_np,
+            tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm,
                                  "❗️❗️❗️ ТТН не створено - поштомат зайнятий")
+        else:
+            resp = False, np_resp["errors"]
+            tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm,
+                                 f"❗️❗️❗️ ТТН не створено - {resp[1]}")
         return resp
 
     def add_ttn_crm(self, order_id, ttn):
