@@ -20,7 +20,7 @@ class PromToCrm():
 
     def add_order(self, json_order, data_for_tg):
         try:
-            OC_log.info(f"НАЧАЛОСЬ {json_order}")
+            OC_log.info(f"НАЧАЛОСЬ ")
             order = self.parse_order(json_order)
             order_id = order.id
             product = self.parse_product(json_order, order)
@@ -59,7 +59,6 @@ class PromToCrm():
         return order
 
     def prepare_for_db(self, order, dict_parse):
-        OC_log.info(dict_parse)
         new_order = Orders(
             order_id_sources=str(order["id"]),
             order_code = str(order["id"]),
@@ -182,14 +181,12 @@ class PromToCrm():
                     status_id = 3
                 else:
                     status_id = 2
-                OC_log.info(status_id)
                 return status_id
             else:
                 status_id = 2
         return status_id
 
     def add_order_status(self, prompay_status_id):
-        OC_log.info(f"Статус промоплати {prompay_status_id}")
         status_order = 10
         if prompay_status_id == 1:
             status_order = 3

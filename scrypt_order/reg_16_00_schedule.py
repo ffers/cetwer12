@@ -13,16 +13,22 @@ class RegSchedulleSrv():
 
     def reg_17_00(self):
         with flask_app.app_context():
-            load_orders = self.ord.load_confirmed_order()
-            print(load_orders)
-            list_dict = self.create_list_dict(load_orders)
-            print(list_dict)
-            dict_order = del_ord_cntrl.add_registr(list_dict)
-            id_photo = 'AgACAgIAAxkBAAIMl2YWFuaONHD9_7SWvzDiiK8vmNQSAAK31jEbGsoISBKbThvzHGUpAQADAgADbQADNAQ'
-            resp = tg_cntrl.sendPhoto(id_photo)
-            self.OC_log.info(resp)
-            tg_cntrl.sendMessage(tg_cntrl.chat_id_np, dict_order["number_registr"])
-            self.OC_log.info("Виконую завдання")
+            try:
+                load_orders = self.ord.load_confirmed_order()
+                print(load_orders)
+                list_dict = self.create_list_dict(load_orders)
+                print(list_dict)
+                dict_order = del_ord_cntrl.add_registr(list_dict)
+                self.OC_log.info(dict_order)
+                id_photo = 'AgACAgIAAxkBAAIMl2YWFuaONHD9_7SWvzDiiK8vmNQSAAK31jEbGsoISBKbThvzHGUpAQADAgADbQADNAQ'
+                resp = tg_cntrl.sendPhoto(id_photo)
+                self.OC_log.info(resp)
+                tg_cntrl.sendMessage(tg_cntrl.chat_id_np, dict_order["number_registr"])
+                self.OC_log.info("Виконую завдання")
+            except Exception as e:
+                info = f"Невийшло створити реєстр {e}"
+                self.OC_log(info)
+                tg_cntrl.sendMessage(tg_cntrl.chat_id_info, info)
 
     def create_list_dict(self, orders):
         list_dict = {"id": []}

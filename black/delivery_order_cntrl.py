@@ -17,7 +17,7 @@ class DeliveryOrderCntrl:
             print(f"list_ttn  {list_ttn}")
             resp = np_cl_api.insertDocumentsReg(list_ttn) # запит в нп на ствоерня реєстру
             print(resp)
-            dict_reg = False
+            dict_reg = {"number_registr": "Не вийшло створити перевірте підтвердженя НП"}
             if resp["success"]:
                 dict_reg = del_ord_serv.create_dict_reg(resp) # створення словаря на додавання в базу
                 print(f"dict_reg {dict_reg}")

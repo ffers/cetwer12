@@ -17,7 +17,6 @@ class NpServ:
         return address_dict_np
 
     def examine_address_prom(self, data):
-        OC_log.info(f"delivery_provider_data {data}")
         war_ref = data["delivery_provider_data"]["recipient_warehouse_id"]
         if not war_ref:
             return False

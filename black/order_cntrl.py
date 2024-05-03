@@ -98,7 +98,10 @@ class OrderCntrl:
             bool_2 = self.examine_address(order_js)
             return resp
         except:
-            OC_log.info(f"Замовленя не додано в CRM {order_code}")
+            info = f"Замовленя можливо не додано в CRM {order_code}"
+            OC_log.info(info)
+            tg_cntrl.sendMessage(tg_cntrl.chat_id_info, info)
+
     def examine_address(self, order):
         resp_bool = np_serv.examine_address_prom(order)
         if not resp_bool:
