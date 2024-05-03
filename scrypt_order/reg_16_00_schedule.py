@@ -16,6 +16,7 @@ class RegSchedulleSrv():
             load_orders = self.ord.load_confirmed_order()
             print(load_orders)
             list_dict = self.create_list_dict(load_orders)
+            print(list_dict)
             dict_order = del_ord_cntrl.add_registr(list_dict)
             id_photo = 'AgACAgIAAxkBAAIMl2YWFuaONHD9_7SWvzDiiK8vmNQSAAK31jEbGsoISBKbThvzHGUpAQADAgADbQADNAQ'
             resp = tg_cntrl.sendPhoto(id_photo)

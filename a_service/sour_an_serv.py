@@ -120,6 +120,22 @@ class SourAnServ:
                 rozet += 30
         return rozet
 
+    def definetion_prod(self, order):
+        resp = {
+            "ok": [],
+            "info": []
+        }
+        for product in order.ordered_product:
+            prod_comps = self.prod_cntrl.load_prod_relate_product_id_all(product.product_id)
+            if prod_comps:
+                resp["ok"].append(True)
+            else:
+                resp["ok"].append(False)
+                resp["info"].append(f"{order.order_code}: {product.products.article}")
+        print(resp)
+        return resp
+
+
     # def balance_func(self):
     #     balance = 0
     #     items = self.an_cntrl.load_period("all")

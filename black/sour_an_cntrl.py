@@ -57,22 +57,21 @@ class SourAnCntrl:
         return bool
 
     def confirmed(self, order):
-            resp = False
-        # try:
+        resp = False
+        comps_bool = self.sour_an_serv.definetion_prod(order)
+        if all(comps_bool['ok']):
             for product in order.ordered_product:
                 prod_comps = prod_cntrl.load_prod_relate_product_id_all(product.product_id)
-                if prod_comps:
-                    for prod_comp in prod_comps:
-                        if prod_comp:
-                            description = order.order_id_sources + ' ' + product.products.article
-                            sale_quantity = self.sour_an_serv.count_new_quantity(prod_comp, product)
-                            resp = self.stock_journal(prod_comp.article, -sale_quantity, description)
-                else:
-                    resp_tg = f"Немає такого компоненту {product.products.article}"
-                    tg_cntrl.sendMessage(tg_cntrl.chat_id_info, resp_tg)
+                for prod_comp in prod_comps:
+                    description = order.order_id_sources + ' ' + product.products.article
+                    sale_quantity = self.sour_an_serv.count_new_quantity(prod_comp, product)
+                    resp = self.stock_journal(prod_comp.article, -sale_quantity, description)
+        else:
+            resp_tg = f"Немає такого компоненту {comps_bool['info']}"
+            tg_cntrl.sendMessage(tg_cntrl.chat_id_info, resp_tg)
 
-            print(resp)
-            return resp
+        print(resp)
+        return resp
 
     def add_arrival(self, req):
         list_data = self.sour_an_serv.add_arrival(req)
@@ -97,9 +96,10 @@ class SourAnCntrl:
 
     def return_prod(self, order):
         resp = None
-        for product in order.ordered_product:
-            prod_comps = prod_cntrl.load_prod_relate_product_id_all(product.product_id)
-            if prod_comps:
+        comps_bool = self.sour_an_serv.definetion_prod(order)
+        if all(comps_bool):
+            for product in order.ordered_product:
+                prod_comps = prod_cntrl.load_prod_relate_product_id_all(product.product_id)
                 for prod_comp in prod_comps:
                     sale_quantity = prod_comp.quantity * product.quantity
                     print(f"sale_quantity {sale_quantity}")
@@ -109,8 +109,8 @@ class SourAnCntrl:
                     # print(f"new_quantity {new_quantity}")
                     # resp = rep.update_quantity(prod_source.id, new_quantity)
                     # prod_source = rep.load_article(prod_comp.article)
-            else:
-                resp = f"Немає такого компоненту {product.products.article}"
+        else:
+            resp = f"Немає такого компоненту {comps_bool['info']}"
         return resp
 
     def first_an(self, orders, period):
@@ -154,6 +154,7 @@ class SourAnCntrl:
                 if confirmed:
                     ord_rep.update_time_send(order.id, next(self.my_time()))
                     resp = True, "Щось оновлено в искходниках"
+                    print(resp[1])
             else:
                 print("Є час в ордері")
         return resp
