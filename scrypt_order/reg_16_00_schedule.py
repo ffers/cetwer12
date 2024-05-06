@@ -14,21 +14,34 @@ class RegSchedulleSrv():
     def reg_17_00(self):
         with flask_app.app_context():
             try:
-                load_orders = self.ord.load_confirmed_order()
-                print(load_orders)
-                list_dict = self.create_list_dict(load_orders)
-                print(list_dict)
-                dict_order = del_ord_cntrl.add_registr(list_dict)
+                dict_order = self.createReg()
                 self.OC_log.info(dict_order)
-                id_photo = 'AgACAgIAAxkBAAIMl2YWFuaONHD9_7SWvzDiiK8vmNQSAAK31jEbGsoISBKbThvzHGUpAQADAgADbQADNAQ'
-                resp = tg_cntrl.sendPhoto(id_photo)
-                self.OC_log.info(resp)
-                tg_cntrl.sendMessage(tg_cntrl.chat_id_np, dict_order["number_registr"])
+                self.sendTg(dict_order)
                 self.OC_log.info("Виконую завдання")
             except Exception as e:
                 info = f"Невийшло створити реєстр {e}"
                 self.OC_log(info)
                 tg_cntrl.sendMessage(tg_cntrl.chat_id_info, info)
+
+    def createReg(self):
+        load_orders = self.ord.load_confirmed_order()
+        print(load_orders)
+        list_dict = self.create_list_dict(load_orders)
+        print(list_dict)
+        dict_order = del_ord_cntrl.add_registr(list_dict)
+        return dict_order
+
+    def sendTg(self, dict_order):
+        id_photo = 'AgACAgIAAxkBAAIMl2YWFuaONHD9_7SWvzDiiK8vmNQSAAK31jEbGsoISBKbThvzHGUpAQADAgADbQADNAQ'
+        resp_photo = tg_cntrl.sendPhoto(id_photo)
+        if not resp_photo:
+            self.OC_log.info("Телеграм не дал ответа Photo")
+        self.OC_log.info(resp_photo)
+        resp_message = tg_cntrl.sendMessage(tg_cntrl.chat_id_np, dict_order["number_registr"])
+        if not resp_message:
+            self.OC_log.info("Телеграм не дал ответа Месседж")
+        return True
+
 
     def create_list_dict(self, orders):
         list_dict = {"id": []}

@@ -35,55 +35,59 @@ class PromToCrm():
     def parse_order(self, order):
         prompay_status_id = self.add_prompay_status(order)
         payment_method_id = self.add_payment_method_id(order)
-        dict_parse = {
-            "order_id_sources": order["id"],
-            "description": self.add_description(order),
-            "delivery_method_id": self.add_delivery_method(order),
-            "CityRef": None,
-            "CityName": None,
-            "TypeWarehouse": None,
-            "WarehouseText": order["delivery_address"],
-            "phone": self.add_phone(order),
-            "warehouse_method": None,
-            "WarehouseRef": None,
-            "payment_method_id": payment_method_id,
-            "sum_before_goods": self.add_sum_before_goods(order, payment_method_id),
-            "prompay_status_id": prompay_status_id,
-            "ordered_status_id": self.add_order_status(prompay_status_id),
-            "full_price": self.format_float(order["full_price"]),
+        try:
+            dict_parse = {
+                "order_id_sources": order["id"],
+                "description": self.add_description(order),
+                "delivery_method_id": self.add_delivery_method(order),
+                "CityRef": None,
+                "CityName": None,
+                "TypeWarehouse": None,
+                "WarehouseText": order["delivery_address"],
+                "phone": self.add_phone(order),
+                "warehouse_method": None,
+                "WarehouseRef": None,
+                "payment_method_id": payment_method_id,
+                "sum_before_goods": self.add_sum_before_goods(order, payment_method_id),
+                "prompay_status_id": prompay_status_id,
+                "ordered_status_id": self.add_order_status(prompay_status_id),
+                "full_price": self.format_float(order["full_price"]),
 
-        }
-        dict_parse.update(self.add_address_dict_np(order, dict_parse))
-        order = self.prepare_for_db(order, dict_parse)
-        dict_parse.clear()
+            }
+            dict_parse.update(self.add_address_dict_np(order, dict_parse))
+            order = self.prepare_for_db(order, dict_parse)
+            dict_parse.clear()
+        except Exception as e:
+            OC_log.info(f"Не вийшло обробити замовленя json: {e}")
         return order
 
     def prepare_for_db(self, order, dict_parse):
-        new_order = Orders(
-            order_id_sources=str(order["id"]),
-            order_code = str(order["id"]),
-            description=dict_parse["description"],
-            city_name=dict_parse["CityName"],
-            city_ref=dict_parse["CityRef"],
-            warehouse_text=dict_parse['WarehouseText'],
-            warehouse_ref=dict_parse["WarehouseRef"],
-            phone=dict_parse['phone'],
-            client_firstname=order['client_first_name'],
-            client_lastname=order['client_last_name'],
-            client_surname=order['client_second_name'],
-            warehouse_method_id=dict_parse['warehouse_method'],
-            delivery_method_id=dict_parse["delivery_method_id"],
-            payment_method_id=dict_parse["payment_method_id"],
-            ordered_status_id=dict_parse["ordered_status_id"],
-            prompay_status_id=dict_parse["prompay_status_id"],
-            sum_price=dict_parse["full_price"],
-            sum_before_goods=dict_parse["sum_before_goods"],
-            cpa_commission=order["cpa_commission"]["amount"],
-            client_id=order["client_id"],
-            source_order_id=2,
-            author_id=55
-            )
         try:
+            new_order = Orders(
+                order_id_sources=str(order["id"]),
+                order_code = str(order["id"]),
+                description=dict_parse["description"],
+                city_name=dict_parse["CityName"],
+                city_ref=dict_parse["CityRef"],
+                warehouse_text=dict_parse['WarehouseText'],
+                warehouse_ref=dict_parse["WarehouseRef"],
+                phone=dict_parse['phone'],
+                client_firstname=order['client_first_name'],
+                client_lastname=order['client_last_name'],
+                client_surname=order['client_second_name'],
+                warehouse_method_id=dict_parse['warehouse_method'],
+                delivery_method_id=dict_parse["delivery_method_id"],
+                payment_method_id=dict_parse["payment_method_id"],
+                ordered_status_id=dict_parse["ordered_status_id"],
+                prompay_status_id=dict_parse["prompay_status_id"],
+                sum_price=dict_parse["full_price"],
+                sum_before_goods=dict_parse["sum_before_goods"],
+                cpa_commission=order["cpa_commission"]["amount"],
+                client_id=order["client_id"],
+                source_order_id=2,
+                author_id=55
+                )
+
             db.session.add(new_order)
             db.session.commit()
             return new_order

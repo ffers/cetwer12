@@ -40,7 +40,8 @@ class TgCashCntrl:
             for article in articles:
                 quan = self.source.rep.load_article(article["article"])
                 print(quan)
-                text += f"{quan.article}={quan.quantity}\n"
+                if quan:
+                    text += f"{quan.article}={quan.quantity}\n"
             print(text)
             self.cntrl.sendMessage(self.cntrl.chat_id_cash, text)
         else:
