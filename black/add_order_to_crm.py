@@ -30,7 +30,7 @@ class PromToCrm():
         except Exception as e:
             order_id = json_order["id"]
             OC_log.info(f"Спрацював exept {e}")
-            tg_cntrl.sendMessage(tg_cntrl.chat_id_info, f"️❗️❗️❗️ НЕ ВИЙШЛО ДОДАТИ замовлення {order_id} В CRM сторона CRM")
+            tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, f"️❗️❗️❗️ НЕ ВИЙШЛО ДОДАТИ замовлення {order_id} В CRM сторона CRM")
 
     def parse_order(self, order):
         prompay_status_id = self.add_prompay_status(order)

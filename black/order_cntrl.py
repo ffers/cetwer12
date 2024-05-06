@@ -100,7 +100,7 @@ class OrderCntrl:
         except:
             info = f"Замовленя можливо не додано в CRM {order_code}"
             OC_log.info(info)
-            tg_cntrl.sendMessage(tg_cntrl.chat_id_info, info)
+            tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, info)
 
     def examine_address(self, order):
         resp_bool = np_serv.examine_address_prom(order)
