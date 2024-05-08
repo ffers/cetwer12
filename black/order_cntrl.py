@@ -252,7 +252,7 @@ class OrderCntrl:
         data_tg_dict = tg_serv.create_text_order(order)
         # tg_cntrl.answerCallbackQuery(callback_query_id, f"Відсилаю в Розетку")
         # keyboard_rozet = tg_cntrl.keyboard_generate("Надіслати накладну", order.order_code)
-        resp = tg_cntrl.sendMessage(tg_cntrl.chat_id_rozet, data_tg_dict)
+        resp = tg_cntrl.sendMessage(tg_cntrl.chat_id_ukr, data_tg_dict)
         return True
 
     def await_order_cab_tg(self, order, flag=None, id=None): # дубль фукціі await_order щоб обійти діспетчер
