@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="uk">
 
@@ -8,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<script src="{{url_for('static', filename='javascript/button-theme.js')}}"></script>
+	
 	<!-- Підключення bootstrap -->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -18,7 +18,7 @@
 	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 	<!--  -->
-
+	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -62,30 +62,69 @@
 
 <body>
 	<header>
-		<nav class="navbar navbar-expand-lg bg-body-tertiary " >
+		<nav class="navbar navbar-expand-sm bg-body-tertiary " >
 			<div class="container-fluid">
 				<a class="navbar-brand" style="margin-left: 30px;" href="/">ASX</a>
 					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="navbar-toggler-icon"></span>
 					</button>
-						<div class="collapse navbar-collapse" id="navbarSupportedContent">
-						<ul class="navbar-nav me-auto mb-2 mb-lg-0 text-center">
-							<li><a class="nav-link" href="/cabinet/products">Товари</a></li>
-							<li><a class="nav-link" href="/cabinet/orders">Замовлення</a></li>
-								<li class="nav-item dropdown">
-									<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"">
-									Меню
-									</a>										
-										<ul class="dropdown-menu">
-											<li><hr class="dropdown-divider"></li>
-											<li><a class="dropdown-item" href="/cabinet/products/add_arrival">Прихід</a></li>
-											<li><a class="dropdown-item" href="/cabinet/analitic">Аналітика</a></li>
-											<li><a class="dropdown-item" href="/cabinet/analitic/arrival_list">Облік Приходу</a></li>
-										</ul>
-								</li>											
-						</ul>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav me-auto mb-2 mb-lg-0 text-center">
+						<li><a class="nav-link" href="/cabinet/products">
+							Товари</a></li>
+						<li><a class="nav-link" href="/cabinet/orders">
+							Замовлення</a></li>
+							{% if 1 == user.id %} 
+							<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"">
+							Меню
+						</a>										
+							<ul class="dropdown-menu">
+								
+								<li><a class="dropdown-item" style="text-align: center;" href="/cabinet/analitic/all">
+									Аналітика</a></li>
+								<!-- <li><hr class="dropdown-divider"></li> -->
+								<li><a class="dropdown-item" style="text-align: center;"  href="/cabinet/products/add_arrival">
+									Додати Прихід</a></li>											
+								<!-- <li><a class="dropdown-item" style="text-align: center;" href="/cabinet/products/arrival_list">
+									Облік Приходу</a></li> -->
+								<li><a class="dropdown-item" style="text-align: center;" href="/cabinet/products/add_product_relate">
+									Додати Компонент</a>
+								</li>
+								<li><a class="dropdown-item" style="text-align: center;" href="/cabinet/source/add">
+									Додати Исходник</a>
+								<li><a class="dropdown-item" style="text-align: center;" href="/cabinet/products/product_relate">
+									Компоненти</a>
+								</li>
+								</li>
+								<li><a class="dropdown-item" style="text-align: center;" href="/cabinet/source/all">
+									Исходникі</a>
+								</li>
+								<li><a class="dropdown-item" style="text-align: center;" href="/cabinet/journal/all">
+									Журнал</a>
+								</li>
+							</ul>
+							</li>
+							{% endif %}
+							{% if user.is_authenticated %}
+							<li class="nav-item active">
+								<div class="col-sm" >
+									<select id="search-select2" class="col-sm" name="search" required>
+										<!-- ПОШУК SELECT -->
+									</select></div></li>
+							
+		
+							<!-- <li><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+								Launch demo modal
+							  </button> 
+							</li> -->
+
+							{% endif %}											
+					</ul>
 						<div class="float-right">
+							
 							<ul class="navbar-nav mr-auto">
+							
 								<li>
 							    <!-- <label class="switch">
 									<input type="checkbox" id="themeSwitch">
@@ -99,9 +138,9 @@
 							</li>
 							{% if user.is_authenticated %}
 							<li class="nav-item active">
-									<a href="/cabinet/orders/add_order">
+									<a href="/cabinet/products/add_product">
 										<button type="button" class="btn btn-info btn-lg">
-														Створити Замовлення
+														Створити Товар
 										</button>
 									</a>
 							</li>
@@ -124,6 +163,91 @@
 						</div>
 			</div>
 		</nav>
+
+		<div class="button-container">
+						
+			<nav class="nav">
+				<div class="button-pult">
+					<div id="q" class="">
+						<select id="mySelect32" onchange="redirectToSelectedPage()" class="form-select btn my-2 my-sm-0"  
+							style=" color: #0dcaf0; border: var(--bs-border-width) solid #0dcaf0;"
+							aria-label="Change status" >
+							<option selected>Фільтр</option>
+							<option value="/cabinet/orders/filter/registered/1" >На Підвердженя</option>
+							<option value="/cabinet/order_draft">Підтвержені НП</option>
+							<option value="/cabinet/orders/filter/registered/11">В реєстрі</option>
+							<option value="/cabinet/orders/filter/registered/3">Оплачені</option> 
+							<option value="/cabinet/orders/filter/registered/4">Несплачені</option>
+							<option value="/cabinet/orders/filter/registered/5">Скасовані</option>
+							<option value="/cabinet/orders/filter/registered/6">Предзамовленні</option>
+							<option value="/cabinet/orders/filter/registered/7">Питання</option>
+							<option value="/cabinet/orders/filter/registered/8">Відправлені</option>
+							<option value="/cabinet/orders/filter/registered/9">Отримані</option>
+							<option value="/cabinet/orders/filter/registered/10">Нові</option>
+							<option value="/cabinet/orders/filter/registered/11">Очікує відправленя</option>
+							<option value="/cabinet/orders/filter/registered/12">Виконано</option>
+							<option value="/cabinet/orders/filter/registered/13">Тест</option>
+							<option value="/cabinet/orders/filter/registered/14">Тест</option>
+						</select>
+					</div>
+				</div>
+				<div class="button-pult">
+					<div id="add_reg" style="display: none;"><button 
+						class="btn btn-outline-info my-2 my-sm-0"   
+						onclick="processOrders('add_reg')" >
+						Додати в реєстр
+					</button></div>
+				</div>
+				<div class="button-pult">
+					<div id="del_reg" style="display: none;">
+						<button 
+							class="btn btn-outline-info my-2 my-sm-0"  
+							onclick="processOrders('del_reg')" >
+							Видалити з реєстру
+						</button>
+					</div>
+				</div>
+				<div class="button-pult">
+					<div id="changeStatusSee"  style="display: none; ">
+						<select id="changeStatus"  class="form-select btn my-2 my-sm-0"  
+							style=" color: #0dcaf0; border: var(--bs-border-width) solid #0dcaf0;"
+							aria-label="Change status" >
+							<option selected>Зміна статусу</option>
+							<option value="1">Підтвердити</option>
+							<option value="2">Підтвержено</option>
+							<option value="3">Оплачено</option> 
+							<option value="4">Несплачено</option>
+							<option value="5">Скасовано</option>
+							<option value="6">Предзамовлення</option>
+							<option value="7">Питання</option>
+							<option value="8">Відправлено</option>
+							<option value="9">Отримано</option>
+							<option value="10">Нове</option>
+							<option value="11">Очікує відправленя</option>
+							<option value="12">Виконано</option>
+							<option value="13">Тест</option>
+						</select>
+					</div>
+				</div>
+			</nav>
+		</div>
+			<!-- </div>
+				<div class="col-sm"> -->
+				<!-- </div>
+			</div>
+			</div>
+		</div> -->
+	<!-- </div> -->
+	<script>
+		
+		function redirectToSelectedPage() {
+			// Отримати вибране значення селекту (URL)
+			var selectedUrl = document.getElementById("mySelect32").value;
+			
+			// Перенаправити на обраний URL
+			window.location.href = selectedUrl;
+		}
+	</script>
 	
     </header>
 		{% with messages = get_flashed_messages(with_categories=true) %} {% if

@@ -22,7 +22,7 @@ document.getElementById('ChangeProduct').addEventListener('click', function() {
             <div class="col-sm"><input type="button" class="text-button"  value="Створити товар" data-bs-toggle="modal" data-bs-target="#myModal" ></div>
             <div class="col-sm"></div>
         </div><br>
-       
+        
         `
             );
 

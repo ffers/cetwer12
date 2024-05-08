@@ -118,10 +118,13 @@ def replace_text_ttn(text, ttn_number):
 def search_invoice_ttn(data):
     print("Шукаю розетку ттн")
     invoice_pattern = r'PRM-\d+'
-    text = data["message"]["text"]
-    search_ttn_pattern = re.findall(invoice_pattern, text)
-    if search_ttn_pattern:
-        return search_ttn_pattern[0]
+    if data["message"]:
+        if data["message"]["text"]:
+            text = data["message"]["text"]
+            search_ttn_pattern = re.findall(invoice_pattern, text)
+            if search_ttn_pattern:
+                return search_ttn_pattern[0]
+    return None
 
 def search_order_number(text_message):
     print(f"text_message {text_message}")

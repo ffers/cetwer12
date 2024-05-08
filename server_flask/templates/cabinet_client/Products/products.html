@@ -1,7 +1,10 @@
-{% extends 'cabinet_client/base.html' %} {% block title %}Home{% endblock %}
+{% extends 'cabinet_client/Products/layout/base.html' %} {% block title %}Home{% endblock %}
+
 
 {% block body %}
-
+<head>
+  <title>Товари</title>
+</head>
 <h1 align="center">{% block header %}Товари{% endblock %}</h1>
 <div id="products">
   {% for product in tasks_products %}

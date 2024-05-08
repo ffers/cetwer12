@@ -2,9 +2,9 @@
 
 function sendDataToServerW() {
     var product_name = document.getElementById('product_name').value;
-    var description = document.getElementById('description_prod').value;
+    var description = "None"
     var price = document.getElementById('price_prod').value;
-    var quantity = document.getElementById('quantity_prod').value;
+    var quantity = 0
     var article = document.getElementById('article').value;
     
 

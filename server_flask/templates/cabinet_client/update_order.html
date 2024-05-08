@@ -103,9 +103,9 @@
 				<div class="col-sm"><input class="form-control   " style="text-align: center;" name="client_surname" rows="1" cols="50" placeholder="Побатькові(необов.)" value=" "><br></div>
 			</div>
         <div class="row"></div> 
+		<!-- Адресса поля -->
 			<div id="address_row">
-				<div class="row AdsressOld" id="AdsressOld">
-					
+				<div class="row AdsressOld" id="AdsressOld">					
 					<div class="col-sm">
 						<input class="form-control   " style="text-align: center;" name="old_city" rows="1" cols="50" placeholder="Місто" 
 						value="{% if order.city_name %} {{order.city_name}} {%else%} Адреси нема {%endif%}" readonly><br></div>
@@ -141,7 +141,7 @@
 			</div></br>
 			
 					<div id="product_row">
-						
+						<!-- Товари в замовлені  -->
 					<div class="row ProductOld" id="ProductOld">
 						{% for product in order.ordered_product %} 	
 						<div class="row">
@@ -177,12 +177,54 @@
 		</form>
 	</div>
 	<input type="hidden" name="selectedItems" id="selectedItems" value="{{order.id}}">
+
+	<!-- My Modal Add product -->
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content ">
+			<div class="modal-header">
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="content text-center">
+					<h1 style="text-align: center;">
+						Створеня Товару
+					</h1>
+					<form id="dataForm">
+						<textarea class="form-control " style="text-align: center;"  
+						id="article" name="article" rows="1" cols="50" placeholder="* Артікул"></textarea><br>
+						<div class="row">									
+							<div class="col-sm "><textarea class="form-control" 
+								style="text-align: center;" id="product_name" name="product_name" 
+								rows="1" cols="50" placeholder="* Назва"></textarea><br></div>
+						</div>
+						<div class="row">
+							<div class="col-sm "><input type="number" style="text-align: center;" 
+								class="form-control" id="price_prod" name="price" 
+								min="1" placeholder="Ціна" required><br></div>
+						<div class="modal-footer" style="text-align: center;">
+							<div class="col-sm ">
+								<button id="submitBtn" class="btn btn-outline-info my-2 my-sm-0" 
+										onclick="sendDataToServerW()" type="button">
+										Додати Товар
+								</button>
+							</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>	
+	</div>
+	</div>
+</div>
+
 	<script>
 		document.getElementById('changeStatusSee').style.display = 'block';
 		document.getElementById('add_reg').style.display = 'block';
 		document.getElementById('del_reg').style.display = 'block';
 	
 	</script>
+	<script src="{{url_for('static', filename='javascript/sendDataToServerFile.js')}}"></script>
 	<script src="{{url_for('static', filename='javascript/changeProductOld.js')}}"></script>
 	<script src="{{url_for('static', filename='javascript/changeAddressOld.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/add-select2.js')}}"></script>

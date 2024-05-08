@@ -1,4 +1,4 @@
-{% extends 'cabinet_client/Products/layout/base.html' %} {% block title %}Home{% endblock %}
+{% extends 'cabinet_client/analitic/layout/base.html' %} {% block title %}Home{% endblock %}
 {% block head %}
 <head>
   <title>Аналітика</title>
@@ -79,7 +79,7 @@
             <th scope="col">Баланс</th>
             <th scope="col">Очікуєм</th>
             <th scope="col">Склад</th>
-            <th scope="col">Прихід</th>
+            <!-- <th scope="col">Прихід</th> -->
             <th scope="col">В роботі</th>
             <th scope="col">ЗП</th>
           </tr>
@@ -109,7 +109,7 @@
             <td>{{item.balance}}</td> 
             <td>{{item.wait}}</td> 
             <td>{{item.stock}}</td> 
-            <td>{{item.income}}</td> 
+            <!-- <td>{{item.income}}</td>  -->
             <td>{{item.inwork}}</td> 
             <td>{{item.salary}}</td> 
 
