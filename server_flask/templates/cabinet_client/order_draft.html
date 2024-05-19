@@ -39,7 +39,8 @@
           <th scope="col">Артикул</th>
           <th scope="col">Сумма</th>
           <th scope="col">Нотатка</th>
-          <th scope="col">Адреса</th>
+          <!-- <th scope="col">Адреса</th> -->
+          <th scope="col">Спосіб доставки</th>
           <th scope="col">Телефон та TTN</th>
           <th scope="col">Клієнт</th>
           <th scope="col">Реєстр</th>
@@ -65,7 +66,8 @@
             {{product.products.article}}-{{product.quantity}}шт. <br>{% endfor %}</td>
           <td>{{order.sum_price}}</td>
           <td>{% if order.description %}{{order.description|wordwrap(15)}}{% else %}Нотаток нема{% endif %}</td>
-          <td>{% if order.city_name %}{{order.city_name}},{% endif %} {{order.warehouse_text}}</td>
+          <!-- <td>{% if order.city_name %}{{order.city_name}},{% endif %} {{order.warehouse_text}}</td> -->
+          <td>{{order.delivery_method.name}}</td>
           <td>{{order.phone}}{% if order.ttn %};{{order.ttn}}{% else %}{% endif %}</td>
           <td>{{order.client_lastname}} {{order.client_firstname}}</td>
           <td>{{order.delivery_order.number_registr}}</td>

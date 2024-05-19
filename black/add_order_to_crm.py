@@ -22,6 +22,8 @@ class PromToCrm():
         try:
             OC_log.info(f"НАЧАЛОСЬ ")
             order = self.parse_order(json_order)
+            if not order:
+                raise
             order_id = order.id
             product = self.parse_product(json_order, order)
             self.add_ordered_telegram(data_for_tg, order_id)
@@ -29,8 +31,9 @@ class PromToCrm():
             return order_id
         except Exception as e:
             order_id = json_order["id"]
-            OC_log.info(f"Спрацював exept {e}")
+            OC_log.info(f"Спрацював exept {e} {json_order}")
             tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, f"️❗️❗️❗️ НЕ ВИЙШЛО ДОДАТИ замовлення {order_id} В CRM сторона CRM")
+
 
     def parse_order(self, order):
         prompay_status_id = self.add_prompay_status(order)
@@ -92,7 +95,7 @@ class PromToCrm():
             db.session.commit()
             return new_order
         except Exception as e:
-            OC_log.warning(f"Ордер не додано в базу: {e}")
+            OC_log.exception(f"Ордер не додано в базу: {e}")
             pass
 
 
