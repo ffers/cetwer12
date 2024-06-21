@@ -12,7 +12,7 @@ document.getElementById('ChangeAddress').addEventListener('click', function() {
                 <div class="col-sm"><input type="radio" class="form-check-input text-radio" id="1" name="delivery_method" value="1"/><label for="1" class="form-check-label" required> Нова Пошта</label></div>
                 <div class="col-sm"><input type="radio" class="form-check-input text-radio" id="2" name="delivery_method" value="2"/><label for="2" class="form-check-label" required> Розетка</label></div>
                 <div class="col-sm"><input type="radio" class="form-check-input text-radio" id="3" name="delivery_method" value="3"/><label for="3" class="form-check-label" required> Укрпошта</label></div>
-				<div class="col-sm"><input type="radio" class="form-check-input text-radio" id="3" name="delivery_method" value="5"/><label for="5" class="form-check-label" required> Шопзаказ</label></div>				                    
+				<div class="col-sm"><input type="radio" class="form-check-input text-radio" id="5" name="delivery_method" value="5"/><label for="5" class="form-check-label" required> Шопзаказ</label></div>				                    
 			</div></br>
             <div class="row">
             <legend></legend>
