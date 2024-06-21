@@ -202,11 +202,13 @@ class OrderCntrl:
         print("deliveri method", order.delivery_method_id)
         if order.delivery_method_id == 1:
             resp = self.del_method_np(order)
-        elif order.delivery_method_id == 2 or 4:
+        elif order.delivery_method_id == 2 or order.delivery_method_id == 4:
             print("Розетка")
             resp = self.del_method_roz(order)
         elif order.delivery_method_id == 3:
             resp = self.del_method_ukr(order)
+        elif order.delivery_method_id == 5:
+            resp = self.del_method_shop(order)
         return resp
 
     def del_method_np(self, order):
@@ -249,10 +251,19 @@ class OrderCntrl:
         return True
 
     def del_method_ukr(self, order):
+        print("Відсилаю в Укрпошту")
         data_tg_dict = tg_serv.create_text_order(order)
         # tg_cntrl.answerCallbackQuery(callback_query_id, f"Відсилаю в Розетку")
         # keyboard_rozet = tg_cntrl.keyboard_generate("Надіслати накладну", order.order_code)
         resp = tg_cntrl.sendMessage(tg_cntrl.chat_id_ukr, data_tg_dict)
+        return True
+
+    def del_method_shop(self, order):
+        print("Відсилаю в Шопзаказ")
+        data_tg_dict = tg_serv.create_text_order(order)
+        # tg_cntrl.answerCallbackQuery(callback_query_id, f"Відсилаю в Розетку")
+        # keyboard_rozet = tg_cntrl.keyboard_generate("Надіслати накладну", order.order_code)
+        resp = tg_cntrl.sendMessage(tg_cntrl.chat_id_shop, data_tg_dict)
         return True
 
     def await_order_cab_tg(self, order, flag=None, id=None): # дубль фукціі await_order щоб обійти діспетчер

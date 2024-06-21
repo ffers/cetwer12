@@ -7,7 +7,14 @@ document.getElementById('ChangeAddress').addEventListener('click', function() {
     var container = $('#address_row');
     var newField = $('<div>')
         .html(
-            `<div class="row">
+            `
+            <div class="row">
+                <div class="col-sm"><input type="radio" class="form-check-input text-radio" id="1" name="delivery_method" value="1"/><label for="1" class="form-check-label" required> Нова Пошта</label></div>
+                <div class="col-sm"><input type="radio" class="form-check-input text-radio" id="2" name="delivery_method" value="2"/><label for="2" class="form-check-label" required> Розетка</label></div>
+                <div class="col-sm"><input type="radio" class="form-check-input text-radio" id="3" name="delivery_method" value="3"/><label for="3" class="form-check-label" required> Укрпошта</label></div>
+				<div class="col-sm"><input type="radio" class="form-check-input text-radio" id="3" name="delivery_method" value="5"/><label for="5" class="form-check-label" required> Шопзаказ</label></div>				                    
+			</div></br>
+            <div class="row">
             <legend></legend>
           <div class="col"><input class="form-check-input text-radio" type="radio" id="warehouse" name="warehouse_option" value="warehouse" onclick="toggleField()" ><label for="warehouse" class="form-check-label"> Відділення</label></div>
           <div class="col"><input type="radio" id="poshtomat " class="form-check-input text-radio" name="warehouse_option" value="poshtomat" onclick="toggleField()" /><label for="poshtomat" class="form-check-label"> Поштомат</label></div>

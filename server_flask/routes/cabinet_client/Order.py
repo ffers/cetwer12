@@ -107,6 +107,7 @@ def update(id):
             task_update.city_name = request.form['CityName']
             task_update.warehouse_ref = request.form['warehouse-id']
             task_update.warehouse_text = unquote(request.form['warehouse-text'])
+            task_update.delivery_method_id = request.form['delivery_method']
         if "product" in request.form:
             sum_price_draft = request.form['total-all']
             task_update.sum_price = format_float(sum_price_draft)
@@ -149,7 +150,7 @@ def add_order():
                        client_lastname=request.form['client_lastname'], client_surname=request.form['client_surname'],
                        warehouse_option=request.form['warehouse_option'], delivery_option="nova_poshta",
                        payment_method_id=request.form['payment_option'], sum_price=format_float(sum_price_draft),
-                       sum_before_goods=sum_before_goods, delivery_method_id=1, source_order_id=1, ordered_status_id=10,
+                       sum_before_goods=sum_before_goods, delivery_method_id=request.form['delivery_method'], source_order_id=1, ordered_status_id=10,
                        description_delivery="Одяг Jemis")
         db.session.add(order)
         db.session.commit()
