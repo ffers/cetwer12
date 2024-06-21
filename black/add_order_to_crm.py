@@ -210,6 +210,7 @@ class PromToCrm():
         return sum_before_goods
 
     def add_warehouse_method(self, address_dict):
+
         if address_dict["TypeWarehouse"] == "f9316480-5f2d-425d-bc2c-ac7cd29decf0":
             dict_warehouse = {"warehouse_method": 2}
         else:

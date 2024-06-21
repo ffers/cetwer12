@@ -25,6 +25,7 @@ class NpCntrl():
         pass
 
     def parse_data(self, order):
+        print(f"data order {vars(order)}")
         self.data.clear()
         self.data.update({
                 "order_id": order.id,
@@ -37,7 +38,8 @@ class NpCntrl():
                 "LastName": order.client_lastname,
                 "MiddleName": order.client_surname,
                 "Email": "test@i.com",
-                "warehouse_option": order.warehouse_method_id,
+                "warehouse_method_id": order.warehouse_method_id,
+                "warehouse_option": order.warehouse_option,
                 "Cost": order.sum_price,
                 "BackwardDeliveryData": None,
                 "OptionsSeat": None,
@@ -57,14 +59,15 @@ class NpCntrl():
         return data
 
     def option_set(self, data):
-        if 2 == data["warehouse_option"]:
+        print(f"проверяєм адрес {data}")
+        if 2 == data["warehouse_method_id"] or data["warehouse_option"] == "poshtomat":
             data.update({"OptionsSeat": [
             {
-                "volumetricVolume": "0.2",
+                "volumetricVolume": "1",
                 "volumetricWidth": "10",
                 "volumetricLength": "10",
                 "volumetricHeight": "10",
-                "weight": "0.2"
+                "weight": "1"
             }]})
         return data
 

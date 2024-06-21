@@ -10,11 +10,11 @@ json_data_np_dict = "create_data/json_dict/json_data_np_dict.json"
 contact_np = "create_data/json_dict/contact_np.json"
 OptionsSeat = { "OptionsSeat" : [
                     {
-                    "volumetricVolume":"0.2",
-                    "volumetricWidth":"10",
-                    "volumetricLength":"10",
-                    "volumetricHeight":"10",
-                    "weight":"0.2"
+                    "volumetricVolume":"1",
+                    "volumetricWidth":"30",
+                    "volumetricLength":"30",
+                    "volumetricHeight":"30",
+                    "weight":"1"
                     }]}
 
 dict_ttn_prom = {

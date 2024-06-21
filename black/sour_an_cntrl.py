@@ -180,7 +180,7 @@ class SourAnCntrl:
         print(period)
         self.sort_send_time()
         start_time, stop_time = self.w_time_cntrl.load_work_time(period)
-        print(start_time,' ', stop_time)
+        print(start_time, ' ', stop_time)
         orders = ord_rep.load_period(start_time, stop_time)
         print(orders)
         item = an_cntrl.load_period_sec(period, start_time, stop_time)
