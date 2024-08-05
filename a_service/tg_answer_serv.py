@@ -2,9 +2,12 @@
 
 
 class TgAnswerSerw:
-    pass
+    def id_message(self, resp):
+        id_message_int = resp["result"]["message_id"]
+        id_chat_int = resp["result"]["chat"]["id"]
+        return id_message_int, id_chat_int
 
-tg_answer_serv = TgAnswerSerw()
+
 
 
 # Заказ-дубликат

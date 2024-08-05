@@ -11,7 +11,7 @@ class AnaliticRep():
 
     def load_all(self):
         items = Analitic.query.order_by(
-            Analitic.timestamp
+            Analitic.timestamp.desc()
             ).all()
         return items
 

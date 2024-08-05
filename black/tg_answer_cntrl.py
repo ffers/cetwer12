@@ -1,4 +1,6 @@
 import os
+import time
+
 from dotenv import load_dotenv
 from .manager_ttn import ManagerTTN
 from a_service.tg_serv import tg_serv
@@ -12,7 +14,7 @@ from .handling_b import search_reply_message
 from a_service.update_to_crm import up_to_srm
 from .telegram_controller import tg_cntrl
 from .order_cntrl import ord_cntrl
-from a_service import tg_answer_serv as serv
+from a_service import TgAnswerSerw
 from .telegram_cntrl.tg_cash_cntrl import TgCashCntrl
 
 
@@ -31,6 +33,7 @@ prod_an_cntrl = ProductAnaliticControl()
 class TgAnswerCntrl:
     def __init__(self):
         self.arrival = TgCashCntrl()
+        self.serv = TgAnswerSerw()
 
     def await_order(self, order, flag=None, id=None):
         print(f"ДИвимось флаг {flag}")
@@ -90,12 +93,15 @@ class TgAnswerCntrl:
             key = data["callback_query"]["message"]["reply_markup"]
             call_back_id = data["callback_query"]["id"]
             tg_cntrl.answerCallbackQuery(call_back_id, "Працюю")
+            # resp_tg = tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, "Працюю")
+            # send_message_id, send_chat_id = self.serv.id_message(resp_tg)
             if "inline_keyboard" in key:
                 text_order, data_keyb, text_data_back = tg_serv.await_button_parse(data)
                 print(f"need {key}")
                 order_id = tg_serv.search_order_number(text_order)
                 order_obj = ord_cntrl.load_for_order_code(order_id)
                 resp = self.defintion_status(data_keyb, order_obj.id)
+                # tg_cntrl.deleteMessage(tg_cntrl.chat_id_confirm, send_message_id)
                 return resp
 
     def defintion_status(self, data_keyb, order_id):

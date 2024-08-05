@@ -177,7 +177,7 @@ class OrderRep:
         order = self.load_item(order_id)
         order.ordered_status_id = status
         db.session.commit()
-        return True
+        return {"resp": True, "order_code": order.order_code, "ordered_status": order.ordered_status.name}
 
     def change_status_list(self, orders, status):
         for item in orders:
@@ -214,7 +214,7 @@ class OrderRep:
             (Orders.client_firstname.ilike(f'%{data}%')) |
             (Orders.order_id_sources.ilike(f'%{data}%')) |
             (Orders.ttn.ilike(f'%{data}%'))
-        ).all()
+        ).order_by(desc(Orders.id)).all()
         return order
 
     def delete_order(self, id):

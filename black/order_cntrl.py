@@ -154,6 +154,9 @@ class OrderCntrl:
         print("first")
         order = ord_rep.load_item(order_id)
         crm_status = ord_rep.change_status(order_id, 2)
+        resp_tg = tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, "{ordered_status} {order_code}".format(**crm_status))
+
+
         bool_prom = self.definition_source(order, 3)
         update_analitic = prod_an_cntrl.product_in_order(order)
 
@@ -173,7 +176,7 @@ class OrderCntrl:
 
     def question_order(self, order_id):
         order = ord_rep.load_item(order_id)
-        bool = ord_rep.change_status(order_id, 7)
+        bool = self.change_status_item(order_id, 5)
         bool_prom = self.definition_source(order, 2)
         return bool
 
@@ -282,12 +285,18 @@ class OrderCntrl:
 
     def change_status(self, data):
         orders, status = ord_serv.parse_dict_status(data)
-        bool = ord_rep.change_status_list(orders, status)
-        return bool
+        print("WTF")
+        for order in orders:
+            print (f"%s %s try change" % (order, status))
+            self.change_status_item(order, status)
+        # bool = ord_rep.change_status_list(orders, status)
+        return True
 
     def change_status_item(self, id, status):
         resp = ord_rep.change_status(id, status)
-        return resp
+        resp_tg = tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, "{ordered_status} {order_code}".format(**resp))
+        print(resp_tg)
+        return resp.update( {"message_id": resp_tg["result"]["message_id"]})
 
     def change_status_roz(self):
         orders = ord_rep.load_registred_roz()
