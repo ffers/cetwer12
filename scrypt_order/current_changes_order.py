@@ -32,7 +32,7 @@ class Changes:
                     canceled_order.add(order_id)
                     order_list = list(canceled_order)
                     fl_cl.save_file_json(canceled_order_file, order_list)
-                    tg_cntrl.sendMessage(chat_id, f"Скасовано {order_id}")
+                    tg_cntrl.sendMessage(chat_id, f"Скасовано на порталі {order_id}")
                     try:
                         self.send_http_json(order_id, "canceled") # відправляєм в базу данних
                     except:
