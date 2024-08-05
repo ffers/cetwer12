@@ -55,6 +55,16 @@ class TgClient():
         print(resp)
         return resp
 
+    def deleteMessage(self, chat_id, message_id):
+        method = "deleteMessage"
+        token = os.getenv("TELEGRAM_BOT_TOKEN")
+        url = f"https://api.telegram.org/bot{token}/{method}"
+        data = {"chat_id": chat_id, "message_id": message_id}  # , "cache_time": cache_time}
+        print(data)
+        resp = requests.post(url, data=data)
+        print(resp)
+        return resp
+
 
     def keyboard_func(self, order_id, delivery_option):
         received = 1

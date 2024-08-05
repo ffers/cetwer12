@@ -49,6 +49,10 @@ class TelegramController():
         resp = tg_api.editMessageText(chat_id, message_id, text)
         return resp
 
+    def deleteMessage(self, chat_id, message_id):
+        resp = tg_api.deleteMessage(chat_id, message_id)
+        return resp
+
     def keyboard_func(self, order_id, delivery_option):
         resp = tg_api.keyboard_func(order_id, delivery_option)
         return resp
