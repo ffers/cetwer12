@@ -20,7 +20,6 @@ class TgKeyboard():
         print(keyboard_json)
         size_keyboard = sys.getsizeof(keyboard_json)
         print(size_keyboard)
-
         return keyboard_json
 
     def keyboard_generate(self, text1, callback_data1, text2=None, callback_data2=None):

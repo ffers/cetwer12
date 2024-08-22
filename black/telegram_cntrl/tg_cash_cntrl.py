@@ -9,7 +9,10 @@ class TgCashCntrl:
         self.cntrl = TelegramController()
 
     def text_f(self, data):
-        return data["message"]["text"]
+        if "text" in data["message"]:
+            return data["message"]["text"]
+        else:
+            return "None"
 
     def sort(self, data):
         text = self.text_f(data)

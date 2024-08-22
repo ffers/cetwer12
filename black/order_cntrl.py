@@ -154,15 +154,14 @@ class OrderCntrl:
         print("first")
         order = ord_rep.load_item(order_id)
         crm_status = ord_rep.change_status(order_id, 2)
-        resp_tg = tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, "{ordered_status} {order_code}".format(**crm_status))
-
-
         bool_prom = self.definition_source(order, 3)
         update_analitic = prod_an_cntrl.product_in_order(order)
 
         delivery = self.check_del_method(order)
         result = self.result(crm_status, bool_prom,
                              update_analitic, delivery)
+
+        resp_tg = tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, "{ordered_status} {order_code}".format(**crm_status))
         return result
 
     def result(self, *args):
