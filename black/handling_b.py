@@ -119,7 +119,7 @@ def search_invoice_ttn(data):
     print("Шукаю розетку ттн")
     invoice_pattern = r'PRM-\d+'
     if data["message"]:
-        if data["message"]["text"]:
+        if "text" in data["message"]:
             text = data["message"]["text"]
             search_ttn_pattern = re.findall(invoice_pattern, text)
             if search_ttn_pattern:
