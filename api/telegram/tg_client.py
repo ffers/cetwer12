@@ -66,20 +66,10 @@ class TgClient():
         return resp
 
 
-    def keyboard_func(self, order_id, delivery_option):
-        received = 1
-        size_j = sys.getsizeof(received)
-        # received_json = json.dumps(received)
-        # size_jj = sys.getsizeof(received_json)
-        print(size_j)
-        # print(size_jj)
-        question = 2
-        # question_json = json.dumps(question)
-        keyboard_json = self.keyboard_generate(self.text1, received, self.text2, question)
+    def keyboard_func(self):
+        size_j = sys.getsizeof(1)
+        keyboard_json = self.keyboard_generate(self.text1, 1, self.text2, 2)
         print(keyboard_json)
-        size_keyboard = sys.getsizeof(keyboard_json)
-        print(size_keyboard)
-
         return keyboard_json
 
     def keyboard_generate(self, text1, callback_data1, text2, callback_data2):

@@ -53,8 +53,8 @@ class TelegramController():
         resp = tg_api.deleteMessage(chat_id, message_id)
         return resp
 
-    def keyboard_func(self, order_id, delivery_option):
-        resp = tg_api.keyboard_func(order_id, delivery_option)
+    def keyboard_func(self):
+        resp = tg_api.keyboard_func()
         return resp
 
     def keyboard_generate(self,  text1, callback_data1, text2=None, callback_data2=None):

@@ -126,12 +126,12 @@ def search_invoice_ttn(data):
                 return search_ttn_pattern[0]
     return None
 
-def search_order_number(text_message):
+def search_order_number(text_message): # якщо це чат розетки,
     print(f"text_message {text_message}")
-    if "Замовлення PROM" in text_message:
-        pattern = r'PROM № (\d+)'
+    if "Замовлення" in text_message:
+        pattern = r'Замовлення № (\S+)'
         number_order = re.search(pattern, text_message)
-        print(number_order)
+        print(f"wait {number_order}")
         return number_order.group(1).strip()
 
 def update_order(invoice_ttn, invoice_order):
@@ -150,7 +150,7 @@ def update_text_tg(data, text_message, invoice_ttn):
     get_edit_message(data, text)
     return True
 
-def search_reply_message(data):
+def search_reply_message(data): #працює з усіма відповідями не бачу фільтраціїї чату
         text_message = data["message"]["reply_to_message"]["text"]
         invoice_order = search_order_number(text_message)
         invoice_ttn = search_invoice_ttn(data)

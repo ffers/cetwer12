@@ -66,17 +66,14 @@ class TgAnswerCntrl:
         return resp
 
     def await_tg_button(self, data):
-        if "message" in data:
-            if ("reply_to_message" in data["message"] and
-                    "text" in data["message"]["reply_to_message"]):
-                search_reply_message(data)
+        if "message" in data: #працює з усіма відповдями
             self.await_telegram(data)
             # button_hand(data)
         if "callback_query" in data:
             self.await_button(data)
         return '', 200
 
-    def await_telegram(self, data):
+    def await_telegram(self, data): #працює з чатами Склад, Каштан, Розетка
         chat_id = data["message"]["chat"]["id"]
         if int(ch_id_sk) == chat_id:
             print("Отримали повідомлення з Робочого чату")
@@ -85,11 +82,15 @@ class TgAnswerCntrl:
         if int(tg_cntrl.chat_id_cash) == chat_id:
             print("Hello")
             self.arrival.sort(data)
+        if int(tg_cntrl.chat_id_rozet) == chat_id:
+            if ("reply_to_message" in data["message"] and
+                    "text" in data["message"]["reply_to_message"]):
+                search_reply_message(data)
 
 
-    def await_button(self, data):
-        chat_confirm = data["callback_query"]["message"]["chat"]["id"]
-        if int(tg_cntrl.chat_id_confirm) == chat_confirm:
+    def await_button(self, data): #працює з Підтвердженнями
+        chat_id = data["callback_query"]["message"]["chat"]["id"]
+        if int(tg_cntrl.chat_id_confirm) == chat_id:
             key = data["callback_query"]["message"]["reply_markup"]
             call_back_id = data["callback_query"]["id"]
             tg_cntrl.answerCallbackQuery(call_back_id, "Працюю")

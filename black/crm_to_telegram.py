@@ -62,7 +62,7 @@ class CrmToTelegram:
                 f"{formatted_text}\n\n=========================================================="
             )
             delivery_option = order["delivery_option"]["id"]
-            keyboard_json = tg_cntrl.keyboard_func(order_id, delivery_option)
+            keyboard_json = tg_cntrl.keyboard_func()
             size_j = sys.getsizeof(keyboard_json)
             print(keyboard_json)
             print(size_j)

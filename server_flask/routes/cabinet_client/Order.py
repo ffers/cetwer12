@@ -126,6 +126,7 @@ def update(id):
         db.session.commit()
         print(">>> Update in datebase")
         flash(f'Замовлення {task_update.id} оновлено', category='success')
+        ord_cntrl.send_order_tg(task_update.id)
         return redirect('/cabinet/orders')
         # except:
         #     return 'There was an issue updating your task'
@@ -164,6 +165,7 @@ def add_order():
             data = OrderedProduct(product_id=item[0], price=item[1], quantity=item[2], order_id=order.id)
             db.session.add(data)
         db.session.commit()
+        ord_cntrl.send_order_tg(order.id)
         flash('Замовлення створено', category='success')
         return redirect(url_for('Order.Order'))
 

@@ -84,7 +84,7 @@ class TgServ():
             product_text += f" {product.products.product_name}\n"
         data_get_order = (
             f"{product_article} Сумма: {order.sum_price} \n\n{description}\n\n"
-            f"{order.city_name}, {order.warehouse_text} \n\n🍏 Замовлення {order.source_order.name} № {order.order_id_sources}\n"
+            f"{order.city_name}, {order.warehouse_text} \n\n🍏 {order.source_order.name} Замовлення № {order.order_id_sources}\n"
             f"\n{order.phone};{ttn}\n{order.client_lastname} {order.client_firstname}\n"
             f"Спосіб доставки - {order.delivery_method.name}\n"
             f"Спосіб оплати - {payment_method.name}, {sum_check} \n\n"
@@ -109,7 +109,7 @@ class TgServ():
     def search_order_number(self, text_message):
         print(f"text_message {text_message}")
         if "Замовлення №" in text_message:
-            pattern = r'Замовлення № (\d+)'
+            pattern = r'Замовлення № (\S+)'
             number_order = re.search(pattern, text_message)
             print(number_order)
             return number_order.group(1).strip()

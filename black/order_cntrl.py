@@ -84,6 +84,7 @@ class OrderCntrl:
         ord_prod_old = ord_rep.load_prod_order(order_id)
         dublicate_order_prod = ord_rep.dublicate_order_prod(dublicate_item, ord_prod_old)
         self.add_order_code(dublicate_item)
+        self.send_order_tg(dublicate_item.id)
         return True
 
     def add_order(self, order_js):
@@ -142,6 +143,14 @@ class OrderCntrl:
             if not item:
                 ord_rep.add_order_code(order, order_code)
                 return
+
+    def send_order_tg(self, order_id):
+        order = ord_rep.load_item(order_id)
+        data_tg_dict = tg_serv.create_text_order(order)
+        keyboard_json = tg_cntrl.keyboard_func()
+        resp = tg_cntrl.sendMessage(tg_cntrl.chat_id_rozet, data_tg_dict, keyboard_json)
+        return True
+
 
     def search_for_phone(self, req):
         search_request = req.args.get('q', '').lower()
