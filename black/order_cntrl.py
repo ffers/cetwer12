@@ -144,11 +144,12 @@ class OrderCntrl:
                 ord_rep.add_order_code(order, order_code)
                 return
 
-    def send_order_tg(self, order_id):
+    def send_order_tg(self, order_id, text="🍊 Редагування"):
         order = ord_rep.load_item(order_id)
         data_tg_dict = tg_serv.create_text_order(order)
         keyboard_json = tg_cntrl.keyboard_func()
-        resp = tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, data_tg_dict, keyboard_json)
+        add_text = f"{text}\n{data_tg_dict}"
+        resp = tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, add_text, keyboard_json)
         return True
 
 
