@@ -81,6 +81,15 @@ class SourAnCntrl:
         resp_an = self.sort_analitic("all")
         return resp_an
 
+    def update_all_analitic(self):
+        self.sort_analitic("all")
+        self.sort_analitic("year")
+        self.sort_analitic("month")
+        self.sort_analitic("week")
+        self.sort_analitic("day")
+        return True
+
+
 
     def stock_journal(self, article, quantity, description):
         resp = False

@@ -46,7 +46,7 @@ def delete_product(id):
 @login_required
 @admin_permission.require(http_exception=403)
 def update_all():
-    product = sour_an_cntrl.sort_analitic("all")
+    product = sour_an_cntrl.update_all_analitic()
     print(f"Перевірка {product}")
     flash('Аналітику оновлено ALL', category='success')
     return redirect('/cabinet/analitic/all')
