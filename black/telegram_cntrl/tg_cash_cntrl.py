@@ -46,7 +46,7 @@ class TgCashCntrl:
                 if quan:
                     text += f"{quan.article}={quan.quantity}\n"
             print(text)
-            self.cntrl.sendMessage(self.cntrl.chat_id_cash, text)
+            self.cntrl.sendMessage(self.cntrl.chat_id_cash, text) # незрозімло чи відбувається зміна
         else:
             print(False)
             return False
