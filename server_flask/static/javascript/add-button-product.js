@@ -2,7 +2,7 @@
 $('#addButton').on('click', function() {
     var container = $('#product-container');
     var newField = $(`
-        <div class="row" >
+        <div class="row">
         <div class="col-sm"><select class="form-control product-select" name="product"></select></div><br>
         <div class="col-sm col-lg-2"><input type="number" style="text-align: center;" class="quantity form-control" id="quantity" name="quantity"  min="1" max="10000" placeholder="* Кількість" required><br></div>
         <div class="col-sm col-lg-2"><input type="number" style="text-align: center;" class="price form-control" id="price" name="price" min="1" placeholder="Ціна" required><br></div>
@@ -13,7 +13,7 @@ $('#addButton').on('click', function() {
 
     // Добавление нового поля в контейнер
     container.append(newField);
-    // Викликаєм калькулятор
+    // Викликаєм калькулятор 
     
 
 

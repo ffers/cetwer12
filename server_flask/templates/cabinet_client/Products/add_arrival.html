@@ -1,4 +1,7 @@
-{% extends 'cabinet_client/analitic/layout/base.html' %}{% block title %}Прихід Товару{% endblock %}
+{% extends 'cabinet_client/analitic/layout/base.html' %}
+
+
+{% block title %}Прихід Товару{% endblock %}
 
 {% block head %}
 <!-- Підключення стилів Flatpickr -->
@@ -17,17 +20,10 @@
 			<form action="{{ url_for('ProductSource.add_arrival') }}" method="post">
                 <div id="product-container">
                     <div class="row">   
-                        <div class="col-sm col-lg-2">
-                        
-                 
-                            <!-- Include input field with id so 
-                                that we can use it in JavaScript 
-                                to set attributes.-->
+                        <div class="col-sm col-lg-2">                
                             <input class="form-control"
-                                type="text" id="event_date" name="event_date"/>
-                       
-                            </div>
-                    
+                                type="text" id="event_date" name="event_date"/>                       
+                            </div>                    
                         <script>
                             flatpickr('#event_date', {
                             dateFormat: 'd-m-Y', // Формат дати
@@ -55,7 +51,7 @@
                                 class="form-control select-source" 
                                 name="article" 
                                 required>
-                            </select>
+                            </select> 
                         </div>
                         <div class="col-sm col-lg-2">
                             <input 
@@ -68,15 +64,15 @@
                         </div>
                         <!-- <div class="col-sm col-lg-2"><input style="text-align: center;" class="total form-control" id="total	" name="total" min="1" placeholder="Сумма" required><br></div> -->
                         <!-- <div class="col-sm col-lg-2"><input style="text-align: center;  display: none;" class="totalall form-control" id="total-all" name="total-all" min="1" placeholder="Сумма" required><br></div> -->
-                    </div></br>                
-                </div></br>
+                    </div>               
+                </div>
 
             <div class="row">
                 <div class="col-sm"></div>
                 <div class="col-sm"><input type="button" class="text-button"  value="Додати товар" id="addButton"></div>
-				<div class="col-sm"><input type="button" class="text-button"  value="Створити товар" data-bs-toggle="modal" data-bs-target="#myModal" ></div>
+				<!-- <div class="col-sm"><input type="button" class="text-button"  value="Створити товар" data-bs-toggle="modal" data-bs-target="#myModal" ></div> -->
                 <!-- <div class="col-sm"><a href="get_product/send_with_prom_test">Підвердити</a></div> -->
-            </div><br>
+            </div></br>
 
 			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поставити на прихід</button>
 		</form>
@@ -84,6 +80,7 @@
 
 
 	</div>
+
 
     <script src="{{url_for('static', filename='javascript/select_source.js')}}"></script>
 	<!-- <script type="module" src="{{url_for('static', filename='javascript/calculate.js')}}"></script> -->

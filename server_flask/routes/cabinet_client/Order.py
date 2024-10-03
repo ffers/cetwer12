@@ -97,7 +97,7 @@ def update(id):
         task_update.client_lastname = request.form['client_lastname']
         task_update.description = request.form['description']
         task_update.sum_before_goods = None
-        if request.form['payment_option'] == "3":
+        if request.form['payment_option'] == "3": 
             sum_before_goods_dr = request.form["sum_before_goods"]
             sum_before_goods = format_float(sum_before_goods_dr)
             task_update.sum_before_goods = sum_before_goods

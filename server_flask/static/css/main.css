@@ -8,7 +8,7 @@
 body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
+            /* padding: 0; */
             /* background-image: radial-gradient(circle, black 1px, transparent 1px);
             background-size: 18px 19px; /* розмір кожної точки 
             background-position: center;
@@ -20,11 +20,11 @@ h1 {
 }
 form {
     text-align: center;
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
 }
 form textarea {
     width: 100%;
-    padding: 10px;
+    /* padding: 10px; */
 }
 
 .form-control {
@@ -69,6 +69,10 @@ tr {
    font-size: 15px;
    
    
+}
+
+.row {
+    margin-bottom: 1rem !important;
 }
 
 
@@ -125,7 +129,7 @@ tr {
     justify-content: center;
     align-items: center;
     /* height: 100vh; */
-}
+} 
 
 .button-pult {
     margin-left: 10px;

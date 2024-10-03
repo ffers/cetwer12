@@ -28,6 +28,7 @@
 			  
 				{% if user.is_authenticated %}
 				<li ><a class="nav-link" href="/cabinet/orders">Кабинет</a> </li>
+				<li ><a class="nav-link" href="/cabinet/work-space">Середовище</a> </li>
 					{% endif %}
 				
 			  <!-- <li class="nav-item active">
@@ -51,7 +52,7 @@
 
 					{% if user.is_authenticated %}
 					<li class="nav-item active">
-					  <a href="cabinet/orders/add_order">
+					  <a href="/cabinet/orders/add_order">
 						  <button type="button" class="btn btn-info btn-lg">
 										Створити Замовлення
 						  </button></a>

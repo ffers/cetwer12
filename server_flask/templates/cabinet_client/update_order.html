@@ -1,7 +1,7 @@
 {% extends 'cabinet_client/base.html' %}
 
 {% block head %}
-
+<title>Прихід товару</title>
 {% endblock %}
 
 {% block body %}
@@ -17,7 +17,7 @@
         }
     }
 
-    function deleteElement() {
+    function deleteElement() { 
         // Видалення елементу
         // Наприклад, можна використати jQuery для цього: $('#elementId').remove();
     }
@@ -77,7 +77,7 @@
 			</div> 
 		</nav>
 	</div>
-		<br>
+		
 		<div class="row"> 
 			<div class="col-sm"><h3 style="text-align: center;" > Замовлення №
 				<span class="textToCopy" data-text="{{order.order_id_sources}}">{{order.order_id_sources}} 
@@ -93,7 +93,7 @@
 			</div>
 		</div>
 		
-	<br>
+	
 	<div class="content">
 		<form id="myForm" action="/cabinet/orders/update/{{order.id}}" method="post">
 			<div class="row">
@@ -133,12 +133,12 @@
 			</div></br> -->
 			<div class="row">
 <!--  				<legend>Спосіб оплати:</legend>-->
-                <div class="col-sm"><input type="radio" class="form-check-input text-radio" id="nalogka" name="payment_option" value="1" {% if order.payment_method_id == 1 %}checked{% endif %}/><label for="nalogka" class="form-check-label"> Післяплата</label></div>
-                <div class="col-sm"><input type="radio" class="form-check-input text-radio" id="card_pay" name="payment_option" value="2"{% if order.payment_method_id == 2 %}checked{% endif %}/><label for="card_pay" class="form-check-label"> Оплата на рахунок</label></div>
-                <div class="col-sm"><input type="radio" class="form-check-input text-radio" id="peredpalata100" name="payment_option" value="3" onclick="togglePaybefore()" {% if order.payment_method_id == 3 %}checked{% endif %}/><label for="peredpalata100" id="labelPayBe" class="form-check-label" > Передплата</label></div>
-				<div id="hiddenFieldPay" style="display:none;" class="col"><input type="number" style="text-align: center;" class="   form-control" id="sum_before_goods" name="sum_before_goods" min="1" placeholder="Сумма" value="100" required><br></div>
+                <div class="col-sm"><input type="radio" class="form-check-input text-radio" id="nalogka" name="payment_option" value="1" {% if order.payment_method_id == 1 %}checked{% endif %} onclick="togglePaybefore()"/><label for="nalogka" class="form-check-label"> Післяплата</label></div>
+                <div class="col-sm"><input type="radio" class="form-check-input text-radio" id="card_pay" name="payment_option" value="2"{% if order.payment_method_id == 2 %}checked{% endif %} onclick="togglePaybefore()"/><label for="card_pay" class="form-check-label"> Оплата на рахунок</label></div>
+                <div class="col-sm"><input type="radio" class="form-check-input text-radio" id="peredpalata" name="payment_option" value="3" onclick="togglePaybefore()" {% if order.payment_method_id == 3 %}checked{% endif %}/><label for="peredpalata" id="labelPayBe" class="form-check-label" > Передплата</label></div>
+				<div id="hiddenFieldPay" style="display:none;" class="col"><input type="number" style="text-align: center;" class="   form-control" id="sum_before_goods" name="sum_before_goods" min="1" placeholder="Сумма" value="{{ order.sum_before_goods }}" required><br></div>
                                
-			</div></br>
+			</div>
 			
 					<div id="product_row">
 						<!-- Товари в замовлені  -->
@@ -157,7 +157,7 @@
 					</div>
 					
 					<div class="col-sm"><input type="button" class="text-button"  value="Змінити Товар в Замовленні" id="ChangeProduct"></div>
-					</div></br>	
+					</div>
             <!-- <div id="product-container">
                 <div class="row">
                     <div class="col"><select  class="form-control product-select" id="product-select" name="product" required></select><br></div>

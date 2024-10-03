@@ -62,9 +62,9 @@ var hiddenFieldPay = document.getElementById("hiddenFieldPay");
 
 
 function togglePaybefore() {
-    var payRadio = document.querySelector('input[value="3"]');
-    var cardRadio = document.querySelector('input[value="2"]');
-    var nalogkaRadio = document.querySelector('input[value="1"]');
+    var payRadio = document.querySelector('input[id="peredpalata"]');
+    var cardRadio = document.querySelector('input[id="card_pay"]');
+    var nalogkaRadio = document.querySelector('input[id="nalogka"]');
     if (payRadio.checked) {
         hiddenFieldPay.style.display = "block";
     } else if (cardRadio.checked) {

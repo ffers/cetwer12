@@ -15,3 +15,4 @@ class Users(db.Model, UserMixin):
     comments = db.relationship('Comment', backref='users', passive_deletes=True)
     likes = db.relationship('Likes', backref='users', passive_deletes=True)
     roles = db.relationship('Role', secondary='user_roles', backref='users')
+    # project = db.relationship('Project', secondary='user_project', backref='user')
