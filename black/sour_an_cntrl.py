@@ -67,7 +67,7 @@ class SourAnCntrl:
                     print(f"prod_object list {prod_object}")
                     description = order.order_id_sources + ' ' + product.products.article
                     sale_quantity = self.sour_an_serv.count_new_quantity(prod_comp, product)
-                    resp = self.stock_journal(prod_comp.article, -sale_quantity, description)
+                    resp = self.stock_journal(prod_comp.product_source.id, -sale_quantity, description)
         else:
             resp_tg = f"Немає такого компоненту {comps_bool['info']}"
             tg_cntrl.sendMessage(tg_cntrl.chat_id_info, resp_tg)
@@ -93,10 +93,10 @@ class SourAnCntrl:
 
 
 
-    def stock_journal(self, article, quantity, description):
+    def stock_journal(self, prod_sourc_id, quantity, description):
         resp = False
         new_quantity = 0
-        prod_source = rep.load_article(article)
+        prod_source = rep.load_item(prod_sourc_id)
         if prod_source:
             new_quantity = self.sour_an_serv.new_qauntity(prod_source, quantity)
             resp = rep.update_quantity(prod_source.id, new_quantity)
@@ -112,10 +112,10 @@ class SourAnCntrl:
             for product in order.ordered_product:
                 prod_comps = prod_cntrl.load_prod_relate_product_id_all(product.product_id)
                 for prod_comp in prod_comps:
-
+                    print(f"prod_comps {prod_comps}")
                     sale_quantity = prod_comp.quantity * product.quantity
-                    self.stock_journal(prod_comp.article, sale_quantity, f"Возврат: {order.order_code}, {product.products.article}")
-                    return True
+                    self.stock_journal(prod_comp.product_source.id, sale_quantity, f"Возврат: {order.order_code}, {product.products.article}")
+            resp = True
                     # prod_source = rep.load_article(prod_comp.article)
                     # new_quantity = prod_source.quantity + sale_quantity
                     # print(f"new_quantity {new_quantity}")

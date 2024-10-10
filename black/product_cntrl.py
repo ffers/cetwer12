@@ -71,17 +71,17 @@ class ProductCntrl:
         bool = prod_rep.delete_product_relate(id)
         return bool
 
-    def update_all_related(self):
-        prod_related = prod_rep.load_product_relate()
-        for prod_relate in prod_related:
-            if not prod_relate.product_source_id:
-                print(f"чо за артикль {prod_relate.article}")
-                item = self.source.load_article(prod_relate.article)
-                if item:
-                    print(f"{item.id}")
-                    item_list = [item.id, prod_relate.quantity, prod_relate.product_id]
-                    resp = prod_rep.update_product_relate(item_list, prod_relate.id)
-                    print(f"чо вийшло {resp}")
+    # def update_all_related(self):
+    #     prod_related = prod_rep.load_product_relate()
+    #     for prod_relate in prod_related:
+    #         if not prod_relate.product_source_id:
+    #             print(f"чо за артикль {prod_relate.article}")
+    #             item = self.source.load_article(prod_relate.article)
+    #             if item:
+    #                 print(f"{item.id}")
+    #                 item_list = [item.id, prod_relate.quantity, prod_relate.product_id]
+    #                 resp = prod_rep.update_product_relate(item_list, prod_relate.id)
+    #                 print(f"чо вийшло {resp}")
 
 
 
