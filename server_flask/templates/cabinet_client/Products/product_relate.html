@@ -23,6 +23,8 @@
             <th scope="col">Артікль</th>
             <th scope="col">Кількість</th>
             <th scope="col">Назва</th>
+            <th scope="col">Тест</th>
+            <th scope="col">Тест</th>
           </tr>
         </thead>
         <tbody >
@@ -39,7 +41,9 @@
             <td>{{item.products.article}}</td>     
             <td>{{item.article}}</td>
             <td>{{item.quantity}}</td>
-            <td>{{item.name}}</td>
+            <!-- <td>{{item.name}}</td> -->
+            <td>{{item.product_source.article}}</td>
+            <td></td>
         </tr>
       
                           {% endfor %}    

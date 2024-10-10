@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from markupsafe import escape
 from fastapi.middleware.wsgi import WSGIMiddleware
 from flask import Flask, render_template, request, jsonify
-from flask_login import current_user, LoginManager
+from flask_login import current_user, LoginManager, login_required
 from flask_migrate import Migrate
 from flask_principal import identity_loaded, RoleNeed, Principal, Identity
 from server_flask.permission_registred import update_roles
@@ -70,11 +70,12 @@ def load_user(id):
     return Users.query.get(int(id))
 
 @flask_app.route("/", methods=['POST', 'GET'])
+@login_required
 def index():
     if request.method == 'POST':
         print(request.json)
         return {'ok':True}
-    print(f"Hello Task Celery !!!!!")
+    print(f"{current_user.is_authenticated}")
     return render_template('index.html', user=current_user)
 
 @flask_app.errorhandler(403)

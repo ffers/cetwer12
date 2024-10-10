@@ -41,6 +41,7 @@ author_permission = Permission(RoleNeed('manager'))
 admin_permission = Permission(RoleNeed('admin'))
 bp = Blueprint('Order', __name__, template_folder='templates')
 
+
 @bp.route('/cabinet/orders', methods=['POST', 'GET'])
 @login_required
 @author_permission.require(http_exception=403)
@@ -201,7 +202,7 @@ def return_order(id):
         if resp == True:
             flash('Замовлення повернено', category='success')
         else:
-            flash('Замовлення підтверджено але ттн не створено: ' + resp["success"], category='error')
+            flash('Замовлення підтверджено але ттн не створено: ', category='error')
         return redirect('/cabinet/orders')
 
 @bp.route('/cabinet/orders/get_cities', methods=['POST', 'GET'])

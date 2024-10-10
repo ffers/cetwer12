@@ -12,3 +12,4 @@ class Arrival(db.Model):
     product_id = db.Column(db.Integer, db.ForeignKey(
         'products.id', name='fk_arrival_products_id'))
     products = db.relationship('Products', back_populates='arrival')
+

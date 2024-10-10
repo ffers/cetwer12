@@ -91,14 +91,14 @@ $('#addButton').on('click', function() {
         dataType: 'json',
         delay: 250,
         processResults: function (data) {
-        return {
-            results: data.results.map(function (city) {
-                return {
-                    id: city.id,
-                    text: city.article
-                };
-            })
-        };
+            return {
+                results: data.results.map(function (city) {
+                    return {
+                        id: city.id,
+                        text: city.article
+                    };
+                })
+            };
         },
         cache: true
         },

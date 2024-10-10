@@ -1,10 +1,14 @@
 from repository import prod_rep
 from a_service import prod_serv
 from black import ProductAnaliticControl
+from repository import SourAnRep
 
 analitic_cntrl = ProductAnaliticControl()
 
 class ProductCntrl:
+    def __init__(self):
+        self.source = SourAnRep()
+
     def add_product(self, description, article, product_name, price, quantity):
         resp = prod_rep.add_product(description, article, product_name, price, quantity)
         return resp
@@ -49,7 +53,7 @@ class ProductCntrl:
 
     def update_prod_relate(self, id, req):
         data = prod_serv.add_product_relate(req)
-        resp = prod_rep.update_product_relate(data, id)
+        resp = prod_rep.update_product_relate(*data, id)
         return resp
 
     def load_product_relate(self):
@@ -66,6 +70,19 @@ class ProductCntrl:
     def delete_product_relate(self, id):
         bool = prod_rep.delete_product_relate(id)
         return bool
+
+    def update_all_related(self):
+        prod_related = prod_rep.load_product_relate()
+        for prod_relate in prod_related:
+            if not prod_relate.product_source_id:
+                print(f"чо за артикль {prod_relate.article}")
+                item = self.source.load_article(prod_relate.article)
+                if item:
+                    print(f"{item.id}")
+                    item_list = [item.id, prod_relate.quantity, prod_relate.product_id]
+                    resp = prod_rep.update_product_relate(item_list, prod_relate.id)
+                    print(f"чо вийшло {resp}")
+
 
 
 

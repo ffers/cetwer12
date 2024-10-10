@@ -9,3 +9,9 @@ class ProductSource(db.Model):
     quantity = db.Column(db.Integer)
     price = db.Column(db.Numeric(precision=8, scale=2))
     money = db.Column(db.Numeric(precision=8, scale=2))
+    product_relate = db.relationship("ProductRelate", back_populates="product_source")
+
+
+
+
+

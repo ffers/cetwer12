@@ -63,6 +63,8 @@ class SourAnCntrl:
             for product in order.ordered_product:
                 prod_comps = prod_cntrl.load_prod_relate_product_id_all(product.product_id)
                 for prod_comp in prod_comps:
+                    prod_object = vars(prod_comp)
+                    print(f"prod_object list {prod_object}")
                     description = order.order_id_sources + ' ' + product.products.article
                     sale_quantity = self.sour_an_serv.count_new_quantity(prod_comp, product)
                     resp = self.stock_journal(prod_comp.article, -sale_quantity, description)
@@ -110,9 +112,10 @@ class SourAnCntrl:
             for product in order.ordered_product:
                 prod_comps = prod_cntrl.load_prod_relate_product_id_all(product.product_id)
                 for prod_comp in prod_comps:
+
                     sale_quantity = prod_comp.quantity * product.quantity
-                    print(f"sale_quantity {sale_quantity}")
                     self.stock_journal(prod_comp.article, sale_quantity, f"Возврат: {order.order_code}, {product.products.article}")
+                    return True
                     # prod_source = rep.load_article(prod_comp.article)
                     # new_quantity = prod_source.quantity + sale_quantity
                     # print(f"new_quantity {new_quantity}")

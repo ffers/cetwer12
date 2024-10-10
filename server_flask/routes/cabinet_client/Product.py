@@ -38,6 +38,13 @@ def Product():
         return render_template('cabinet_client/Products/products.html',
                                user=current_user, tasks_users=tasks_users, tasks_products=tasks_products)
 
+@bp.route('/cabinet/orders/get_product/changerelated', methods=['POST', 'GET'])
+def Change():
+    print("start")
+    prod_cntrl.update_all_related()
+    print("finish")
+    return render_template('cabinet_client/Products/add_product.html', user=current_user)
+
 @bp.route('/cabinet/products/add_product', methods=['POST', 'GET'])
 @login_required
 @manager_permission.require(http_exception=403)

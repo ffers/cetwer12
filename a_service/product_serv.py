@@ -33,6 +33,7 @@ class ProductServ:
         return (article, product_name, description, quantity, price, body_product_price)
 
     def add_product_relate(self, req):
+        print(f"Компоненти {req.form}")
         print("add_product_relate")
         name = ""
         article = req.form.getlist('article')
@@ -40,14 +41,15 @@ class ProductServ:
         product_id = req.form.getlist('product')
         combined_list = list(zip_longest(article, quantity, product_id, fillvalue=None))
         return combined_list
+
     def create_data_relate_req(self, req):
-            data = [
-                req.form["product"],
-                req.form["name"],
-                req.form["article"],
-                req.form["quantity"]
-            ]
-            return data
+        data = [
+            req.form["product"],
+            req.form["name"],
+            req.form["article"],
+            req.form["quantity"]
+        ]
+        return data
 
     def create_data_source_req(self, req):
         data = [

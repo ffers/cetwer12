@@ -69,14 +69,10 @@
         
                         <!-- Товар та кількість -->
                         <div class="col-sm col-lg-2">
-                            <input 
-                            placeholder="Артікул" 
-                            class="form-control" 
-                            style="text-align: center;" 
-                            id="article" 
+                            <select  class="form-control select-source" 
                             name="article" 
-                            value="{{item.article}}"                   
-                            > 
+                            required>
+                        </select>
                         </div>
                             <br>
                         <div class="col-sm col-lg-2">
@@ -127,7 +123,7 @@
 	</div>
 
 	<script type="module" src="{{url_for('static', filename='javascript/calculate.js')}}"></script>
-    <script src="{{url_for('static', filename='javascript/add-select2.js')}}"></script>
+    <script src="{{url_for('static', filename='javascript/select_source.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/confirmDelete.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/hiddenElement.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/submitFormSelect2.js')}}"></script>

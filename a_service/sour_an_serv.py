@@ -49,7 +49,7 @@ class SourAnServ:
         for item in items:
             if search_query in item.article.lower() or search_query in item.name.lower():
                 prod_data = {
-                    'id': item.article,
+                    'id': item.id,
                     'article': item.article + ' - ' + item.name
                 }
                 result.append(prod_data)
