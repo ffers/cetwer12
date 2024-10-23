@@ -2,19 +2,38 @@
 $('#addButton').on('click', function() {
     var container = $('#product-container');
     var newField = $(`
-    <div class="row">
-        <div class="col-sm">
-            <input style="text-align: center;" class="form-control" id="description" name="description" min="1" placeholder="Опис" value="Прихід" required/>
-        </div><br>
-        <div class="col-sm">
-            <select class="form-control select-source" name="article" required></select>
-        </div><br>
-        <div class="col-sm col-lg-2">
-            <input style="text-align: center;" class="quantity form-control" id="quantity" name="quantity" min="1" max="10000" placeholder="* Кількість" required/>
-        </div></br>
-        <div class="col-sm col-lg-2">
-            <button type="button" class="removeButton text-button">Видалити</button></div>
-    </div>
+     <div class="row">
+                        <!-- Товар та кількість -->
+                        <div class="col-sm" >
+                            <input 
+                                style="text-align: center;" 
+                                class="form-control" 
+                                id="description" 
+                                name="description" 
+                                min="1" 
+                                placeholder="Опис" 
+                                value="Прихід" 
+                                required>
+                        </div>
+                					
+                        <div class="col-sm">
+                            <select  
+                                class="form-control select-source" 
+                                name="article" 
+                                required>
+                            </select> 
+                        </div>
+                        <div class="col-sm col-lg-2">
+                            <input 
+                            style="text-align: center;" 
+                            class=" quantity form-control" 
+                            id="quantity" name="quantity"  
+                            min="1" max="10000" 
+                            placeholder="* Кількість" 
+                            required>
+                        </div>
+                        <div class="col-sm col-lg-2"><button type="button" class="removeButton text-button">Видалити</button></div>
+                    </div>       
 `);
 
 

@@ -7,7 +7,7 @@ logging.basicConfig(filename='../common_asx/log_sms.log', level=logging.DEBUG, f
 current_datetime = datetime.now(timezone.utc)
 georgia_timezone = pytz.timezone('Asia/Tbilisi')
 current_time_georgia = datetime.now(georgia_timezone)
-payment_option_sum = 7111681
+payment_option_prom = 7547964
 payment_option_100 = 7495540
 filename = "../common_asx/data.json"
 file_proc_order = "../common_asx/processed_orders.json"
@@ -57,18 +57,19 @@ def process_order():
         if order["payment_option"] != None:
             pay_option_order = order["payment_option"]["id"]
             if order_id not in processed_orders:
-                if pay_option_order == payment_option_sum or pay_option_order == payment_option_100:
+                if pay_option_order == payment_option_prom:
                     logging.info(f"Обробка ордера: {order_id}")
                     phone_num = order["phone"]
                     sum_order = order["full_price"]
-                    if pay_option_order == payment_option_100:
-                        sum_order = "100 грн"
-                        print(f"Нашли ордер {order_id} на оплату {sum_order}")
-                    text_sms = CreateText(phone_num, order_id, sum_order)
+                    # if pay_option_order == payment_option_100:
+                    #     sum_order = "100 грн"
+                    #     print(f"Нашли ордер {order_id} на оплату {sum_order}")
+                    # text_sms = CreateText(phone_num, order_id, sum_order)
                     # WriteSendSms(text_sms)
-                    WriteBalanceSms()
+                    # WriteBalanceSms()
                     processed_orders.add(order_id)
                     save_processed_orders(processed_orders)
+                    return True
 
 
 

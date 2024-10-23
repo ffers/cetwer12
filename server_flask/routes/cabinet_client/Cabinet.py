@@ -3,6 +3,7 @@ from server_flask.models import  Users, Orders
 from flask_login import login_required, current_user
 from server_flask.db import db
 from flask_principal import Permission, RoleNeed
+from black import CHECK_CNTRL
 
 manager = RoleNeed('manager')
 author_permission = Permission(manager)
@@ -33,3 +34,15 @@ def work_space():
         tasks_orders = Orders.query.order_by(Orders.timestamp).all()
         tasks_users = Users.query.order_by(Users.timestamp).all()
         return render_template('cabinet_client/work_space/work_space.html', tasks_users=tasks_users, orders=tasks_orders,  user=current_user)
+
+
+@bp.route('/checkbox', methods=['POST', 'GET'])
+@login_required
+@author_permission.require(http_exception=403)
+def start_check():
+    if request.method == 'POST':
+        return redirect('/orders')
+    else:
+        check_cntrl = CHECK_CNTRL()
+        responce = check_cntrl.signinPinCode()
+        return redirect('/cabinet')
