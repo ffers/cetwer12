@@ -16,6 +16,7 @@ class SourAnRep:
             item = ProductSource.query.filter_by(article=article).first()
             return item
         except Exception as e:
+            print("Не найден артикль")
             return False, e
 
     def load_id(self, id):

@@ -60,6 +60,7 @@ class CacheService:
 
     def income_func(self, item):
         income = 0
+        print(f"item income {item}")
         if item:  
             income += item.money
         self.set("income", income)
