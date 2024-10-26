@@ -53,7 +53,8 @@ class CacheService:
         stock = 0
         if items:
             for item in items:
-                stock += item.money
+                if item.money:
+                    stock += item.money
         self.set("stock", stock)
         return stock
 
