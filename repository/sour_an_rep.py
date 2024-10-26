@@ -50,7 +50,7 @@ class SourAnRep:
             db.session.commit()
             return True
         except Exception as e:
-            db.session.rollback()q
+            db.session.rollback()
             return False, e
 
 
