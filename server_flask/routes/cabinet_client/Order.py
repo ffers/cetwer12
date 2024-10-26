@@ -126,7 +126,7 @@ def update(id):
                 task_update.ordered_product.append(ordered_product)
         db.session.commit()
         print(">>> Update in datebase")
-        flash(f'Замовлення {task_update.id} оновлено', category='success')
+        flash(f'Замовлення {task_update.order_code} оновлено', category='success')
         ord_cntrl.send_order_tg(task_update.id)
         return redirect('/cabinet/orders')
         # except:

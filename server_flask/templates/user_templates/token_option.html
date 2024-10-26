@@ -1,0 +1,92 @@
+{% extends 'cabinet_client/base.html' %} {% block title %}Home{% endblock %}
+{% block body %}
+<head>
+  <title>Опції</title>
+</head>
+
+<div class="content">
+		<h1 style="text-align: center; color: #7d7f85;">Опціїї</h1>
+        <form id="myForm" action="#" method="post">
+			<div class="row">
+				<div class="col col-lg-2">    <label for="staticEmail2" class="sr-only">Email</label>
+                        <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="email@example.com"><br>
+                </div>
+				<div class="col">
+                    <input class="form-control  " style="text-align: center;" id="client_lastname" name="client_lastname" rows="1" cols="50" placeholder="* Призвіще" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Тут є латиниця"><br>
+
+                </div>
+            </div>
+           <div class="row">
+				<div class="col col-lg-2">    <label for="staticEmail2" class="sr-only">Email</label>
+                        <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="email@example.com"><br>
+                </div>
+				<div class="col">
+                    <input class="form-control  " style="text-align: center;" id="client_lastname" name="client_lastname" rows="1" cols="50" placeholder="* Призвіще" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Тут є латиниця"><br>
+
+                </div>
+            </div>
+            <div class="row">
+				<div class="col col-lg-2">    <label for="staticEmail2" class="sr-only">Email</label>
+                        <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="email@example.com"><br>
+                </div>
+				<div class="col">
+                    <input class="form-control  " style="text-align: center;" id="client_lastname" name="client_lastname" rows="1" cols="50" placeholder="* Призвіще" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Тут є латиниця"><br>
+
+                </div>
+            </div>
+            <div class="row">
+				<div class="col col-lg-2">    <label for="staticEmail2" class="sr-only">Email</label>
+                        <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="email@example.com"><br>
+                </div>
+				<div class="col">
+                    <input class="form-control  " style="text-align: center;" id="client_lastname" name="client_lastname" rows="1" cols="50" placeholder="* Призвіще" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Тут є латиниця"><br>
+
+                </div>
+            </div>
+            <div class="row">
+				<div class="col col-lg-2">    <label for="staticEmail2" class="sr-only">Email</label>
+                        <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="email@example.com"><br>
+                </div>
+				<div class="col">
+                    <input class="form-control  " style="text-align: center;" id="client_lastname" name="client_lastname" rows="1" cols="50" placeholder="* Призвіще" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Тут є латиниця"><br>
+
+                </div>
+            </div>
+            <div class="row">
+				<div class="col col-lg-2">    <label for="staticEmail2" class="sr-only">Email</label>
+                        <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="email@example.com"><br>
+                </div>
+				<div class="col">
+                    <input class="form-control  " style="text-align: center;" id="client_lastname" name="client_lastname" rows="1" cols="50" placeholder="* Призвіще" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Тут є латиниця"><br>
+
+                </div>
+            </div>
+            <div class="row">
+				<div class="col col-lg-2">    <label for="staticEmail2" class="sr-only">Email</label>
+                        <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="email@example.com"><br>
+                </div>
+				<div class="col">
+                    <input class="form-control  " style="text-align: center;" id="client_lastname" name="client_lastname" rows="1" cols="50" placeholder="* Призвіще" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Тут є латиниця"><br>
+
+                </div>
+            </div>
+        </form>
+</div>
+
+
+
+{% block footer %}
+{% if order == none %}
+<div align="center">
+  <a href="/cabinet/orders/add_order"
+    > <button type="button" class="btn btn-info btn-lg">
+      Створити Замовлення
+    </button></a
+  >
+   <br/>
+   <br/>
+</div>
+{% endif %}
+<script src="{{url_for('static', filename='javascript/checkboxAll.js')}}"></script>
+{% endblock %} {% endblock %}
+

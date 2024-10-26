@@ -167,8 +167,6 @@ class SourAnCntrl:
                     ord_rep.update_time_send(order.id, next(self.my_time()))
                     resp = True, "Щось оновлено в искходниках"
                     print(resp[1])
-            else:
-                print("Є час в ордері")
         return resp
 
 

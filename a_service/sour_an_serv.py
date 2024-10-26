@@ -2,11 +2,11 @@ from decimal import Decimal
 from itertools import zip_longest
 
 class SourAnServ:
-    def __init__(self, prod_cntrl, journal, an_cntrl, rep, ord_rep, w_time_cntrl):
+    def __init__(self, prod_cntrl, journal, an_cntrl, rep_sour, ord_rep, w_time_cntrl):
         self.prod_cntrl = prod_cntrl
         self.journal = journal
         self.an_cntrl = an_cntrl
-        self.rep = rep
+        self.rep = rep_sour
         self.ord_rep = ord_rep
         self.w_time_cntrl = w_time_cntrl
 
@@ -78,6 +78,7 @@ class SourAnServ:
 
     def body(self, prod_comp, prod_source, product):
         sale_quantity = prod_comp.quantity * product.quantity
+        print(f"prod_source.price {prod_source.price}")
         body = prod_source.price * sale_quantity
         return body
 
@@ -93,10 +94,12 @@ class SourAnServ:
         for order in orders:
             for product in order.ordered_product:
                 prod_comps = self.prod_cntrl.load_prod_relate_product_id_all(product.product_id)
+                print("Ищем prod_comps")
                 if prod_comps:
+                    print("Нашли prod_comps")
                     for prod_comp in prod_comps:
                         try:
-                            prod_source = self.rep.load_article(prod_comp.article)
+                            prod_source = self.rep.load_id(prod_comp.product_id)
                             if prod_source:
                                 body += self.body(prod_comp, prod_source, product)
                         except Exception as e:

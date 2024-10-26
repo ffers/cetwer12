@@ -46,3 +46,13 @@ def start_check():
         check_cntrl = CHECK_CNTRL()
         responce = check_cntrl.signinPinCode()
         return redirect('/cabinet')
+
+
+@bp.route('/cabinet/option', methods=['POST', 'GET'])
+@login_required
+@author_permission.require(http_exception=403)
+def token_option():
+    if request.method == 'POST':
+        return redirect('/orders')
+    else:
+        return render_template('user_templates/token_option.html', user=current_user)

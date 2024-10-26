@@ -1,38 +1,83 @@
-{% extends 'layout/base.html' %} {% block title %}Home{% endblock %}
-
+{% extends 'cabinet_client/base.html' %} {% block title %}Home{% endblock %}
 {% block body %}
+<head>
+  <title>Замовлення</title>
+</head>
 
-<h1 align="center">{% block header %}Posts{% endblock %}</h1>
-<div id="posts">
-  {% for post in posts %}
-  <div class="content">
-    <div class="card-header d-flex justify-content-between align-items-center">
-      <a href="/blog/{{user.username}}/{{post.id}}">{{user.username}}</a>
+<div id="orders">
+
+  <div class="table-responsive-sm" >
+    <table class="table table-hover table-striped " >
+      <thead>
+        <tr >
+          <th scope="col"></th>
+          <th scope="col"><input class="form-check-input item_check" type="checkbox" value="" id="flexCheckDefault"></th>
+          <th scope="col">Артикул</th>
+          <th scope="col">Сумма</th>
+          <th scope="col">Нотатка</th>
+          <th scope="col">Адреса</th>
+          <th scope="col">Телефон та TTN</th>
+          <th scope="col">Клієнт</th>
+          <th scope="col">Доставка</th>
+          <th scope="col">Оплата</th>
+          <th scope="col">Источник</th>
+          <th scope="col">Код</th>
+          <th scope="col">Статус</th>
+          <th scope="col">Час</th>
+        </tr>
+      </thead>
+
+      <tbody >
+        {% for order in orders%}
+        <tr>
+
+          <td>{% for user_t in tasks_users %}
+            {% if user_t.id == order.author_id %}
+        <a href="/cabinet/orders/update/{{order.id}}"><button type="button" class="btn btn-info"><i class="fa-solid fa-pen"></i></button></a>
+            {% endif %}
+        {% endfor %}</td>
+        <td><input class="form-check-input item_check" type="checkbox" value="{{order.id}}" name="selectedItems" id="flexCheckDefault"></td>
+          <td >{% for product in order.ordered_product %}
+            {{product.products.article}}-{{product.quantity}}шт. <br>{% endfor %}</td>
+          <td>{{order.sum_price}}</td>
+          <td>{% if order.description %}{{order.description|wordwrap(15)}}{% else %}Нотаток нема{% endif %}</td>
+          <td>{% if order.city_name %}{{order.city_name}},{% endif %} {{order.warehouse_text}}</td>
+          <td>{{order.phone}}{% if order.ttn %};{{order.ttn}}{% else %}{% endif %}</td>
+          <td>{{order.client_lastname}} {{order.client_firstname}}</td>
+          <td>{{order.delivery_method.name}}</td>
+          <td>{{order.payment_method.name}}{% if order.payment_method.id == 5 %}:{{order.prompay_status.name}}{% endif %}</td>
+          <td>{{order.source_order.name}}</td>
+          <td>{% if order.order_id_sources == none %}{{order.id}}{% else %}{{order.order_id_sources}}{% endif %}</td>
+          <td><a href="orders/confirmed/{{order.id}}">{{order.ordered_status.name}}</a></td>
+          <td>{{order.timestamp.strftime('%H:%M %d-%m-%Y')}}</td>
+
+    <!-- <div class="card-header d-flex justify-content-between align-items-center">
+       {% for user_t in tasks_users %}
+          {% if user_t.id == order.author_id %}
+      <a href="/cabinet/orders/update/{{order.id}}"><button type="button" class="btn btn-info">{{ order.id }}</button></a>
+          {% endif %}
+      {% endfor %}
       <div>
-        <span id="likes-count-{{post.id}}">
-        {{ post.likes|length }}</span>
-        {% if user.id in post.likes|map(attribute="author")|list %}
-        <i
-          class="fas fa-thumbs-up"
-          id="like-button-{{post.id}}"
-          onclick="like({{post.id}})"
-        ></i>
+        <span id="likes-count-{{order.id}}">
+        {{ order.likes|length }}</span>
+        {% if user.id in order.likes|map(attribute="author")|list %}
+
         {% else %}
         <i
           class="far fa-thumbs-up"
-          id="like-button-{{post.id}}"
-          onclick="like({{post.id}})"
+          id="like-button-{{order.id}}"
+          onclick="like({{order.id}})"
         ></i>
-        {% endif %} {% if user.id == post.author %}
+        {% endif %} {% if user.id == order.author_id %}
         <div class="btn-group">
           <button
             type="button"
-            class="btn btn-sm btn-primary dropdown-toggle"
+            class="btn btn-sm btn-info dropdown-toggle"
             data-bs-toggle="dropdown"
           ></button>
           <ul class="dropdown-menu">
             <li>
-              <a href="/delete-post/{{post.id}}" class="dropdown-item"
+              <a href="/delete-order/{{order.id}}" class="dropdown-item"
                 >Delete</a
               >
             </li>
@@ -41,82 +86,68 @@
         {% endif %}
       </div>
     </div>
+
+
+
     <div class="card-body">
-      <div class="card-text"> <a href="/blog/{{user.username}}/{{post.id}}">{{post.name_post}}</a></div>
-      <br />
-      <div class="collapse" id="comments-{{post.id}}">
-        <div class="card">
-          <div class="card-body" id="comments-expanded-{{post.id}}">
-            {% for comment in post.comments %}
-            <div class="d-flex justify-content-between align-items-center">
-              <div>
-                <a href="/posts/{{comment.user.username}}"
-                  >{{comment.user.username}}</a
-                >: {{comment.text}}
-              </div>
-              <div>
-                <small class="text-muted"> {{comment.date_created}}</small>
-                {% if user.id == comment.author or user.id == post.author %}
-                <div class="btn-group">
-                  <button
-                    type="button"
-                    class="btn btn-sm btn-primary dropdown-toggle"
-                    data-bs-toggle="dropdown"
-                  ></button>
-                  <ul class="dropdown-menu">
-                    <li>
-                      <a
-                        href="/delete-comment/{{comment.id}}"
-                        class="dropdown-item"
-                        >Delete</a
-                      >
-                    </li>
-                  </ul>
-                </div>
-                {% endif %}
-              </div>
-            </div>
-            {% endfor %}
-          </div>
-        </div>
+      <div class="row">
+
+        <div class="col"><a href="/cabinet/orders/{{order.id}}">{{order.id}}</a><footer><small class="text-muted">Номер</small></footer></div>
+        <div class="col">{% if order.description %}{{order.description}}{% else %}Нотаток нема{% endif %}<footer><small class="text-muted">Нотатка</small></footer></div>
+        <div class="col">{% for product in order.ordered_products %}
+          {{product.article}}-{{product.quantity}} {% endfor %}<footer><small class="text-muted">Артикул</small></footer></div>
+        <div class="col">{{order.sum_price}}<footer><small class="text-muted">Сумма</small></footer></div>
+        <div class="col"><div class="limited-text-container"><p class="limited-text">{{order.city_name}}, {{order.warehouse_text}}</p></div> <footer><small class="text-muted">Адреса</small></footer></div>
+        <div class="col">{{order.phone}}:{{order.ttn}}<footer><small class="text-muted">Тел TTN</small></footer></div>
+        <div class="col">{{order.client_firstname}} {{order.client_lastname}}<footer><small class="text-muted">Клієнт</small></footer></div>
+        <div class="col">Нова Пошта<footer><small class="text-muted">Доставка</small></footer></div>
+        <div class="col">{{order.payment_option}}<footer><small class="text-muted">Оплата</small></footer></div>
+        <div class="col">{{order.timestamp.strftime('%Y-%m-%d %H:%M')}}<footer><small class="text-muted">Час</small></footer></div>
       </div>
-      <p class="card-text">
-        {% if post.comments|length > 0 %}
-        <a data-bs-toggle="collapse" href="#comments-{{post.id}}" role="button">
-          <small>View {{post.comments|length}} Comments</small>
-        </a>
-        {% else %}
-        <small class="text-muted">No Comments</small>
-        {% endif %}
-      </p>
-      <form
-        class="input-group mb-3"
-        method="POST"
-        action="/create-comment/{{post.id}}"
-      >
-        <input
-          type="text"
-          id="text"
-          name="text"
-          class="form-control"
-          placeholder="Comment something!"
-        />
-        <button type="submit" class="btn btn-primary">Comment</button>
-      </form>
+      <div class="collapse" id="comments-{{order.id}}"><div class="card"><div class="card-body" id="comments-expanded-{{order.id}}">
+            {% for comment in order.comments %}
+            <div class="d-flex justify-content-between align-items-center"><div>
+              <a href="/order/{{comment.user.username}}">{{comment.user.username}}</a>: {{comment.text}}</div>
+              <div><small class="text-muted"> {{comment.date_created}}</small>{% if user.id == comment.author or user.id == order.author %}<div class="btn-group">
+                <button type="button" class="btn btn-sm btn-info dropdown-toggle" data-bs-toggle="dropdown"></button>
+                  <ul class="dropdown-menu"><li><a href="/delete-comment/{{comment.id}}" class="dropdown-item">Delete</a></li></ul>
+                </div>{% endif %}</div></div>{% endfor %}</div></div></div>
+        <p class="card-text">{% if order.comments|length > 0 %}<a data-bs-toggle="collapse" href="#comments-{{order.id}}" role="button">
+          <small>View {{order.comments|length}} Comments</small></a>{% else %}<small class="text-muted">No Comments</small>{% endif %}</p>
+      <form class="input-group mb-3" method="POST" action="/create-comment/{{order.id}}">
+        <input type="text" id="text" name="text" class="form-control" placeholder="Comment something!"/>
+        <button type="submit" class="btn btn-info button_cor">Comment</button>
+        <a href="orders/confirmed/{{order.id}}"><button type="button" class="btn btn-info button_cor">Підверджено</button></a>
+      </form>-->
+      </tr>
+{% endfor %}
+
+</tbody>
+
+</table>
     </div>
-    <div class="card-footer text-muted">{{post.date_created}}</div>
+
   </div>
-  <br/ > {% endfor %}
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+      {{ pagination.links }}
+  </ul>
+</nav>
 </div>
 
 {% block footer %}
+{% if order == none %}
 <div align="center">
-  <a href="add_post"
-    ><button type="button" class="btn btn-primary btn-lg">
-      Create a Post
+  <a href="/cabinet/orders/add_order"
+    > <button type="button" class="btn btn-info btn-lg">
+      Створити Замовлення
     </button></a
   >
-   <br/ >
-   <br/ >
+   <br/>
+   <br/>
 </div>
+{% endif %}
+<script src="{{url_for('static', filename='javascript/checkboxAll.js')}}"></script>
 {% endblock %} {% endblock %}
+

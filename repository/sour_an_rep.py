@@ -18,6 +18,13 @@ class SourAnRep:
         except Exception as e:
             return False, e
 
+    def load_id(self, id):
+        try:
+            item = ProductSource.query.filter_by(id=id).first()
+            return item
+        except Exception as e:
+            return False, e
+
     def update_source(self, id, data):
         try:
             product = ProductSource.query.get_or_404(id)

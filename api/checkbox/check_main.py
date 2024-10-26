@@ -16,7 +16,7 @@ class CheckboxClient(object):
             "accept": "application/json",
             "X-Client-Name": "{}".format(self.client_name),
             "X-Client-Version": "{}".format(self.client_version),
-            "X-License-Key ": "{}".format(self.license_key),
+            "X-License-Key": "{}".format(self.license_key),
             "X-Device-ID": "{}".format(self.device_id),
             "Content-type": "application/json"
         }
