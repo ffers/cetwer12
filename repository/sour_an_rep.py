@@ -12,12 +12,13 @@ class SourAnRep:
 
 
     def load_article(self, article):
-        try:
+        # try:
+            print(article)
             item = ProductSource.query.filter_by(article=article).first()
             return item
-        except Exception as e:
-            print("Не найден артикль")
-            return False, e
+        # except Exception as e:
+        #     print("Не найден артикль")
+        #     return False, e
 
     def load_id(self, id):
         try:
