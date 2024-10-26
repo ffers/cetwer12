@@ -53,7 +53,7 @@ class CacheService:
         stock = 0
         if items:
             for item in items:
-                if hasattr(item, 'money'):
+                if isinstance(item, object) and hasattr(item, 'money'):
                     stock += item.money
         self.set("stock", stock)
         return stock
