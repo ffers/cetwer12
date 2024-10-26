@@ -12,13 +12,14 @@ class SourAnRep:
 
 
     def load_article(self, article):
-        # try:
+        try:
             print(article)
             item = ProductSource.query.filter_by(article=article).first()
             return item
-        # except Exception as e:
-        #     print("Не найден артикль")
-        #     return False, e
+        except Exception as e:
+            db.session.rollback()
+            print("Не найден артикль")
+            return False, e
 
     def load_id(self, id):
         try:
@@ -38,6 +39,7 @@ class SourAnRep:
             db.session.commit()
             return True
         except Exception as e:
+            db.session.rollback()
             return False, e
 
 
@@ -48,6 +50,7 @@ class SourAnRep:
             db.session.commit()
             return True
         except Exception as e:
+            db.session.rollback()q
             return False, e
 
 
