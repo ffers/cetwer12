@@ -99,7 +99,8 @@ class SourAnServ:
                     print("Нашли prod_comps")
                     for prod_comp in prod_comps:
                         try:
-                            prod_source = self.rep.load_id(prod_comp.product_id)
+                            print(prod_comp)
+                            prod_source = self.rep.load_id(prod_comp.product_source_id)
                             if prod_source:
                                 body += self.body(prod_comp, prod_source, product)
                         except Exception as e:
