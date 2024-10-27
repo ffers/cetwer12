@@ -4,6 +4,7 @@ from datetime import datetime
 class JournalChange(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    event_date = db.Column(db.DateTime)
     status = db.Column(db.String(50))
     quantity = db.Column(db.Integer)
     body = db.Column(db.Numeric(precision=8, scale=2))

@@ -19,7 +19,8 @@
           <tr >
             <th scope="col"></th>
             <th scope="col"></th>
-            <th scope="col">Час</th>
+            <th scope="col">Час дії</th>
+            <th scope="col">Дата приходу</th>
             <th scope="col">Действие</th>
             <th scope="col">Артікль</th>
             <th scope="col">Кількість</th>
@@ -38,7 +39,16 @@
                 </button>
               </a>
             </td>
-            <td>{{item.timestamp}}</td>
+            {% if item.timestamp %}
+            <td>{{item.timestamp.strftime("%d-%m-%Y %H:%m")}}</td>
+            {% else %}
+            <td>Немає</td>
+            {% endif %}
+            {% if item.event_date %}
+            <td>{{item.event_date.strftime("%d-%m-%Y")}}</td>
+            {% else %}
+            <td>Немає</td>
+            {% endif %}
             <td>{{item.status}}</td>
             <td>{{item.product.article}}</td>
             <td>{{item.quantity}}</td>

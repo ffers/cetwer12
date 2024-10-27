@@ -20,13 +20,15 @@ class JourChRep:
                 quantity=data[1],
                 body=data[2],
                 product_id=data[3],
-                quantity_stock=data[4]
+                quantity_stock=data[4],
+                event_date=data[5]
             )
             db.session.add(item)
             db.session.commit()
             return True
         except Exception as e:
             return False, e
+
 
 
     # except:

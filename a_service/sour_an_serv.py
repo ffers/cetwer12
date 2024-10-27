@@ -1,6 +1,7 @@
 from decimal import Decimal
 from itertools import zip_longest
 
+
 class SourAnServ:
     def __init__(self, prod_cntrl, journal, an_cntrl, rep_sour, ord_rep, w_time_cntrl):
         self.prod_cntrl = prod_cntrl
@@ -35,11 +36,13 @@ class SourAnServ:
         return list_data
 
     def add_arrival(self, req):
-        print(req)
+        print(req.form)
         article = req.form.getlist('article')
         description = req.form.getlist('description')
         quantity = req.form.getlist('quantity')
-        combined_list = list(zip_longest(article, quantity, description, fillvalue=None))
+        event_date = req.form.getlist('event_date')
+        combined_list = list(zip_longest(article, quantity, description, event_date, fillvalue=event_date[0]))
+        print(combined_list)
         return combined_list        
          
     def get_search(self, req):
@@ -64,11 +67,11 @@ class SourAnServ:
         new_quantity = prod_source.quantity + sale_quantity
         return new_quantity
 
-    def journal_func(self, prod_source, sale_quantity, description):
+    def journal_func(self, prod_source, sale_quantity, description, event_date):
         body = prod_source.price * sale_quantity
         quantity_stock = prod_source.quantity
         print(quantity_stock)
-        return description, sale_quantity, body, prod_source.id, quantity_stock
+        return description, sale_quantity, body, prod_source.id, quantity_stock, event_date
 
     def torg(self, product):
         torg = 0
@@ -100,7 +103,7 @@ class SourAnServ:
                     for prod_comp in prod_comps:
                         try:
                             print(prod_comp)
-                            prod_source = self.rep.load_id(prod_comp.product_source_id)
+                            prod_source = self.rep.load_id(prod_comp.productt_id)
                             if prod_source:
                                 body += self.body(prod_comp, prod_source, product)
                         except Exception as e:
