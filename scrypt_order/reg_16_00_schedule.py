@@ -5,6 +5,7 @@ from server_flask.flask_app import flask_app
 from utils import util_asx
 from black.sour_an_cntrl import SourAnCntrl
 from black.telegram_cntrl.tg_cash_cntrl import TgCashCntrl
+from black import SourDiffAnCntrl
 
 class RegSchedulleSrv():
     def __init__(self):
@@ -12,6 +13,7 @@ class RegSchedulleSrv():
         self.sour = SourAnCntrl()
         self.ord = OrderCntrl()
         self.quan_stok = TgCashCntrl()
+        self.sour_diff_cntrl = SourDiffAnCntrl()
 
     def reg_17_00(self):
         with flask_app.app_context():
@@ -64,6 +66,7 @@ class RegSchedulleSrv():
             self.sour.sort_analitic("week")
             self.sour.sort_analitic("day")
             self.quan_stok.quan_f("#quan 35N, 45N, 35W1, 45W1, 35N10, 40N10, 45N10, BX1, BX2, BX3, BX4, BX5, 35N11, 40N11, 45N11, 35W, 45W, 35W13, 45W13")
+            self.sour_diff_cntrl.add_quantity_crm_today()
             # запустить програму скидивания наличия
             print("Успіх")
             # изменить статус розетки
@@ -77,3 +80,7 @@ class RegSchedulleSrv():
             self.sour.sort_analitic("week")
             self.sour.sort_analitic("day")
             print("Успіх")
+
+
+
+

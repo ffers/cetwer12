@@ -10,6 +10,7 @@ class ProductSource(db.Model):
     price = db.Column(db.Numeric(precision=8, scale=2))
     money = db.Column(db.Numeric(precision=10, scale=2))
     product_relate = db.relationship("ProductRelate", back_populates="product_source")
+    source_difference = db.relationship('SourceDifference', back_populates='product_source')
 
 
 

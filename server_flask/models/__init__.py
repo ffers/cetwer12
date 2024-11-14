@@ -32,3 +32,4 @@ from .product.ProductRelate import ProductRelate
 from .product.ProductSource import ProductSource
 from .product.JournalChange import JournalChange
 from .user.UserToken  import UserToken
+from .analitic.SourceDifference import SourceDifference

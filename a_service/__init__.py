@@ -11,3 +11,5 @@ from a_service.analitic_serv import an_serv
 from .tg_answer_serv import TgAnswerSerw
 from .tg_cash_serv import TgCashServ
 from .cash_serv import CacheService
+from .analitic.product_analitic_serv import ProductAnanaliticServ
+from .analitic.sour_difference_an_serv import SourDiffAnServ

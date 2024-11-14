@@ -1,11 +1,13 @@
-from server_flask.models import Users, Orders, Products, OrderedProduct
-from server_flask.models import ProductAnalitic, FinancAnalitic
-from sqlalchemy import func
+from server_flask.models import ProductAnalitic, Products, OrderedProduct 
+from server_flask.models import SourceDifference
 from datetime import datetime, timedelta
 from server_flask.db import db
+# from server_flask.models import Users, Orders, FinancAnalitic
+from sqlalchemy import func
 
 
 class ProductAnaliticRep():
+
     def body_product_price(self, product_id):
         body_price = db.session.query(Products.body_product_price).filter(Products.id == product_id).scalar()
         return body_price
@@ -73,9 +75,11 @@ class ProductAnaliticRep():
     def load_prod_order(self):
         items = OrderedProduct.query.order_by(OrderedProduct.timestamp.desc()).all
         return items
+    
+    
 
 
-prod_an_rep = ProductAnaliticRep()
+
 
 
 

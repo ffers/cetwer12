@@ -4,7 +4,7 @@ from a_service.product import ArrivalServ
 from black.product_cntrl import ProductCntrl
 from black.product_analitic_cntrl import ProductAnaliticControl
 
-arr_serv = ArrivalServ()
+arr_serv = ArrivalServ() 
 arr_rep = ArrivalRep()
 prod_cntrl = ProductCntrl()
 pr_analit_cntrl = ProductAnaliticControl()

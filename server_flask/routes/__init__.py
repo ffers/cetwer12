@@ -11,3 +11,4 @@ from .cabinet_client.Analitic_rout import bp as Analitic
 from .cabinet_client.Arrival_rout import bp as Arrival
 from .cabinet_client.JourChRout import bp as JourChRout
 from .cabinet_client.SourProdRout import bp as ProductSource
+from .cabinet_client.Source_Difference import bp as SourceDifference

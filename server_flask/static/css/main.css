@@ -162,7 +162,7 @@ tr {
 
 
 
-@media screen and (max-width: 576px) {
+@media screen and (max-width: 928px) {
     .content {
         width: 90%; /* Занимает всю доступную ширину экрана */
     }

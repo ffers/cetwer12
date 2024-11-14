@@ -1,45 +1,52 @@
-from a_service import prod_an_serv
-from repository import prod_an_rep
+from a_service import prod_an_serv, ProductAnanaliticServ
+from repository import ProductAnaliticRep
 from repository import prod_rep
+from .work_time_cntrl import WorkTimeCntrl
+
 
 
 
 class ProductAnaliticControl():
+    def __init__(self) -> None:
+        self.work_time_cntrl = WorkTimeCntrl()
+        self.prod_an_rep = ProductAnaliticRep()
+        self.prod_an_serv = ProductAnanaliticServ()
+
     def sum_money_in_product(self, product_id):
-        body_price = prod_an_rep.body_product_price(product_id)
-        quantity = prod_an_rep.quantity_product(product_id)
+        body_price = self.prod_an_rep.body_product_price(product_id)
+        quantity = self.prod_an_rep.quantity_product(product_id)
         sum_money = prod_an_serv.sum_money(body_price, quantity)
         return sum_money
 
     def sum_quantity_sale(self, product_id):
-        sum_quantity_sale = prod_an_rep.get_sum_product_sale(product_id)
+        sum_quantity_sale = self.prod_an_rep.get_sum_product_sale(product_id)
         print(f"Quantity product sale {sum_quantity_sale}")
         return sum_quantity_sale
 
     def money_in_sale(self, product_id):
-        body_price = prod_an_rep.body_product_price(product_id)
-        quantity_sale = prod_an_rep.get_sum_product_sale(product_id)
+        body_price = self.prod_an_rep.body_product_price(product_id)
+        quantity_sale = self.prod_an_rep.get_sum_product_sale(product_id)
         sum_money = prod_an_serv.sum_money(body_price, quantity_sale)
         return sum_money
 
     def item_product_analitic(self, product_id):
-        item_product_analitic = prod_an_rep.item_product_analitic(product_id)
+        item_product_analitic = self.prod_an_rep.item_product_analitic(product_id)
         print(f"Money in product1 {item_product_analitic.money_in_product}")
         return item_product_analitic
 
     def all_product_analitic(self):
-        all_item = prod_an_rep.all_product_analitic()
+        all_item = self.prod_an_rep.all_product_analitic()
         return all_item
 
     def add_product_analitic(self, product_id):
-        prod_item = prod_an_rep.search_an_product_id(product_id)
+        prod_item = self.prod_an_rep.search_an_product_id(product_id)
         if not prod_item:
-            prod_an_rep.add_product_analitic(product_id)
+            self.prod_an_rep.add_product_analitic(product_id)
             return True
         return False
 
     def get_product_analitic(self, product_id):
-        prod_item = prod_an_rep.search_an_product_id(product_id)
+        prod_item = self.prod_an_rep.search_an_product_id(product_id)
         # money_in_product = pr_an_serv.count_sum(prod_item.quantity, prod_item.body_price)
         # sum_sale = pr_an_serv.count_sum(prod_item.quantity_sale, prod_item.price)
         if prod_item:
@@ -51,7 +58,7 @@ class ProductAnaliticControl():
         sum_money = self.sum_money_in_product(product_id)
         sum_quantity_sale = self.sum_quantity_sale(product_id)
         money_in_sale = self.money_in_sale(product_id)
-        resp_bool = prod_an_rep.update_product_analitic(
+        resp_bool = self.prod_an_rep.update_product_analitic(
             product_id,
             sum_money,
             sum_quantity_sale,
@@ -69,15 +76,17 @@ class ProductAnaliticControl():
         return True
 
     def analitic_delete(self, id):
-        bool = prod_an_rep.delete_item(id)
+        bool = self.prod_an_rep.delete_item(id)
         return bool
 
     def count_income(self):
-        prod_ords = prod_an_rep.load_prod_order()
+        prod_ords = self.prod_an_rep.load_prod_order()
         prod_sour = prod_rep.load_product_source_all()
         # for prod in prod_ords:
         #     a = prod.price -
         pass
+
+  
 
 
 

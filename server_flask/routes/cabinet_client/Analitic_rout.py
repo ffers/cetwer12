@@ -1,11 +1,15 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
+from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify, g
 from flask_login import login_required, current_user
 from flask_principal import Permission, RoleNeed
 from black import ProductAnaliticControl
 from black import an_cntrl
 from black import sour_an_cntrl
+from black import SourDiffAnCntrl
 
-prod_an_cntrl = ProductAnaliticControl()
+def get_instance(class_name, class_type):
+    if not hasattr(g, class_name):
+        setattr(g, class_name, class_type())
+    return getattr(g, class_name)
 
 
 author_permission = Permission(RoleNeed('manager'))
@@ -18,10 +22,12 @@ bp = Blueprint('Analitic', __name__, template_folder='templates')
 @admin_permission.require(http_exception=403)
 def analitic_test():
     if request.method == 'GET':
+        prod_an_cntrl = get_instance('prod_an_cntrl', ProductAnaliticControl)
         all_product_analitic = prod_an_cntrl.all_product_analitic()
         print("Починаєм аналітику!")
         return render_template('cabinet_client/analitic/product_analitic.html',
                                user=current_user, all_product_analitic=all_product_analitic)
+    
 @bp.route("/cabinet/analitic/all", methods=['POST', 'GET'])
 @login_required
 @admin_permission.require(http_exception=403)
@@ -36,6 +42,7 @@ def analitic():
 @login_required
 @admin_permission.require(http_exception=403)
 def delete_product(id):
+    prod_an_cntrl = get_instance('prod_an_cntrl', ProductAnaliticControl)
     product = prod_an_cntrl.analitic_delete(id)
     print(f"Перевірка {product}")
     flash('Аналітику видалено', category='success')
@@ -77,13 +84,22 @@ def update_month():
     print(f"Перевірка {product}")
     flash('Аналітику оновлено month', category='success')
     return redirect('/cabinet/analitic/all')
-
+ 
 @bp.route('/cabinet/analitic/update_year', methods=['GET'])
 @login_required
 @admin_permission.require(http_exception=403)
 def update_year():
     product = sour_an_cntrl.sort_analitic("year")
     print(f"Перевірка {product}")
-    flash('Аналітику оновлено week', category='success')
+    flash('Аналітику року оновлено', category='success')
     return redirect('/cabinet/analitic/all')
+ 
 
+@bp.route('/cabinet/source/analitic_month/<int:id>', methods=['POST','GET'])
+@login_required
+@admin_permission.require(http_exception=403)   
+def source_difference_month(id):
+    prod_an_cntrl = get_instance('prod_an_cntrl', ProductAnaliticControl)
+    list_obj = prod_an_cntrl.load_source_difference_id_period(id, 'month')
+    return render_template("cabinet_client/analitic/source_difference.html", product=list_obj, user=current_user)
+   

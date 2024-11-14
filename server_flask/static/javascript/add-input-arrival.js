@@ -12,7 +12,7 @@ $('#addButton').on('click', function() {
                                 name="description" 
                                 min="1" 
                                 placeholder="Опис" 
-                                value="Прихід" 
+                                value="Товар"
                                 required>
                         </div>
                 					

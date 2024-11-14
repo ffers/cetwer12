@@ -1,39 +1,43 @@
-from repository import an_rep as rep
+from repository import AnaliticRep
 from a_service import an_serv as serv
 
 class AnCntrl:
     # def main(self):
     #     torg = prod_an_rep.get_money_sale_day()
     #     return torg
+    def __init__(self) -> None:
+        self.an_rep = AnaliticRep()
 
     def add_first(self, args):
         print(args)
-        resp = rep.add_first(args)
+        resp = self.an_rep.add_first(args)
         return resp
 
     def update_(self, id, args):
-        return rep.update_(id, args)
+        return self.an_rep.update_(id, args)
 
     def update_work(self, id, args):
-        return rep.update_work(id, args)
+        return self.an_rep.update_work(id, args)
 
     def update_salary(self, id, args):
-        return rep.update_salary(id, args)
+        return self.an_rep.update_salary(id, args)
 
     def load_all(self):
-        resp = rep.load_all()
+        resp = self.an_rep.load_all()
         return resp
 
     def load_period(self, period):
-        resp = rep.load_period(period)
+        resp = self.an_rep.load_period(period)
         return resp
 
     def load_period_sec(self, period, start_time, stop_time):
-        resp = rep.load_period_sec(period, start_time, stop_time)
+        resp = self.an_rep.load_period_sec(period, start_time, stop_time)
         return resp
 
     def load_day(self):
-        return rep.load_day()
+        return self.an_rep.load_day()
+    
+
 
 
 

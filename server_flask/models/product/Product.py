@@ -16,3 +16,4 @@ class Products(db.Model):
     product_analitic = db.relationship('ProductAnalitic', back_populates='products')
     arrival = db.relationship('Arrival', back_populates='products')
     product_relate = db.relationship('ProductRelate', back_populates='products')
+    

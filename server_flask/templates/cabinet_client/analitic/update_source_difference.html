@@ -5,25 +5,27 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
-
+<head>
+    <title>Редагування строкі {{line[0]}}</title>
+  </head>
 {% endblock %}
 
 {% block body %}
 	<div class="content">
 		<h1 style="text-align: center;">
-            Змінити Ісходник
+            Змінити Строку наявності {{line.product_source.name}}
         </h1>
             <nav class="nav">
             
                 <div class="button-pult">
-                    <button type="button" onclick="confirmDelete({{item.id}}, '/cabinet/source/delete/')" 
+                    <button type="button" onclick="confirmDelete({{line.id}}, '/cabinet/source_difference/delete/')" 
                         class="btn btn-outline-info my-2 my-sm-0">
-                            Видалити Ісходник
+                            Видалити ці дані
                     </button>
                 </div>
             </nav><br> 
 		
-			<form action="/cabinet/source/update/{{item.id}}" method="post">
+			<form action="/cabinet/source_difference/update/{{line.id}}" method="post">
                 <div id="product-container">
                     <div class="row">   
                         <div class="col-sm col-lg-2">
@@ -31,7 +33,7 @@
                                 that we can use it in JavaScript 
                                 to set attributes.-->
                             <input class="form-control" 
-                                type="text" id="event_date" name="event_date"/>                       
+                                type="text" id="event_date" name="event_date" value="{{line.event_date}}"/>                       
                         </div>
                     
                         <script>
@@ -45,47 +47,25 @@
         
                         <!-- Товар та кількість -->
                         <div class="col-sm col-lg-2">
-                            <input 
-                            placeholder="Артікул" 
-                            class="form-control" 
-                            style="text-align: center;" 
-                            id="article" 
-                            name="article" 
-                            value="{{item.article}}"                   
-                            > 
-                        </div>
-                            <br>
-                        <div class="col-sm col-lg-2">
-                            <input 
-                                placeholder="Назва" 
-                                class="form-control  " 
-                                style="text-align: center;" 
-                                id="name" 
-                                name="name"
-                                value="{{item.name}}"
-                                > 
-                                <br>
-                        </div>
-                        <div class="col-sm col-lg-2">
-                            <input 
-                                placeholder="Ціна" 
-                                class="form-control" 
-                                style="text-align: center;" 
-                                id="price" 
-                                name="price"    
-                                value="{{item.price}}"                
-                                > 
-                                <br>
-                        </div>
-                        <div class="col-sm col-lg-2">
-                            <input style="display: none;"
-                             class="quantity form-control" 
-                            id="quantity" name="quantity"  min="1" max="10000" 
-                            placeholder="* Кількість" required
-                            value="{{item.quantity}}"><br>
-                        </div>
-                        
-                    </div>                
+                            <input style="text-align: center;" class="quantity form-control" 
+                            id="quantity_crm" name="quantity_crm"  min="1" max="10000" 
+                            placeholder="* Кількість срм" value="{{line.quantity_crm}}" required><br>
+                          </div>
+                          <div class="col-sm col-lg-2">
+                            <input style="text-align: center;" class="quantity form-control" 
+                            id="quantity_stock" name="quantity_stock"  min="1" max="10000" 
+                            placeholder="* Кількість склад" value="{{line.quantity_stock}}" required><br>
+                          </div>     
+                          <div class="col-sm col-lg-2">
+                            <input style="text-align: center;" class="quantity form-control" 
+                            id="difference" name="difference"  min="1" max="10000" 
+                            placeholder="* різниця" value="{{line.difference}}" required><br>
+                          </div>    
+                          <input style="display: none;" class="quantity form-control" 
+                          id="source_id" name="source_id"  min="1" max="10000" 
+                          value="{{line.source_id}}" required>
+
+                                
                 </div></br>
 
             <div class="row">
@@ -95,7 +75,7 @@
                 <!-- <div class="col-sm"><a href="get_product/send_with_prom_test">Підвердити</a></div> -->
             </div><br>
 
-			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Додати</button>
+			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Зберігти</button>
 		</form>
 
 
