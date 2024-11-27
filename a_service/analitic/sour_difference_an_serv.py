@@ -126,10 +126,10 @@ class SourDiffAnServ():
             search_time = line.event_date - timedelta(days=1) # для етой строки вичислиям день до етого
             # print(line.event_date, "line.event_date", search_time)
             search = False; count = 0
-            print(line.id)
+            # print(line.id)
             while not search and count < 30: # проходим пока не найдем день
                 count += 1
-                print(search_time, " search_time ")
+                # print(search_time, " search_time ")
                 search = self.search_day(source_list, search_time, line)
                 if not search:
                     search_time = search_time - timedelta(days=1)
@@ -142,6 +142,7 @@ class SourDiffAnServ():
                 print(quantity, "quantity")
                 self.sour_diff_an_rep.update_source_diff_line_sold(quantity, line.id)
                 return True 
+        self.sour_diff_an_rep.update_source_diff_line_sold(0, line.id)
         return False
                     #проходим по списку если ненашли соотвующий день минусуем еще день
                     

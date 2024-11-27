@@ -4,7 +4,7 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
 <head>
-  <title>Аналітика Товару {{product[0].product_source.name}}</title>
+  <title>Аналітика Товару {{product[0].product_source.article}}</title>
 </head>
 {% endblock %} 
 {% block body %}
@@ -59,7 +59,7 @@
 
 
 <h1 style="text-align: center;">
-  Аналітика Товару {{product[0].product_source.name}}
+  Аналітика Товару {{product[0].product_source.name}} {{product[0].product_source.article}}
 </h1>
 
 
@@ -71,8 +71,8 @@
             <th scope="col"></th>
             <th scope="col"></th>
             <th scope="col">Дата</th>
-            <th scope="col">кількість в срм</th>
-            <th scope="col">кількість на складі</th>
+            <th scope="col">Кількість в срм</th>
+            <th scope="col">Кількість на складі</th>
             <th scope="col">Різниця</th>
             <th scope="col">Продано</th>
             <th scope="col">Коментар</th>
@@ -191,7 +191,9 @@
 
 <script>
 $(document).ready(function () {
-    const table = $('#editableTable').DataTable();
+    const table = $('#editableTable').DataTable({
+      pageLength: 50
+    });
 
 $('#saveBtn').on('click', function () {
   const newData = [];

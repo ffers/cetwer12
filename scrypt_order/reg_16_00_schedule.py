@@ -67,6 +67,7 @@ class RegSchedulleSrv():
             self.sour.sort_analitic("day")
             self.quan_stok.quan_f("#quan 35N, 45N, 35W1, 45W1, 35N10, 40N10, 45N10, BX1, BX2, BX3, BX4, BX5, 35N11, 40N11, 45N11, 35W, 45W, 35W13, 45W13")
             self.sour_diff_cntrl.add_quantity_crm_today()
+            self.sour_diff_cntrl.sour_diff_all_source_sold("days", 1) 
             # запустить програму скидивания наличия
             print("Успіх")
             # изменить статус розетки

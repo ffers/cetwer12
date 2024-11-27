@@ -44,7 +44,7 @@ def source_difference_product(id):
     if product:
         return render_template("cabinet_client/analitic/source_difference.html", product=product, user=current_user)
     else:
-        flash('Товар не знайдено', category='success')
+        flash('Товар не знайдено', category='error')
         product = source_diff_cntrl.load_source_difference()
         print(f"Перевірка {product}")
         return render_template("cabinet_client/analitic/source_difference.html", product=product, user=current_user)
@@ -55,7 +55,8 @@ def source_difference_product(id):
 @admin_permission.require(http_exception=403)   
 def source_difference_update_day(id):
     source_diff_cntrl = get_instance('sour_diff_an_cntrl', SourDiffAnCntrl)
-    add_quantity = source_diff_cntrl.sour_diff_all_source_sold() 
+    # add_line_diff = source_diff_cntrl.add_quantity_crm_today()
+    add_quantity = source_diff_cntrl.sour_diff_all_source_sold("days", 1) 
     source_diff_sum = source_diff_cntrl.update_source_difference_id_period(id, "month")
     return redirect('/cabinet/source_difference/{}'.format(id))
 
@@ -76,12 +77,21 @@ def source_difference_update(id):
         if line:
             return render_template("cabinet_client/analitic/update_source_difference.html", line=line, user=current_user)
         else:
-            flash('Товар не знайдено', category='success')
+            flash('Товар не знайдено', category='error')
             product = source_diff_cntrl.load_source_difference()
             print(f"Перевірка {product}")
             return render_template("cabinet_client/analitic/source_difference.html", product=product, user=current_user)
         
-
+@bp.route('/cabinet/source_difference/delete/<int:id>', methods=['POST','GET'])
+@login_required
+@admin_permission.require(http_exception=403)   
+def source_difference_delete(id):
+    print("Видалення")
+    source_diff_cntrl = get_instance('sour_diff_an_cntrl', SourDiffAnCntrl)
+    resp = source_diff_cntrl.delete(id)
+    return redirect('/cabinet/source_difference/{}'.format(resp[1]))
+        
+ 
 
 @bp.route('/cabinet/source_difference/update_bulk', methods=['POST','GET'])
 @login_required

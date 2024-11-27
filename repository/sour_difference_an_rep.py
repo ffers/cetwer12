@@ -2,6 +2,7 @@
 from server_flask.models import SourceDifference
 from server_flask.db import db
 from sqlalchemy import desc
+import copy
 
 
   
@@ -101,5 +102,16 @@ class SourDiffAnRep():
                 item.quantity_stock = row[1]
                 db.session.commit()
             return True
+        except:
+            return False
+        
+    def delete_diff_line(self, id):
+        try:
+            item = self.load_source_diff_line(id)
+            item_copy = copy.deepcopy(item)
+            print(item_copy.source_id, "item_copy")
+            db.session.delete(item)
+            db.session.commit()
+            return True, item_copy.source_id
         except:
             return False

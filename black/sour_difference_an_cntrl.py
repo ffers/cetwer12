@@ -72,7 +72,7 @@ class SourDiffAnCntrl():
     def update_source_difference_id_period(self, id, period): # потрібно source_id 
         start_time, stop_time = self.work_time_cntrl.load_work_time(period)
         product = self.sour_diff_an_rep.load_source_difference_id_period(
-            id, start_time, stop_time
+            id, start_time, stop_time   
             )
         diff_sum = self.sour_diff_an_serv.source_difference_sum(product)
         return product
@@ -87,9 +87,11 @@ class SourDiffAnCntrl():
         add = self.sour_diff_an_rep.update_diff_table(list_data)
         return add
     
-    def sour_diff_id_gone_list(self, id):
-        start, stop = self.work_time_cntrl.load_work_time("month")
+    def sour_diff_id_gone_list(self, id, period, days=None):
+        start, stop = self.work_time_cntrl.load_work_time(period, days)
+        # print(start, " & ", stop)
         source_list = self.sour_diff_an_rep.load_source_difference_id_period(id, start, stop)
+        print(source_list)
         self.sour_diff_an_serv.count_going_list(source_list)
 
     
@@ -103,9 +105,15 @@ class SourDiffAnCntrl():
         self.sour_diff_an_rep.update_source_diff_line_sold(id, quantity)
         print("last sold gone", quantity)
 
-    def sour_diff_all_source_sold(self):
+    def sour_diff_all_source_sold(self, period, days=None):
         source_all = self.sour_an_cntrl.load_all()
         for item in source_all:
-            self.sour_diff_id_gone_list(item.id)
+            self.sour_diff_id_gone_list(item.id, period, days)
+
+    def delete(self, id):
+        delete = self.sour_diff_an_rep.delete_diff_line(id)
+        print("Видалено")
+        return delete
 
 
+ 
