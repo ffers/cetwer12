@@ -55,7 +55,7 @@ def source_difference_product(id):
 @admin_permission.require(http_exception=403)   
 def source_difference_update_day(id):
     source_diff_cntrl = get_instance('sour_diff_an_cntrl', SourDiffAnCntrl)
-    add_quantity = source_diff_cntrl.sour_diff_id_gone(id)   
+    add_quantity = source_diff_cntrl.sour_diff_all_source_sold() 
     source_diff_sum = source_diff_cntrl.update_source_difference_id_period(id, "month")
     return redirect('/cabinet/source_difference/{}'.format(id))
 

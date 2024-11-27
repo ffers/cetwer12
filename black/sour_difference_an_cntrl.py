@@ -87,6 +87,12 @@ class SourDiffAnCntrl():
         add = self.sour_diff_an_rep.update_diff_table(list_data)
         return add
     
+    def sour_diff_id_gone_list(self, id):
+        start, stop = self.work_time_cntrl.load_work_time("month")
+        source_list = self.sour_diff_an_rep.load_source_difference_id_period(id, start, stop)
+        self.sour_diff_an_serv.count_going_list(source_list)
+
+    
     def sour_diff_id_gone(self, id):
         start, stop = self.work_time_cntrl.load_work_time("days", 1)
         print(start, " & ", stop)
@@ -96,3 +102,10 @@ class SourDiffAnCntrl():
         quantity = self.sour_diff_an_serv.count_going(old_source, last_source)
         self.sour_diff_an_rep.update_source_diff_line_sold(id, quantity)
         print("last sold gone", quantity)
+
+    def sour_diff_all_source_sold(self):
+        source_all = self.sour_an_cntrl.load_all()
+        for item in source_all:
+            self.sour_diff_id_gone_list(item.id)
+
+

@@ -1,5 +1,5 @@
-from datetime import datetime, timezone
-
+from datetime import datetime, timezone, timedelta
+import time
 
 
 
@@ -120,4 +120,28 @@ class SourDiffAnServ():
         else:
             print("source None")
             return 0
+        
+    def count_going_list(self, source_list):
+        for line in source_list: # проходим по всем строкам продукта
+            search_time = line.event_date - timedelta(days=1) # для етой строки вичислиям день до етого
+            # print(line.event_date, "line.event_date", search_time)
+            search = False; count = 0
+            print(line.id)
+            while not search and count < 30: # проходим пока не найдем день
+                count += 1
+                print(search_time, " search_time ")
+                search = self.search_day(source_list, search_time, line)
+                if not search:
+                    search_time = search_time - timedelta(days=1)
 
+    def search_day(self, source_list, search_time, line):
+        for line_old in source_list: # опять проходимся по строкам 
+            # print(line_old.event_date, "line_old.event_date")
+            if search_time == line_old.event_date: # если находим дату на день раньше
+                quantity = line.quantity_crm - line_old.quantity_crm
+                print(quantity, "quantity")
+                self.sour_diff_an_rep.update_source_diff_line_sold(quantity, line.id)
+                return True 
+        return False
+                    #проходим по списку если ненашли соотвующий день минусуем еще день
+                    
