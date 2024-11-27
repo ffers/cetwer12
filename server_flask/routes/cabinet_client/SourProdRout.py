@@ -34,33 +34,15 @@ def add():
         if resp_bool == True:
             print("Product added successfully")
             responce_data = {'status': 'success', 'message': 'Product relate added successfully'}
-            flash('Продукт створено!', category='success')
-            return redirect(url_for('ProductSource.all'))
+            flash('Додано джерело!', category='success')
+            return render_template('cabinet_client/Products/add_product_source.html', user=current_user )
         else:
             print(request.form)
             print("НЕВИЙШЛО!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             return redirect(url_for('Products.add_product_relate'))
     return render_template('cabinet_client/Products/add_product_source.html', user=current_user )
 
-@bp.route('/cabinet/source/add_arrival', methods=['POST', 'GET'])
-@login_required
-@admin_permission.require(http_exception=403)
-def add_arrival():
-    if request.method == 'POST':
-        print("ПРацюєм")
-        resp_bool = cntrl.add_arrival(request)
-        for item in request.form:
-            print(item)
-        if resp_bool[0] == True:
-            print("Product added successfully")
-            responce_data = {'status': 'success', 'message': 'Product relate added successfully'}
-            flash('Продукт створено!', category='success')
-            return redirect(url_for('JournalChange.load_all'))
-        else:
-            print(request.form)
-            print("НЕВИЙШЛО!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            return redirect(url_for('ProductSource.add_arrival'))
-    return render_template('cabinet_client/Products/add_product_source.html', user=current_user)
+
 
 @bp.route('/cabinet/source/update/<int:id>', methods=['POST', 'GET'])
 @login_required

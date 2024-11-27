@@ -79,11 +79,6 @@ class SourAnServ:
             torg = product.quantity * product.price
         return torg
 
-    def body(self, prod_comp, prod_source, product):
-        sale_quantity = prod_comp.quantity * product.quantity
-        print(f"prod_source.price {prod_source.price}")
-        body = prod_source.price * sale_quantity
-        return body
 
     def torg_func(self, orders):
         torg_sum = 0
@@ -92,18 +87,24 @@ class SourAnServ:
                 torg_sum += self.torg(product)
         return torg_sum
 
+    def body(self, prod_comp, prod_source, product):
+        sale_quantity = prod_comp.quantity * product.quantity
+        print(f"prod_source.name {prod_source.name}")
+        body = prod_source.price * sale_quantity
+        return body
+    
     def body_func(self, orders):
         body = 0
         for order in orders:
             for product in order.ordered_product:
                 prod_comps = self.prod_cntrl.load_prod_relate_product_id_all(product.product_id)
-                print("Ищем prod_comps")
+                # print("Ищем prod_comps")
                 if prod_comps:
-                    print("Нашли prod_comps")
+                    # print("Нашли prod_comps")
                     for prod_comp in prod_comps:
                         try:
                             print(prod_comp)
-                            prod_source = self.rep.load_id(prod_comp.productt_id)
+                            prod_source = self.rep.load_id(prod_comp.product_source_id)
                             if prod_source:
                                 body += self.body(prod_comp, prod_source, product)
                         except Exception as e:

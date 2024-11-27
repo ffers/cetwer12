@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
 from flask_principal import Permission, RoleNeed
 from flask_login import login_required, current_user
 from server_flask.models import Users
-from black import ArrivelCntrl
+from black import ArrivelCntrl, SourAnCntrl
 
 
 arriv_cntrl = ArrivelCntrl()
@@ -11,13 +11,27 @@ manager_permission = Permission(manager)
 admin_permission = Permission(RoleNeed('admin'))
 bp = Blueprint('Arrival', __name__, template_folder='templates')
 
-@bp.route('/cabinet/products/add_arrival', methods=['POST', 'GET'])
+@bp.route('/cabinet/arrival/add_arrival', methods=['POST', 'GET'])
 @login_required
 @admin_permission.require(http_exception=403)
 def add_arrival():
     if request.method == 'POST':
-        resp = arriv_cntrl.add_arrival(request)
-    return render_template('cabinet_client/Products/add_arrival.html', user=current_user )
+        print("ПРацюєм")
+        cntrl = SourAnCntrl()
+        resp_bool = cntrl.add_arrival(request)
+        for item in request.form:
+            print(item)
+        if resp_bool[0] == True:
+            print("Product added successfully")
+            responce_data = {'status': 'success', 'message': 'Product relate added successfully'}
+            flash('Поставлено на прихід!', category='success')
+            return redirect("add_arrival")
+        else:
+            print(request.form)
+            print("НЕВИЙШЛО!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            flash('Не вийшло!', category='success')
+            return redirect("add_arrival")
+    return render_template('cabinet_client/Products/add_arrival.html', user=current_user ) 
 
 
 @bp.route('/cabinet/products/arrival_list', methods=['POST', 'GET'])

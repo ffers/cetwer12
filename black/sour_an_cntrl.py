@@ -55,18 +55,19 @@ class SourAnCntrl:
     def delete(self, id):
         bool = rep.delete_(id)
         return bool
+        
 
     def confirmed(self, order):
         resp = False
         comps_bool = self.sour_an_serv.definetion_prod(order)
         if all(comps_bool['ok']):
             for product in order.ordered_product:
-                prod_comps = prod_cntrl.load_prod_relate_product_id_all(product.product_id)
-                for prod_comp in prod_comps:
+                prod_comps = prod_cntrl.load_prod_relate_product_id_all(product.product_id) # загрузили все исходники по продукту 
+                for prod_comp in prod_comps: # по каждому исходнику 
                     prod_object = vars(prod_comp)
                     print(f"prod_object list {prod_object}")
-                    description = order.order_id_sources + ' ' + product.products.article
-                    sale_quantity = self.sour_an_serv.count_new_quantity(prod_comp, product)
+                    description = order.order_id_sources + ' ' + product.products.article # пишем заметку
+                    sale_quantity = self.sour_an_serv.count_new_quantity(prod_comp, product) # считаем кол исходника по товару
                     resp = self.stock_journal(prod_comp.product_source.id, -sale_quantity, description)
         else:
             resp_tg = f"Немає такого компоненту {comps_bool['info']}"
@@ -75,14 +76,29 @@ class SourAnCntrl:
         print(resp)
         return resp
 
+    def return_prod(self, order):
+        resp = None
+        comps_bool = self.sour_an_serv.definetion_prod(order)
+        if all(comps_bool):
+            for product in order.ordered_product:
+                prod_comps = prod_cntrl.load_prod_relate_product_id_all(product.product_id)
+                for prod_comp in prod_comps:
+                    print(f"prod_comps {prod_comps}")
+                    sale_quantity = prod_comp.quantity * product.quantity
+                    self.stock_journal(prod_comp.product_source.id, sale_quantity, f"Возврат: {order.order_code}, {product.products.article}")
+            resp = True
+        else:
+            resp = f"Немає такого компоненту {comps_bool['info']}"
+        return resp
+    
     def add_arrival(self, req):
         list_data = self.sour_an_serv.add_arrival(req)
 
         for item in list_data:
             print(f"item list_data{item}")
             resp = self.stock_journal(item[0], int(item[1]), item[2], datetime.strptime(item[3], "%d-%m-%Y"))
-        resp_an = self.sort_analitic("all")
-        return resp_an
+        # resp_an = self.sort_analitic("all")
+        return resp
 
     def update_all_analitic(self):
         self.sort_analitic("all")
@@ -106,20 +122,6 @@ class SourAnCntrl:
             resp = journal.add_(list_val)
         return resp, new_quantity
 
-    def return_prod(self, order):
-        resp = None
-        comps_bool = self.sour_an_serv.definetion_prod(order)
-        if all(comps_bool):
-            for product in order.ordered_product:
-                prod_comps = prod_cntrl.load_prod_relate_product_id_all(product.product_id)
-                for prod_comp in prod_comps:
-                    print(f"prod_comps {prod_comps}")
-                    sale_quantity = prod_comp.quantity * product.quantity
-                    self.stock_journal(prod_comp.product_source.id, sale_quantity, f"Возврат: {order.order_code}, {product.products.article}")
-            resp = True
-        else:
-            resp = f"Немає такого компоненту {comps_bool['info']}"
-        return resp
 
     def first_an(self, orders, period):
         orders_quan = len(orders)
@@ -202,6 +204,16 @@ class SourAnCntrl:
         item = an_cntrl.load_period_sec(period, start_time, stop_time)
         resp = self.update_analitic(orders, item, period)
         return resp
+    
+    def source_sum_sold(self, source, sale_quantity): # получаем sold и добавляєм в кеш по исходнику
+        sum_sold = self.cash.get("source_{}".format(source.id))
+        if not sum_sold:
+            data = self.cash.set("source_{}".format(source.id), sale_quantity)  # и тут либо сразу в базу либо в кеш а потом в базу
+        else:
+            new_sum = sum_sold + sale_quantity
+            update = self.cash.set("source_{}".format(source.id), new_sum)
+        
+        
 
 
 

@@ -22,7 +22,7 @@ class OrderRep:
         return Orders.query.filter_by(ordered_status_id=8).all()
 
     def load_status_id(self, id):
-        return Orders.query.filter_by(ordered_status_id=id).all()
+        return Orders.query.filter_by(ordered_status_id=id).order_by(desc(Orders.id)).all()
 
     def load_period(self, start, stop):
         items = Orders.query.filter(
@@ -93,6 +93,9 @@ class OrderRep:
             Orders.delivery_method_id == 2
                                    ).all()
         return item
+    
+
+
 
     # def add_order(self, request):
     #     order = Orders(description=request.form['description'], city_name=request.form['CityName'],
@@ -214,7 +217,7 @@ class OrderRep:
             (Orders.client_firstname.ilike(f'%{data}%')) |
             (Orders.order_id_sources.ilike(f'%{data}%')) |
             (Orders.ttn.ilike(f'%{data}%'))
-        ).order_by(desc(Orders.id)).all()
+        ).order_by(desc(Orders.id)).all() 
         return order
 
     def delete_order(self, id):

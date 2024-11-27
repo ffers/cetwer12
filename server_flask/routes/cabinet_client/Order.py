@@ -449,7 +449,7 @@ def confirmeded():
 
 @bp.route('/cabinet/orders/filter/registered/<int:id>', methods=['POST', 'GET'])
 @login_required
-@author_permission.require(http_exception=403)
+@author_permission.require(http_exception=403) 
 def registered(id):
     tasks_orders = ord_cntrl.load_status_id(id)
     tasks_users = Users.query.order_by(Users.timestamp).all()

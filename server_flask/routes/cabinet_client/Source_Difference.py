@@ -50,13 +50,14 @@ def source_difference_product(id):
         return render_template("cabinet_client/analitic/source_difference.html", product=product, user=current_user)
       
    
-@bp.route('/cabinet/source_difference/update_day', methods=['POST','GET'])
+@bp.route('/cabinet/source_difference/update_day/<int:id>', methods=['POST','GET'])
 @login_required
 @admin_permission.require(http_exception=403)   
-def source_difference_update_day():
+def source_difference_update_day(id):
     source_diff_cntrl = get_instance('sour_diff_an_cntrl', SourDiffAnCntrl)
-    add_quantity = source_diff_cntrl.add_quantity_crm_today()   
-    return redirect('/cabinet/source_difference')
+    add_quantity = source_diff_cntrl.sour_diff_id_gone(id)   
+    source_diff_sum = source_diff_cntrl.update_source_difference_id_period(id, "month")
+    return redirect('/cabinet/source_difference/{}'.format(id))
 
 
 @bp.route('/cabinet/source_difference/update/<int:id>', methods=['POST','GET'])
@@ -66,7 +67,7 @@ def source_difference_update(id):
     source_diff_cntrl = get_instance('sour_diff_an_cntrl', SourDiffAnCntrl)   
     if request.method == 'POST': 
         print("Поехали")
-        bool = source_diff_cntrl.update_source_diff_line(request, id) # данні є тільки в реквесті та айди це строки та
+        bool = source_diff_cntrl.update_source_diff_line(request, id) # данні є тільки в реквесті та айди строки 
         print(f"Перевірка {bool}")
         return redirect('/cabinet/source_difference/{}'.format(request.form['source_id'])) 
     else:
@@ -79,5 +80,18 @@ def source_difference_update(id):
             product = source_diff_cntrl.load_source_difference()
             print(f"Перевірка {product}")
             return render_template("cabinet_client/analitic/source_difference.html", product=product, user=current_user)
-    
-      
+        
+
+
+@bp.route('/cabinet/source_difference/update_bulk', methods=['POST','GET'])
+@login_required
+@admin_permission.require(http_exception=403)   
+def source_diff_update_bulk():
+    source_diff_cntrl = get_instance('sour_diff_an_cntrl', SourDiffAnCntrl)
+    add = source_diff_cntrl.update_sour_diff_table(request.get_json())
+    if add:
+        flash('Оновлено', category='success')
+        return "OK", 200
+    else:
+        flash('Невийшло', category='error')
+        return 400

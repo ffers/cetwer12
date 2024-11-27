@@ -198,7 +198,7 @@ class OrderCntrl:
     def return_order(self, order_id, status):
         order = ord_rep.load_item(order_id)
         bool = ord_rep.change_status(order_id, status)
-        bool_prom = prom_cntrl.change_status(order_id, 2)
+        bool_prom = prom_cntrl.change_status(order.order_code, 2)
         # update_analitic = prod_an_cntrl.product_in_order(order)
         resp_sour_bool = sour_an_cntrl.return_prod(order)
         # resp = self.check_del_method(order)

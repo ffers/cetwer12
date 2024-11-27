@@ -65,7 +65,7 @@
 
 <div id="arrival-list">
     <div class="table-responsive-sm" >
-      <table class="table table-hover table-striped ">
+      <table id="editableTable" class="table table-hover table-striped ">
         <thead>
           <tr >
             <th scope="col"></th>
@@ -81,24 +81,24 @@
         </thead>
         <tbody >
           {% for item in product %}
-          <tr>
+          <tr data-id="{{item.id}}">
             <td></td>
-            <td>
+            <td contenteditable="false">
               <a href="/cabinet/source_difference/update/{{item.id}}">
                 <button type="button" class="btn btn-info">
                   <i class="fa-solid fa-pen"></i>
                 </button>
               </a>
             </td>
-            <td>{{item.event_date.strftime('%d-%m-%Y')}}</td>
-            <td >{{item.quantity_crm}}</td>
-            <td><input style="text-align: center;" class="quantity form-control" 
+            <td >{{item.event_date.strftime('%d-%m-%Y')}}</td>
+            <td contenteditable="true">{{item.quantity_crm}}</td>
+            <td contenteditable="true"><input style="text-align: center;" class="quantity form-control" 
               id="difference" name="difference"  min="1" max="10000" 
               placeholder="* різниця" value="{{item.quantity_stock}}">
             </td>
-            <td>{{item.difference}}</td>
-            <td>{{item.sold}}</td>
-            <td>{{item.comment}}</td>
+            <td >{{item.difference}}</td>
+            <td >{{item.sold}}</td>
+            <td contenteditable="false">{{item.comment}}</td>
            
 
 
@@ -163,20 +163,101 @@
 </div>
 <div class="row">
   <div class="col-sm"></div>
-  <div class="col-sm"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поставити на прихід</button></div>
+  <div class="col-sm"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Додати</button></div>
 </div>
 </form>
 
 <div class="button-pult">
-  <a href="/cabinet/source_difference/update_day">
+<button id="saveBtn">Save Changes</button>
+</div>
+
+<div class="button-pult">
+  <a href="/cabinet/source_difference/update_day/{{product[0].source_id}}">
+    <button type="button" class="col-sm btn btn-outline-info my-2 my-sm-0">
+      Порахувати різницю
+    </button>
+  </a>
+</div>
+
+<div class="button-pult"></div>
+  <a href="/cabinet/source_difference/update_day/{{product[0].source_id}}">
     <button type="button" class="col-sm btn btn-outline-info my-2 my-sm-0">
       Додати товар за цей день
     </button>
   </a>
 </div>
 
+<br><br><br>
+
+<script>
+$(document).ready(function () {
+    const table = $('#editableTable').DataTable();
+
+$('#saveBtn').on('click', function () {
+  const newData = [];
+                
+                // Проходимо всі рядки таблиці
+                $('#editableTable tbody tr').each(function () {
+                    const id = $(this).data('id');
+                    const row = [id];
+                    // Проходимо всі комірки в рядку
+                    $(this).find('td').each(function () {
+                        // Якщо комірка містить input
+                        const input = $(this).find('input');
+                        if (input.length) {
+                            row.push(input.val()); // Зчитуємо значення з input
+                        } else {
+                            row.push($(this).text()); // Зчитуємо текст
+                        }
+                    });
+                    newData.push(row); // Додаємо рядок у масив
+                });
+
+                // Очищуємо старі дані в DataTable
+                table.clear();
+                
+                // Додаємо нові дані
+                table.rows.add(newData);              
+                
+            
+  const tableData = [];
+
+  table.rows().every(function (rowIdx, tableLoop, rowLoop) {
+      const data = this.data();
+      tableData.push({
+          id: data[0],  
+          crm: data[4],  
+          stock: data[5]           
+        });
+        console.log(tableData)
+  });
+
+
+  // Відправка даних
+  $.ajax({
+      url: '/cabinet/source_difference/update_bulk',
+      type: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify(tableData),
+      success: function (response) {
+          location.reload()
+          
+      }
+  });
+});
+});
+</script>
+
+
+
+<!-- Підключаємо jQuery -->
+
+
+<!-- Підключаємо DataTables -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
 <script src="{{url_for('static', filename='javascript/select_source.js')}}"></script>
-<!-- Підключення стилів Flatpickr -->
+
 
 
 

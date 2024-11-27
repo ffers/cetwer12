@@ -16,8 +16,8 @@ class RegSchedulleSrv():
         self.sour_diff_cntrl = SourDiffAnCntrl()
 
     def reg_17_00(self):
-        with flask_app.app_context():
-            try:
+        with flask_app.app_context(): # переробити визов на request,
+            try: # реквест визиває апі а потім апі визиває функціі
                 black_pic = self.sendTgBlackPic()
                 dict_order = self.createReg()
                 self.OC_log.info(dict_order)

@@ -79,6 +79,11 @@ def index():
     print(f"{current_user.is_authenticated}")
     return render_template('index.html', user=current_user)
 
+
+@flask_app.route("/health-check") 
+def health_check():
+    return "OK1", 200
+
 @flask_app.errorhandler(403)
 def handle_forbidden_error(error):
     # Рендеринг шаблону для виведення зображення або повідомлення про помилку

@@ -1,9 +1,10 @@
 
 from server_flask.models import SourceDifference
 from server_flask.db import db
+from sqlalchemy import desc
 
 
-
+  
 
 class SourDiffAnRep():
     def __init__(self) -> None:
@@ -40,16 +41,16 @@ class SourDiffAnRep():
             return True
         except:
             return False
-        
-
+         
+  
     def load_source_difference_id_period(self, id, start, stop):
         product = SourceDifference.query.filter(
             SourceDifference.event_date >= start,
             SourceDifference.event_date <= stop,
             SourceDifference.source_id == id
-        ).all()
+        ).order_by(desc(SourceDifference.timestamp)).all()
         return product
-    
+         
     def add_quantity_crm(self, body):
         # try:
             add = SourceDifference(
@@ -74,4 +75,31 @@ class SourDiffAnRep():
         except:
             return False
     
-         
+    def update_source_diff_line_sold(self, quantity, id):
+        try:
+            item = SourceDifference.query.get_or_404(id)
+            item.sold = quantity
+            db.session.commit()
+            return True
+        except:
+            return False
+          
+    def update_diff_sum(self, quantity, id):
+        try:
+            item = SourceDifference.query.get_or_404(id)
+            item.difference = quantity
+            db.session.commit()
+            return True
+        except:
+            return False
+       
+               
+    def update_diff_table(self, data):
+        try:
+            for row in data:
+                item = self.load_source_diff_line(row[0])
+                item.quantity_stock = row[1]
+                db.session.commit()
+            return True
+        except:
+            return False
