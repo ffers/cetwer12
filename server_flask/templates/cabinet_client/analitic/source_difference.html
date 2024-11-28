@@ -75,7 +75,7 @@
             <th scope="col">Кількість в срм</th>
             <th scope="col">Кількість на складі</th>
             <th scope="col">Різниця</th>
-            <th scope="col">Продано</th>
+            <th scope="col">Движение</th>
             <th scope="col">Коментар</th>
 
           </tr>
@@ -124,9 +124,9 @@
           <br/>
           <br/>
           <div class="content">
-          <div class="row">
-    
-            <form action="/cabinet/source_difference/load_event_day" method="post">
+            
+            <form id="load_event_day" action="/cabinet/source_difference/load_event_day" method="post">
+              <div class="row">
               <div class="col-sm col-lg-2">  
                 <input class="form-control"
                                       type="text" id="event_date" name="event_date_start">                       
@@ -135,7 +135,7 @@
                 <input class="form-control"
                                       type="text" id="event_date" name="event_date_stop">                       
                                   </div>      
-                                </div>            
+                                        
                                   <div class="col-sm"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Завантажити</button></div>
                               <script>
                                   flatpickr('#event_date', {
@@ -144,6 +144,7 @@
                                   defaultDate: 'today', 
                                   });
                               </script>
+                              </div>    
               
             </form>
           
@@ -220,6 +221,15 @@
   </a>
 </div>
   </div>
+  <div class="col-sm">
+    <div class="button-pult">
+      <a href="/cabinet/source_difference/add_day">
+        <button type="button" class="col-sm btn btn-outline-info my-2 my-sm-0">
+          Додати день
+        </button>
+      </a>
+    </div>
+      </div>
 
 </div>
 
@@ -291,8 +301,8 @@ $('#saveBtn').on('click', function () {
       const data = this.data();
       tableData.push({
           id: data[0],  
-          crm: data[4],  
-          stock: data[5]           
+          crm: data[5],  
+          stock: data[6]           
         });
         console.log(tableData)
   });

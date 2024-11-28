@@ -92,7 +92,7 @@ class SourDiffAnRep():
         except:
             return False
           
-    def update_diff_sum(self, quantity, id):
+    def update_diff_sum(self, id, quantity):
         try:
             item = SourceDifference.query.get_or_404(id)
             item.difference = quantity

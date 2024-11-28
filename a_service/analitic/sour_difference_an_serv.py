@@ -29,12 +29,13 @@ class SourDiffAnServ():
     def update_sour_diff_table(self, data):
         line_id = []
         for row in data:
+            print(row, "row")
             if row["stock"] == "None":
                 row["stock"] = 0
             line_id.append([int(row["id"]), int(row["stock"])])
         print(line_id)
         return line_id
- 
+  
     def add_quantity_crm(self, item, event_date):
         quantity = item.quantity
         id = item.id
@@ -58,8 +59,8 @@ class SourDiffAnServ():
                 if item.quantity_crm and item.quantity_stock:
                     source_difference = item.quantity_stock - item.quantity_crm
                     add_cache = self.cache_serv.set("source_difference", source_difference)
-                    print(self.cache_serv.get("source_difference"))
-                    update = self.sour_diff_an_rep.update_diff_sum(self.cache_serv.get("source_difference"), item.id)  
+                    print(self.cache_serv.get("source_difference"), "cache_serv")
+                    update = self.sour_diff_an_rep.update_diff_sum(item.id, self.cache_serv.get("source_difference"))  
             return True
         return False
     
@@ -135,7 +136,7 @@ class SourDiffAnServ():
             count_diff = stop - start
             print(count_diff, "count_diff")
             while not search and count < count_diff.days: # проходим пока не найдем день
-                time.sleep(1)
+                # time.sleep(1)
                 count += 1
                 print(count, "count")
                 # print(search_time, " search_time ")
