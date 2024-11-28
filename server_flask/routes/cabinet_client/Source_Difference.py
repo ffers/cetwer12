@@ -23,7 +23,7 @@ def source_difference():
     if request.method == 'POST':
         add = sour_diff_cntrl.add_source_difference_req(request)
         if add:
-            flash('Додоано товар', category='success')
+            flash('Додано товар', category='success')
             return redirect('/cabinet/source_difference')
         else:
             flash('Товар не додано', category='success')
@@ -31,8 +31,8 @@ def source_difference():
     else:
         product = sour_diff_cntrl.load_source_difference()
         print(f"Перевірка {product}")
-        return render_template("cabinet_client/analitic/source_difference.html", product=product, user=current_user)
-     
+        return render_template("cabinet_client/analitic/source_difference.html", product=[], user=current_user)
+       
 
 @bp.route('/cabinet/source_difference/<int:id>', methods=['POST','GET'])
 @login_required
@@ -48,18 +48,18 @@ def source_difference_product(id):
         product = source_diff_cntrl.load_source_difference()
         print(f"Перевірка {product}")
         return render_template("cabinet_client/analitic/source_difference.html", product=product, user=current_user)
-      
-   
+
+     
 @bp.route('/cabinet/source_difference/update_day/<int:id>', methods=['POST','GET'])
 @login_required
 @admin_permission.require(http_exception=403)   
 def source_difference_update_day(id):
     source_diff_cntrl = get_instance('sour_diff_an_cntrl', SourDiffAnCntrl)
     # add_line_diff = source_diff_cntrl.add_quantity_crm_today()
-    add_quantity = source_diff_cntrl.sour_diff_all_source_sold("days", 1) 
+    # add_quantity = source_diff_cntrl.sour_diff_all_source_sold("two_days") 
     source_diff_sum = source_diff_cntrl.update_source_difference_id_period(id, "month")
     return redirect('/cabinet/source_difference/{}'.format(id))
-
+  
 
 @bp.route('/cabinet/source_difference/update/<int:id>', methods=['POST','GET'])
 @login_required
@@ -105,3 +105,45 @@ def source_diff_update_bulk():
     else:
         flash('Невийшло', category='error')
         return 400
+    
+
+@bp.route('/cabinet/source_difference/load_event_day', methods=['POST','GET'])
+@login_required
+@admin_permission.require(http_exception=403)   
+def source_diff_load_event_day():
+    if request.method == "POST":
+        source_diff_cntrl = get_instance('sour_diff_an_cntrl', SourDiffAnCntrl)
+        product = source_diff_cntrl.load_source_diff_event_date(request)
+        if product:            
+            return render_template("cabinet_client/analitic/source_difference.html", product=product, user=current_user)
+        else:
+            flash('Невийшло', category='error')
+            return 400
+        
+
+@bp.route('/cabinet/source_difference/update_sold', methods=['POST','GET'])
+@login_required
+@admin_permission.require(http_exception=403)   
+def source_diff_update_sold():
+    if request.method == "GET":
+        source_diff_cntrl = get_instance('sour_diff_an_cntrl', SourDiffAnCntrl)
+        product = source_diff_cntrl.sour_diff_all_source_sold("month")
+        if product:            
+            return redirect('/cabinet/source_difference')
+        else:
+            flash('Невийшло', category='error')
+            return 400
+         
+ 
+@bp.route('/cabinet/source_difference/delete_event_day', methods=['POST','GET'])
+@login_required
+@admin_permission.require(http_exception=403)   
+def source_diff_delete_event_day():
+    if request.method == "POST":
+        source_diff_cntrl = get_instance('sour_diff_an_cntrl', SourDiffAnCntrl)
+        product = source_diff_cntrl.delete_event_date(request)
+        if product:            
+            return redirect('/cabinet/source_difference')
+        else:
+            flash('Невийшло', category='error')
+            return 400

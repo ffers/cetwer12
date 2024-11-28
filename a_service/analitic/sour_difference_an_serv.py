@@ -46,7 +46,12 @@ class SourDiffAnServ():
         quantity_stock = req.form['quantity_stock']
         return ( quantity_crm,  
                 quantity_stock)
-
+    
+    def load_event_day(self, req):
+        start = datetime.strptime(req.form['event_date_start'], "%d-%m-%Y")
+        stop = datetime.strptime(req.form['event_date_stop'], "%d-%m-%Y")
+        return start, stop
+       
     def source_difference_sum(self, product):
         if product:
             for item in product:
@@ -121,14 +126,18 @@ class SourDiffAnServ():
             print("source None")
             return 0
         
-    def count_going_list(self, source_list):
+    def count_going_list(self, source_list, start, stop):
         for line in source_list: # проходим по всем строкам продукта
             search_time = line.event_date - timedelta(days=1) # для етой строки вичислиям день до етого
             # print(line.event_date, "line.event_date", search_time)
             search = False; count = 0
             # print(line.id)
-            while not search and count < 30: # проходим пока не найдем день
+            count_diff = stop - start
+            print(count_diff, "count_diff")
+            while not search and count < count_diff.days: # проходим пока не найдем день
+                time.sleep(1)
                 count += 1
+                print(count, "count")
                 # print(search_time, " search_time ")
                 search = self.search_day(source_list, search_time, line)
                 if not search:
@@ -136,7 +145,8 @@ class SourDiffAnServ():
 
     def search_day(self, source_list, search_time, line):
         for line_old in source_list: # опять проходимся по строкам 
-            # print(line_old.event_date, "line_old.event_date")
+            # print()
+            # print(line_old.event_date, "line_old.event_date", line.event_date, "event_date")
             if search_time == line_old.event_date: # если находим дату на день раньше
                 quantity = line.quantity_crm - line_old.quantity_crm
                 print(quantity, "quantity")

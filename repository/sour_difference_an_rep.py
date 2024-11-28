@@ -42,7 +42,13 @@ class SourDiffAnRep():
             return True
         except:
             return False
-         
+          
+    def load_source_difference_period(self, start, stop):
+        product = SourceDifference.query.filter(
+            SourceDifference.event_date >= start,
+            SourceDifference.event_date <= stop
+        ).order_by(desc(SourceDifference.timestamp)).all()
+        return product
   
     def load_source_difference_id_period(self, id, start, stop):
         product = SourceDifference.query.filter(
@@ -51,6 +57,7 @@ class SourDiffAnRep():
             SourceDifference.source_id == id
         ).order_by(desc(SourceDifference.timestamp)).all()
         return product
+
          
     def add_quantity_crm(self, body):
         # try:

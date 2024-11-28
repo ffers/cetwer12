@@ -8,6 +8,8 @@ class WorkTimeCntrl:
         start_time, stop_time = None, None
         if period == "day":
             start_time, stop_time = self.day()
+        elif period == "two_days":
+            start_time, stop_time = self.two_day()
         elif period == "days":
             start_time, stop_time = self.days(quantity)
         elif period == "week":
@@ -34,6 +36,15 @@ class WorkTimeCntrl:
         start_time = start_time.replace(hour=14, minute=0, second=0,
                                         microsecond=0)
         stop_time = start_time + timedelta(days=1)
+        return start_time, stop_time
+    
+    def two_day(self):
+        current_time = next(self.my_time())
+        start_time = current_time - timedelta(hours=14)
+        start_time = start_time.replace(hour=14, minute=0, second=0,
+                                        microsecond=0)
+        start_time = start_time - timedelta(days=2)
+        stop_time = start_time + timedelta(days=2)
         return start_time, stop_time
 
     def week(self):

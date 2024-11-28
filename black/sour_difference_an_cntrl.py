@@ -38,6 +38,11 @@ class SourDiffAnCntrl():
         line = self.sour_diff_an_rep.load_source_diff_line(id)
         return line
     
+    def load_source_diff_event_date(self, req):
+        start, stop = self.sour_diff_an_serv.load_event_day(req)
+        source = self.sour_diff_an_rep.load_source_difference_period(start, stop)
+        return source 
+    
     
     def add_quantity_crm_today(self):
         print("Працюєм")
@@ -86,14 +91,22 @@ class SourDiffAnCntrl():
         list_data = self.sour_diff_an_serv.update_sour_diff_table(data)
         add = self.sour_diff_an_rep.update_diff_table(list_data)
         return add
+   
+    def delete_event_date(self, req):
+        start, stop = self.sour_diff_an_serv.load_event_day(req)
+        lines = self.sour_diff_an_rep.load_source_difference_period(start, stop)
+        for line in lines:
+            self.sour_diff_an_rep.delete_diff_line(line.id)
+        return True
+
     
     def sour_diff_id_gone_list(self, id, period, days=None):
-        start, stop = self.work_time_cntrl.load_work_time(period, days)
-        # print(start, " & ", stop)
+        start, stop = self.work_time_cntrl.load_work_time(period)
+        print(start, " & ", stop)
         source_list = self.sour_diff_an_rep.load_source_difference_id_period(id, start, stop)
         print(source_list)
-        self.sour_diff_an_serv.count_going_list(source_list)
-
+        self.sour_diff_an_serv.count_going_list(source_list, start, stop)
+ 
     
     def sour_diff_id_gone(self, id):
         start, stop = self.work_time_cntrl.load_work_time("days", 1)
@@ -104,11 +117,13 @@ class SourDiffAnCntrl():
         quantity = self.sour_diff_an_serv.count_going(old_source, last_source)
         self.sour_diff_an_rep.update_source_diff_line_sold(id, quantity)
         print("last sold gone", quantity)
-
+    
     def sour_diff_all_source_sold(self, period, days=None):
         source_all = self.sour_an_cntrl.load_all()
         for item in source_all:
+            print(item.id, "item")
             self.sour_diff_id_gone_list(item.id, period, days)
+        return True
 
     def delete(self, id):
         delete = self.sour_diff_an_rep.delete_diff_line(id)

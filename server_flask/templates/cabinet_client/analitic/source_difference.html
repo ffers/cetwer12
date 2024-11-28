@@ -4,7 +4,7 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
 <head>
-  <title>Аналітика Товару {{product[0].product_source.article}}</title>
+  <title>Аналітика Товару </title>
 </head>
 {% endblock %} 
 {% block body %}
@@ -59,7 +59,7 @@
 
 
 <h1 style="text-align: center;">
-  Аналітика Товару {{product[0].product_source.name}} {{product[0].product_source.article}}
+  Аналітика Товару 
 </h1>
 
 
@@ -68,6 +68,7 @@
       <table id="editableTable" class="table table-hover table-striped ">
         <thead>
           <tr >
+            <th scope="col"></th>
             <th scope="col"></th>
             <th scope="col"></th>
             <th scope="col">Дата</th>
@@ -83,6 +84,7 @@
           {% for item in product %}
           <tr data-id="{{item.id}}">
             <td></td>
+            <td >{{item.product_source.article}}</td>
             <td contenteditable="false">
               <a href="/cabinet/source_difference/update/{{item.id}}">
                 <button type="button" class="btn btn-info">
@@ -112,12 +114,41 @@
             
           </div>
           
-
+          <div class="col-sm">
+            <div class="button-pult">
+            <button id="saveBtn" type="button" class="btn btn-outline-info my-2 my-sm-0">Зберегти редагування таблиці</button>
+            </div>
+              </div>
 
 
           <br/>
           <br/>
-
+          <div class="content">
+          <div class="row">
+    
+            <form action="/cabinet/source_difference/load_event_day" method="post">
+              <div class="col-sm col-lg-2">  
+                <input class="form-control"
+                                      type="text" id="event_date" name="event_date_start">                       
+                                  </div>     
+                                  <div class="col-sm col-lg-2">  
+                <input class="form-control"
+                                      type="text" id="event_date" name="event_date_stop">                       
+                                  </div>      
+                                </div>            
+                                  <div class="col-sm"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Завантажити</button></div>
+                              <script>
+                                  flatpickr('#event_date', {
+                                  dateFormat: 'd-m-Y', // Формат дати
+                                  allowInput: true,
+                                  defaultDate: 'today', 
+                                  });
+                              </script>
+              
+            </form>
+          
+          
+          </div>
           <div class="content">
             <h1 style="text-align: center;">
                     Додати Підрахунок
@@ -163,28 +194,60 @@
 </div>
 <div class="row">
   <div class="col-sm"></div>
+  
   <div class="col-sm"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Додати</button></div>
 </div>
 </form>
+<div class="content">
+<div class="row">
 
+  <div class="col-sm">
 <div class="button-pult">
-<button id="saveBtn">Save Changes</button>
-</div>
-
-<div class="button-pult">
-  <a href="/cabinet/source_difference/update_day/{{product[0].source_id}}">
+  <a href="/cabinet/source_difference/update_day">
     <button type="button" class="col-sm btn btn-outline-info my-2 my-sm-0">
       Порахувати різницю
     </button>
   </a>
 </div>
+  </div>
 
-<div class="button-pult"></div>
-  <a href="/cabinet/source_difference/update_day/{{product[0].source_id}}">
+  <div class="col-sm">
+<div class="button-pult">
+  <a href="/cabinet/source_difference/update_sold">
     <button type="button" class="col-sm btn btn-outline-info my-2 my-sm-0">
-      Додати товар за цей день
+      Порахувати продані
     </button>
   </a>
+</div>
+  </div>
+
+</div>
+
+  
+
+    <div class="row">
+    <h6>Delete</h6>
+      <form action="/cabinet/source_difference/delete_event_day" method="post">
+        <div class="col-sm">
+          <input class="form-control"
+                                type="text" id="event_date" name="event_date_start"/>                       
+                            </div>     
+        <div class="col-sm">
+          <input class="form-control"
+                                type="text" id="event_date" name="event_date_stop"/>                       
+                            </div>                  
+                            <div class="col-sm"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Видалити</button></div>
+                            <script>
+                              flatpickr('#event_date', {
+                              dateFormat: 'd-m-Y', // Формат дати
+                              allowInput: true,
+                              defaultDate: 'today', 
+                              });
+                          </script>
+        
+      </form>
+    
+    </div>
 </div>
 
 <br><br><br>
