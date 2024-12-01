@@ -6,6 +6,7 @@ from utils import util_asx
 from black.sour_an_cntrl import SourAnCntrl
 from black.telegram_cntrl.tg_cash_cntrl import TgCashCntrl
 from black import SourDiffAnCntrl
+from utils import SendRequest
 
 class RegSchedulleSrv():
     def __init__(self):
@@ -14,6 +15,7 @@ class RegSchedulleSrv():
         self.ord = OrderCntrl()
         self.quan_stok = TgCashCntrl()
         self.sour_diff_cntrl = SourDiffAnCntrl()
+        self.send_req = SendRequest()
 
     def reg_17_00(self):
         with flask_app.app_context(): # переробити визов на request,
@@ -81,6 +83,11 @@ class RegSchedulleSrv():
             self.sour.sort_analitic("week")
             self.sour.sort_analitic("day")
             print("Успіх")
+        
+    def reg_17_00_new(self):
+        data = None
+        url = "http://localhost:8000/v2/orders/16_58"
+        self.send_req.send_http_json(data, url)
 
 
 

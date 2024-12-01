@@ -63,6 +63,14 @@ class TelegramController():
 
     def loadPhoto(self, chat_id):
         return tg_api.loadPhoto(chat_id)
+    
+    def black_pic(self):
+        id_photo = 'AgACAgIAAxkBAAIMl2YWFuaONHD9_7SWvzDiiK8vmNQSAAK31jEbGsoISBKbThvzHGUpAQADAgADbQADNAQ'
+        resp_photo = tg_cntrl.sendPhoto(id_photo)
+        if not resp_photo:
+            self.OC_log.info("Телеграм не дал ответа Photo")
+        self.OC_log.info(resp_photo)
+        return True
 
 
 tg_cntrl = TelegramController()

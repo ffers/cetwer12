@@ -1,4 +1,4 @@
-from .app import app
+from server_fast.app import app
 from celery import Celery
 import psycopg2, os
 from dotenv import load_dotenv

@@ -27,11 +27,12 @@ class SourDiffAnCntrl():
         product = self.sour_diff_an_rep.load_source_difference() 
         return product
      
-    def load_source_difference_id_period(self, id, period):
-        start_time, stop_time = self.work_time_cntrl.load_work_time(period)
+    def load_source_difference_id_period(self, id, period, days):
+        start_time, stop_time = self.work_time_cntrl.load_work_time(period, days)
         product = self.sour_diff_an_rep.load_source_difference_id_period(
             id, start_time, stop_time
             )
+        print(start_time, stop_time, "month")
         return product
     
     def load_source_diff_line(self, id):

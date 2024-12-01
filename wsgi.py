@@ -1,5 +1,5 @@
-from server_flask import app
-from server_flask.flask_app import flask_app
+from server_fast import app
+
 
 
 

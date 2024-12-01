@@ -39,8 +39,8 @@ def source_difference():
 @admin_permission.require(http_exception=403)   
 def source_difference_product(id):
     source_diff_cntrl = get_instance('sour_diff_an_cntrl', SourDiffAnCntrl)   
-    period = "month"  
-    product = source_diff_cntrl.load_source_difference_id_period(id, period)
+
+    product = source_diff_cntrl.load_source_difference_id_period(id, "days", 30)
     if product:
         return render_template("cabinet_client/analitic/source_difference.html", product=product, user=current_user)
     else:
@@ -155,3 +155,11 @@ def source_difference_add_day():
     source_diff_cntrl = get_instance('sour_diff_an_cntrl', SourDiffAnCntrl)
     add_line_diff = source_diff_cntrl.add_quantity_crm_today()
     return redirect('/cabinet/source/all')
+
+# @bp.route('/cabinet/source_difference/test_button', methods=['POST','GET'])
+# @login_required
+# @admin_permission.require(http_exception=403)   
+# def test_button():
+#     source_diff_cntrl = get_instance('sour_diff_an_cntrl', SourDiffAnCntrl)
+#     add_line_diff = source_diff_cntrl.add_quantity_crm_today()
+#     return redirect('/cabinet/source/all')

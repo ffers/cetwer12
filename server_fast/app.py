@@ -7,6 +7,10 @@ from utils import util_asx
 
 import uvicorn, multiprocessing, logging
 
+from .routers import router as orders_ops
+
+
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
@@ -19,6 +23,7 @@ logging.basicConfig(
 OC_log = util_asx.oc_log("fast_api")
 app = FastAPI()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+app.include_router(orders_ops)
 
 @app.get("/v2")
 async def read_items(token: Annotated[str, Depends(oauth2_scheme)]):

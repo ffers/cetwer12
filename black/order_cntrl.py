@@ -6,7 +6,7 @@ from a_service.delivery import NpServ
 from a_service import DeliveryOrderServ
 from dotenv import load_dotenv
 from api.nova_poshta.create_data import NpClient
-from .telegram_controller import tg_cntrl
+from .telegram_controller import tg_cntrl, TelegramController
 from .np_cntrl import NpCntrl
 from .product_analitic_cntrl import ProductAnaliticControl
 from .delivery_order_cntrl import DeliveryOrderCntrl
@@ -16,6 +16,11 @@ from .prom_cntrl import prom_cntrl
 from utils import util_asx
 from .sour_an_cntrl import sour_an_cntrl
 from datetime import datetime
+from black.sour_an_cntrl import SourAnCntrl
+from black.telegram_cntrl.tg_cash_cntrl import TgCashCntrl
+
+
+
 
 sys.path.append('../')
 from common_asx.utilits import Utils
@@ -46,6 +51,21 @@ util_cntrl = Utils()
 
 
 class OrderCntrl:
+    def __init__(self) -> None:
+        self.OC_log = util_asx.oc_log("reg_16_00")
+        self.sour = SourAnCntrl()
+        self.quan_stok = TgCashCntrl()
+        self.tg_cntrl = TelegramController()
+        self.np_client = NpClient()
+        
+
+    def reg_17_00(self):
+        black_pic = self.tg_cntrl.black_pic()
+        dict_order = self.createReg()
+        self.OC_log.info(dict_order)
+        self.sendTg(dict_order)
+        self.OC_log.info("Виконую завдання")
+        
     def my_time(self):
         yield (datetime.now())
 
@@ -321,6 +341,8 @@ class OrderCntrl:
         if not resp_sour:
             tg_cntrl.sendMessage(tg_cntrl.chat_id_info, "Немає такого компоненту ")
         return resp_sour
+    
+
 
 
 
