@@ -75,8 +75,8 @@ class SourDiffAnCntrl():
         update = body
         return update
     
-    def update_source_difference_period(self, period): # потрібно source_id 
-        start_time, stop_time = self.work_time_cntrl.load_work_time(period)
+    def update_source_difference_period(self, period, days): # потрібно source_id 
+        start_time, stop_time = self.work_time_cntrl.load_work_time(period, days)
         product = self.sour_diff_an_rep.load_source_difference_period(
             start_time, stop_time   
             )
