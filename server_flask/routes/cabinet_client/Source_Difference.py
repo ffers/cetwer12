@@ -117,8 +117,8 @@ def source_diff_load_event_day():
         if product:            
             return render_template("cabinet_client/analitic/source_difference.html", product=product, user=current_user)
         else:
-            flash('Невийшло', category='error')
-            return 400
+            flash('Нема товару за цей період', category='error')
+            return redirect('/cabinet/source/all')
         
 
 @bp.route('/cabinet/source_difference/update_sold', methods=['POST','GET'])
