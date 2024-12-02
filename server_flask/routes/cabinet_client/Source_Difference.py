@@ -147,7 +147,7 @@ def source_diff_delete_event_day():
         else:
             flash('Невийшло', category='error')
             return 400
-               
+                    
 @bp.route('/cabinet/source_difference/add_day', methods=['POST','GET'])
 @login_required
 @admin_permission.require(http_exception=403)   
