@@ -117,7 +117,7 @@ def source_diff_load_event_day():
         if product:            
             return render_template("cabinet_client/analitic/source_difference.html", product=product, user=current_user)
         else:
-            flash('Нема товару за цей період', category='error')
+            flash('Нема данних по товару за цей період', category='error')
             return redirect('/cabinet/source/all')
         
 
@@ -147,7 +147,7 @@ def source_diff_delete_event_day():
         else:
             flash('Невийшло', category='error')
             return 400
-         
+               
 @bp.route('/cabinet/source_difference/add_day', methods=['POST','GET'])
 @login_required
 @admin_permission.require(http_exception=403)   
@@ -155,7 +155,7 @@ def source_difference_add_day():
     source_diff_cntrl = get_instance('sour_diff_an_cntrl', SourDiffAnCntrl)
     add_line_diff = source_diff_cntrl.add_quantity_crm_today()
     return redirect('/cabinet/source/all')
-
+  
 # @bp.route('/cabinet/source_difference/test_button', methods=['POST','GET'])
 # @login_required
 # @admin_permission.require(http_exception=403)   
