@@ -4,7 +4,7 @@
   <title>Замовлення</title>
 </head>
 
-<div id="orders">
+<div id="orders" class="content">
   
   <div class="table-responsive-sm" >
     <table class="table table-hover table-striped " >
@@ -125,16 +125,20 @@
 </tbody>
 
 </table>
+
+  <div class="container text-center">
+    <div class="col">
+      {{ pagination.info }}
+<nav aria-label="Page navigation example">
+<ul class="pagination justify-content-center pagination-sm">
+    {{ pagination.links }}
+</ul>
+</nav>
+    </div>
+</div>
+</div>
     </div>
     
-  </div>
-
-<nav aria-label="Page navigation example">
-  <ul class="pagination">
-      {{ pagination.links }}
-  </ul>
-</nav>
-</div>
 
 {% block footer %}
 {% if order == none %}

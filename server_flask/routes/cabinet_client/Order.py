@@ -75,7 +75,7 @@ def Order():
         per_page = 50
 
         total = len(tasks_orders)
-        pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap5')
+        pagination = Pagination(page=page, per_page=per_page, inner_window=1, outer_window=1, total=total, bs_version=5,  )
 
         offset = (page - 1) * per_page
         data_subset = get_data(tasks_orders, offset=offset, per_page=per_page)
@@ -83,7 +83,7 @@ def Order():
         return render_template('cabinet_client/orders.html', pagination=pagination,
                                tasks_users=tasks_users, orders=data_subset,  user=current_user)
 
-
+ 
 
 @bp.route('/cabinet/orders/update/<int:id>', methods=['GET', 'POST'])
 @login_required

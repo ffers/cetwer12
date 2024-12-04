@@ -200,10 +200,10 @@ def product_update_bulk():
     else:
         flash('Невийшло', category='error')
         return 400 
-
   
+    
+    
   
-
 
 
 
