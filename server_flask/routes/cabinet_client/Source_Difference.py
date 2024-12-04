@@ -39,7 +39,7 @@ def source_difference():
 @admin_permission.require(http_exception=403)   
 def source_difference_product(id):
     source_diff_cntrl = get_instance('sour_diff_an_cntrl', SourDiffAnCntrl)   
-
+ 
     product = source_diff_cntrl.load_source_difference_id_period(id, "days", 30)
     if product:
         return render_template("cabinet_client/analitic/source_difference.html", product=product, user=current_user)
@@ -48,8 +48,8 @@ def source_difference_product(id):
         product = source_diff_cntrl.load_source_difference()
         print(f"Перевірка {product}")
         return render_template("cabinet_client/analitic/source_difference.html", product=product, user=current_user)
-
-     
+         
+          
 @bp.route('/cabinet/source_difference/update_day', methods=['POST','GET'])
 @login_required
 @admin_permission.require(http_exception=403)   
@@ -59,8 +59,8 @@ def source_difference_update_day():
     # add_quantity = source_diff_cntrl.sour_diff_all_source_sold("two_days") 
     source_diff_sum = source_diff_cntrl.update_source_difference_period("days", 30)
     return redirect('/cabinet/source/all')
-  
-
+   
+ 
 @bp.route('/cabinet/source_difference/update/<int:id>', methods=['POST','GET'])
 @login_required
 @admin_permission.require(http_exception=403)   
@@ -90,9 +90,9 @@ def source_difference_delete(id):
     source_diff_cntrl = get_instance('sour_diff_an_cntrl', SourDiffAnCntrl)
     resp = source_diff_cntrl.delete(id)
     return redirect('/cabinet/source_difference/{}'.format(resp[1]))
+          
         
  
-
 @bp.route('/cabinet/source_difference/update_bulk', methods=['POST','GET'])
 @login_required
 @admin_permission.require(http_exception=403)   
@@ -147,7 +147,7 @@ def source_diff_delete_event_day():
         else:
             flash('Невийшло', category='error')
             return 400
-                         
+                              
 @bp.route('/cabinet/source_difference/add_day', methods=['POST','GET'])
 @login_required
 @admin_permission.require(http_exception=403)   

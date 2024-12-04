@@ -29,6 +29,14 @@ class ProductCntrl:
             resp_update_money = analitic_cntrl.get_product_analitic(id)
         print(f"СМОТРИМ {update_data}")
         return resp_bool
+     
+    def update_prod_table(self, req):
+        for item in req:
+            id, serv = prod_serv.update_prod_table(item)
+            rep = prod_rep.update_product_item(serv, id)
+            if not rep:
+                return False 
+        return True
 
     def update_after_arrival(self, combined_list):
         resp_bool = prod_rep.update_after_arrival(combined_list)

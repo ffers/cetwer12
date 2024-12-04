@@ -4,7 +4,7 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
 <head>
-  <title>Аналітика Товару </title>
+  <title>Аналітика Товару</title>
 </head>
 {% endblock %} 
 {% block body %}
@@ -272,7 +272,7 @@
 
 <br><br><br>
 
-<script>
+<!-- <script>
 $(document).ready(function () {
     const table = $('#editableTable').DataTable({
       pageLength: 50
@@ -302,9 +302,9 @@ $('#saveBtn').on('click', function () {
                 table.clear();
                 
                 // Додаємо нові дані
-                table.rows.add(newData);              
+                table.rows.add(newData);     -->         
                 
-            
+    <!-- <script>        
   const tableData = [];
 
   table.rows().every(function (rowIdx, tableLoop, rowLoop) {
@@ -329,9 +329,8 @@ $('#saveBtn').on('click', function () {
           
       }
   });
-});
-});
-</script>
+
+</script>  -->
 
 
 
@@ -342,6 +341,7 @@ $('#saveBtn').on('click', function () {
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
 <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
 <script src="{{url_for('static', filename='javascript/select_source.js')}}"></script>
+<script src="{{url_for('static', filename='javascript/editableTableSourceDiff.js')}}"></script>
 
 
 

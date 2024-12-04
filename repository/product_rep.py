@@ -21,7 +21,7 @@ class ProductRep():
             return True
         except:
             return False
-
+ 
     def load_product_all(self):
         products = Products.query.order_by(Products.timestamp).all()
         return products
@@ -33,17 +33,15 @@ class ProductRep():
     def update_product_item(self, data, id):
         try:
             product = Products.query.get_or_404(id)
+            print(id, product.id, product.product_name, product.article)
             product.article = data[0]
             product.product_name = data[1]
-            product.description = data[2]
-            product.quantity = data[3]
-            product.price = data[4]
-            product.body_product_price = data[5]
             db.session.commit()
             return True
         except:
             return False
-
+                  
+                                  
     def update_after_arrival(self, combined_list):
         for item in combined_list:
             datetime_new, product_id, quantity, price, total = item
@@ -52,7 +50,7 @@ class ProductRep():
             product.body_product_price = price
             db.session.commit()
         return True
-
+         
     def delete_product(self, id):
         task_to_delete = Products.query.get_or_404(id)
         print(">>> Start delete in datebase")
@@ -98,6 +96,7 @@ class ProductRep():
             return True
         # except:
         #     return False
+
 
     def load_product_relate(self):
         products = ProductRelate.query.order_by(ProductRelate.timestamp).all()

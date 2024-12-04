@@ -188,7 +188,21 @@ def delete_product_relate(id):
     return redirect(url_for(f'Products.product_relate'))
 
 
+@bp.route('/cabinet/product/update_bulk', methods=['POST','GET'])
+@login_required
+@admin_permission.require(http_exception=403)   
+def product_update_bulk():
+    prod_cntrl = ProductCntrl()
+    add = prod_cntrl.update_prod_table(request.get_json())
+    if add:
+        flash('Оновлено', category='success')
+        return "OK", 200
+    else:
+        flash('Невийшло', category='error')
+        return 400 
 
+  
+  
 
 
 
@@ -199,4 +213,4 @@ def delete_product_relate(id):
 #     quantity = db.Column(db.Integer)
 #     product_id = db.Column(db.Integer, db.ForeignKey(
 #         'products.id', name='fk_product_relate_products_id'))
-#     products = db.relatio
+#     products = db.relatio 

@@ -31,6 +31,11 @@ class ProductServ:
         price = self.format_float(price_ch)
         print(price, product_name)
         return (article, product_name, description, quantity, price, body_product_price)
+    
+    def update_prod_table(self, row):
+        line_id = [row["article"], row["name"]]
+        print(line_id)
+        return int(row["id"]), line_id
 
     def add_product_relate(self, req):
         print(f"Компоненти {req.form}")
