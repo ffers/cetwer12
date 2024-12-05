@@ -1,7 +1,10 @@
 
 $(document).ready(function () {
     const table = $('#editableTable').DataTable({
-      pageLength: 50
+        pageLength: 50,
+        hover: true,
+        autoWidth: false
+        // columnDefs: [{ width: '100%' }]
     });
 
 $('#saveBtn').on('click', function () {

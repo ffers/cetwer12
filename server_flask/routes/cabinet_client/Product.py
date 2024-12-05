@@ -12,7 +12,7 @@ manager_permission = Permission(manager)
 admin_permission = Permission(RoleNeed('admin'))
 bp = Blueprint('Products', __name__, template_folder='templates')
 
-
+    
 def format_float(num):
     try:
         if isinstance(num, int):
@@ -37,7 +37,7 @@ def Product():
         tasks_users = Users.query.order_by(Users.timestamp).all()
         return render_template('cabinet_client/Products/products.html',
                                user=current_user, tasks_users=tasks_users, tasks_products=tasks_products)
-
+        
 @bp.route('/cabinet/orders/get_product/changerelated', methods=['POST', 'GET'])
 def Change():
     print("start")
@@ -140,14 +140,15 @@ def add_product_relate():
         if resp_bool == True:
             print("Product added successfully")
             responce_data = {'status': 'success', 'message': 'Product relate added successfully'}
-            flash('Продукт створено!', category='success')
-            return redirect(url_for('Products.product_relate'))
+            flash('Компоненти додано!', category='success')
+            return redirect(url_for('Products.add_product_relate'))
         else:
             print(request.form)
-            print("НЕВИЙШЛО!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            print("НЕВИЙШЛО!")
+            flash('Компоненти недодано!', category='error')
             return redirect(url_for('Products.add_product_relate'))
     return render_template('cabinet_client/Products/add_product_relate.html', user=current_user )
-
+   
 @bp.route('/cabinet/products/update_product_relate/<int:id>', methods=['POST', 'GET'])
 @login_required
 @admin_permission.require(http_exception=403)

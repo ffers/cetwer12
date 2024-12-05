@@ -81,8 +81,8 @@ def Order():
         data_subset = get_data(tasks_orders, offset=offset, per_page=per_page)
 
         return render_template('cabinet_client/orders.html', pagination=pagination,
-                               tasks_users=tasks_users, orders=data_subset,  user=current_user)
-
+                             tasks_users=tasks_users, orders=data_subset,  user=current_user)
+  
  
 
 @bp.route('/cabinet/orders/update/<int:id>', methods=['GET', 'POST'])

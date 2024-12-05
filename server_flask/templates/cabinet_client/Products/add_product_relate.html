@@ -3,6 +3,9 @@
 {% block title %}Прихід Товару{% endblock %}
 
 {% block head %}
+<head>
+    <title>Додавання Компоненту</title>
+  </head>
 <!-- Підключення стилів Flatpickr -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -11,6 +14,7 @@
 {% endblock %}
 
 {% block body %}
+
 	<div class="content">
 		<h1 style="text-align: center;">
             Додати Компонент
@@ -69,7 +73,7 @@
 
 
 
-	</div>
+	</div> 
 
 
     <script src="{{url_for('static', filename='javascript/add-select2.js')}}"></script>

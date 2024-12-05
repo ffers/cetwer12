@@ -3,8 +3,8 @@ $(document).ready(function () {
     let table = $('#editableTable').DataTable({
       pageLength: 50,
       hover: true,
-      autoWidth: false,
-      columnDefs: [{ width: '0%' }]
+      autoWidth: false
+    //   columnDefs: [{ width: '10%' }]
 
     });
     // var value = $(this).val();

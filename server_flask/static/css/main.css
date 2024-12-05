@@ -7,7 +7,7 @@
 
 body {
             font-family: Arial, sans-serif;
-            margin: 0;
+            /* margin: 0; */
             /* padding: 0; */
             /* background-image: radial-gradient(circle, black 1px, transparent 1px);
             background-size: 18px 19px; /* розмір кожної точки 
@@ -164,7 +164,7 @@ tr {
 
 @media screen and (max-width: 928px) {
     .content {
-        width: 90%; /* Занимает всю доступную ширину экрана */
+        width: 97%; /* Занимает всю доступную ширину экрана */
     }
     .form-control {
         margin-top: 5px;
