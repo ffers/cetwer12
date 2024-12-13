@@ -1,12 +1,6 @@
 from datetime import datetime, timezone, timedelta
-import time
-
-
-
-
-
-
-
+import time 
+ 
 class SourDiffAnServ():
     def __init__(self, cache_serv, sour_diff_an_rep, prod_rep) -> None:
         self.cache_serv = cache_serv
@@ -126,7 +120,7 @@ class SourDiffAnServ():
         else:
             print("source None")
             return 0
-        
+          
     def count_going_list(self, source_list, start, stop):
         for line in source_list: # проходим по всем строкам продукта
             search_time = line.event_date - timedelta(days=1) # для етой строки вичислиям день до етого

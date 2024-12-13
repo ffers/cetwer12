@@ -1,7 +1,6 @@
 from a_service import SourDiffAnServ
 from repository import SourDiffAnRep
 from a_service import CacheService
-from .sour_an_cntrl import SourAnCntrl
 from .work_time_cntrl import WorkTimeCntrl
 from repository import OrderRep
 from repository import ProductRep
@@ -13,7 +12,6 @@ class SourDiffAnCntrl():
     def __init__(self) -> None:
         self.sour_diff_an_rep = SourDiffAnRep()
         self.cache_serv = CacheService()
-        self.sour_an_cntrl = SourAnCntrl()
         self.work_time_cntrl = WorkTimeCntrl()
         self.ord_rep = OrderRep()
         self.prod_rep = ProductRep()
@@ -44,10 +42,13 @@ class SourDiffAnCntrl():
         source = self.sour_diff_an_rep.load_source_difference_period(start, stop)
         return source 
     
+    def load_last_line_id(self, id):
+        source = self.sour_diff_an_rep.load_last_line_id(id) 
+        return source
     
-    def add_quantity_crm_today(self):
+    
+    def add_quantity_crm_today(self, products):
         print("Працюєм")
-        products = self.sour_an_cntrl.load_all()
         event_date = next(self.work_time_cntrl.my_time()).strftime('%Y-%m-%d')
         start, stop = self.work_time_cntrl.load_work_time("all")
         orders = self.ord_rep.load_period(start, stop)
@@ -92,7 +93,10 @@ class SourDiffAnCntrl():
         list_data = self.sour_diff_an_serv.update_sour_diff_table(data)
         add = self.sour_diff_an_rep.update_diff_table(list_data)
         return add
-   
+    
+    def add_line_comment(self, id, comment):
+        return self.sour_diff_an_rep.add_diff_comment(id, comment)
+
     def delete_event_date(self, req):
         start, stop = self.sour_diff_an_serv.load_event_day(req)
         lines = self.sour_diff_an_rep.load_source_difference_period(start, stop)
@@ -119,8 +123,7 @@ class SourDiffAnCntrl():
         self.sour_diff_an_rep.update_source_diff_line_sold(id, quantity)
         print("last sold gone", quantity)
     
-    def sour_diff_all_source_sold(self, period, days=None):
-        source_all = self.sour_an_cntrl.load_all()
+    def sour_diff_all_source_sold(self, source_all, period, days=None):
         for item in source_all:
             print(item.id, "item")
             self.sour_diff_id_gone_list(item.id, period, days)

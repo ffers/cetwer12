@@ -5,12 +5,8 @@ from a_service import tg_serv
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
-chat_id_helper = os.getenv("CHAT_ID_HELPER") # вп: -421982888; розет: -1001822083358; укр: -1001173544690; нп: -1001391714237
-chat_id_np = os.getenv("CH_ID_NP")
-chat_id_ukr = os.getenv("CH_ID_UKR")
-chat_id_rozet = os.getenv("CH_ID_ROZ")
-chat_id_vp = os.getenv("CHAT_ID_INFO")
-ch_id_sk = os.getenv("CH_ID_SK")
+ # вп: -421982888; розет: -1001822083358; укр: -1001173544690; нп: -1001391714237
+
 
 class TelegramController():
     def __init__(self):

@@ -3,10 +3,10 @@ import os, json, copy, hashlib
 
 bufer = {"CityName":"", "CityRef":"", "TypeOfWarehouseRef":"", "WarehouseId":"", "FindByString":"" }
 
-directory_to_search = "nova_poshta/create_data/dovidka/"
-directory_to_save = "nova_poshta/create_data/warehouses_buc/"
-directory_to_save_dh = "nova_poshta/create_data/warehouses_dh/"
-dir_warehouse_uniq = "nova_poshta/create_data/warehouses_uniq/"
+directory_to_search = "api/nova_poshta/create_data/dovidka/"
+directory_to_save = "api/nova_poshta/create_data/warehouses_buc/"
+directory_to_save_dh = "api/nova_poshta/create_data/warehouses_dh/"
+dir_warehouse_uniq = "api/nova_poshta/create_data/warehouses_uniq/"
 city_to_search = {}
 structured_data = {"City": []}
 uniq_city = {"City": []}
@@ -214,7 +214,7 @@ def write_file(unique_city):
     global file_count_citys_uniq
     file_count_citys_uniq = 1
     for city in unique_city:
-        print("!!!! працюєм з унакальними данними")
+        print("!!!! працюєм з унікальними данними")
         cache_uniq_city["City"].append(city)
         department_size = len(json.dumps(cache_uniq_city, ensure_ascii=False, indent=2))
         chunk_size_limit = 10 * 1024 * 1024  # 10 МБ в байтах
@@ -253,7 +253,9 @@ def find_dublicate(citys):
 def task_control():
     definSaveData()
     global uniq_city
+    print(structured_data)
     uniq_city = find_dublicate(structured_data)
+    print(uniq_city, "uniq_city")
     for city_info in uniq_city["City"]:
         city_name = city_info["City"]
         print(f"!!!! Опрацюваєм місто {city_name}")

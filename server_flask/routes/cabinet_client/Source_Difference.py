@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
 from flask_login import login_required, current_user
 from flask_principal import Permission, RoleNeed
 from black import SourDiffAnCntrl
+from black import SourAnCntrl
 
 def get_instance(class_name, class_type):
     if not hasattr(g, class_name):
@@ -126,8 +127,9 @@ def source_diff_load_event_day():
 @admin_permission.require(http_exception=403)   
 def source_diff_update_sold():
     if request.method == "GET":
+        source_cntrl = get_instance('sour_cntrl', SourAnCntrl)
         source_diff_cntrl = get_instance('sour_diff_an_cntrl', SourDiffAnCntrl)
-        product = source_diff_cntrl.sour_diff_all_source_sold("month")
+        product = source_cntrl.sour_diff_all_source_sold("month")
         if product:            
             return redirect('/cabinet/source/all')
         else:
@@ -152,8 +154,8 @@ def source_diff_delete_event_day():
 @login_required
 @admin_permission.require(http_exception=403)   
 def source_difference_add_day():
-    source_diff_cntrl = get_instance('sour_diff_an_cntrl', SourDiffAnCntrl)
-    add_line_diff = source_diff_cntrl.add_quantity_crm_today()
+    source_cntrl = get_instance('sour_cntrl', SourAnCntrl)
+    add_line_diff = source_cntrl.add_quantity_crm_today()
     return redirect('/cabinet/source/all')
    
 # @bp.route('/cabinet/source_difference/test_button', methods=['POST','GET'])

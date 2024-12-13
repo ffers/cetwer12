@@ -17,7 +17,7 @@ class UserToken(db.Model):
     np_phone = db.Column(db.String(255))
     sms_token = db.Column(db.String(255))
     np_sender_refs = db.Column(db.String(255))
-    np_count_refs = db.Column(db.String(255))
+    np_count_refs = db.Column(db.String(255)) 
     np_city_cender = db.Column(db.String(255))
     np_adress_contr = db.Column(db.String(255))
     np_conter_recipient = db.Column(db.String(255))

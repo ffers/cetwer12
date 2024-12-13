@@ -20,15 +20,22 @@
       <table id="editableTable" class="table table-hover table-striped">
         <thead>
           <tr>
-            <th scope="col">Артікул</th>
-            <th scope="col">Назва</th> 
-
+            <th style="width: 10%; text-align: center;">Редагування</th>
+            <th scope="col" style="text-align: center;">Артікул</th>
+            <th scope="col" style="text-align: center;">Назва</th> 
           </tr>
         </thead>
         <tbody>
           {% for item in tasks_products %}
            <tr data-id="{{item.id}}">
-            <td contenteditable="False">{{item.article}}</td>
+            <td style="text-align: center;"> 
+              <a href="/cabinet/products/update/{{item.id}}">
+                <button type="button" class="btn btn-info">
+                  <i class="fa-solid fa-pen"></i>
+                </button>
+              </a>
+            </td>
+            <td contenteditable="False" style="text-align: center; font-weight: bold;">{{item.article}}</td>
             <td contenteditable="true"><input class="form-control bg-light" name="name" autocomplete="off" rows="1" cols="50" placeholder="* Назва" value="{{item.product_name}}"></td>        
           </tr>
          {% endfor %}

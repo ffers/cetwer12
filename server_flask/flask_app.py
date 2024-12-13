@@ -28,6 +28,7 @@ migrate = Migrate(flask_app, db, directory='../common_asx/migrations')
 user_db = os.getenv('DB_USERNAME')
 password_db = os.getenv('DB_PASSWORD')
 
+flask_app.config['DEBUG'] = True
 flask_app.config['SECRET_KEY'] = os.getenv("SECRET_KEY_FLASK")
 flask_app.config["SQLALCHEMY_DATABASE_URI"] = f"postgresql://{user_db}:{password_db}@localhost:5432/flask_db"
 flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

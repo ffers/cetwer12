@@ -11,7 +11,7 @@ class SendRequest:
         resp_json = requests.post(url, data=json_data, headers=headers, timeout=5)
         resp = json.loads(resp_json.content)
         print(resp)
-        return resp
+        return resp 
         # except:
         #     print("Сервер не отвечаєт")
         #     return False

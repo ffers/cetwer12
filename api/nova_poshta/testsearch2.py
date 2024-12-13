@@ -3,9 +3,9 @@ import os, json, copy
 
 bufer = {"CityName":"", "CityRef":"", "TypeOfWarehouseRef":"", "WarehouseId":"", "FindByString":"" }
 
-directory_to_search = "nova_poshta/create_data/dovidka/"
-directory_to_save = "nova_poshta/create_data/warehouses/"
-directory_to_save_dh = "nova_poshta/create_data/warehouses_dh/"
+directory_to_search = "api/nova_poshta/create_data/dovidka/"
+directory_to_save = "api/nova_poshta/create_data/warehouses/"
+directory_to_save_dh = "api/nova_poshta/create_data/warehouses_dh/"
 city_to_search = {}
 structured_data = {"City": []}
 city_war_dont_have = {"City": []}
@@ -111,8 +111,6 @@ def openDirectory(directory, flag):
     files.sort()
     for filename in files: # перебираем файли
         # print(filename)
-
-
         filepath = search_data_in_files(directory, filename) # первий файл
         if filepath: # если найден // но мені потрібно перед передачею файлу до перебору
                     # міст перевірити у всіх файлах чи нема цього міста тому добавлю сбор всіх данних в json

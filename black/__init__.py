@@ -15,5 +15,5 @@ from .sour_an_cntrl import sour_an_cntrl
 from .jour_ch_cntrl import jour_ch_cntrl
 from .analitic_cntrl import an_cntrl
 from .sour_an_cntrl import SourAnCntrl
-from .checkbox.auntificated_cntrl import CHECK_CNTRL
+from .check_cntrl import CheckCntrl
 from .sour_difference_an_cntrl import SourDiffAnCntrl

@@ -9,6 +9,7 @@ from .telegram_controller import tg_cntrl
 from .work_time_cntrl import WorkTimeCntrl
 from repository import SourAnRep
 from a_service import CacheService
+from .sour_difference_an_cntrl import SourDiffAnCntrl
 
 class SourAnCntrl:
     def __init__(self):
@@ -18,6 +19,7 @@ class SourAnCntrl:
                                        rep, ord_rep, self.w_time_cntrl)
         self.rep = SourAnRep()
         self.cash = CacheService()
+        self.sour_an_diff_cntrl = SourDiffAnCntrl()
 
     def my_time(self):
         yield (datetime.utcnow())
@@ -25,6 +27,27 @@ class SourAnCntrl:
     def add(self, request):
         args = self.sour_an_serv.add_source(request)
         resp = rep.add_product_source(args)
+        return resp
+    
+    def add_quantity_crm_today(self):
+        sources = self.load_all()
+        add = self.sour_an_diff_cntrl.add_quantity_crm_today(sources)
+        return add
+    
+    def add_comment_diff(self, source_id, comment):
+        last_line = self.sour_an_diff_cntrl.load_last_line_id(source_id)
+        print("загрузили last_line")
+        update = self.sour_an_diff_cntrl.add_line_comment(last_line.id, comment)
+        return update
+    
+    def add_arrival(self, req):
+        list_data = self.sour_an_serv.add_arrival(req)
+        for item in list_data:
+            print(f"item list_data{item}")
+            resp = self.fixed_process(item[0], int(item[1]), item[2], datetime.strptime(item[3], "%d-%m-%Y"))
+            # у меня есть source_id, надо найти в артикул и последнюю запись
+            # добавить коментарий 
+        # resp_an = self.sort_analitic("all")
         return resp
 
     def update(self, id, req):
@@ -55,50 +78,53 @@ class SourAnCntrl:
     def delete(self, id):
         bool = rep.delete_(id)
         return bool
-        
 
     def confirmed(self, order):
-        resp = False
-        comps_bool = self.sour_an_serv.definetion_prod(order)
-        if all(comps_bool['ok']):
-            for product in order.ordered_product:
-                prod_comps = prod_cntrl.load_prod_relate_product_id_all(product.product_id) # загрузили все исходники по продукту 
-                for prod_comp in prod_comps: # по каждому исходнику 
-                    prod_object = vars(prod_comp)
-                    print(f"prod_object list {prod_object}")
-                    description = order.order_id_sources + ' ' + product.products.article # пишем заметку
-                    sale_quantity = self.sour_an_serv.count_new_quantity(prod_comp, product) # считаем кол исходника по товару
-                    resp = self.stock_journal(prod_comp.product_source.id, -sale_quantity, description)
-        else:
-            resp_tg = f"Немає такого компоненту {comps_bool['info']}"
-            tg_cntrl.sendMessage(tg_cntrl.chat_id_info, resp_tg)
-
-        print(resp)
-        return resp
-
+        return self.prod_component_process(order, action_type='confirmed')
+    
     def return_prod(self, order):
-        resp = None
-        comps_bool = self.sour_an_serv.definetion_prod(order)
-        if all(comps_bool):
+        return self.prod_component_process(order, action_type='return')
+    
+    def prod_component_process(self, order, action_type):
+        if self.check_components(order):
             for product in order.ordered_product:
                 prod_comps = prod_cntrl.load_prod_relate_product_id_all(product.product_id)
                 for prod_comp in prod_comps:
-                    print(f"prod_comps {prod_comps}")
-                    sale_quantity = prod_comp.quantity * product.quantity
-                    self.stock_journal(prod_comp.product_source.id, sale_quantity, f"Возврат: {order.order_code}, {product.products.article}")
-            resp = True
+                    sale_quantity, description = self.get_action_prod_component(prod_comp, product, order, action_type) 
+                    print(sale_quantity, ' ', description, "prod_component_process")    
+                    event_date = datetime.strptime(self.my_time(), "%d-%m-%Y")                
+                    if sale_quantity and description:
+                        print('fixed_process')
+                        self.fixed_process(prod_comp.product_source.id, sale_quantity, description, event_date)
+                    else:
+                        return False
+        return True
+      
+    def fixed_process(self, source_id, sale_quantity, description, event_date=None): # получает компонент не имеет а из прихода отправляю
+        journal = self.stock_journal(source_id, sale_quantity, description, event_date)
+        comment_diff = self.add_comment_diff(source_id, description + f': {sale_quantity}')
+        print(journal, comment_diff, 'fixed_process')
+        return comment_diff
+        
+    def get_action_prod_component(self, prod_comp, product, order, action_type): 
+        # Визначає конкретний тип дії.
+        if action_type == 'return':
+            return prod_comp.quantity * product.quantity, f"Возврат: {order.order_code}, {product.products.article}"
+        elif action_type == 'confirmed':
+            sale_quantity = self.sour_an_serv.count_new_quantity(prod_comp, product)
+            return -sale_quantity, f"{order.order_id_sources} {product.products.article}"
         else:
-            resp = f"Немає такого компоненту {comps_bool['info']}"
-        return resp
+            # Невідомий тип дії
+            return None, None
     
-    def add_arrival(self, req):
-        list_data = self.sour_an_serv.add_arrival(req)
-
-        for item in list_data:
-            print(f"item list_data{item}")
-            resp = self.stock_journal(item[0], int(item[1]), item[2], datetime.strptime(item[3], "%d-%m-%Y"))
-        # resp_an = self.sort_analitic("all")
-        return resp
+    def check_components(self, order):
+        comps_bool = self.sour_an_serv.definetion_prod(order)
+        if all(comps_bool['ok']):
+            return True
+        else:
+            resp_tg = f"Немає такого компоненту {comps_bool['info']}"
+            tg_cntrl.sendMessage(tg_cntrl.chat_id_info, resp_tg)
+            return False
 
     def update_all_analitic(self):
         self.sort_analitic("all")
@@ -107,8 +133,6 @@ class SourAnCntrl:
         self.sort_analitic("week")
         self.sort_analitic("day")
         return True
-
-
 
     def stock_journal(self, prod_sourc_id, quantity, description, event_date=None):
         resp = False
@@ -121,8 +145,9 @@ class SourAnCntrl:
             print(f"list_val {list_val}")
             resp = journal.add_(list_val)
         return resp, new_quantity
-
-
+    
+     
+ 
     def first_an(self, orders, period):
         orders_quan = len(orders)
         torg_sum = self.sour_an_serv.torg_func(orders)
@@ -181,7 +206,7 @@ class SourAnCntrl:
         return resp
 
 
-
+ 
 
     def sort_analitic(self, period):
         resp = False, "Не спрацювало"
@@ -212,6 +237,15 @@ class SourAnCntrl:
         else:
             new_sum = sum_sold + sale_quantity
             update = self.cash.set("source_{}".format(source.id), new_sum)
+
+    def sour_diff_all_source_sold(self, period, days=None):
+        source_all = self.load_all()
+        sold = self.sour_an_diff_cntrl.sour_diff_all_source_sold(source_all, period, days)
+        return sold
+    
+
+
+
         
         
 

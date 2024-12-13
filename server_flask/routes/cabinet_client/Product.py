@@ -11,8 +11,8 @@ manager = RoleNeed('manager')
 manager_permission = Permission(manager)
 admin_permission = Permission(RoleNeed('admin'))
 bp = Blueprint('Products', __name__, template_folder='templates')
-
-    
+       
+     
 def format_float(num):
     try:
         if isinstance(num, int):

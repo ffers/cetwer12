@@ -1,5 +1,5 @@
-$(document).ready(function() {
-$('.select-source').select2({
+$(document).ready(function () {
+$('.select-source').select2({ 
     width: '100%',
     theme: 'bootstrap-5',
     language: {
@@ -36,3 +36,4 @@ $('.select-source').select2({
     }
     });   
 });
+

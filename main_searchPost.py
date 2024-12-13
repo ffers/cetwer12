@@ -1,4 +1,4 @@
-from api.nova_poshta.searchPost import maim
+from api.nova_poshta.testsearch2 import maim
 # from prom import EvoClient
 # from dotenv import load_dotenv
 # import os

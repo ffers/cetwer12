@@ -7,6 +7,7 @@ $(document).ready(function () {
     //   columnDefs: [{ width: '10%' }]
 
     });
+
     // var value = $(this).val();
     // $('#myInput').off('keyup').on('keyup', function () {
     //     table.search(this.value).draw();
