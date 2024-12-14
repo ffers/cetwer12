@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
 from flask_principal import Permission, RoleNeed
 from flask_login import login_required, current_user
+from pydantic import RedisDsn
 from server_flask.models import  Users
 from decimal import Decimal
 from repository import sour_an_rep as rep
@@ -24,7 +25,7 @@ def get_source():
 
 @bp.route('/cabinet/source/add', methods=['POST', 'GET'])
 @login_required
-@admin_permission.require(http_exception=403)
+@admin_permission.require(http_exception=403) 
 def add():
     if request.method == 'POST':
         print("ПРацюєм")
@@ -35,7 +36,7 @@ def add():
             print("Product added successfully")
             responce_data = {'status': 'success', 'message': 'Product relate added successfully'}
             flash('Додано джерело!', category='success')
-            return render_template('cabinet_client/Products/add_product_source.html', user=current_user )
+            return redirect(url_for(f"ProductSource.add"))
         else:
             print(request.form)
             print("НЕВИЙШЛО!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")

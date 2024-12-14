@@ -19,9 +19,10 @@ def add_arrival():
         print("ПРацюєм")
         cntrl = SourAnCntrl()
         resp_bool = cntrl.add_arrival(request)
+        print(resp_bool, "resp_bool")
         for item in request.form:
             print(item)
-        if resp_bool[0] == True:
+        if resp_bool == True:
             print("Product added successfully")
             responce_data = {'status': 'success', 'message': 'Product relate added successfully'}
             flash('Поставлено на прихід!', category='success')
