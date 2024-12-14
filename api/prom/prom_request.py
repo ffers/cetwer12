@@ -85,7 +85,7 @@ class EvoClient(object):
             print(current_time_georgia.strftime("%Y-%m-%d %H:%M:%S"),   f"Виникла помилка під час виконання запиту: {e}")
         except:
             return None
-
+  
 
     def get_order_id(self, order_id):
         url = '/api/v1/orders/{id}'

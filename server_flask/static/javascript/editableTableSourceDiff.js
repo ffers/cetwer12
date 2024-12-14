@@ -11,7 +11,7 @@ $(document).ready(function () {
                 theme: 'bootstrap-5',
                 language: {
                     noResults: function () {
-                        return 'Ничего не знайдено';
+                        return 'Ничого не знайдено';
                     },
                     searching: function () {
                         return 'Пошук...';

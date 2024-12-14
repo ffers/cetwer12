@@ -5,6 +5,9 @@
 {% block body %}
 <head>
   <title>Журнал</title>
+
+  <link href="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.1.8/datatables.min.css" rel="stylesheet">
+  <script src="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.1.8/datatables.min.js"></script>  
 </head>
 
 <h1 align="center">{% block header %}Журнал{{money}}{% endblock %}</h1>
@@ -12,13 +15,13 @@
   
  
 
-<div id="arrival-list">
+<div id="arrival-list" class="content">
     <div class="table-responsive-sm" >
-      <table class="table table-hover table-striped " >
+      <table id="editableTable" class="table table-hover table-striped " >
         <thead>
           <tr >
             <th scope="col"></th>
-            <th scope="col"></th>
+            <th scope="col"></th> 
             <th scope="col">Час дії</th>
             <th scope="col">Дата приходу</th>
             <th scope="col">Действие</th>
@@ -32,7 +35,7 @@
                      {% for item in items %}
           <tr>
             <td></td>
-            <td>
+            <td сontenteditable="false">
               <a href="/cabinet/products/update_product_source/{{item.id}}">
                 <button type="button" class="btn btn-info">
                   <i class="fa-solid fa-pen"></i>
@@ -53,7 +56,7 @@
             <td>{{item.product.article}}</td>
             <td>{{item.quantity}}</td>
             <td>{{item.body}}</td>
-            <td>{{item.quantity_stock}}</td>             
+            <td contenteditable="false">{{item.quantity_stock}}</td>             
           </tr>
       
                           {% endfor %}    
@@ -61,13 +64,9 @@
         </table>
             </div>
 
-            <nav aria-label="Page navigation example">
-              <ul class="pagination">
-                  {{ pagination.links }}
-              </ul>
-            </nav>
             
           </div>  
+          <script src="{{url_for('static', filename='javascript/editableTableProduct.js')}}"></script>
           {% endblock %}
 {% block footer %}
 {% if analitic_product == none %}
@@ -81,5 +80,7 @@
    <br/>
 </div>
 {% endif %}
+
+
 
 {% endblock %}

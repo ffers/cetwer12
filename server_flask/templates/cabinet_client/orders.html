@@ -2,12 +2,13 @@
 {% block body %}
 <head>
   <title>Замовлення</title>
+
 </head>
 
 <div id="orders" class="content">
   
   <div class="table-responsive-sm" >
-    <table class="table table-hover table-striped " >
+    <table id="editableTable" class="table table-hover table-striped " >
       <thead>
         <tr >
           <th scope="col"></th>
@@ -51,74 +52,6 @@
           <td><a href="orders/confirmed/{{order.id}}">{{order.ordered_status.name}}</a></td>
           <td>{{order.timestamp.strftime('%H:%M %d-%m-%Y')}}</td>
 
-    <!-- <div class="card-header d-flex justify-content-between align-items-center">
-       {% for user_t in tasks_users %}
-          {% if user_t.id == order.author_id %}
-      <a href="/cabinet/orders/update/{{order.id}}"><button type="button" class="btn btn-info">{{ order.id }}</button></a>
-          {% endif %}
-      {% endfor %}
-      <div>
-        <span id="likes-count-{{order.id}}">
-        {{ order.likes|length }}</span>
-        {% if user.id in order.likes|map(attribute="author")|list %}
-
-        {% else %}
-        <i
-          class="far fa-thumbs-up"
-          id="like-button-{{order.id}}"
-          onclick="like({{order.id}})"
-        ></i>
-        {% endif %} {% if user.id == order.author_id %}
-        <div class="btn-group">
-          <button
-            type="button"
-            class="btn btn-sm btn-info dropdown-toggle"
-            data-bs-toggle="dropdown"
-          ></button>
-          <ul class="dropdown-menu">
-            <li>
-              <a href="/delete-order/{{order.id}}" class="dropdown-item"
-                >Delete</a
-              >
-            </li>
-          </ul>
-        </div>
-        {% endif %}
-      </div>
-    </div>
- 
-
-
-    <div class="card-body">
-      <div class="row">
-
-        <div class="col"><a href="/cabinet/orders/{{order.id}}">{{order.id}}</a><footer><small class="text-muted">Номер</small></footer></div> 
-        <div class="col">{% if order.description %}{{order.description}}{% else %}Нотаток нема{% endif %}<footer><small class="text-muted">Нотатка</small></footer></div>
-        <div class="col">{% for product in order.ordered_products %}
-          {{product.article}}-{{product.quantity}} {% endfor %}<footer><small class="text-muted">Артикул</small></footer></div>
-        <div class="col">{{order.sum_price}}<footer><small class="text-muted">Сумма</small></footer></div>
-        <div class="col"><div class="limited-text-container"><p class="limited-text">{{order.city_name}}, {{order.warehouse_text}}</p></div> <footer><small class="text-muted">Адреса</small></footer></div>    
-        <div class="col">{{order.phone}}:{{order.ttn}}<footer><small class="text-muted">Тел TTN</small></footer></div>
-        <div class="col">{{order.client_firstname}} {{order.client_lastname}}<footer><small class="text-muted">Клієнт</small></footer></div>
-        <div class="col">Нова Пошта<footer><small class="text-muted">Доставка</small></footer></div>
-        <div class="col">{{order.payment_option}}<footer><small class="text-muted">Оплата</small></footer></div>
-        <div class="col">{{order.timestamp.strftime('%Y-%m-%d %H:%M')}}<footer><small class="text-muted">Час</small></footer></div>
-      </div>
-      <div class="collapse" id="comments-{{order.id}}"><div class="card"><div class="card-body" id="comments-expanded-{{order.id}}">
-            {% for comment in order.comments %}
-            <div class="d-flex justify-content-between align-items-center"><div>
-              <a href="/order/{{comment.user.username}}">{{comment.user.username}}</a>: {{comment.text}}</div>
-              <div><small class="text-muted"> {{comment.date_created}}</small>{% if user.id == comment.author or user.id == order.author %}<div class="btn-group">
-                <button type="button" class="btn btn-sm btn-info dropdown-toggle" data-bs-toggle="dropdown"></button>
-                  <ul class="dropdown-menu"><li><a href="/delete-comment/{{comment.id}}" class="dropdown-item">Delete</a></li></ul>
-                </div>{% endif %}</div></div>{% endfor %}</div></div></div>
-        <p class="card-text">{% if order.comments|length > 0 %}<a data-bs-toggle="collapse" href="#comments-{{order.id}}" role="button">
-          <small>View {{order.comments|length}} Comments</small></a>{% else %}<small class="text-muted">No Comments</small>{% endif %}</p>
-      <form class="input-group mb-3" method="POST" action="/create-comment/{{order.id}}">
-        <input type="text" id="text" name="text" class="form-control" placeholder="Comment something!"/>
-        <button type="submit" class="btn btn-info button_cor">Comment</button>
-        <a href="orders/confirmed/{{order.id}}"><button type="button" class="btn btn-info button_cor">Підверджено</button></a>
-      </form>-->
       </tr>
 {% endfor %}
 
@@ -152,6 +85,9 @@
    <br/>
 </div>
 {% endif %}
+
 <script src="{{url_for('static', filename='javascript/checkboxAll.js')}}"></script>
+
+
 {% endblock %} {% endblock %}
 

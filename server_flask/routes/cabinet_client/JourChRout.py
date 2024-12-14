@@ -21,17 +21,17 @@ def get_data(data, offset=0, per_page=10):
 def load_all():
     if request.method == 'GET':
         items = journal.load_all() 
-        page = request.args.get('page', default=1, type=int)
-        per_page = 150
+        # page = request.args.get('page', default=1, type=int)
+        # per_page = 150
 
-        total = len(items)
-        pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap5')
+        # total = len(items)
+        # pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap5')
 
-        offset = (page - 1) * per_page
-        data_subset = get_data(items, offset=offset, per_page=per_page)
-        return render_template('cabinet_client/analitic/journal_change.html', pagination=pagination,
-                               user=current_user, items=data_subset)
-    
+        # offset = (page - 1) * per_page
+        # data_subset = get_data(items, offset=offset, per_page=per_page)
+        return render_template('cabinet_client/analitic/journal_change.html', 
+                               user=current_user, items=items)
+       
 
 @bp.route("/cabinet/journal_ch/day_analitic", methods=['POST', 'GET'])
 @login_required
