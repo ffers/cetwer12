@@ -64,10 +64,10 @@ $('#saveBtn').on('click', function () {
       const data = this.data();
       tableData.push({
           id: data[0], 
-          article: data[1], 
-          name: data[2]        
+          article: data[2], 
+          name: data[3]        
         });
-        console.log(tableData, "datta")
+        console.log(tableData, "data")
   });
 
 
@@ -78,7 +78,7 @@ $('#saveBtn').on('click', function () {
       contentType: 'application/json',
       data: JSON.stringify(tableData),
       success: function (response) {
-          location.reload()
+        //   location.reload()
           
       }
   });

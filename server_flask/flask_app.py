@@ -1,9 +1,8 @@
-from server_fast.app import app
+# from server_fast.app import app
 from celery import Celery
 import psycopg2, os
 from dotenv import load_dotenv
 from markupsafe import escape
-from fastapi.middleware.wsgi import WSGIMiddleware
 from flask import Flask, render_template, request, jsonify
 from flask_login import current_user, LoginManager, login_required
 from flask_migrate import Migrate
@@ -130,9 +129,5 @@ def load_indentity_session():
 
 
 
-try:
-    app.mount("/", WSGIMiddleware(flask_app))
-except Exception as e:
-    # Запис повідомлення про помилку у журнал
-    OC_log.exception("Помилка при монтуванні flask_app: %s", e)
+
 

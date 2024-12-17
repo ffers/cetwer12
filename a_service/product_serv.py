@@ -46,7 +46,7 @@ class ProductServ:
         product_id = req.form.getlist('product')
         combined_list = list(zip_longest(article, quantity, product_id, fillvalue=None))
         return combined_list
-
+  
     def create_data_relate_req(self, req):
         data = [
             req.form["product"],

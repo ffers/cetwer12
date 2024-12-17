@@ -7,13 +7,15 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
-
+<head>
+    <title>Додати джерело</title>
+  </head>
 {% endblock %}
 
 {% block body %}
 	<div class="content">
 		<h1 style="text-align: center;">
-            Додати Ісходнік
+            Додати Джерело
         </h1>
 		
 			<form action="{{ url_for('ProductSource.add') }}" method="post">

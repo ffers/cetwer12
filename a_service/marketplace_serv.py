@@ -2,7 +2,7 @@
 
 
 
-class PromServ:
+class MarketplaceServ:
     def create_status_get(self, order_id, status_order):
         dict_status_prom = None
         print(status_order)

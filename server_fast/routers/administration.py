@@ -1,26 +1,32 @@
 from fastapi import APIRouter
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import OAuth2PasswordBearer
+from typing import Annotated
+from black import CheckCntrl, MarketplaceCntrl
 
 from black import OrderCntrl
 from server_flask.flask_app import flask_app
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
-from ..dependencies import get_token_header 
-
-router = APIRouter(
-    prefix="/orders",
-    tags=["orders"],
-    dependencies=[Depends(get_token_header)],
-    responses={404: {"description": "Not found"}},
-)
-
-@router.get("/16")
-async def close_day():
-    with flask_app.app_context():
-        ord_cntrl = OrderCntrl()
-        load_order = ord_cntrl.load_confirmed_order()
-        print(load_order, "Test fast api")
+router = APIRouter()
+ 
+@router.get("/check_sign")
+async def check_sign():
+        check = CheckCntrl()
+        check.signinPinCode()
+        # print(load_order, "Test fast api")
         return {"message": "Admin getting schwifty"}
+
+@router.get("/rozetka_sign")
+async def market_sign():
+        check = MarketplaceCntrl("Rozet")
+        check.get_orders()
+        # print(load_order, "Test fast api")
+        return {"message": "Admin getting schwifty"}
+
+
+
 
 
 # @router.get("/")

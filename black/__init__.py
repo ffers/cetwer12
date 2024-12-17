@@ -17,3 +17,4 @@ from .analitic_cntrl import an_cntrl
 from .sour_an_cntrl import SourAnCntrl
 from .check_cntrl import CheckCntrl
 from .sour_difference_an_cntrl import SourDiffAnCntrl
+from .marketplace_cntrl import MarketplaceCntrl
