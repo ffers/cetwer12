@@ -106,6 +106,8 @@ def send_request_status(invoice_ttn, invoice_order):
             tg_cntrl.answerCallbackQuery(callback_query_id, f"Передано {invoice_order}")
             tg_cntrl.sendMessage(chat_id_vp, f"Что то изменилось: {resp}")
             return True
+    else: 
+        tg_cntrl.sendMessage(chat_id_vp, f"Помилка {resp}")
 
 def get_edit_message(data, text):
     chat_id = data["message"]["reply_to_message"]["chat"]["id"]
