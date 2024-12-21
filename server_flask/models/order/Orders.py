@@ -10,8 +10,8 @@ class Orders(db.Model):
     client_firstname = db.Column(db.String(50))
     client_lastname = db.Column(db.String(50))
     client_surname = db.Column(db.String(50))
-    recipient_id = db.Column(db.Integer, db.ForeignKey(
-        'recipient_delivery.id', name='fk_orders_recipient_delivery_id'))
+    # recipient_id = db.Column(db.Integer, db.ForeignKey(
+    #     'recipient_delivery.id', name='fk_orders_recipient_delivery_id'))
     delivery_option = db.Column(db.String(50))
     city_name = db.Column(db.String(50))
     city_ref = db.Column(db.String(50))
