@@ -20,9 +20,12 @@ async def check_sign():
 @router.get("/market_get_orders")
 async def market_sign():
         check = MarketplaceCntrl("Rozet")
-        check.get_orders()
+        resp = check.get_orders()
+        print("відповідь сервера {}".format(resp))
+        if resp:
+            return 200, {"message": "SUCCESS"}
         # print(load_order, "Test fast api")
-        return 200, {"message": "Admin getting schwifty"}
+        return 200, {"message": "FALSE"}
 
 
 
