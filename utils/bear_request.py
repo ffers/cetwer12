@@ -3,9 +3,8 @@ import os, time, json, requests, uuid
 
 
 
-
 class BearRequest:
-    def request_go(self, method, url, headers, body):
+    def request_go(self, method, url, headers, body=None):
         if body:
             body = json.dumps(body) 
         time.sleep(1)

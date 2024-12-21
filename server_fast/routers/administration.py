@@ -4,8 +4,7 @@ from fastapi.security import OAuth2PasswordBearer
 from typing import Annotated
 from black import CheckCntrl, MarketplaceCntrl
 
-from black import OrderCntrl
-from server_flask.flask_app import flask_app
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
@@ -18,12 +17,12 @@ async def check_sign():
         # print(load_order, "Test fast api")
         return {"message": "Admin getting schwifty"}
 
-@router.get("/rozetka_sign")
+@router.get("/market_get_orders")
 async def market_sign():
         check = MarketplaceCntrl("Rozet")
         check.get_orders()
         # print(load_order, "Test fast api")
-        return {"message": "Admin getting schwifty"}
+        return 200, {"message": "Admin getting schwifty"}
 
 
 

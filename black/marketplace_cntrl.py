@@ -33,7 +33,8 @@ class MarketplaceCntrl:
         
     def get_orders(self):
         order_dr = self.marketplats.get_orders()
-        return order_dr
+        send_to_crm = order_dr
+        return send_to_crm
     
 
 

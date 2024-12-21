@@ -86,6 +86,7 @@ class TgAnswerCntrl:
             if ("reply_to_message" in data["message"] and
                     "text" in data["message"]["reply_to_message"]):
                 search_reply_message(data)
+                return 200, "ok"
 
 
     def await_button(self, data): #працює з Підтвердженнями

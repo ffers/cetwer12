@@ -96,14 +96,16 @@ def send_request_status(invoice_ttn, invoice_order):
     resp = prom_cl.make_send_ttn(invoice_ttn, invoice_order, delivery_type_roz)
     print("=======")
     print(resp)
-    if "error" in resp["status"]:
-        error = resp["message"]
-        print("Помилка")
-        tg_cntrl.answerCallbackQuery(callback_query_id, f"{error}")
-        tg_cntrl.sendMessage(chat_id_vp, f"Розетка: {error}")
-    else:
-        tg_cntrl.answerCallbackQuery(callback_query_id, f"Передано {invoice_order}")
-        tg_cntrl.sendMessage(chat_id_vp, f"Что то изменилось: {resp}")
+    if "status" in resp:
+        if "error" in resp["status"]:
+            error = resp["message"]
+            print("Помилка")
+            tg_cntrl.answerCallbackQuery(callback_query_id, f"{error}")
+            tg_cntrl.sendMessage(chat_id_vp, f"Розетка: {error}")
+        else:
+            tg_cntrl.answerCallbackQuery(callback_query_id, f"Передано {invoice_order}")
+            tg_cntrl.sendMessage(chat_id_vp, f"Что то изменилось: {resp}")
+            return True
 
 def get_edit_message(data, text):
     chat_id = data["message"]["reply_to_message"]["chat"]["id"]

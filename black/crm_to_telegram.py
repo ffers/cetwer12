@@ -19,7 +19,7 @@ class CrmToTelegram:
             tg_cntrl.sendMessage(tg_cntrl.chat_id_info, "Велика помилка")
 
     def create(self, order):
-        order_id = order["id"]
+        order_id = order["id"] 
         delivery_name = order["delivery_option"]
         if delivery_name != None:
             logging.info(f"Обробка ордера: {order_id}")
