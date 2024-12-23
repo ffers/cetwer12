@@ -12,6 +12,20 @@ class MarketplaceCntrl:
         self.marketplats = self.init_class(condition)
         self.tg = TelegramController()
     
+    def get_orders(self):
+        try:
+            data = self.marketplats.get_orders()
+            if data:
+                for order in data["content"]["orders"]:
+                    
+                    send_tg = self.tg.sendMessage(self.tg.chat_id_confirm, text)
+                    resp = self.marketplats.change_status_order(dict_order["id"], 26)
+                    print(resp, "status")
+                return True
+            return False
+        except:
+            return False
+        
     def change_status(self, order_id, status):
         resp =self.marketplats.create_status_get(order_id, status)        
         return resp
@@ -33,118 +47,6 @@ class MarketplaceCntrl:
         else:
             raise ValueError("Невідомий тип платформи")
         
-    def get_orders(self):
-        try:
-            data = self.marketplats.get_orders()
-            if data:
-                for order in data["content"]["orders"]:
-                    dict_order = self.make_order(order)
-                    text = self.make_text(dict_order)
-                    send_tg = self.tg.sendMessage(self.tg.chat_id_confirm, text)
-                    resp = self.marketplats.change_status_order(dict_order["id"], 26)
-                    print(resp, "status")
-                return True
-            return False
-        except:
-            return False
-
-    
-
-    def make_order(self, data):
-        delivery = data["delivery"]
-        purchases = data["purchases"]
-        payment = data["payment"]
-        return {
-            "id": data["id"],
-            "user_phone": data["user_phone"],
-            "client_firstname": data["user_title"]["first_name"],
-            "client_lastname": data["user_title"]["last_name"],
-            "client_surname": data["user_title"]["second_name"],
-            "recipient_phone": data["recipient_phone"],
-            "recipient_firstname": data["recipient_title"]["first_name"],
-            "recipient_lastname": data["recipient_title"]["last_name"],
-            "recipient_surname": data["recipient_title"]["second_name"],
-            "another_recipient": False,
-            "delivery_service_id": 
-                self.delivery_service_id(delivery["delivery_service_id"]),
-            "delivery_service_name": delivery["delivery_service_name"],
-            "city_name": delivery["city"]["city_name"],
-            "city_ref": delivery["city"]["uuid"],
-            "region": delivery["city"]["region_title"],
-            "delivery_method_id": delivery["delivery_method_id"],
-            "place_street": delivery["place_street"],
-            "place_number": delivery["place_number"],
-            "place_house": delivery["place_house"],
-            "place_flat": delivery["place_flat"],
-            "warehouse_ref": delivery["ref_id"],
-            "payment_option": payment["payment_method_name"],
-            "payment_status": payment["payment_status"],
-            "ordered_product": purchases,
-            "amount": data["amount"],
-            "sum_price": data["amount"],     
-            "description": data["comment"],
-            "description_delivery": data["user_title"],
-            "cpa_commission": data["user_title"],
-            "client_id": data["user_title"],
-            "order_code": data["user_title"],
-            "warehouse_method_id": data["user_title"],
-            "source_order_id": data["user_title"],
-            "payment_method_id": data["user_title"],
-            "delivery_method_id": data["user_title"],
-            "pickup_rz_id":data["delivery"]["pickup_rz_id"],
-            "area":""
-        }
- 
-    
-    def make_text(self, order):
-        order_id = order["id"]
-        user_name = order["client_lastname"] + " " + order["client_firstname"]
-        recipient = order["recipient_lastname"] + " " + order["recipient_firstname"]
-        delivery_option = order["delivery_service_name"]
-        delivery_address = "{} {} #{}".format(
-            order["city_name"], order["region"],
-            order["place_number"], order["place_street"],
-            order["place_house"]
-            )
-        payment_option = order["payment_option"]
-        full_price = order["amount"]
-        if "description" in order and order["description"]:
-            client_notes = "Нотатка: " + order["client_notes"]
-        else:
-            client_notes = "Нотаток від клієнта нема"
-        status = order["payment_status"]
-        all_products = []
-        for sku in order["ordered_product"]:
-            item = sku["item"]
-            product = {
-                "artikul": item["article"],
-                "name_multilang": item["name_ua"],
-                "price": item["price"],
-                "quantity": sku["quantity"],
-                # "measure_unit": sku["measure_unit"],
-                # "image_url": sku["image"],
-                "total_price": sku["cost"]
-            }
-            all_products.append(product)
-
-        phone_num = order["user_phone"]
-        recipient_phone = order["recipient_phone"]
-        sum_order = order["amount"]
-        formatted_text = ""
-        up_text = ""
-        for product in all_products:
-            up_text += f"{product['artikul']} - {product['quantity']}  - {product['price']} \n"
-            formatted_text += f"{product['artikul']} - {product['quantity']}  - {product['price']} \n"
-            formatted_text += f"Название: {product['name_multilang']}"
-
-        data_get_order = (
-            f"🍎 {up_text} Cумма {sum_order}\n\n{client_notes}\n\n"
-            f"{delivery_address}\n\n🍎 Замовлення Розетка Маркет № {order_id}\n\n{phone_num};ТТН немає\nПокупець:\n{user_name}\n\nОтримувач:\n{recipient}\n{recipient_phone}\n{delivery_option}\n"
-            f"Способ оплати - {payment_option}, {status} \n\n  На будь якій випадок:\n"
-            f"{formatted_text}\n\n=========================================================="
-        )
-        # print(data_get_order)
-        return data_get_order
 
     def delivery_service_id(self, id):
         if id == 43660: # новапошта

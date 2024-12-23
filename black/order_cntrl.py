@@ -198,7 +198,7 @@ class OrderCntrl:
         result = {
             "crm_status": args[0],
             "bool_prom": args[1],
-            "update_analitic": args[2],
+            "update_analitic": args[2], 
             "delivery": args[3]
         }
         return result

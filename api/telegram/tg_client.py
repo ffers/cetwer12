@@ -1,4 +1,4 @@
-import os, requests, json, sys
+import os, requests, json, sys, re
 from dotenv import load_dotenv
 from intarfaces.send_message_int import MessagingInterface
 env_path = '../common_asx/.env'
@@ -11,13 +11,14 @@ class TgClient():
         self.token = os.getenv("TELEGRAM_BOT_TOKEN")
 
     def send_message_f(self, chat_id, text, keyboard_json):
+        escape_text = self.escape_text(text)
         method = "sendMessage"
         token = os.getenv("TELEGRAM_BOT_TOKEN")
         url = f"https://api.telegram.org/bot{token}/{method}"
         if keyboard_json:
-            data = {"chat_id": chat_id, "text": text, 'parse_mode': 'Markdown', "reply_markup":keyboard_json}
+            data = {"chat_id": chat_id, "text": escape_text, 'parse_mode': 'MarkdownV2', "reply_markup":keyboard_json}
         else:
-            data = {"chat_id": chat_id, "text": text}
+            data = {"chat_id": chat_id, "text": escape_text}
         resp_json = requests.post(url, data=data).content
         return json.loads(resp_json)
 
@@ -111,6 +112,14 @@ class TgClient():
         send = requests.post(message, files=files).content
         print(send)
         return send
+
+    def escape_text(self, text):
+        two_slash = r"_*[]~`>#|{}.!-.()+="
+        one_slash = r"-.()+="
+        escape_two_slash = re.sub(f"([{re.escape(two_slash)}])", r"\\\1", text)
+        escape_one_slash = re.sub(r'(?<!\\)([-.()+=])', r'\\\1', escape_two_slash)
+        # return re.sub(r'\\([^\w\s])', r'\1', escape_two_slash)
+        return escape_one_slash
 
 
 

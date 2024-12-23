@@ -1,6 +1,7 @@
-import logging, os, sys
+import logging, os, sys, json
 from dotenv import load_dotenv
 from .telegram_controller import tg_cntrl
+import html
 
 
 env_path = '../common_asx/.env'
@@ -16,7 +17,7 @@ class CrmToTelegram:
             data_for_tg = self.create(order)
             return data_for_tg
         except:
-            tg_cntrl.sendMessage(tg_cntrl.chat_id_info, "Велика помилка")
+            tg_cntrl.sendMessage(tg_cntrl.chat_id_info, "Помилка надсиланя замовленя в тг")
 
     def create(self, order):
         order_id = order["id"] 
@@ -36,7 +37,7 @@ class CrmToTelegram:
                 status = self.payment_data_status(order["payment_data"])
             all_products = []
             for sku in order["products"]:
-                product = {
+                product = { 
                     "artikul": sku["sku"],
                     "name_multilang": sku["name_multilang"]["uk"],
                     "price": sku["price"],
@@ -64,8 +65,6 @@ class CrmToTelegram:
             delivery_option = order["delivery_option"]["id"]
             keyboard_json = tg_cntrl.keyboard_func()
             size_j = sys.getsizeof(keyboard_json)
-            print(keyboard_json)
-            print(size_j)
             resp_tg = tg_cntrl.sendMessage(self.chat_id_pid, data_get_order, keyboard_json)
             print(resp_tg)
             data_for_tg = self.bd_tg(resp_tg)

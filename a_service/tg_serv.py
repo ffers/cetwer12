@@ -1,6 +1,7 @@
 
 from dotenv import load_dotenv
 import os, logging, re
+import html
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
@@ -76,7 +77,7 @@ class TgServ():
         if order.sum_before_goods:
             sum_check = order.sum_before_goods
         else:
-            sum_check = order.sum_price
+            sum_check = order.sum_price 
         product_article = ""
         product_text = "На всяк випадок:\n"
         for product in order_product:
