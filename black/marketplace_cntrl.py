@@ -41,7 +41,8 @@ class MarketplaceCntrl:
                     dict_order = self.make_order(order)
                     text = self.make_text(dict_order)
                     send_tg = self.tg.sendMessage(self.tg.chat_id_confirm, text)
-                    self.marketplats.change_status_order(dict_order["id"], 26)
+                    resp = self.marketplats.change_status_order(dict_order["id"], 26)
+                    print(resp, "status")
                 return True
             return False
         except:
@@ -55,10 +56,14 @@ class MarketplaceCntrl:
         payment = data["payment"]
         return {
             "id": data["id"],
-            "phone": data["recipient_phone"],
-            "client_firstname": data["recipient_title"]["first_name"],
-            "client_lastname": data["recipient_title"]["last_name"],
-            "client_surname": data["recipient_title"]["second_name"],
+            "user_phone": data["user_phone"],
+            "client_firstname": data["user_title"]["first_name"],
+            "client_lastname": data["user_title"]["last_name"],
+            "client_surname": data["user_title"]["second_name"],
+            "recipient_phone": data["recipient_phone"],
+            "recipient_firstname": data["recipient_title"]["first_name"],
+            "recipient_lastname": data["recipient_title"]["last_name"],
+            "recipient_surname": data["recipient_title"]["second_name"],
             "another_recipient": False,
             "delivery_service_id": 
                 self.delivery_service_id(delivery["delivery_service_id"]),
@@ -76,8 +81,7 @@ class MarketplaceCntrl:
             "payment_status": payment["payment_status"],
             "ordered_product": purchases,
             "amount": data["amount"],
-            "sum_price": data["amount"],
-            
+            "sum_price": data["amount"],     
             "description": data["comment"],
             "description_delivery": data["user_title"],
             "cpa_commission": data["user_title"],
@@ -94,9 +98,14 @@ class MarketplaceCntrl:
     
     def make_text(self, order):
         order_id = order["id"]
-        client_name = order["client_lastname"] + " " + order["client_firstname"]
+        user_name = order["client_lastname"] + " " + order["client_firstname"]
+        recipient = order["recipient_lastname"] + " " + order["recipient_firstname"]
         delivery_option = order["delivery_service_name"]
-        delivery_address = "{} {} #{}".format(order["city_name"], order["region"], order["place_number"])
+        delivery_address = "{} {} #{}".format(
+            order["city_name"], order["region"],
+            order["place_number"], order["place_street"],
+            order["place_house"]
+            )
         payment_option = order["payment_option"]
         full_price = order["amount"]
         if "description" in order and order["description"]:
@@ -118,7 +127,8 @@ class MarketplaceCntrl:
             }
             all_products.append(product)
 
-        phone_num = order["phone"]
+        phone_num = order["user_phone"]
+        recipient_phone = order["recipient_phone"]
         sum_order = order["amount"]
         formatted_text = ""
         up_text = ""
@@ -129,7 +139,7 @@ class MarketplaceCntrl:
 
         data_get_order = (
             f"🍎 {up_text} Cумма {sum_order}\n\n{client_notes}\n\n"
-            f"{delivery_address}\n\n🍎 Замовлення Розетка Маркет № {order_id}\n\n{phone_num};ТТН немає\n{client_name}\n{delivery_option}\n"
+            f"{delivery_address}\n\n🍎 Замовлення Розетка Маркет № {order_id}\n\n{phone_num};ТТН немає\nПокупець:\n{user_name}\n\nОтримувач:\n{recipient}\n{recipient_phone}\n{delivery_option}\n"
             f"Способ оплати - {payment_option}, {status} \n\n  На будь якій випадок:\n"
             f"{formatted_text}\n\n=========================================================="
         )
@@ -137,7 +147,7 @@ class MarketplaceCntrl:
         return data_get_order
 
     def delivery_service_id(self, id):
-        if id == 5:
+        if id == 43660: # новапошта
             method = 1
         elif id == 4:
             method = 1
@@ -148,7 +158,7 @@ class MarketplaceCntrl:
         elif id == 1:
             method = 1
         else:
-            return print("Нема доступних методів пошти")
+            return 1
         return method
     
     def payment_method_id(self, id):

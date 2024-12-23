@@ -34,11 +34,11 @@ class RozetMain():
 
     
     def change_status_order(self, order_id, status):
-        url = f"https://api-seller.rozetka.com.ua/orders/{order_id}"
+        prefix = f"orders/{order_id}"
         body = {
             "status": status
         }
-        # resp = utils_dev_change.change_status(body, url)
+        resp = self.make_request("PUT", prefix, body)
         return resp
     
     def change_ttn_order(self, order_id, ttn, status):
@@ -88,7 +88,7 @@ class RozetMain():
             headers = {
                 "Content-Type": "application/json", "Authorization": f"Bearer {self.cash}"
             }
-        # print(headers)
+        print(headers, "headers")
         responce = self.request_go(method, url, headers, body)
         return responce
     
