@@ -170,7 +170,7 @@ class OrderCntrl:
         keyboard_json = tg_cntrl.keyboard_func()
         add_text = f"{text}\n{data_tg_dict}"
         resp = tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, add_text, keyboard_json)
-        return True
+        return True 
 
 
     def search_for_phone(self, req):

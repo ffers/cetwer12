@@ -134,5 +134,6 @@ class ProductCounBot():
                     return create_response
                 except:
                     return "Неправильно сформульоване повідомлення"
+        return "Неправильно сформульоване повідомлення"
 
 

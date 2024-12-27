@@ -101,13 +101,13 @@ def send_request_status(invoice_ttn, invoice_order):
             error = resp["message"]
             print("Помилка")
             tg_cntrl.answerCallbackQuery(callback_query_id, f"{error}")
-            tg_cntrl.sendMessage(chat_id_vp, f"Розетка: {error}")
+            tg_cntrl.sendMessage(chat_id_rozet, f"Помилка: {error} {invoice_order}")
         else:
             tg_cntrl.answerCallbackQuery(callback_query_id, f"Передано {invoice_order}")
-            tg_cntrl.sendMessage(chat_id_vp, f"Что то изменилось: {resp}")
+            tg_cntrl.sendMessage(chat_id_rozet, f"Подвязано: {invoice_order}")
             return True
     else: 
-        tg_cntrl.sendMessage(chat_id_vp, f"Помилка {resp}")
+        tg_cntrl.sendMessage(chat_id_rozet, f"Помилка {resp} {invoice_order}")
 
 def get_edit_message(data, text):
     chat_id = data["message"]["reply_to_message"]["chat"]["id"]
@@ -121,7 +121,7 @@ def replace_text_ttn(text, ttn_number):
 
 def search_invoice_ttn(data):
     print("Шукаю розетку ттн")
-    invoice_pattern = r'PRM-\d+'
+    invoice_pattern = r'(PRM-\d+|RMP-\d+)'
     if data["message"]:
         if "text" in data["message"]:
             text = data["message"]["text"]

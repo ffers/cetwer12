@@ -6,7 +6,7 @@ class MarketplaceServ:
     def create_status_get(self, order_id, status_order):
         dict_status_prom = None
         print(status_order)
-        if 2 == status_order: # скасовано
+        if 2 == status_order: # скасовано 
             dict_status_prom = {
                 "status": "canceled",
                 "ids": [order_id],

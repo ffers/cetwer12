@@ -18,7 +18,7 @@ class TgClient():
         if keyboard_json:
             data = {"chat_id": chat_id, "text": escape_text, 'parse_mode': 'MarkdownV2', "reply_markup":keyboard_json}
         else:
-            data = {"chat_id": chat_id, "text": escape_text}
+            data = {"chat_id": chat_id, "text": escape_text, 'parse_mode': 'MarkdownV2'}
         resp_json = requests.post(url, data=data).content
         return json.loads(resp_json)
 
