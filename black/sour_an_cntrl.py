@@ -22,7 +22,7 @@ class SourAnCntrl:
         self.sour_an_diff_cntrl = SourDiffAnCntrl()
 
     def my_time(self):
-        yield (datetime.utcnow())
+        yield (datetime.now())
 
     def add(self, request):
         args = self.sour_an_serv.add_source(request)
@@ -92,10 +92,10 @@ class SourAnCntrl:
                 for prod_comp in prod_comps:
                     sale_quantity, description = self.get_action_prod_component(prod_comp, product, order, action_type) 
                     print(sale_quantity, ' ', description, "prod_component_process")    
-                    event_date = datetime.strptime(self.my_time(), "%d-%m-%Y")                
+                    curent_time = next(self.my_time())           
                     if sale_quantity and description:
                         print('fixed_process')
-                        self.fixed_process(prod_comp.product_source.id, sale_quantity, description, event_date)
+                        self.fixed_process(prod_comp.product_source.id, sale_quantity, description, curent_time)
                     else:
                         return False
         return True
