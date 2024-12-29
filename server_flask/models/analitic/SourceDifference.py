@@ -11,7 +11,7 @@ class SourceDifference(db.Model):
     quantity_stock = db.Column(db.Integer)
     difference = db.Column(db.Integer)   
     sold = db.Column(db.Integer)
-    comment = db.Column(db.String(1000))
+    comment = db.Column(db.Text)
     product_source = db.relationship('ProductSource', back_populates='source_difference')  
 
 
