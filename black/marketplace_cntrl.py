@@ -14,17 +14,18 @@ class MarketplaceCntrl:
     
     def get_orders(self):
         try:
-            data = self.marketplats.get_orders()
-            if data:
-                for order in data["content"]["orders"]:
-                    
+            list_order = self.marketplats.get_orders()
+            if list_order:
+                for order in list_order:
+                    text = self.make_text(order)
                     send_tg = self.tg.sendMessage(self.tg.chat_id_confirm, text)
-                    resp = self.marketplats.change_status_order(dict_order["id"], 26)
-                    print(resp, "status")
-                return True
+                    resp = self.marketplats.change_status_order(order["id"], 26)
+                    # print(resp, "status")
+                return True 
             return False
         except:
-            return False
+            text = "🔴 Помилка додавання замовлення в розетку"
+            return self.tg.sendMessage(self.tg.chat_id_confirm, text)
         
     def change_status(self, order_id, status):
         resp =self.marketplats.create_status_get(order_id, status)        
@@ -48,36 +49,57 @@ class MarketplaceCntrl:
             raise ValueError("Невідомий тип платформи")
         
 
-    def delivery_service_id(self, id):
-        if id == 43660: # новапошта
-            method = 1
-        elif id == 4:
-            method = 1
-        elif id == 2024:
-            method = 1
-        elif id == 2:
-            method = 1
-        elif id == 1:
-            method = 1
+  
+    def make_text(self, order):
+        order_id = order["id"]
+        user_name = order["client_lastname"] + " " + order["client_firstname"]
+        event_date = "Дата створення замовлення {}".format(order["event_date"])
+        recipient = order["recipient_lastname"] + " " + order["recipient_firstname"]
+        delivery_option = order["delivery_service_name"]
+        delivery_address = "{} ({}) #{} {} - {}".format(
+            order["city_name"], order["region"],
+            order["place_number"], order["place_street"],
+            order["place_house"]
+            )
+        payment_option = order["payment_option"]
+        full_price = order["amount"]
+        if "description" in order and order["description"]:
+            client_notes = "Нотатка: " + order["client_notes"]
         else:
-            return 1
-        return method
-    
-    def payment_method_id(self, id):
-        if id == 5:
-            method = 1
-        elif id == 4:
-            method = 1
-        elif id == 3:
-            id = 1
-        elif id == 2:
-            method = 1
-        elif id == 1:
-            method = 1
-        else:
-            return print("Нема доступних методів оплати")
-        return method
-    
+            client_notes = "Нотаток від клієнта нема"
+        status = order["payment_status"]
+        all_products = []
+        for sku in order["ordered_product"]:
+            item = sku["item"]
+            product = {
+                "artikul": item["article"],
+                "name_multilang": item["name_ua"],
+                "price": item["price"],
+                "quantity": sku["quantity"],
+                # "measure_unit": sku["measure_unit"],
+                # "image_url": sku["image"],
+                "total_price": sku["cost"]
+            }
+            all_products.append(product)
+
+        phone_num = order["user_phone"]
+        recipient_phone = order["recipient_phone"]
+        sum_order = order["amount"]
+        formatted_text = ""
+        up_text = ""
+        for product in all_products:
+            up_text += f"{product['artikul']} - {product['quantity']}  - {product['price']} \n"
+            formatted_text += f"{product['artikul']} - {product['quantity']}  - {product['price']} \n"
+            formatted_text += f"Название: {product['name_multilang']}"
+
+        data_get_order = (
+            f"🟢 {up_text} Cумма {sum_order}\n\n{event_date}\n {client_notes}\n\n"
+            f"{delivery_address}\n\n🟢 Замовлення Розетка Маркет № {order_id}\n\n{phone_num};ТТН немає\nПокупець:\n{user_name}\n\nОтримувач:\n{recipient}\n{recipient_phone}\n{delivery_option}\n"
+            f"Способ оплати - {payment_option}, {status} \n\n  На будь якій випадок:\n"
+            f"{formatted_text}\n\n=========================================================="
+        )
+        # print(data_get_order)
+        return data_get_order
 
 
 

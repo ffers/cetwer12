@@ -57,8 +57,8 @@ class CrmToTelegram:
                 formatted_text += f"{product['artikul']} - {product['name_multilang']}\n"
 
             data_get_order = (
-                f"🍎 {up_text} Cумма {sum_order}\n\n{client_notes}\n\n"
-                f"{delivery_address}\n\n🍎 Замовлення № {order_id}\n\n{phone_num};ТТН немає\n{client_name}\n{delivery_option}\n"
+                f"🟣 {up_text} Cумма {sum_order}\n\n{client_notes}\n\n"
+                f"{delivery_address}\n\n🟣 Замовлення № {order_id}\n\n{phone_num};ТТН немає\n{client_name}\n{delivery_option}\n"
                 f"Способ оплати - {payment_option}, {status} \n\n  На будь якій випадок:\n"
                 f"{formatted_text}\n\n=========================================================="
             )

@@ -2,6 +2,7 @@ from utils import BearRequest
 # from common_asx.utilits import utils_dev_change
 
 import os, base64
+from a_service import TokenRepServ
   
   # статуси
   # 1 - новий 
@@ -20,6 +21,7 @@ class RozetMain():
         self.bear_req = BearRequest()
         self.host = "https://api-seller.rozetka.com.ua/"
         self.cash = "Nj2HNztLCMG1pBnr18GtDZ-SSfj4-j5B"
+        self.token_new = TokenRepServ()
 
     def get_orders(self):
         prefix = "orders/search?expand=delivery,purchases,payment,status_payment&status=1"
@@ -27,10 +29,15 @@ class RozetMain():
         if "content" in resp:
             if "orders" in resp["content"]:
                 if resp["content"]["orders"]:
+                    # print("Є ордери")
+                    dict_order = []
                     for order in resp["content"]["orders"]:
-                        dict_order = self.make_order(order)
-                        text = self.make_text(dict_order)
-                        return resp
+                        dict_order.append(self.make_order(order))
+                    # print(dict_order, "dict_order")
+                    return dict_order
+
+                        
+                        
         return None
     
     def authorization(self):
@@ -123,6 +130,7 @@ class RozetMain():
         payment = data["payment"]
         return {
             "id": data["id"],
+            "event_date": data["created"],
             "user_phone": data["user_phone"],
             "client_firstname": data["user_title"]["first_name"],
             "client_lastname": data["user_title"]["last_name"],
@@ -158,60 +166,44 @@ class RozetMain():
             "source_order_id": data["user_title"],
             "payment_method_id": data["user_title"],
             "delivery_method_id": data["user_title"],
-            "pickup_rz_id":data["delivery"]["pickup_rz_id"],
-            "area":""
+            "pickup_rz_id": data["delivery"]["pickup_rz_id"],
+            "area":"",
+            "client_notes": data["comment"]
         }
+    
+    def delivery_service_id(self, id):
+        if id == 43660: # новапошта
+            method = 1
+        elif id == 4:
+            method = 1
+        elif id == 2024:
+            method = 1
+        elif id == 2:
+            method = 1
+        elif id == 1:
+            method = 1
+        else:
+            return 1
+        return method
+    
+    def payment_method_id(self, id):
+        if id == 5:
+            method = 1
+        elif id == 4:
+            method = 1
+        elif id == 3:
+            id = 1
+        elif id == 2:
+            method = 1
+        elif id == 1:
+            method = 1
+        else:
+            return print("Нема доступних методів оплати")
+        return method
+    
  
     
-    def make_text(self, order):
-        order_id = order["id"]
-        user_name = order["client_lastname"] + " " + order["client_firstname"]
-        recipient = order["recipient_lastname"] + " " + order["recipient_firstname"]
-        delivery_option = order["delivery_service_name"]
-        delivery_address = "{} ({}) #{} {} - {}".format(
-            order["city_name"], order["region"],
-            order["place_number"], order["place_street"],
-            order["place_house"]
-            )
-        payment_option = order["payment_option"]
-        full_price = order["amount"]
-        if "description" in order and order["description"]:
-            client_notes = "Нотатка: " + order["client_notes"]
-        else:
-            client_notes = "Нотаток від клієнта нема"
-        status = order["payment_status"]
-        all_products = []
-        for sku in order["ordered_product"]:
-            item = sku["item"]
-            product = {
-                "artikul": item["article"],
-                "name_multilang": item["name_ua"],
-                "price": item["price"],
-                "quantity": sku["quantity"],
-                # "measure_unit": sku["measure_unit"],
-                # "image_url": sku["image"],
-                "total_price": sku["cost"]
-            }
-            all_products.append(product)
 
-        phone_num = order["user_phone"]
-        recipient_phone = order["recipient_phone"]
-        sum_order = order["amount"]
-        formatted_text = ""
-        up_text = ""
-        for product in all_products:
-            up_text += f"{product['artikul']} - {product['quantity']}  - {product['price']} \n"
-            formatted_text += f"{product['artikul']} - {product['quantity']}  - {product['price']} \n"
-            formatted_text += f"Название: {product['name_multilang']}"
-
-        data_get_order = (
-            f"🍎 {up_text} Cумма {sum_order}\n\n{client_notes}\n\n"
-            f"{delivery_address}\n\n🍎 Замовлення Розетка Маркет № {order_id}\n\n{phone_num};ТТН немає\nПокупець:\n{user_name}\n\nОтримувач:\n{recipient}\n{recipient_phone}\n{delivery_option}\n"
-            f"Способ оплати - {payment_option}, {status} \n\n  На будь якій випадок:\n"
-            f"{formatted_text}\n\n=========================================================="
-        )
-        # print(data_get_order)
-        return data_get_order
     
    
 
