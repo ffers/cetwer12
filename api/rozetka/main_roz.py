@@ -24,7 +24,7 @@ class RozetMain():
         self.token_new = TokenRepServ()
 
     def get_orders(self):
-        prefix = "orders/search?expand=delivery,purchases,payment,status_payment&status=4"
+        prefix = "orders/search?expand=delivery,purchases,payment,status_payment&status=1"
         resp = self.make_request("GET", prefix)
         if "content" in resp:
             if "orders" in resp["content"]:
