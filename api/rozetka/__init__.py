@@ -1,1 +1,1 @@
-from .roz_main import RozetMain
+from .main_roz import RozetMain

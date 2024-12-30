@@ -46,8 +46,8 @@ class TgServ():
             formatted_text += f"Название: {product['name_multilang']}"
 
         data_get_order = (
-            f"🍎 {up_text} Cумма {sum_order}\n\n{client_notes}\n\n"
-            f"{delivery_address}\n\n🍎 Замовлення № {order_id}\n\n{phone_num};ТТН немає\n{client_name}\n{delivery_option}\n"
+            f"🟢 {up_text} Cумма {sum_order}\n\n{client_notes}\n\n"
+            f"{delivery_address}\n\n🟢 Замовлення № {order_id}\n\n{phone_num};ТТН немає\n{client_name}\n{delivery_option}\n"
             f"Способ оплати - {payment_option}, {status} \n\n  На будь якій випадок:\n"
             f"{formatted_text}\n\n=========================================================="
         )
@@ -70,7 +70,7 @@ class TgServ():
         order_product = order.ordered_product
         ttn = order.ttn if order.ttn else "ТТН немає"
         if order.description:
-            description = "🍏 Нотатка:\n" + order.description
+            description = "🟢 Нотатка:\n" + order.description
         else:
             description = "Нотаток від клієнта нема"
         payment_method = order.payment_method
@@ -81,11 +81,11 @@ class TgServ():
         product_article = ""
         product_text = "На всяк випадок:\n"
         for product in order_product:
-            product_article += f"🍏 {product.products.article} - {product.quantity}шт - {product.price}\n"
+            product_article += f"🟢 {product.products.article} - {product.quantity}шт - {product.price}\n"
             product_text += f" {product.products.product_name}\n"
         data_get_order = (
             f"{product_article} Сумма: {order.sum_price} \n\n{description}\n\n"
-            f"{order.city_name}, {order.warehouse_text} \n\n🍏 {order.source_order.name} Замовлення № {order.order_id_sources}\n"
+            f"{order.city_name}, {order.warehouse_text} \n\n🟢 {order.source_order.name} Замовлення № {order.order_id_sources}\n"
             f"Cтатус: {order.ordered_status.name}\n"
             f"\n{order.phone};{ttn}\n{order.client_lastname} {order.client_firstname}\n"
             f"Спосіб доставки - {order.delivery_method.name}\n"

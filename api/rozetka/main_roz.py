@@ -1,5 +1,5 @@
 from utils import BearRequest
-# from common_asx.utilits import utils_dev_change
+from .dto_roz import OrderRoz
 
 import os, base64
 from a_service import TokenRepServ
@@ -24,21 +24,27 @@ class RozetMain():
         self.token_new = TokenRepServ()
 
     def get_orders(self):
-        prefix = "orders/search?expand=delivery,purchases,payment,status_payment&status=1"
+        prefix = "orders/search?expand=delivery,purchases,payment,status_payment&status=4"
         resp = self.make_request("GET", prefix)
         if "content" in resp:
             if "orders" in resp["content"]:
                 if resp["content"]["orders"]:
                     # print("Є ордери")
-                    dict_order = []
+                    orders = []
                     for order in resp["content"]["orders"]:
-                        dict_order.append(self.make_order(order))
-                    # print(dict_order, "dict_order")
-                    return dict_order
+                        print(order)
+                        # dict_order.append(Order(**order))
+                        ob_order = OrderRoz.model_validate(order)
+                        orders.append(ob_order)
+                    print(orders, "dict_order")
+                    return orders
 
                         
                         
         return None
+    
+    def test(self):
+        order = {"id"}
     
     def authorization(self):
         pass
@@ -225,3 +231,4 @@ class RozetMain():
 # 5 	Number 	
 
 # Помилка оплати (LiqPay)
+

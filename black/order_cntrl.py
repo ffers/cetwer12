@@ -19,7 +19,7 @@ from datetime import datetime
 from black.sour_an_cntrl import SourAnCntrl
 from black.telegram_cntrl.tg_cash_cntrl import TgCashCntrl
 
-
+ 
 
 
 sys.path.append('../')
@@ -272,7 +272,7 @@ class OrderCntrl:
         resp = ord_rep.add_ttn_crm(order_id, ttn)
         return resp
 
-    def del_method_roz(self, order):
+    def del_method_roz(self, order): 
         data_tg_dict = tg_serv.create_text_order(order)
         print(f"data_tg_dict {data_tg_dict}" )
         print(order.order_code)

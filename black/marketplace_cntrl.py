@@ -2,30 +2,32 @@ from a_service import prom_serv
 from api import prom_api, RozetMain
 from .telegram_controller import TelegramController
 
+
 import sys
 sys.path.append('../')
-from common_asx.utilits import utils_dev_change
+from common_asx.utilits import Utils
 
 
 class MarketplaceCntrl:
     def __init__(self, condition):
         self.marketplats = self.init_class(condition)
         self.tg = TelegramController()
+        self.fuse = Utils()
     
     def get_orders(self):
-        try:
+        # try:
             list_order = self.marketplats.get_orders()
             if list_order:
                 for order in list_order:
                     text = self.make_text(order)
                     send_tg = self.tg.sendMessage(self.tg.chat_id_confirm, text)
-                    resp = self.marketplats.change_status_order(order["id"], 26)
-                    # print(resp, "status")
+                    resp = self.fuse.change_status_rozet(order.id, 26)
+                    print(resp, "status")
                 return True 
             return False
-        except:
-            text = "🔴 Помилка додавання замовлення в розетку"
-            return self.tg.sendMessage(self.tg.chat_id_confirm, text)
+        # except:
+        #     text = "🔴 Помилка додавання замовлення в розетку"
+        #     return self.tg.sendMessage(self.tg.chat_id_confirm, text)
         
     def change_status(self, order_id, status):
         resp =self.marketplats.create_status_get(order_id, status)        
@@ -50,56 +52,80 @@ class MarketplaceCntrl:
         
 
   
+    # def make_text(self, order):
+    #     order_id = order["id"]
+    #     user_name = order["client_lastname"] + " " + order["client_firstname"]
+    #     event_date = "Дата створення замовлення {}".format(order["event_date"])
+    #     recipient = order["recipient_lastname"] + " " + order["recipient_firstname"]
+    #     delivery_option = order["delivery_service_name"]
+    #     delivery_address = "{} ({}) #{} {} - {}".format(
+    #         order["city_name"], order["region"],
+    #         order["place_number"], order["place_street"],
+    #         order["place_house"]
+    #         )
+    #     payment_option = order["payment_option"]
+    #     full_price = order["amount"]
+    #     if "description" in order and order["description"]:
+    #         client_notes = "Нотатка: " + order["client_notes"]
+    #     else:
+    #         client_notes = "Нотаток від клієнта нема"
+    #     status = order["payment_status"]
+    #     all_products = []
+    #     for sku in order["ordered_product"]:
+    #         item = sku["item"]
+    #         product = {
+    #             "artikul": item["article"],
+    #             "name_multilang": item["name_ua"],
+    #             "price": item["price"],
+    #             "quantity": sku["quantity"],
+    #             # "measure_unit": sku["measure_unit"],
+    #             # "image_url": sku["image"],
+    #             "total_price": sku["cost"]
+    #         }
+    #         all_products.append(product)
+
+    #     phone_num = order["user_phone"]
+    #     recipient_phone = order["recipient_phone"]
+    #     sum_order = order["amount"]
+    #     formatted_text = ""
+    #     up_text = ""
+    #     for product in all_products:
+    #         up_text += f"{product['artikul']} - {product['quantity']}  - {product['price']} \n"
+    #         formatted_text += f"{product['artikul']} - {product['quantity']}  - {product['price']} \n"
+    #         formatted_text += f"Название: {product['name_multilang']}"
+
+    #     data_get_order = (
+    #         f"🟢 {up_text} Cумма {sum_order}\n\n{event_date}\n {client_notes}\n\n"
+    #         f"{delivery_address}\n\n🟢 Замовлення Розетка Маркет № {order_id}\n\n{phone_num};ТТН немає\nПокупець:\n{user_name}\n\nОтримувач:\n{recipient}\n{recipient_phone}\n{delivery_option}\n"
+    #         f"Способ оплати - {payment_option}, {status} \n\n  На будь якій випадок:\n"
+    #         f"{formatted_text}\n\n=========================================================="
+    #     )
+    #     # print(data_get_order)
+    #     return data_get_order
+    
+
     def make_text(self, order):
-        order_id = order["id"]
-        user_name = order["client_lastname"] + " " + order["client_firstname"]
-        event_date = "Дата створення замовлення {}".format(order["event_date"])
-        recipient = order["recipient_lastname"] + " " + order["recipient_firstname"]
-        delivery_option = order["delivery_service_name"]
-        delivery_address = "{} ({}) #{} {} - {}".format(
-            order["city_name"], order["region"],
-            order["place_number"], order["place_street"],
-            order["place_house"]
-            )
-        payment_option = order["payment_option"]
-        full_price = order["amount"]
-        if "description" in order and order["description"]:
-            client_notes = "Нотатка: " + order["client_notes"]
-        else:
-            client_notes = "Нотаток від клієнта нема"
-        status = order["payment_status"]
-        all_products = []
-        for sku in order["ordered_product"]:
-            item = sku["item"]
-            product = {
-                "artikul": item["article"],
-                "name_multilang": item["name_ua"],
-                "price": item["price"],
-                "quantity": sku["quantity"],
-                # "measure_unit": sku["measure_unit"],
-                # "image_url": sku["image"],
-                "total_price": sku["cost"]
-            }
-            all_products.append(product)
+        user_name = f"{order.user_title.last_name} {order.user_title.first_name}"
+        recipient = f"{order.recipient_title.last_name} {order.recipient_title.first_name}"
+        delivery_address = f"{order.delivery.city.city_name} ({order.delivery.city.region_title}) #{order.delivery.place_number} {order.delivery.place_street}, {order.delivery.place_house}"
+        payment_option = order.payment.payment_method_name
+        client_notes = f"Нотатка: {', '.join(order.seller_comment)}" if order.seller_comment else "Нотаток від клієнта нема"
+        status = order.status_payment if order.status_payment else order.payment.payment_type_title
 
-        phone_num = order["user_phone"]
-        recipient_phone = order["recipient_phone"]
-        sum_order = order["amount"]
-        formatted_text = ""
-        up_text = ""
-        for product in all_products:
-            up_text += f"{product['artikul']} - {product['quantity']}  - {product['price']} \n"
-            formatted_text += f"{product['artikul']} - {product['quantity']}  - {product['price']} \n"
-            formatted_text += f"Название: {product['name_multilang']}"
+        products_info = "\n".join([f"{p.item.article} - {p.quantity}  - {p.price} \nНазвание: {p.item.name_ua}" for p in order.purchases])
+        
+        sum_order = order.amount_with_discount
+        phone_num = order.user_phone
+        recipient_phone = order.recipient_phone
 
-        data_get_order = (
-            f"🟢 {up_text} Cумма {sum_order}\n\n{event_date}\n {client_notes}\n\n"
-            f"{delivery_address}\n\n🟢 Замовлення Розетка Маркет № {order_id}\n\n{phone_num};ТТН немає\nПокупець:\n{user_name}\n\nОтримувач:\n{recipient}\n{recipient_phone}\n{delivery_option}\n"
-            f"Способ оплати - {payment_option}, {status} \n\n  На будь якій випадок:\n"
-            f"{formatted_text}\n\n=========================================================="
+        return (
+            f"🟢 {products_info} Cумма {sum_order}\n\nДата створення замовлення {order.created}\n {client_notes}\n\n"
+            f"{delivery_address}\n\n🟢 Замовлення Розетка Маркет № {order.id}\n\n{phone_num};ТТН: {order.ttn}\nПокупець:\n{user_name}\n\n"
+            f"Отримувач:\n{recipient}\n{recipient_phone}\n{order.delivery.delivery_service_name}\nСпособ оплати - {payment_option}, Статус - {status}\n"
+            "=========================================================="
         )
-        # print(data_get_order)
-        return data_get_order
+
+
 
 
 
