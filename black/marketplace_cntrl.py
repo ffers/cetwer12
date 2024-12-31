@@ -18,7 +18,7 @@ class MarketplaceCntrl:
         self.order_cntrl = OrderCntrl()
     
     def get_orders(self):
-        # try:
+        try:
             list_order, list_standart = self.marketplats.get_orders()
             if list_order:
                 for order in list_order:
@@ -34,9 +34,9 @@ class MarketplaceCntrl:
                     print(resp)
                 return True
             return False
-        # except:
-        #     text = "🔴 Помилка додавання замовлення в розетку"
-        #     return self.tg.sendMessage(self.tg.chat_id_confirm, text)
+        except:
+            text = "🔴 Помилка додавання замовлення в розетку"
+            return self.tg.sendMessage(self.tg.chat_id_confirm, text)
 
     def add_order(self, o):
         order_db = self.order_cntrl.add_order2(o)

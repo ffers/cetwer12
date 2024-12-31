@@ -12,7 +12,8 @@ class SendToCrmNew:
         self.set_log = self.log.oc_log("send_to_crm")
 
     def get_orders_rozet(self):
-        url = "http://localhost:8000/v2/orders/get_orders"
+        host = os.getenv("HOSTCRM")
+        url = host + "v2/orders/get_orders"
         token = os.getenv("SEND_TO_CRM_TOKEN")
         header = {
                 "Content-Type": "application/json", "Authorization": f"{token}"
