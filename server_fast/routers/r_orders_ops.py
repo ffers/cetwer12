@@ -2,14 +2,15 @@ from fastapi import APIRouter
 from fastapi import APIRouter, Depends, HTTPException
 
 from black import OrderCntrl
-from server_flask.flask_app import flask_app
+from black import MarketplaceCntrl
+from server_flask.flask_app import flask_app, jsonify
 
 
 from ..dependencies import get_token_header 
 
+router = APIRouter()
 router = APIRouter(
-    prefix="/orders",
-    tags=["orders"],
+    tags=["order"],
     dependencies=[Depends(get_token_header)],
     responses={404: {"description": "Not found"}},
 )
@@ -20,7 +21,14 @@ async def close_day():
         ord_cntrl = OrderCntrl()
         load_order = ord_cntrl.load_confirmed_order()
         print(load_order, "Test fast api")
-        return {"message": "Admin getting schwifty"}
+        return jsonify({"message": "Admin getting schwifty"})
+    
+@router.get("/get_orders")
+async def close_day():
+    with flask_app.app_context():
+        market = MarketplaceCntrl("Rozet")
+        load = market.get_orders()
+        return {"message": "Order get successfuly"}
 
 
 # @router.get("/")
@@ -31,7 +39,7 @@ async def close_day():
 
 # @router.put(
 #     "/{item_id}",
-#     tags=["custom"],
+#     tags=["custom"], 
 #     responses={403: {"description": "Operation forbidden"}},
 # )
 

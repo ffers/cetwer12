@@ -20,7 +20,7 @@ class Orders(db.Model):
     warehouse_option = db.Column(db.String(50))
     warehouse_text = db.Column(db.String(255))
     warehouse_ref = db.Column(db.String(50))
-    payment_option = db.Column(db.String(50))
+    # payment_option = db.Column(db.String(50))
     sum_price = db.Column(db.Float)
     sum_before_goods = db.Column(db.Float)
     description = db.Column(db.String(300))

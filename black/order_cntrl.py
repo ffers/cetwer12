@@ -18,6 +18,7 @@ from .sour_an_cntrl import sour_an_cntrl
 from datetime import datetime
 from black.sour_an_cntrl import SourAnCntrl
 from black.telegram_cntrl.tg_cash_cntrl import TgCashCntrl
+from .product_cntrl import ProductCntrl
 
  
 
@@ -37,7 +38,7 @@ OC_log = util_asx.oc_log("order_cntrl_test")
 
 
 crmtotg_cl = CrmToTelegram()
-ord_rep = OrderRep()
+
 
 
 np_cl = NpClient(token_np)
@@ -57,6 +58,7 @@ class OrderCntrl:
         self.quan_stok = TgCashCntrl()
         self.tg_cntrl = TelegramController()
         self.np_client = NpClient()
+        self.ord_rep = OrderRep()
         
 
     def reg_17_00(self):
@@ -70,39 +72,39 @@ class OrderCntrl:
         yield (datetime.now())
 
     def load_all_order(self):
-        order = ord_rep.load_item_all()
+        order = self.ord_rep.load_item_all()
         return order
 
     def load_confirmed_order(self):
-        item = ord_rep.load_for_np()
+        item = self.ord_rep.load_for_np()
         return item
 
     def load_registred(self):
-        item = ord_rep.load_registred()
+        item = self.ord_rep.load_registred()
         print(item)
         return item
 
     def load_registred_roz(self):
-        item = ord_rep.load_registred_roz()
+        item = self.ord_rep.load_registred_roz()
         print(item)
         return item
 
     def load_status_id(self, id):
-        return ord_rep.load_status_id(id)
+        return self.ord_rep.load_status_id(id)
 
     def load_order_for_code(self, order_code):
-        order = ord_rep.load_for_code(order_code)
+        order = self.ord_rep.load_for_code(order_code)
         return order.id
 
     def load_for_order_code(self, order_code):
-        order = ord_rep.load_for_order_code(order_code)
+        order = self.ord_rep.load_for_order_code(order_code)
         return order
 
     def dublicate(self, order_id):
-        item = ord_rep.load_item(order_id)
-        dublicate_item = ord_rep.dublicate_item(item)
-        ord_prod_old = ord_rep.load_prod_order(order_id)
-        dublicate_order_prod = ord_rep.dublicate_order_prod(dublicate_item, ord_prod_old)
+        item = self.ord_rep.load_item(order_id)
+        dublicate_item = self.ord_rep.dublicate_item(item)
+        ord_prod_old = self.ord_rep.load_prod_order(order_id)
+        dublicate_order_prod = self.ord_rep.dublicate_order_prod(dublicate_item, ord_prod_old)
         self.add_order_code(dublicate_item)
         self.send_order_tg(dublicate_item.id)
         return True
@@ -113,7 +115,7 @@ class OrderCntrl:
             data_for_tg = crmtotg_cl.manger(order_js)
             resp = pr_to_crm_cntr.add_order(order_js, data_for_tg)
             print(order_js)
-            order = ord_rep.load_for_code(order_js["id"])
+            order = self.ord_rep.load_for_code(order_js["id"])
             print(f"add_order {order.id}")
             bool_1 = del_ord_cntrl.add_item(order.id, 1)
             bool_2 = self.examine_address(order_js)
@@ -122,6 +124,24 @@ class OrderCntrl:
             info = f"Замовленя можливо не додано в CRM {order_code}"
             OC_log.info(info)
             tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, info)
+
+    def add_order2(self, o):
+        order_db = self.ord_rep.add_order(o)
+        for p in o.ordered_product:
+            product_db = None
+        return order_db
+
+    def add_ordered_product(self, p, ord_id):
+        prod_cntrl = ProductCntrl()
+        prod_db = prod_cntrl.load_by_article(p.article)
+        p.order_id = ord_id
+        p.product_id = prod_db.id
+        product_db = self.ord_rep.add_ordered_product(p)
+        return product_db
+
+
+
+    
 
     def examine_address(self, order):
         resp_bool = np_serv.examine_address_prom(order)
@@ -150,7 +170,7 @@ class OrderCntrl:
             if order["delivery_option"]["id"] == 13013934:
                 data_address = np_cl.get_s_war_ref(war_ref)
                 address_dict_np = np_serv.create_address_dict_np(data_address)
-                resp_bool = ord_rep.change_address((order["id"]), address_dict_np)
+                resp_bool = self.ord_rep.change_address((order["id"]), address_dict_np)
                 return resp_bool
             return True
         OC_log.info(f"Викликаєм помилку {order}")
@@ -159,13 +179,13 @@ class OrderCntrl:
     def add_order_code(self, order):
         while True:
             order_code = ord_serv.generate_order_code()
-            item = ord_rep.load_for_code(order_code)
+            item = self.ord_rep.load_for_code(order_code)
             if not item:
-                ord_rep.add_order_code(order, order_code)
+                self.ord_rep.add_order_code(order, order_code)
                 return
 
     def send_order_tg(self, order_id, text="🍊 Редагування"):
-        order = ord_rep.load_item(order_id)
+        order = self.ord_rep.load_item(order_id)
         data_tg_dict = tg_serv.create_text_order(order)
         keyboard_json = tg_cntrl.keyboard_func()
         add_text = f"{text}\n{data_tg_dict}"
@@ -175,15 +195,15 @@ class OrderCntrl:
 
     def search_for_phone(self, req):
         search_request = req.args.get('q', '').lower()
-        print(search_request)
-        order = ord_rep.search_for_all(search_request)
+        print(search_request) 
+        order = self.ord_rep.search_for_all(search_request)
         result = ord_serv.search_for_order(order)
         return result
 
     def confirmed_order(self, order_id):
         print("first")
-        order = ord_rep.load_item(order_id)
-        crm_status = ord_rep.change_status(order_id, 2)
+        order = self.ord_rep.load_item(order_id)
+        crm_status = self.ord_rep.change_status(order_id, 2)
         bool_prom = self.definition_source(order, 3)
         update_analitic = prod_an_cntrl.product_in_order(order)
 
@@ -204,7 +224,7 @@ class OrderCntrl:
         return result
 
     def question_order(self, order_id):
-        order = ord_rep.load_item(order_id)
+        order = self.ord_rep.load_item(order_id)
         bool = self.change_status_item(order_id, 5)
         bool_prom = self.definition_source(order, 2)
         return bool
@@ -216,8 +236,8 @@ class OrderCntrl:
         return bool_prom
 
     def return_order(self, order_id, status):
-        order = ord_rep.load_item(order_id)
-        bool = ord_rep.change_status(order_id, status)
+        order = self.ord_rep.load_item(order_id)
+        bool = self.ord_rep.change_status(order_id, status)
         bool_prom = prom_cntrl.change_status(order.order_code, 2)
         # update_analitic = prod_an_cntrl.product_in_order(order)
         resp_sour_bool = sour_an_cntrl.return_prod(order)
@@ -225,7 +245,7 @@ class OrderCntrl:
         return resp_sour_bool
 
     def send_storage(self, order_id):
-        order = ord_rep.load_item(order_id)
+        order = self.ord_rep.load_item(order_id)
         resp_sour = sour_an_cntrl.confirmed(order)
         return resp_sour
 
@@ -250,7 +270,7 @@ class OrderCntrl:
         if np_resp["success"] == True:
             doc_ttn = np_resp["data"][0]["IntDocNumber"]
             resp_ttn = self.add_ttn_crm(order.id, doc_ttn)
-            order = ord_rep.load_item(order.id)
+            order = self.ord_rep.load_item(order.id)
             data_tg_dict = tg_serv.create_text_order(order)  # if telegram True send to telegram
             tg_cntrl.sendMessage(tg_cntrl.chat_id_np, data_tg_dict)
             del_ord_cntrl.update_item(np_resp, order.id)
@@ -269,7 +289,7 @@ class OrderCntrl:
         return resp
 
     def add_ttn_crm(self, order_id, ttn):
-        resp = ord_rep.add_ttn_crm(order_id, ttn)
+        resp = self.ord_rep.add_ttn_crm(order_id, ttn)
         return resp
 
     def del_method_roz(self, order): 
@@ -298,18 +318,18 @@ class OrderCntrl:
         resp = tg_cntrl.sendMessage(tg_cntrl.chat_id_shop, data_tg_dict)
         return True
 
-    def await_order_cab_tg(self, order, flag=None, id=None): # дубль фукціі await_order щоб обійти діспетчер
-        print(f"see_flag {flag}")
-        resp = None
-        if flag == "Надіслати накладну":
-            resp = tg_serv.send_order_curier(order)
-        if flag == "crm_to_telegram":
-            resp = tg_serv.create_text_order(order)
-        return resp
+    # def await_order_cab_tg(self, order, flag=None, id=None): # дубль фукціі await_order щоб обійти діспетчер
+    #     print(f"see_flag {flag}")
+    #     resp = None
+    #     if flag == "Надіслати накладну":
+    #         resp = tg_serv.send_order_curier(order)
+    #     if flag == "crm_to_telegram":
+    #         resp = tg_serv.create_text_order(order)
+    #     return resp
 
     def delete_order(self, id):
         print(f"delete order {id}")
-        bool = ord_rep.delete_order(id)
+        bool = self.ord_rep.delete_order(id)
         return bool
 
     def change_status(self, data):
@@ -318,17 +338,17 @@ class OrderCntrl:
         for order in orders:
             print (f"%s %s try change" % (order, status))
             self.change_status_item(order, status)
-        # bool = ord_rep.change_status_list(orders, status)
+        # bool = self.ord_rep.change_status_list(orders, status)
         return True
 
     def change_status_item(self, id, status):
-        resp = ord_rep.change_status(id, status)
+        resp = self.ord_rep.change_status(id, status)
         resp_tg = tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, "{ordered_status} {order_code}".format(**resp))
         print(resp_tg)
         return resp.update( {"message_id": resp_tg["result"]["message_id"]})
 
     def change_status_roz(self):
-        orders = ord_rep.load_registred_roz()
+        orders = self.ord_rep.load_registred_roz()
         if orders:
             for order in orders:
                 self.change_status_item(order.id, 8)
@@ -336,7 +356,7 @@ class OrderCntrl:
 
 
     def test_order(self, order_id):
-        orders = ord_rep.load_item_all()
+        orders = self.ord_rep.load_item_all()
         resp_sour = None
         if not resp_sour:
             tg_cntrl.sendMessage(tg_cntrl.chat_id_info, "Немає такого компоненту ")

@@ -4,12 +4,55 @@ from sqlalchemy import desc
 from urllib.parse import unquote
 from datetime import datetime, timedelta
 
-
+ 
 
 class OrderRep:
 
     def my_time(self):
         yield (datetime.utcnow())
+
+    def add_order(self, item):
+        try:
+            order = Orders(description=item.description,
+                        city_name=item.city_name,
+                        city_ref=item.city_ref,
+                        warehouse_text=item.warehouse_text,
+                        warehouse_ref=item.warehouse_ref,
+                        phone=item.phone,
+                        author_id=item.author_id,
+                        client_firstname=item.client_firstname,
+                        client_lastname=item.client_lastname,
+                        client_surname=item.client_surname,
+                        warehouse_option=item.warehouse_option,
+                        delivery_option=item.delivery_option,
+                        payment_method_id=item.payment_method_id,
+                        sum_price=item.sum_price,
+                        sum_before_goods=item.sum_before_goods,
+                        delivery_method_id=item.delivery_method_id,
+                        source_order_id=item.source_order_id,
+                        ordered_status_id=item.ordered_status_id,
+                        description_delivery="Одяг Jemis",
+                        order_code=item.order_code
+                        )
+            db.session.add(order)
+            db.session.commit()
+            return order
+        except:
+            return False
+    
+    def add_ordered_product(self, p):
+        product_obj = OrderedProduct(
+            quantity=p.quantity,
+            price=p.price,
+            order_id=p.order_id,
+            product_id=p.product_id
+        )
+        db.session.add(product_obj)
+        db.session.commit()
+        return product_obj
+
+
+
     def load_item(self, order_id):
         item = Orders.query.get_or_404(int(order_id))
         return item
@@ -93,24 +136,6 @@ class OrderRep:
             Orders.delivery_method_id == 2
                                    ).all()
         return item
-    
-
-
-
-    # def add_order(self, request):
-    #     order = Orders(description=request.form['description'], city_name=request.form['CityName'],
-    #                    city_ref=request.form['CityREF'],
-    #                    warehouse_text=unquote(request.form['warehouse-text']),
-    #                    warehouse_ref=request.form['warehouse-id'],
-    #                    phone=request.form['phone'], author_id=current_user.id,
-    #                    client_firstname=request.form['client_firstname'],
-    #                    client_lastname=request.form['client_lastname'], client_surname=request.form['client_surname'],
-    #                    warehouse_option=request.form['warehouse_option'], delivery_option="nova_poshta",
-    #                    payment_method_id=request.form['payment_option'], sum_price=format_float(sum_price_draft),
-    #                    sum_before_goods=sum_before_goods, delivery_method_id=1, source_order_id=1, ordered_status_id=10,
-    #                    description_delivery="Одяг Jemis")
-    #     db.session.add(order)
-    #     db.session.commit()
 
     def add_ttn_crm(self, id, ttn):
         try:
@@ -215,9 +240,9 @@ class OrderRep:
             (Orders.client_lastname.ilike(f'%{data}%')) |
             (Orders.client_surname.ilike(f'%{data}%')) |
             (Orders.client_firstname.ilike(f'%{data}%')) |
-            (Orders.order_id_sources.ilike(f'%{data}%')) |
+            (Orders.order_code.ilike(f'%{data}%')) |
             (Orders.ttn.ilike(f'%{data}%'))
-        ).order_by(desc(Orders.id)).all() 
+        ).order_by(desc(Orders.id)).all()  
         return order
 
     def delete_order(self, id):

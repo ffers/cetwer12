@@ -86,11 +86,15 @@ def health_check():
 
 @flask_app.errorhandler(403)
 def handle_forbidden_error(error):
+    if request.accept_mimetypes['application/json']:
+        return jsonify({"Forbidden": "You do not have permission to access this resource."}), 403
     # Рендеринг шаблону для виведення зображення або повідомлення про помилку
     return render_template('403.html'), 403
 
 @flask_app.errorhandler(404)
 def page_not_found(e):
+    if request.accept_mimetypes['application/json']:
+        return jsonify({"error": "Page not found"}), 404
     return render_template('404.html'), 404
 
 @identity_loaded.connect_via(flask_app)

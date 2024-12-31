@@ -1,6 +1,8 @@
 from a_service import prom_serv
 from api import prom_api, RozetMain
 from .telegram_controller import TelegramController
+from black import OrderCntrl
+
 
 
 import sys
@@ -13,21 +15,39 @@ class MarketplaceCntrl:
         self.marketplats = self.init_class(condition)
         self.tg = TelegramController()
         self.fuse = Utils()
+        self.order_cntrl = OrderCntrl()
     
     def get_orders(self):
         # try:
-            list_order = self.marketplats.get_orders()
+            list_order, list_standart = self.marketplats.get_orders()
             if list_order:
                 for order in list_order:
                     text = self.make_text(order)
                     send_tg = self.tg.sendMessage(self.tg.chat_id_confirm, text)
+                    print(order.id, "order id")
                     resp = self.fuse.change_status_rozet(order.id, 26)
-                    print(resp, "status")
-                return True 
+
+                    # print(resp, "status")
+            
+                for order in list_standart:
+                    resp = self.add_order(order)
+                    print(resp)
+                return True
             return False
         # except:
         #     text = "🔴 Помилка додавання замовлення в розетку"
         #     return self.tg.sendMessage(self.tg.chat_id_confirm, text)
+
+    def add_order(self, o):
+        order_db = self.order_cntrl.add_order2(o)
+        if order_db:
+            for p in o.ordered_product:
+                product_db = self.order_cntrl.add_ordered_product(p, order_db.id)
+                return True if product_db else False
+        return False 
+
+
+
         
     def change_status(self, order_id, status):
         resp =self.marketplats.create_status_get(order_id, status)        
@@ -49,6 +69,10 @@ class MarketplaceCntrl:
             return prom_api
         else:
             raise ValueError("Невідомий тип платформи")
+        
+    def get_delivery(self):
+        self.marketplats.available_delivery()
+        return True
         
 
   
@@ -107,7 +131,18 @@ class MarketplaceCntrl:
     def make_text(self, order):
         user_name = f"{order.user_title.last_name} {order.user_title.first_name}"
         recipient = f"{order.recipient_title.last_name} {order.recipient_title.first_name}"
-        delivery_address = f"{order.delivery.city.city_name} ({order.delivery.city.region_title}) #{order.delivery.place_number} {order.delivery.place_street}, {order.delivery.place_house}"
+        delivery_address = (
+            f"Спосіб доставкі: {order.delivery.delivery_service_name}\n"
+            f"{order.delivery.city.city_name} "
+            f"({order.delivery.city.region_title}) "
+            f"{order.delivery.place_number} "
+            f"{order.delivery.place_street}, "
+            f"{order.delivery.place_house}"
+            )
+        dev_text = (
+                 f"delivery_service_id: {order.delivery.delivery_service_id}\n"
+            f"payment_method_id: {order.payment.payment_method_id}\n"
+        )
         payment_option = order.payment.payment_method_name
         client_notes = f"Нотатка: {', '.join(order.seller_comment)}" if order.seller_comment else "Нотаток від клієнта нема"
         status = order.status_payment if order.status_payment else order.payment.payment_type_title
@@ -121,7 +156,7 @@ class MarketplaceCntrl:
         return (
             f"🟢 {products_info} Cумма {sum_order}\n\nДата створення замовлення {order.created}\n {client_notes}\n\n"
             f"{delivery_address}\n\n🟢 Замовлення Розетка Маркет № {order.id}\n\n{phone_num};ТТН: {order.ttn}\nПокупець:\n{user_name}\n\n"
-            f"Отримувач:\n{recipient}\n{recipient_phone}\n{order.delivery.delivery_service_name}\nСпособ оплати - {payment_option}, Статус - {status}\n"
+            f"Отримувач:\n{recipient}\n{recipient_phone}\n\nСпособ оплати - {payment_option}, Статус - {status}\n{dev_text}"
             "=========================================================="
         )
 

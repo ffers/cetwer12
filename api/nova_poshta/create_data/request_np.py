@@ -50,7 +50,7 @@ def request_np(updated_json):
     retries = 0
     timeout = 10
     response = None
-    while retries < max_retries:
+    while retries < max_retries: 
         try:
             response = requests.get(api_url, data=updated_json, timeout=timeout)
             response.raise_for_status()

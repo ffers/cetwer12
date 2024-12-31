@@ -10,7 +10,7 @@ from utils import util_asx
 from .dependencies import get_token_header
 import uvicorn, multiprocessing, logging
 
-from .routers import order_opers
+from .routers import order
 from .routers import admin
 
  
@@ -24,14 +24,17 @@ logging.basicConfig(
 )
 
 OC_log = util_asx.oc_log("fast_api")
-app = FastAPI()
+app = FastAPI(responses={404: {"description": "Not found"}})
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 app.include_router(
-    order_opers,
+    order,
     prefix="/v2/orders",
     tags=["orders"], 
+    
         )
+
 app.include_router(
     admin,
     prefix="/v2/admin",

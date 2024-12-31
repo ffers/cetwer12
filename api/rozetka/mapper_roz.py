@@ -2,12 +2,17 @@ from pydantic import BaseModel
 from DTO import OrderDTO, Product
 from .dto_roz import OrderRoz
 
-class ClassName(BaseModel):
+class MapperRoz():
     def __init__(self):
         pass
 
-    def map_marketplace_data_to_order_dto(self, data: OrderRoz) -> OrderDTO:
-        # Маппінг об'єктів до OrderDTO
+    def order(self, data: OrderRoz) -> OrderDTO:
+        warehouse_text=(
+            # f"{data.delivery.city.title} -" 
+            f"{data.delivery.place_number} "
+            f"{data.delivery.place_street} "
+            f"{data.delivery.place_house}"
+        )
         return OrderDTO(
             timestamp=data.created,  # чи інша дата з маркетплейсу
             phone=data.user_phone,
@@ -21,35 +26,58 @@ class ClassName(BaseModel):
             city_ref=data.delivery.city.uuid,
             region=data.delivery.city.region_title,
             area=data.delivery.city.region_title,
-            warehouse_option=data.warehouse_option,
-            warehouse_text=data.warehouse_text,
-            warehouse_ref=data.warehouse_ref,
-            payment_option=data.payment.payment_method_name,
+            warehouse_option=data.delivery.delivery_method_id,
+            warehouse_text=warehouse_text,
+            warehouse_ref=data.delivery.ref_id,
             sum_price=data.amount,
             sum_before_goods=None,
             description=data.comment,
-            description_delivery=None,
+            description_delivery=f"Замовлення Rozetka Jerni {data.id}",
             cpa_commission=None,
             client_id=None,
             send_time=None,
             order_id_sources=None,
             order_code=f"R-{data.id}",
             prompay_status_id=None,
-            ordered_status_id=data.ordered_status_id,
+            ordered_status_id=10,
             warehouse_method_id=data.delivery.delivery_method_id,
             source_order_id=3,
-            payment_method_id=data.payment_method_id,
-            delivery_method_id=data.delivery.delivery_service_id,
-            author_id=None,
-            ordered_product=self.product)
-            
+            payment_method_id=self.payment_method(data.payment.payment_method_id),
+            payment_method_name=data.payment.payment_method_name,
+            delivery_method_id=self.delivery_method(data.delivery.delivery_service_id),
+            author_id=55,
+            ordered_product=self.product(data.purchases))
+             
             
     def product(self, data):  
         return [Product
                 (
                 quantity=product.quantity, 
                 price=product.price,
+                article=product.item.article,
                 order_id=None,
-                product_id=
-                ) for product in data.ordered_product],  # Перетворення продуктів
+                product_id=None,
+                ) for product in data]
+    
+    def delivery_method(self, order):
+        mapping = {
+            5: 1,
+            1: 2,
+            2024: 3,
+            14383961: 4,
+            13013935: 5,
+        }
+        return mapping.get(order)
+    
+    def payment_method(self, order):
+        mapping = {
+            1: 1,
+            6211: 2,
+            11111111: 3,
+            11111111: 4,
+            11111111: 5,
+            4524: 6,
+        }
+        return mapping.get(order)
+
        

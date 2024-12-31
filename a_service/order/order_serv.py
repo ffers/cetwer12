@@ -14,12 +14,12 @@ class OrderServ:
     #         if not order:  # Перевіряємо, чи таке значення ще не використовувалось
     #             used_values.add(new_digits)  # Додаємо нове значення до множини використаних
     #             return new_digits  # Повертаємо унікальне значення
-
+ 
     def search_for_order(self, order):
         order_list = []
         if order:
             for item in order:
-                if item.order_id_sources:
+                if item.order_code:
                     item_data = self.create_text(item)
                     order_list.append(item_data)
                     print(order_list)
@@ -31,7 +31,7 @@ class OrderServ:
         product_text = ' '
         for product in item.ordered_product:
             product_text += product.products.article + ' '
-        text = (item.order_id_sources + ' '
+        text = (item.order_code + ' '
                 + item.client_lastname + ' '
                 + item.client_firstname + ' '
                 + product_text + ' ')

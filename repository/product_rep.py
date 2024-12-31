@@ -21,14 +21,23 @@ class ProductRep():
             return True
         except:
             return False
+        
+    def add_product_relate(self, data_list):
+        try:
+            item = ProductRelate(
+                article=data_list[0],
+                name="",
+                quantity=int(data_list[1]),
+                product_id=data_list[2],
+                product_source_id=data_list[0]
+            )
+            db.session.add(item)
+            db.session.commit()
+            db.session.close()
+            return True
+        except:
+            return False
  
-    def load_product_all(self):
-        products = Products.query.order_by(Products.timestamp).all()
-        return products
-
-    def load_product_item(self, product_id):
-        product = Products.query.get_or_404(product_id)
-        return product
 
     def update_product_item(self, data, id):
         try:
@@ -65,26 +74,8 @@ class ProductRep():
             if not item.body_product_price:
                 item.body_product_price = 0
 
-    # relate product
-
-    def add_product_relate(self, data_list):
-        try:
-            item = ProductRelate(
-                article=data_list[0],
-                name="",
-                quantity=int(data_list[1]),
-                product_id=data_list[2],
-                product_source_id=data_list[0]
-            )
-            db.session.add(item)
-            db.session.commit()
-            db.session.close()
-            return True
-        except:
-            return False
-
     def update_product_relate(self, data, id):
-        # try:
+        try:
             product = ProductRelate.query.get_or_404(id)
 
             print(f"артикил {data}")
@@ -94,9 +85,23 @@ class ProductRep():
             product.product_source_id = data[0]
             db.session.commit()
             return True
-        # except:
-        #     return False
+        except:
+            return False
 
+    def load_product_all(self):
+        products = Products.query.order_by(Products.timestamp).all()
+        return products
+
+    def load_product_item(self, product_id):
+        product = Products.query.get_or_404(product_id)
+        return product
+    
+    def load_by_article(self, art):
+        try:
+            product = Products.query.filter_by(article=art).first()
+            return product
+        except:
+            return False
 
     def load_product_relate(self):
         products = ProductRelate.query.order_by(ProductRelate.timestamp).all()

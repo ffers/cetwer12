@@ -18,12 +18,11 @@ class BearRequest:
                 response.raise_for_status()  # Підняти виключення, якщо код статусу не 200
                 break
             except requests.exceptions.RequestException as e:
-                print(f"Помилка: {e} - Відповідь сервера {json.loads(response.content)}")
+                print(f"Помилка: {e} - Відповідь сервера")
                 retries += 1 
                 print(f"Таймаут. Спроба {retries} з {max_retries}")
                 time.sleep(1)  # Зачекати перед наступною спробою
         else:
             print("Запит не вдалося виконати після {} спроб".format(max_retries))
             raise ValueError("Запит не вдалося виконати після {} спроб".format(max_retries))
-        response_data = response.content
-        return json.loads(response_data)
+        return json.loads(response.content)

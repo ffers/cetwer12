@@ -1,8 +1,10 @@
 from utils import BearRequest
 from .dto_roz import OrderRoz
+from .mapper_roz import MapperRoz
 
 import os, base64
 from a_service import TokenRepServ
+
   
   # статуси
   # 1 - новий 
@@ -22,22 +24,24 @@ class RozetMain():
         self.host = "https://api-seller.rozetka.com.ua/"
         self.cash = "Nj2HNztLCMG1pBnr18GtDZ-SSfj4-j5B"
         self.token_new = TokenRepServ()
+        self.mapper = MapperRoz()
 
     def get_orders(self):
-        prefix = "orders/search?expand=delivery,purchases,payment,status_payment&status=1"
+        prefix = "orders/search?expand=delivery,purchases,payment,status_payment&status=4"
         resp = self.make_request("GET", prefix)
         if "content" in resp:
             if "orders" in resp["content"]:
                 if resp["content"]["orders"]:
                     # print("Є ордери")
                     orders = []
+                    order_standart = []
                     for order in resp["content"]["orders"]:
-                        print(order)
-                        # dict_order.append(Order(**order))
                         ob_order = OrderRoz.model_validate(order)
                         orders.append(ob_order)
-                    print(orders, "dict_order")
-                    return orders
+                        order_standart.append(self.mapper.order(ob_order))
+                    # print(order_standart.model_dump_json(indent=4), "order")
+                    # print(orders, "dict_order")
+                    return orders, order_standart
 
                         
                         
@@ -55,6 +59,7 @@ class RozetMain():
         body = {
             "status": status
         }
+        print(body, prefix)
         resp = self.make_request("PUT", prefix, body)
         return resp
     
@@ -106,6 +111,7 @@ class RozetMain():
                 "Content-Type": "application/json", "Authorization": f"Bearer {self.cash}"
             }
         print(headers, "headers")
+
         responce = self.request_go(method, url, headers, body)
         return responce
     
@@ -120,7 +126,7 @@ class RozetMain():
             }
             if self.cash:
                 # print(method, url, headers, body, "проверка")
-                responce = self.bear_req.request_go(method, url, headers, body)
+                    responce = self.bear_req.request_go(method, url, headers, body)
         return responce
     
     def make_list_order(self, resp):
@@ -130,61 +136,61 @@ class RozetMain():
             orders += self.make_text(dict_order)
         return orders
 
-    def make_order(self, data):
-        delivery = data["delivery"]
-        purchases = data["purchases"]
-        payment = data["payment"]
-        return {
-            "id": data["id"],
-            "event_date": data["created"],
-            "user_phone": data["user_phone"],
-            "client_firstname": data["user_title"]["first_name"],
-            "client_lastname": data["user_title"]["last_name"],
-            "client_surname": data["user_title"]["second_name"],
-            "recipient_phone": data["recipient_phone"],
-            "recipient_firstname": data["recipient_title"]["first_name"],
-            "recipient_lastname": data["recipient_title"]["last_name"],
-            "recipient_surname": data["recipient_title"]["second_name"],
-            "another_recipient": False,
-            "delivery_service_id": 
-                self.delivery_service_id(delivery["delivery_service_id"]),
-            "delivery_service_name": delivery["delivery_service_name"],
-            "city_name": delivery["city"]["city_name"],
-            "city_ref": delivery["city"]["uuid"],
-            "region": delivery["city"]["region_title"],
-            "delivery_method_id": delivery["delivery_method_id"],
-            "place_street": delivery["place_street"],
-            "place_number": delivery["place_number"],
-            "place_house": delivery["place_house"],
-            "place_flat": delivery["place_flat"],
-            "warehouse_ref": delivery["ref_id"],
-            "payment_option": payment["payment_method_name"],
-            "payment_status": payment["payment_status"],
-            "ordered_product": purchases,
-            "amount": data["amount"],
-            "sum_price": data["amount"],     
-            "description": data["comment"],
-            "description_delivery": data["user_title"],
-            "cpa_commission": data["user_title"],
-            "client_id": data["user_title"],
-            "order_code": data["user_title"],
-            "warehouse_method_id": data["user_title"],
-            "source_order_id": data["user_title"],
-            "payment_method_id": data["user_title"],
-            "delivery_method_id": data["user_title"],
-            "pickup_rz_id": data["delivery"]["pickup_rz_id"],
-            "area":"",
-            "client_notes": data["comment"]
-        }
+    # def make_order(self, data):
+    #     delivery = data["delivery"]
+    #     purchases = data["purchases"]
+    #     payment = data["payment"]
+    #     return {
+    #         "id": data["id"],
+    #         "event_date": data["created"],
+    #         "user_phone": data["user_phone"],
+    #         "client_firstname": data["user_title"]["first_name"],
+    #         "client_lastname": data["user_title"]["last_name"],
+    #         "client_surname": data["user_title"]["second_name"],
+    #         "recipient_phone": data["recipient_phone"],
+    #         "recipient_firstname": data["recipient_title"]["first_name"],
+    #         "recipient_lastname": data["recipient_title"]["last_name"],
+    #         "recipient_surname": data["recipient_title"]["second_name"],
+    #         "another_recipient": False,
+    #         "delivery_service_id": 
+    #             self.delivery_service_id(delivery["delivery_service_id"]),
+    #         "delivery_service_name": delivery["delivery_service_name"],
+    #         "city_name": delivery["city"]["city_name"],
+    #         "city_ref": delivery["city"]["uuid"],
+    #         "region": delivery["city"]["region_title"],
+    #         "delivery_method_id": delivery["delivery_method_id"],
+    #         "place_street": delivery["place_street"],
+    #         "place_number": delivery["place_number"],
+    #         "place_house": delivery["place_house"],
+    #         "place_flat": delivery["place_flat"],
+    #         "warehouse_ref": delivery["ref_id"],
+    #         "payment_option": payment["payment_method_name"],
+    #         "payment_status": payment["payment_status"],
+    #         "ordered_product": purchases,
+    #         "amount": data["amount"],
+    #         "sum_price": data["amount"],     
+    #         "description": data["comment"],
+    #         "description_delivery": data["user_title"],
+    #         "cpa_commission": data["user_title"],
+    #         "client_id": data["user_title"],
+    #         "order_code": data["user_title"],
+    #         "warehouse_method_id": data["user_title"],
+    #         "source_order_id": data["user_title"],
+    #         "payment_method_id": data["user_title"],
+    #         "delivery_method_id": data["user_title"],
+    #         "pickup_rz_id": data["delivery"]["pickup_rz_id"],
+    #         "area":"",
+    #         "client_notes": data["comment"]
+    #     }
     
     def delivery_service_id(self, id):
         if id == 43660: # новапошта
             method = 1
         elif id == 4:
             method = 1
-        elif id == 2024:
+        elif id == 2024: # укрпошта
             method = 1
-        elif id == 2:
+        elif id == 5: # новапошта
             method = 1
         elif id == 1:
             method = 1
@@ -206,6 +212,12 @@ class RozetMain():
         else:
             return print("Нема доступних методів оплати")
         return method
+    
+    def available_delivery(self):
+        prefix = "orders/available-deliveries?sla_rz_id=0"
+        resp = self.make_request("GET", prefix)
+        print(resp)
+        return resp
     
  
     

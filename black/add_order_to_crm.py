@@ -48,7 +48,7 @@ class PromToCrm():
                 "TypeWarehouse": None,
                 "WarehouseText": order["delivery_address"],
                 "phone": self.add_phone(order),
-                "warehouse_method": None,
+                "warehouse_method": None, 
                 "WarehouseRef": None,
                 "payment_method_id": payment_method_id,
                 "sum_before_goods": self.add_sum_before_goods(order, payment_method_id),
@@ -120,19 +120,15 @@ class PromToCrm():
             return description
 
     def add_delivery_method(self, order):
-        delivery_method_id = None
-        delivery_method = order["delivery_option"]["id"]
-        if delivery_method == 13013934:
-            delivery_method_id = 1
-        if delivery_method == 15255183:
-            delivery_method_id = 2
-        if delivery_method == 13844336:
-            delivery_method_id = 3
-        if delivery_method == 14383961:
-            delivery_method_id = 4
-        if delivery_method == 13013935:
-            delivery_method_id = 5
-        return delivery_method_id
+        mapping = {
+            13013934: 1,
+            15255183: 2,
+            13844336: 3,
+            14383961: 4,
+            13013935: 5,
+        }
+        return mapping.get(order["delivery_option"]["id"])
+
 
     def get_data_address_np(self, order):
         token = os.getenv("NP_TOKEN")

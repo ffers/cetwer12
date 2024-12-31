@@ -88,7 +88,7 @@ def Order():
 @bp.route('/cabinet/orders/update/<int:id>', methods=['GET', 'POST'])
 @login_required
 @author_permission.require(http_exception=403)
-def update(id):
+def update(id): 
     task_update = Orders.query.get_or_404(id)
     if request.method == 'POST':
         task_update.payment_method_id = request.form['payment_option']

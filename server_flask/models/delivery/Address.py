@@ -1,6 +1,6 @@
 from server_flask.db import db
 
-class Address(db.Model): # має базою для данних по відділеням та адрес
+class Address(db.Model): # має бути базою для данних по відділеням та адрес
     id = db.Column(db.Integer, primary_key=True)
     uuid = db.Column(db.String(50))
     city_name = db.Column(db.String(50))

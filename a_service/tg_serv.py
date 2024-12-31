@@ -10,47 +10,47 @@ class TgServ():
     def __init__(self):
         logging.basicConfig(filename='../common_asx/log_order.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
-    def send_order_curier(self, order):
-        order_id = order["id"]
-        logging.info(f"Обробка ордера send_curier: {order_id}")
-        client_name = order["client_last_name"] + " " + order["client_first_name"]
-        delivery_option = order["delivery_option"]["name"]
-        delivery_address = order["delivery_address"]
-        payment_option = order["payment_option"]["name"]
-        full_price = order["full_price"]
-        if "client_notes" in order and order["client_notes"]:
-            client_notes = "Нотатка: " + order["client_notes"]
-        else:
-            client_notes = "Нотаток від клієнта нема"
-        status = self.payment_data_status(order["payment_data"])
-        all_products = []
-        for sku in order["products"]:
-            product = {
-                "artikul": sku["sku"],
-                "name_multilang": sku["name_multilang"]["uk"],
-                "price": sku["price"],
-                "quantity": sku["quantity"],
-                "measure_unit": sku["measure_unit"],
-                "image_url": sku["image"],
-                "total_price": sku["total_price"]
-            }
-            all_products.append(product)
+    # def send_order_curier(self, order):
+    #     order_id = order["id"]
+    #     logging.info(f"Обробка ордера send_curier: {order_id}")
+    #     client_name = order["client_last_name"] + " " + order["client_first_name"]
+    #     delivery_option = order["delivery_option"]["name"]
+    #     delivery_address = order["delivery_address"]
+    #     payment_option = order["payment_option"]["name"]
+    #     full_price = order["full_price"]
+    #     if "client_notes" in order and order["client_notes"]:
+    #         client_notes = "Нотатка: " + order["client_notes"]
+    #     else:
+    #         client_notes = "Нотаток від клієнта нема"
+    #     status = self.payment_data_status(order["payment_data"])
+    #     all_products = []
+    #     for sku in order["products"]:
+    #         product = {
+    #             "artikul": sku["sku"],
+    #             "name_multilang": sku["name_multilang"]["uk"],
+    #             "price": sku["price"],
+    #             "quantity": sku["quantity"],
+    #             "measure_unit": sku["measure_unit"],
+    #             "image_url": sku["image"],
+    #             "total_price": sku["total_price"]
+    #         }
+    #         all_products.append(product)
 
-        phone_num = order["phone"]
-        sum_order = order["full_price"]
-        formatted_text = ""
-        up_text = ""
-        for product in all_products:
-            up_text += f"{product['artikul']} - {product['quantity']} {product['measure_unit']} - {product['price']} \n"
-            formatted_text += f"{product['artikul']} - {product['quantity']} {product['measure_unit']} - {product['price']} \n"
-            formatted_text += f"Название: {product['name_multilang']}"
+    #     phone_num = order["phone"]
+    #     sum_order = order["full_price"]
+    #     formatted_text = ""
+    #     up_text = ""
+    #     for product in all_products:
+    #         up_text += f"{product['artikul']} - {product['quantity']} {product['measure_unit']} - {product['price']} \n"
+    #         formatted_text += f"{product['artikul']} - {product['quantity']} {product['measure_unit']} - {product['price']} \n"
+    #         formatted_text += f"Название: {product['name_multilang']}"
 
-        data_get_order = (
-            f"🟢 {up_text} Cумма {sum_order}\n\n{client_notes}\n\n"
-            f"{delivery_address}\n\n🟢 Замовлення № {order_id}\n\n{phone_num};ТТН немає\n{client_name}\n{delivery_option}\n"
-            f"Способ оплати - {payment_option}, {status} \n\n  На будь якій випадок:\n"
-            f"{formatted_text}\n\n=========================================================="
-        )
+    #     data_get_order = (
+    #         f"🟢 {up_text} Cумма {sum_order}\n\n{client_notes}\n\n"
+    #         f"{delivery_address}\n\n🟢 Замовлення № {order_id}\n\n{phone_num};ТТН немає\n{client_name}\n{delivery_option}\n"
+    #         f"Способ оплати - {payment_option}, {status} \n\n  На будь якій випадок:\n"
+    #         f"{formatted_text}\n\n=========================================================="
+    #     )
 
 
     def payment_data_status(self, payment_data):
@@ -67,30 +67,27 @@ class TgServ():
         return payment_data
 
     def create_text_order(self, order):
-        order_product = order.ordered_product
         ttn = order.ttn if order.ttn else "ТТН немає"
         if order.description:
             description = "🟢 Нотатка:\n" + order.description
         else:
             description = "Нотаток від клієнта нема"
-        payment_method = order.payment_method
         if order.sum_before_goods:
             sum_check = order.sum_before_goods
         else:
             sum_check = order.sum_price 
         product_article = ""
         product_text = "На всяк випадок:\n"
-        for product in order_product:
+        for product in order.ordered_product:
             product_article += f"🟢 {product.products.article} - {product.quantity}шт - {product.price}\n"
             product_text += f" {product.products.product_name}\n"
         data_get_order = (
             f"{product_article} Сумма: {order.sum_price} \n\n{description}\n\n"
-            f"{order.city_name}, {order.warehouse_text} \n\n🟢 {order.source_order.name} Замовлення № {order.order_id_sources}\n"
+            f"{order.city_name}, {order.warehouse_text} \n\n🟢 {order.source_order.name} Замовлення № {order.order_code}\n"
             f"Cтатус: {order.ordered_status.name}\n"
             f"\n{order.phone};{ttn}\n{order.client_lastname} {order.client_firstname}\n"
             f"Спосіб доставки - {order.delivery_method.name}\n"
-            f"Спосіб оплати - {payment_method.name}, {sum_check} \n\n"
-            
+            f"Спосіб оплати - {order.payment_method.name}, {sum_check} \n\n"
             f"{product_text}\n=========================================================="
         )
         return data_get_order
