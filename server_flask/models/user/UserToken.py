@@ -4,8 +4,9 @@ from server_flask.db import db
 
 class UserToken(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-    project = db.Column(db.String(150))
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow())
+    project_id = db.Column(db.Integer, db.ForeignKey(
+        'project.id', name='fk_usertoken_project_id'))
     user_id = db.Column(db.Integer, db.ForeignKey(
         'users.id', name='fk_usertoken_user_id'), nullable=False)
     np_token = db.Column(db.String(255))
@@ -44,4 +45,4 @@ class UserToken(db.Model):
     checkbox_pin_cashier = db.Column(db.String(255))
     checkbox_client_version = db.Column(db.String(255))
     device_id = db.Column(db.String(255))
-    checkbox_authorization = db.Column(db.String(255))
+    checkbox_access_token = db.Column(db.String(255))

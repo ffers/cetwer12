@@ -34,8 +34,8 @@ class MarketplaceCntrl:
                     print(resp)
                 return True
             return False
-        except:
-            text = "🔴 Помилка додавання замовлення в розетку"
+        except Exception as e:
+            text = f"🔴 Помилка додавання замовлення в розетку {e}"
             return self.tg.sendMessage(self.tg.chat_id_confirm, text)
 
     def add_order(self, o):

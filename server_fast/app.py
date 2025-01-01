@@ -30,8 +30,8 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 app.include_router(
     order,
-    prefix="/v2/orders",
-    tags=["orders"], 
+    prefix="/v2/order",
+    tags=["order"], 
     
         )
 

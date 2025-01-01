@@ -18,7 +18,7 @@ from a_service import TokenRepServ
 #   6 	# Замовлення виконано 	
 #  61 	Заплановано передачу перевізникові 	
 
-class RozetMain():
+class RozetMain(): 
     def __init__(self):
         self.bear_req = BearRequest()
         self.host = "https://api-seller.rozetka.com.ua/"

@@ -100,7 +100,7 @@ class OrderRoz(BaseModel):
 
     user_phone: str
     user_title: UserTitle
-    user_rating: int
+    user_rating: int|None
     
     items_photos: List[dict]
     total_quantity: int

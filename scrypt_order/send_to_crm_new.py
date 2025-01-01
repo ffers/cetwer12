@@ -13,13 +13,24 @@ class SendToCrmNew:
 
     def get_orders_rozet(self):
         host = os.getenv("HOSTCRM")
-        url = host + "v2/orders/get_orders"
+        url = host + "v2/order/get_orders"
         token = os.getenv("SEND_TO_CRM_TOKEN")
         header = {
                 "Content-Type": "application/json", "Authorization": f"{token}"
             }
         resp = self.send_request("GET", url, header)
         print(resp, "відповідь")
+
+    def get_check(self):
+        host = os.getenv("HOSTCRM")
+        url = host + "v2/admin/check_sign"
+        token = os.getenv("SEND_TO_CRM_TOKEN")
+        header = {
+                "Content-Type": "application/json", "Authorization": f"{token}"
+            }
+        resp = self.send_request("GET", url, header)
+        print(resp, "відповідь")
+        
 
     def send_request(self, method, url, header):
         self.tg = TelegramController()

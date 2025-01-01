@@ -8,7 +8,7 @@ from server_flask.flask_app import flask_app, jsonify
 
 from ..dependencies import get_token_header 
 
-router = APIRouter()
+
 router = APIRouter(
     tags=["order"],
     dependencies=[Depends(get_token_header)],

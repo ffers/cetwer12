@@ -5,13 +5,13 @@ from typing import Annotated
 from black import CheckCntrl, MarketplaceCntrl
 from pydantic import BaseModel
 
+from ..dependencies import get_token_header 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-
-
-
-router = APIRouter()
+router = APIRouter(
+    tags=["admin"],
+    dependencies=[Depends(get_token_header)],
+    responses={404: {"description": "Not found"}},
+)
   
 @router.get("/check_sign")
 async def check_sign():
@@ -30,28 +30,11 @@ async def market_sign():
         # print(load_order, "Test fast api")
         return 200, {"message": "FALSE"}
 
-
 class User(BaseModel):
     username: str
     email: str | None = None
     full_name: str | None = None
     disabled: bool | None = None
-
-
-def fake_decode_token(token):
-    return User(
-        username=token + "fakedecoded", email="john@example.com", full_name="John Doe"
-    )
-
-async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
-    user = fake_decode_token(token)
-    return user
-
-@router.get("/items/")
-async def read_items(token: Annotated[str, Depends(oauth2_scheme)]):
-    return {"token": token}
-
-
 
 
 
