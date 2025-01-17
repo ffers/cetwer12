@@ -1,4 +1,4 @@
-from repository import TokenRep
+from repository import UserTokenRep
 
 
 class TokenRepServ:
@@ -6,6 +6,5 @@ class TokenRepServ:
         pass
 
     def test_token_crypt(self): 
-        test_token = TokenRep()
-        
+        test_token = UserTokenRep()       
         return True

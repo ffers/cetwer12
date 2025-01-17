@@ -23,7 +23,7 @@ class SendToCrmNew:
 
     def get_check(self):
         host = os.getenv("HOSTCRM")
-        url = host + "v2/admin/check_sign"
+        url = host + "v2/check/check_sign"
         token = os.getenv("SEND_TO_CRM_TOKEN")
         header = {
                 "Content-Type": "application/json", "Authorization": f"{token}"
@@ -37,6 +37,6 @@ class SendToCrmNew:
         try:
             resp = self.bear.request_go(method, url, header)
             return resp
-        except:
-            self.tg.sendMessage(self.tg.chat_id_info, f"🔴 🔴 🔴  Сервер не працює!")
+        except Exception as e:
+            self.tg.sendMessage(self.tg.chat_id_info, f"🔴 🔴 🔴  Сервер не працює! \n {e}")
             return False

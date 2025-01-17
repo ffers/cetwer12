@@ -18,9 +18,9 @@ class OrderDTO(BaseModel):
     phone: str
     ttn: str|None
     ttn_ref: Optional[str]
-    client_firstname: str
-    client_lastname: str
-    client_surname: Optional[str]
+    client_firstname: Optional[str] = None
+    client_lastname: Optional[str] = None
+    client_surname: Optional[str] = None
     delivery_option: str
     city_name: str
     city_ref: Optional[str]

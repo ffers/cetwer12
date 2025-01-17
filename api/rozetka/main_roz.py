@@ -41,18 +41,8 @@ class RozetMain():
                         order_standart.append(self.mapper.order(ob_order))
                     # print(order_standart.model_dump_json(indent=4), "order")
                     # print(orders, "dict_order")
-                    return orders, order_standart
-
-                        
-                        
+                    return orders, order_standart                        
         return None, None
-    
-    def test(self):
-        order = {"id"}
-    
-    def authorization(self):
-        pass
-
     
     def change_status_order(self, order_id, status):
         prefix = f"orders/{order_id}"
@@ -89,7 +79,6 @@ class RozetMain():
                 "username": username,
                 "password": password
             }
-            # print(body)
             headers = {
                 "Content-Type": "application/json"
             }

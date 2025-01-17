@@ -18,9 +18,9 @@ class MapperRoz():
             phone=data.user_phone,
             ttn=None,
             ttn_ref=None,  # Приклад для поля ttn_ref
-            client_firstname=data.user_title.first_name,
-            client_lastname=data.user_title.last_name,
-            client_surname=data.user_title.second_name,
+            client_firstname=data.recipient_title.first_name,
+            client_lastname=data.recipient_title.last_name,
+            client_surname=data.recipient_title.second_name,
             delivery_option=data.delivery.delivery_service_name,
             city_name=data.delivery.city.city_name,
             city_ref=data.delivery.city.uuid,
@@ -40,14 +40,20 @@ class MapperRoz():
             order_code=f"R-{data.id}",
             prompay_status_id=None,
             ordered_status_id=10,
-            warehouse_method_id=data.delivery.delivery_method_id,
+            warehouse_method_id=self.warehouse_method(data.delivery.delivery_method_id),
             source_order_id=3,
             payment_method_id=self.payment_method(data.payment.payment_method_id),
             payment_method_name=data.payment.payment_method_name,
             delivery_method_id=self.delivery_method(data.delivery.delivery_service_id),
             author_id=55,
             ordered_product=self.product(data.purchases))
-             
+    
+    def warehouse_method(self, d):
+        mapping = {
+            1: 1,
+            2: 2,
+        }
+        return mapping.get(d)             
             
     def product(self, data):  
         return [Product
@@ -65,7 +71,7 @@ class MapperRoz():
             1: 2,
             2024: 3,
             14383961: 4,
-            13013935: 5,
+            13013935: 5, 
         }
         return mapping.get(order)
     

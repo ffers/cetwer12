@@ -104,6 +104,7 @@ def get_create_contragent(data, buffer):
     print(resp)
     Recipient = resp["data"][0]["Ref"]
     return Recipient
+
 def get_create_contact(data, buffer):
     buffer = json.loads(buffer)
     data = data["data"]["ContactPerson"]

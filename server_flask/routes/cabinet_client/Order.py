@@ -144,7 +144,7 @@ def add_order():
         sum_price_draft = request.form["total-all"]
         sum_before_goods = None
         if request.form['payment_option'] == "3":
-            sum_before_goods = request.form["sum_before_goods"]
+            sum_before_goods = request.form["sum_before_goods"] 
         print(f"ПРИНТУЄМ !!!! ")
         order = Orders(description=request.form['description'], city_name=request.form['CityName'], city_ref=request.form['CityREF'],
                       warehouse_text=unquote(request.form['warehouse-text']), warehouse_ref=request.form['warehouse-id'],

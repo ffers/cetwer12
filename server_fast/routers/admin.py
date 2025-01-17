@@ -4,6 +4,8 @@ from fastapi.security import OAuth2PasswordBearer
 from typing import Annotated
 from black import CheckCntrl, MarketplaceCntrl
 from pydantic import BaseModel
+from server_flask.flask_app import flask_app, jsonify
+
 
 from ..dependencies import get_token_header 
 
@@ -13,12 +15,6 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
   
-@router.get("/check_sign")
-async def check_sign():
-        check = CheckCntrl()
-        check.signinPinCode()
-        # print(load_order, "Test fast api")
-        return {"message": "Admin getting schwifty"}
 
 @router.get("/market_get_orders")
 async def market_sign():

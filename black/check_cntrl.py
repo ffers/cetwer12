@@ -1,18 +1,15 @@
 import os
-# from server_flask.flask_app import flask_app
-from api import CheckboxClient
+from a_service import CheckServ
 
 
-class CheckCntrl:
-    def __init__(self):
-        self.token = os.getenv("CHECKBOX_TOKEN")
-        # with flask_app.app_context:
-        self.api = CheckboxClient(self.token)
+class CheckCntrl(object):
+    def __init__(self, user_id):
+        self.user_id = user_id
         
-    def signinPinCode(self):
-        responce = self.api.signinPinCode()
-        token_auth = responce["access_token"]
-        return responce 
+    def start(self):
+        check = CheckServ(self.user_id)
+        resp = check.cash_registers()
+        return resp
     
     
 

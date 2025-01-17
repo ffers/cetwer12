@@ -44,7 +44,7 @@ class NpCntrl():
                 "BackwardDeliveryData": None,
                 "OptionsSeat": None,
                 "Description": f"Одяг Jemis {order.order_id_sources}"
-        })
+        }) 
         print(order.payment_method_id)
         if self.data["payment_option"] == 3:
             self.data.update({"sum_before_goods": order.sum_before_goods})

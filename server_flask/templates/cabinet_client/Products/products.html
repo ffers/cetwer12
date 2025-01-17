@@ -23,6 +23,7 @@
             <th style="width: 10%; text-align: center;">Редагування</th>
             <th scope="col" style="text-align: center;">Артікул</th>
             <th scope="col" style="text-align: center;">Назва</th> 
+            <th style="display: none;">Назва 2</th> 
           </tr>
         </thead>
         <tbody>
@@ -36,7 +37,8 @@
               </a>
             </td>
             <td contenteditable="False" style="text-align: center; font-weight: bold;">{{item.article}}</td>
-            <td contenteditable="true"><input class="form-control bg-light" name="name" autocomplete="off" rows="1" cols="50" placeholder="* Назва" value="{{item.product_name}}"></td>        
+            <td contenteditable="False"><input class="form-control bg-light" name="name" autocomplete="off" rows="1" cols="50" placeholder="* Назва" value="{{item.product_name}}"></td>  
+            <td style="display: none;">{{item.product_name}}</td>      
           </tr>
          {% endfor %}
         </tbody>

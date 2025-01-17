@@ -12,7 +12,7 @@ import uvicorn, multiprocessing, logging
 
 from .routers import order
 from .routers import admin
-
+from .routers import check
  
 logging.basicConfig(
     level=logging.INFO,
@@ -41,10 +41,21 @@ app.include_router(
     tags=["admin"],
 )
 
+app.include_router(
+    check,
+    prefix="/v2/check",
+    tags=["check"],
+)
+
 @app.get("/v2")
 async def read_items(token: Annotated[str, Depends(oauth2_scheme)]):
     logging.info("Обробка backend server")
     return {"token": token}
+
+# Функція для створення контексту Flask
+def execute_in_flask_context(func, *args, **kwargs):
+    with flask_app.app_context():
+        return func(*args, **kwargs)
 
 
 def main():
