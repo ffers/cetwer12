@@ -161,14 +161,14 @@ tr {
   }
 
 
-
+ 
 @media screen and (max-width: 928px) {
     .content {
         width: 97%; /* Занимает всю доступную ширину экрана */
     }
-    .form-control {
+    /* .form-control {
         margin-top: 5px;
-    }
+    } */
     th, td {
         display: block;
         width: 100%;

@@ -34,3 +34,7 @@ from .product.JournalChange import JournalChange
 from .user.UserToken  import UserToken
 from .analitic.SourceDifference import SourceDifference
 from .user.Project import Project
+from .Receipts.Receipt import Receipt
+from .Receipts.Shift import Shift
+ 
+ 

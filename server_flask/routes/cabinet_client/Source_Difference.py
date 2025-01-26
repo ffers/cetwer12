@@ -58,7 +58,7 @@ def source_difference_update_day():
     source_diff_cntrl = get_instance('sour_diff_an_cntrl', SourDiffAnCntrl)
     # add_line_diff = source_diff_cntrl.add_quantity_crm_today()
     # add_quantity = source_diff_cntrl.sour_diff_all_source_sold("two_days") 
-    source_diff_sum = source_diff_cntrl.update_source_difference_period("days", 30)
+    source_diff_sum = source_diff_cntrl.update_source_difference_period("days", 60)
     return redirect('/cabinet/source/all')
    
  

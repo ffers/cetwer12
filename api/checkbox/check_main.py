@@ -1,8 +1,6 @@
 import os, time, json, requests, uuid
 from pydantic import AliasGenerator, BaseModel, ConfigDict
 from typing import List, Optional
-
-import test
 from utils import BearRequest
 
 class HeadersModel(BaseModel):  
@@ -30,8 +28,30 @@ class CheckboxClient(object):
         self.token_veryfy = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiQVBJIiwianRpIjoiYjAwNmM0MTItOGFlYS00YjI1LTliMGMtNWRiM2M5NWE1ZGU5Iiwic3ViIjoiOGZiZDc0MWQtY2I2ZC00MDU0LThjMjctMGY5NjVlOGYxZWExIiwibmJmIjoxNzM0MjkyNzcyLCJpYXQiOjE3MzQyOTI3NzJ9.A3xZYY45STCoFDLSsM3jkHPumX1A0E4NraWcNw-EsW0"
         self.pin_cashier = os.getenv("CHECKBOX_PIN_CASHIER")
         self.cash = token
+
+    def receipts_status(self, id):
+        prefix = f"receipts/sell/{id}"
+        obj = HeadersModel(
+            X_License_Key=self.license_key,
+            Authorization=f"Bearer {self.cash}",
+            Content_Type="application/json"
+        )
+        headers = obj.model_dump(by_alias=True)
+        responce = self.request_go("GET", prefix, headers)
+        return responce
+
+    def receipts_sell(self, body):
+        prefix = "receipts/sell"
+        obj = HeadersModel(
+            X_License_Key=self.license_key,
+            Authorization=f"Bearer {self.cash}",
+            Content_Type="application/json"
+        )
+        headers = obj.model_dump(by_alias=True)
+        responce = self.request_go("POST", prefix, headers, body)
+        return responce
     
-    def shifts_status(self, id):
+    def shift_status(self, id):
         prefix = f"shifts/{id}"
         obj = HeadersModel(
             X_License_Key=self.license_key,
@@ -55,6 +75,16 @@ class CheckboxClient(object):
 
     def go_online(self):
         prefix = "cash-registers/go-online"
+        obj = HeadersModel(
+            X_License_Key=self.license_key,
+            Authorization=f"Bearer {self.cash}"
+        )
+        headers = obj.model_dump(by_alias=True)
+        responce = self.request_go("POST", prefix, headers)
+        return responce
+    
+    def go_offline(self):
+        prefix = "cash-registers/go-offline"
         obj = HeadersModel(
             X_License_Key=self.license_key,
             Authorization=f"Bearer {self.cash}"
@@ -100,8 +130,7 @@ class CheckboxClient(object):
         headers = obj.model_dump(by_alias=True)
         responce = self.request_go("GET", prefix, headers)
         return responce
-    
-    
+       
     def ping_tax_service(self):
         prefix = f"cash-registers/ping-tax-service"
         obj = HeadersModel(

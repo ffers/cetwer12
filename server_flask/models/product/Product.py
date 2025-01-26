@@ -7,6 +7,7 @@ class Products(db.Model):
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     article = db.Column(db.String(150), unique=True)
     product_name = db.Column(db.String(150))
+    name_official = db.Column(db.String(150))
     description = db.Column(db.String(300))
     price = db.Column(db.Numeric(precision=8, scale=2))
     quantity = db.Column(db.Integer)
