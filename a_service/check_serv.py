@@ -6,7 +6,7 @@ from repository import ReceiptRep, ShiftRep
  
 class CheckServ(object):
     def __init__(self, user_id):
-        from black import TelegramController
+        from black import TelegramController 
         self.tg = TelegramController()
         self.user_id = user_id
         self.token = None
