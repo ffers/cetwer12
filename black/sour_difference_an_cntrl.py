@@ -71,7 +71,7 @@ class SourDiffAnCntrl():
         print(args_obj)
         bool_obj = self.sour_diff_an_rep.add_source_difference(args_obj)
         return bool_obj
-
+ 
     def update_source_difference(self, body):
         update = body
         return update
@@ -79,10 +79,10 @@ class SourDiffAnCntrl():
     def update_source_difference_period(self, period, days): # потрібно source_id 
         start_time, stop_time = self.work_time_cntrl.load_work_time(period, days)
         product = self.sour_diff_an_rep.load_source_difference_period(
-            start_time, stop_time   
+            start_time, stop_time
             )
         diff_sum = self.sour_diff_an_serv.source_difference_sum(product)
-        return product
+        return product 
     
     def update_source_diff_line(self, req, id):
         args_obj = self.sour_diff_an_serv.update_source_diff_line(req)

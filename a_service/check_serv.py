@@ -3,7 +3,7 @@ from repository import UserTokenRep
 from api import CheckboxClient
 from DTO import UserTokenDTO, ReceiptDTO, ShiftDTO
 from repository import ReceiptRep, ShiftRep
-
+ 
 class CheckServ(object):
     def __init__(self, user_id):
         from black import TelegramController
