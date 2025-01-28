@@ -78,8 +78,7 @@ class MarketplaceCntrl:
     def make_text(self, order):
         user_name = f"{order.user_title.last_name} {order.user_title.first_name}"
         recipient = f"{order.recipient_title.last_name} {order.recipient_title.first_name}"
-        delivery_address = (
-            f"Спосіб доставкі: {order.delivery.delivery_service_name}\n"
+        delivery_address = (            
             f"{order.delivery.city.city_name} "
             f"({order.delivery.city.region_title}) "
             f"{order.delivery.place_number} "
@@ -94,18 +93,24 @@ class MarketplaceCntrl:
         payment_option = order.payment.payment_method_name
         client_notes = f"Нотатка: {', '.join(order.seller_comment)}" if order.seller_comment else "Нотаток від клієнта нема"
         status = order.status_payment if order.status_payment else order.payment.payment_type_title
-
-        products_info = "\n".join([f"{p.item.article} - {p.quantity}  - {p.price} \nНазвание: {p.item.name_ua}" for p in order.purchases])
-        
+        products = "\n".join([f"{p.item.article} - {p.quantity} - {p.price}\n" for p in order.purchases])
+        products_info = "\n".join([f"Назва: {p.item.name_ua}\n" for p in order.purchases])     
         sum_order = order.amount_with_discount
         phone_num = order.user_phone
         recipient_phone = order.recipient_phone
-
         return (
-            f"🟢 {products_info} Cумма {sum_order}\n\nДата створення замовлення {order.created}\n {client_notes}\n\n"
-            f"{delivery_address}\n\n🟢 Замовлення Розетка Маркет № {order.id}\n\n{phone_num};ТТН: {order.ttn}\nПокупець:\n{user_name}\n\n"
-            f"Отримувач:\n{recipient}\n{recipient_phone}\n\nСпособ оплати - {payment_option}, Статус - {status}\n{dev_text}"
-            "\n=========================================================="
+            f"🟢 {products} Cумма {sum_order}\n\n"
+            f"Дата створення замовлення {order.created}\n "
+            f"{client_notes}\n\n"
+            f"{order.delivery.delivery_service_name}\n"
+            f"{payment_option}, {status}\n"
+            f"Покупець:\n{user_name}\n{phone_num};ТТН\n\n"
+            f"🟢 Замовлення Розетка Маркет № {order.id}\n\n"
+            f"Отримувач:\n{delivery_address}\n"
+            f"{recipient}\n{recipient_phone}\n\n"
+            f"{products_info}\n"
+            f"{dev_text}\n"
+            "=========================================================="
         )
 
 

@@ -17,6 +17,7 @@ from a_service import TokenRepServ
 #   5 	# Чекає в пункті самовивозу 	
 #   6 	# Замовлення виконано 	
 #  61 	Заплановано передачу перевізникові 	
+#  26 "Обробляється менеджером"
 
 class RozetMain(): 
     def __init__(self):
@@ -27,7 +28,7 @@ class RozetMain():
         self.mapper = MapperRoz()
 
     def get_orders(self):
-        prefix = "orders/search?expand=delivery,purchases,payment,status_payment&status=1"
+        prefix = "orders/search?expand=delivery,purchases,payment,status_payment&status=26"
         resp = self.make_request("GET", prefix)
         if "content" in resp:
             if "orders" in resp["content"]:

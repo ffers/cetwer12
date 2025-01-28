@@ -58,7 +58,7 @@ $('#saveBtn').on('click', function () {
       data: JSON.stringify(tableData),
       success: function (response) {
         
-        //   location.reload()
+          location.reload()
           
       }
   });
