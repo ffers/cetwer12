@@ -34,10 +34,13 @@ class SourAnCntrl:
         add = self.sour_an_diff_cntrl.add_quantity_crm_today(sources)
         return add
     
-    def add_comment_diff(self, source_id, comment):
+    def add_comment_diff(self, source_id, comment, new_quantity):
         last_line = self.sour_an_diff_cntrl.load_last_line_id(source_id)
         print("загрузили last_line")
         update = self.sour_an_diff_cntrl.add_line_comment(last_line.id, comment)
+
+        update_quantity_crm = self.sour_an_diff_cntrl.update_quantity_crm([[last_line.id, new_quantity]])
+        print(update_quantity_crm, " update_quantity_crm")
         return update
     
     def add_arrival(self, req):
@@ -102,7 +105,7 @@ class SourAnCntrl:
       
     def fixed_process(self, source_id, sale_quantity, description, event_date=None): # получает компонент не имеет а из прихода отправляю
         journal = self.stock_journal(source_id, sale_quantity, description, event_date)
-        comment_diff = self.add_comment_diff(source_id, description + f': {sale_quantity}')
+        comment_diff = self.add_comment_diff(source_id, description + f': {sale_quantity}.', journal[1])
         print(journal, comment_diff, 'fixed_process')
         return comment_diff
         

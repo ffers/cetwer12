@@ -113,11 +113,21 @@ class SourDiffAnRep():
             return False
        
                
-    def update_diff_table(self, data):
+    def update_diff_table(self, data): # update quantity_stock
         try:
             for row in data:
                 item = self.load_source_diff_line(row[0])
                 item.quantity_stock = row[1]
+                db.session.commit()
+            return True
+        except:
+            return False
+        
+    def update_quantity_crm(self, data): # update quantity_stock
+        try:
+            for row in data:
+                item = self.load_source_diff_line(row[0])
+                item.quantity_crm = row[1]
                 db.session.commit()
             return True
         except:

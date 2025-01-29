@@ -77,6 +77,9 @@ class SourDiffAnCntrl():
     def add_line_comment(self, id, comment):
         return self.sour_diff_an_rep.add_diff_comment(id, comment)
     
+    def update_quantity_crm(self, data):
+        return self.sour_diff_an_rep.update_quantity_crm(data)
+    
     def update_source_difference(self, body):
         update = body
         return update
