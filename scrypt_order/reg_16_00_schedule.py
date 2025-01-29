@@ -63,6 +63,7 @@ class RegSchedulleSrv():
     def reg_20_00(self): 
         with flask_app.app_context():
             self.ord.change_status_roz()
+            self.sour.add_quantity_crm_today()
             self.sour.sort_analitic("all")
             self.sour.sort_analitic("year")
             self.sour.sort_analitic("month")
@@ -70,7 +71,6 @@ class RegSchedulleSrv():
             self.sour.sort_analitic("day")
             time.sleep(1)
             self.quan_stok.quan_f("#quan 35N, 45N, 35W1, 45W1, 35N10, 40N10, 45N10, BX1, BX2, BX3, BX4, BX5, 35N11, 40N11, 45N11, 35W, 45W, 35W13, 45W13") 
-            self.sour.add_quantity_crm_today()
             time.sleep(1)
             self.sour.sour_diff_all_source_sold("two_days") 
             # запустить програму скидивания наличия

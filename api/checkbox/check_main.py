@@ -29,7 +29,7 @@ class CheckboxClient(object):
         self.pin_cashier = os.getenv("CHECKBOX_PIN_CASHIER")
         self.cash = token
 
-    def receipts_status(self, id):
+    def receipts_status(self, id): 
         prefix = f"receipts/sell/{id}"
         obj = HeadersModel(
             X_License_Key=self.license_key,

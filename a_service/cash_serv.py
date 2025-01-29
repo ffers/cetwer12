@@ -10,7 +10,7 @@ class CacheService:
             cls._instance.cache = {}
         return cls._instance
 
-    def set(self, key, value):
+    def set(self, key, value): 
         self.cache[key] = value
 
     def get(self, key):

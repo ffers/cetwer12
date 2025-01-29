@@ -1,4 +1,5 @@
-import uuid, time, datetime
+import uuid, time
+from datetime import datetime, timezone
 from repository import UserTokenRep
 from api import CheckboxClient
 from DTO import UserTokenDTO, ReceiptDTO, ShiftDTO
@@ -62,7 +63,7 @@ class CheckServ(object):
             return False
         
     def load_shift(self):
-        load_shift = self.shift_rep.load_shift_today(datetime.datetime.utcnow())
+        load_shift = self.shift_rep.load_shift_open()
         if load_shift:
             return load_shift
         else:
@@ -70,8 +71,6 @@ class CheckServ(object):
             shift = self.shift_open(body)
             return shift
 
-
-    
     def shift_open(self, body):
         try:
             shifts = self.api.shifts(body)
@@ -107,7 +106,7 @@ class CheckServ(object):
             # может записать в базу
         return fiscal_code
     
-    def cash_status(self):
+    def cash_status(self): 
         cash_id = None
         status = self.cash_online(cash_id)
         if status["offline_mode"]:
@@ -120,9 +119,15 @@ class CheckServ(object):
             goods=[]
         )
 
-    def shift_status(self, id):
+    def shift_status_tax(self, id):
         status = self.universal_api_call(self.api.shift_status(id))
         return status.get("status") == "OPENED"
+    
+    def shift_status_crm(self) -> bool:
+        shifts_list = self.shift_rep.load_shift_open()
+        if shifts_list:
+            return True
+        
     
     def shifts(self, body):
         return self.universal_api_call(self.api.shifts(body))

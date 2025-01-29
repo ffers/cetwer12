@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from sqlalchemy import func
 from server_flask.models import Receipt, Shift
 from DTO import ReceiptDTO, ShiftDTO
-
+ 
 
 class ReceiptRep:
     def add(self, d: ReceiptDTO):
@@ -40,6 +40,10 @@ class ShiftRep:
     def delete(self):
         pass
         
-    def load_shift_date(self, date):
+    def load_shift_date_token(self, date):
         token = Shift.query.filter_by(timestamp=date).first()
         return token.checkbox_access_token
+    
+    def load_shift_open(self, date):
+        data_list = Shift.query.filter_by(closed=None).all()
+        return data_list

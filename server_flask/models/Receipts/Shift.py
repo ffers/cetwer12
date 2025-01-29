@@ -1,7 +1,7 @@
 from datetime import datetime
 from server_flask.db import db
 from DTO import ReceiptDTO
-
+ 
 
 class Shift(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -16,7 +16,7 @@ class Shift(db.Model):
         self.open = d.open
         self.closed = d.closed
 
-    def update(self):
+    def update(self, d: ReceiptDTO):
         self.shifd_id = d.shift_id or self.shifd_id
         self.open = d.open or self.open
         self.closed = d.closed or self.closed 
