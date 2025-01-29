@@ -1,8 +1,8 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 class WorkTimeCntrl:
 
     def my_time(self):
-        yield (datetime.utcnow())
+        yield (datetime.now(timezone.utc))
 
     def load_work_time(self, period, quantity=None):
         start_time, stop_time = None, None
@@ -43,7 +43,7 @@ class WorkTimeCntrl:
         start_time = current_time - timedelta(hours=14)
         start_time = start_time.replace(hour=14, minute=0, second=0,
                                         microsecond=0)
-        start_time = start_time - timedelta(days=2)
+        start_time = start_time - timedelta(days=2) 
         stop_time = start_time + timedelta(days=2)
         return start_time, stop_time
 

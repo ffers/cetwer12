@@ -4,7 +4,7 @@ from a_service import CacheService
 from .work_time_cntrl import WorkTimeCntrl
 from repository import OrderRep
 from repository import ProductRep
-
+from datetime import timedelta
 
 
 
@@ -49,7 +49,9 @@ class SourDiffAnCntrl():
     
     def add_quantity_crm_today(self, products):
         print("Працюєм")
-        event_date = next(self.work_time_cntrl.my_time()).strftime('%Y-%m-%d')
+        event_date = next(self.work_time_cntrl.my_tgitпше ime()).strftime('%Y-%m-%d')
+        # event_date = event_date - timedelta(days=1)
+        # event_date = event_date.strftime('%Y-%m-%d')
         start, stop = self.work_time_cntrl.load_work_time("all")
         orders = self.ord_rep.load_period(start, stop)
         sold_quantities = self.sour_diff_an_serv.source_diff_sold_optimized(orders, products)
@@ -72,6 +74,9 @@ class SourDiffAnCntrl():
         bool_obj = self.sour_diff_an_rep.add_source_difference(args_obj)
         return bool_obj
  
+    def add_line_comment(self, id, comment):
+        return self.sour_diff_an_rep.add_diff_comment(id, comment)
+    
     def update_source_difference(self, body):
         update = body
         return update
@@ -94,8 +99,6 @@ class SourDiffAnCntrl():
         add = self.sour_diff_an_rep.update_diff_table(list_data)
         return add
     
-    def add_line_comment(self, id, comment):
-        return self.sour_diff_an_rep.add_diff_comment(id, comment)
 
     def delete_event_date(self, req):
         start, stop = self.sour_diff_an_serv.load_event_day(req)
@@ -111,7 +114,7 @@ class SourDiffAnCntrl():
         source_list = self.sour_diff_an_rep.load_source_difference_id_period(id, start, stop)
         print(source_list)
         self.sour_diff_an_serv.count_going_list(source_list, start, stop)
- 
+  
     
     def sour_diff_id_gone(self, id):
         start, stop = self.work_time_cntrl.load_work_time("days", 1)

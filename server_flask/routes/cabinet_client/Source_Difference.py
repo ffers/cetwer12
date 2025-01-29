@@ -121,7 +121,7 @@ def source_diff_load_event_day():
             flash('Нема данних по товару за цей період', category='error')
             return redirect('/cabinet/source/all')
         
-
+ 
 @bp.route('/cabinet/source_difference/update_sold', methods=['POST','GET'])
 @login_required
 @admin_permission.require(http_exception=403)   
@@ -129,7 +129,7 @@ def source_diff_update_sold():
     if request.method == "GET":
         source_cntrl = get_instance('sour_cntrl', SourAnCntrl)
         source_diff_cntrl = get_instance('sour_diff_an_cntrl', SourDiffAnCntrl)
-        product = source_cntrl.sour_diff_all_source_sold("month")
+        product = source_cntrl.sour_diff_all_source_sold("two_days")
         if product:            
             return redirect('/cabinet/source/all')
         else:

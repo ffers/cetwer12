@@ -112,7 +112,7 @@ class SourAnCntrl:
             return prod_comp.quantity * product.quantity, f"Возврат: {order.order_code}, {product.products.article}"
         elif action_type == 'confirmed':
             sale_quantity = self.sour_an_serv.count_new_quantity(prod_comp, product)
-            return -sale_quantity, f"{order.order_id_sources} {product.products.article}"
+            return -sale_quantity, f"{order.order_code} {product.products.article}"
         else:
             # Невідомий тип дії
             return None, None

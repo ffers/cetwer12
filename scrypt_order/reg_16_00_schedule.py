@@ -7,6 +7,7 @@ from black.sour_an_cntrl import SourAnCntrl
 from black.telegram_cntrl.tg_cash_cntrl import TgCashCntrl
 from black import SourDiffAnCntrl
 from utils import SendRequest
+import time
 
 class RegSchedulleSrv():
     def __init__(self):
@@ -59,7 +60,7 @@ class RegSchedulleSrv():
             list_dict["id"].append(order.id)
         return list_dict
 
-    def reg_20_00(self):
+    def reg_20_00(self): 
         with flask_app.app_context():
             self.ord.change_status_roz()
             self.sour.sort_analitic("all")
@@ -67,8 +68,10 @@ class RegSchedulleSrv():
             self.sour.sort_analitic("month")
             self.sour.sort_analitic("week")
             self.sour.sort_analitic("day")
-            self.quan_stok.quan_f("#quan 35N, 45N, 35W1, 45W1, 35N10, 40N10, 45N10, BX1, BX2, BX3, BX4, BX5, 35N11, 40N11, 45N11, 35W, 45W, 35W13, 45W13")
+            time.sleep(1)
+            self.quan_stok.quan_f("#quan 35N, 45N, 35W1, 45W1, 35N10, 40N10, 45N10, BX1, BX2, BX3, BX4, BX5, 35N11, 40N11, 45N11, 35W, 45W, 35W13, 45W13") 
             self.sour.add_quantity_crm_today()
+            time.sleep(1)
             self.sour.sour_diff_all_source_sold("two_days") 
             # запустить програму скидивания наличия
             print("Успіх")
