@@ -49,7 +49,7 @@ class SourDiffAnCntrl():
     
     def add_quantity_crm_today(self, products):
         print("Працюєм")
-        event_date = next(self.work_time_cntrl.my_tgitпше ime()).strftime('%Y-%m-%d')
+        event_date = next(self.work_time_cntrl.my_time()).strftime('%Y-%m-%d')
         # event_date = event_date - timedelta(days=1)
         # event_date = event_date.strftime('%Y-%m-%d')
         start, stop = self.work_time_cntrl.load_work_time("all")
