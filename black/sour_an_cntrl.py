@@ -149,8 +149,6 @@ class SourAnCntrl:
             resp = journal.add_(list_val)
         return resp, new_quantity
     
-     
- 
     def first_an(self, orders, period):
         orders_quan = len(orders)
         torg_sum = self.sour_an_serv.torg_func(orders)
@@ -195,7 +193,6 @@ class SourAnCntrl:
                     print(resp[1])
         return resp
 
-
     def update_analitic(self, orders, item, period):
         data = self.first_an(orders, period)
         resp = an_cntrl.update_(item.id, data)
@@ -207,9 +204,6 @@ class SourAnCntrl:
         resp_salary = an_cntrl.update_salary(item.id, salary)
         print(resp_salary)
         return resp
-
-
- 
 
     def sort_analitic(self, period):
         resp = False, "Не спрацювало"

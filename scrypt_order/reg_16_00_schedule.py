@@ -64,6 +64,7 @@ class RegSchedulleSrv():
         with flask_app.app_context():
             self.ord.change_status_roz()
             self.sour.add_quantity_crm_today()
+            time.sleep(1)
             self.sour.sort_analitic("all")
             self.sour.sort_analitic("year")
             self.sour.sort_analitic("month")

@@ -10,7 +10,7 @@ from utils import util_asx
 from .dependencies import get_token_header
 import uvicorn, multiprocessing, logging
 
-from .routers import order
+from .routers import order, analitic
 from .routers import admin
 from .routers import check
  
@@ -32,7 +32,6 @@ app.include_router(
     order,
     prefix="/v2/order",
     tags=["order"], 
-    
         )
 
 app.include_router(
@@ -45,6 +44,12 @@ app.include_router(
     check,
     prefix="/v2/check",
     tags=["check"],
+)
+
+app.include_router(
+    analitic,
+    prefix="/v2/analitic",
+    tags=["analitic"],
 )
 
 @app.get("/v2")

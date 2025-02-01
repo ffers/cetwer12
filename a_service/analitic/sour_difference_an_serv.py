@@ -122,32 +122,47 @@ class SourDiffAnServ():
             return 0
           
     def count_going_list(self, source_list, start, stop):
-        for line in source_list: # проходим по всем строкам продукта
+        for line in source_list: # проходим по всем строкам записи продукта разници 
             search_time = line.event_date - timedelta(days=1) # для етой строки вичислиям день до етого
             # print(line.event_date, "line.event_date", search_time)
             search = False; count = 0
             # print(line.id)
             count_diff = stop - start
-            print(count_diff, "count_diff")
+            # print(count_diff, "count_diff")
             while not search and count < count_diff.days: # проходим пока не найдем день
                 # time.sleep(1)
                 count += 1
-                print(count, "count")
+                # print(count, "count")
                 # print(search_time, " search_time ")
                 search = self.search_day(source_list, search_time, line)
                 if not search:
                     search_time = search_time - timedelta(days=1)
+                else:
+                    return search
+        
 
     def search_day(self, source_list, search_time, line):
-        for line_old in source_list: # опять проходимся по строкам 
-            # print()
-            # print(line_old.event_date, "line_old.event_date", line.event_date, "event_date")
-            if search_time == line_old.event_date: # если находим дату на день раньше
-                quantity = line.quantity_crm - line_old.quantity_crm
-                print(quantity, "quantity")
-                self.sour_diff_an_rep.update_source_diff_line_sold(quantity, line.id)
-                return True 
-        self.sour_diff_an_rep.update_source_diff_line_sold(0, line.id)
+        count = 0; max_count = 10
+        while count <= max_count:
+            for line_old in source_list: # опять проходимся по строкам 
+                print(search_time, line_old.event_date, "line_old.event_date", 
+                      line.event_date, "event_date")
+                # print(search_time, line_old.event_date)
+                if search_time == line_old.event_date: # если находим дату на день раньше
+                    self.count_sold(line, line_old)
+                    print("Find")
+                    return True
+                    
+            count += 1
+            search_time -= timedelta(days=1)
+
+        # self.sour_diff_an_rep.update_source_diff_line_sold(0, line.id)
         return False
                     #проходим по списку если ненашли соотвующий день минусуем еще день
+
+    def count_sold(self, line, line_old):
+        print(line.quantity_crm, line_old.quantity_crm, "count_sold")
+        quantity = line.quantity_crm - line_old.quantity_crm
+        print(quantity, "quantity")
+        self.sour_diff_an_rep.update_source_diff_line_sold(quantity, line.id)
                     

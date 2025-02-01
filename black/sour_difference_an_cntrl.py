@@ -28,7 +28,7 @@ class SourDiffAnCntrl():
     def load_source_difference_id_period(self, id, period, days):
         start_time, stop_time = self.work_time_cntrl.load_work_time(period, days)
         product = self.sour_diff_an_rep.load_source_difference_id_period(
-            id, start_time, stop_time
+            id, start_time, stop_time 
             )
         print(start_time, stop_time, "month")
         return product
@@ -102,7 +102,6 @@ class SourDiffAnCntrl():
         add = self.sour_diff_an_rep.update_diff_table(list_data)
         return add
     
-
     def delete_event_date(self, req):
         start, stop = self.sour_diff_an_serv.load_event_day(req)
         lines = self.sour_diff_an_rep.load_source_difference_period(start, stop)
@@ -110,28 +109,35 @@ class SourDiffAnCntrl():
             self.sour_diff_an_rep.delete_diff_line(line.id)
         return True
 
-    
-    def sour_diff_id_gone_list(self, id, period, days=None):
-        start, stop = self.work_time_cntrl.load_work_time(period)
-        print(start, " & ", stop)
-        source_list = self.sour_diff_an_rep.load_source_difference_id_period(id, start, stop)
-        print(source_list)
-        self.sour_diff_an_serv.count_going_list(source_list, start, stop)
+    def sour_diff_id_gone_list(self, id, period, days=0):
+        count = 0; max_count = 10; resp_count = False; days = 0
+        while count <= max_count and not resp_count:
+            start, stop = self.work_time_cntrl.load_work_time(period, days)
+            # print(start, " & ", stop)
+            source_list = self.sour_diff_an_rep.load_source_difference_id_period(id, start, stop)
+            # print(source_list)
+            resp_count = self.sour_diff_an_serv.count_going_list(source_list, start, stop)
+            count += 1; period = "days"; days += 1
+            if resp_count:
+                print("Дані знайдено!")
+                
+            else:
+                print("Не вдалося знайти дані після 10 ітерацій.")
   
     
     def sour_diff_id_gone(self, id):
         start, stop = self.work_time_cntrl.load_work_time("days", 1)
-        print(start, " & ", stop)
+        # print(start, " & ", stop)
         old_source = self.sour_diff_an_rep.load_source_difference_id_period(id, start, stop)
         start, stop = self.work_time_cntrl.load_work_time("day")
         last_source = self.sour_diff_an_rep.load_source_difference_id_period(id, start, stop)
         quantity = self.sour_diff_an_serv.count_going(old_source, last_source)
         self.sour_diff_an_rep.update_source_diff_line_sold(id, quantity)
-        print("last sold gone", quantity)
+        # print("last sold gone", quantity)
     
     def sour_diff_all_source_sold(self, source_all, period, days=None):
         for item in source_all:
-            print(item.id, "item")
+            # print(item.id, "item")
             self.sour_diff_id_gone_list(item.id, period, days)
         return True
 
