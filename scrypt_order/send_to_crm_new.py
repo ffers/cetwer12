@@ -25,6 +25,26 @@ class SendToCrmNew:
         url = "v2/check/check_sign"
         resp = self.milky_way("GET", url)
         print(resp, "відповідь")
+
+    def start_16_58(self):
+        url = "v2/analitic/start_16_58"
+        resp = self.milky_way("GET", url)
+        print(resp, "відповідь")
+
+    def start_17_00(self):
+        url = "v2/analitic/start_17_00"
+        resp = self.milky_way("GET", url)
+        print(resp, "відповідь")
+
+    def start_20_00(self):
+        url = "v2/analitic/start_20_00"
+        resp = self.milky_way("GET", url)
+        print(resp, "відповідь")
+
+    def start_20_01(self):
+        url = "v2/analitic/start_20_01"
+        resp = self.milky_way("GET", url)
+        print(resp, "відповідь")
         
     def milky_way(self, method, prefix):
         url = os.getenv("HOSTCRM") + prefix

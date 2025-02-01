@@ -19,17 +19,18 @@ class RegSchedulleSrv():
         self.send_req = SendRequest()
 
     def reg_17_00(self):
-        with flask_app.app_context(): # переробити визов на request,
             try: # реквест визиває апі а потім апі визиває функціі
                 black_pic = self.sendTgBlackPic()
                 dict_order = self.createReg()
                 self.OC_log.info(dict_order)
                 self.sendTg(dict_order)
                 self.OC_log.info("Виконую завдання")
+                return True
             except Exception as e:
                 info = f"Невийшло створити реєстр {e}"
                 self.OC_log(info)
                 tg_cntrl.sendMessage(tg_cntrl.chat_id_info, info)
+                return False
 
     def createReg(self):
         load_orders = self.ord.load_confirmed_order()
@@ -61,7 +62,6 @@ class RegSchedulleSrv():
         return list_dict
 
     def reg_20_00(self): 
-        with flask_app.app_context():
             self.ord.change_status_roz()
             self.sour.add_quantity_crm_today()
             time.sleep(1)
@@ -70,23 +70,25 @@ class RegSchedulleSrv():
             self.sour.sort_analitic("month")
             self.sour.sort_analitic("week")
             self.sour.sort_analitic("day")
-            time.sleep(1)
             self.quan_stok.quan_f("#quan 35N, 45N, 35W1, 45W1, 35N10, 40N10, 45N10, BX1, BX2, BX3, BX4, BX5, 35N11, 40N11, 45N11, 35W, 45W, 35W13, 45W13") 
-            time.sleep(1)
-            self.sour.sour_diff_all_source_sold("two_days") 
             # запустить програму скидивания наличия
             print("Успіх")
             # изменить статус розетки
             # провести аналитику
+            return True
+        
+    def reg_20_01(self):
+            return self.sour.sour_diff_all_source_sold("two_days") 
+
 
     def reg_16_58(self):
-        with flask_app.app_context():
             self.sour.sort_analitic("all")
             self.sour.sort_analitic("year")
             self.sour.sort_analitic("month")
             self.sour.sort_analitic("week")
             self.sour.sort_analitic("day")
             print("Успіх")
+            return True
         
     def reg_17_00_new(self):
         data = None
