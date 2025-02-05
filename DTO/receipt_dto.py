@@ -26,3 +26,9 @@ class ShiftDTO(BaseModel):
     shifd_id: str
     open: str
     closed: str
+    cash_id: str
+
+class CashDTO(BaseModel):
+    cash_id: str
+    fiscal_number: str
+    name: str

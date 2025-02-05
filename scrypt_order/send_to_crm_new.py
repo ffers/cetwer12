@@ -43,7 +43,7 @@ class SendToCrmNew:
 
     def start_20_01(self):
         url = "v2/analitic/start_20_01"
-        resp = self.milky_way("GET", url)
+        resp = self.milky_way("GET", url) 
         print(resp, "відповідь")
         
     def milky_way(self, method, prefix):

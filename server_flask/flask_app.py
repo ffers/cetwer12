@@ -6,12 +6,14 @@ from markupsafe import escape
 from flask import Flask, render_template, request, jsonify
 from flask_login import current_user, LoginManager, login_required
 from flask_migrate import Migrate
-from flask_principal import identity_loaded, RoleNeed, Principal, Identity
+from flask_principal import identity_loaded, RoleNeed
+from flask_principal import Principal, Identity
 from server_flask.permission_registred import update_roles
 from .db import db
 from .routes import Blog, Auth, Comment, User_post, Bot, \
     Order, Cabinet, Admin, Products, Analitic, \
-    Arrival, JourChRout, ProductSource, SourceDifference
+    Arrival, JourChRout, ProductSource, SourceDifference, \
+    ColorSource
 from utils import util_asx
 OC_log = util_asx.oc_log("flas_app")
 
@@ -53,6 +55,7 @@ flask_app.register_blueprint(Arrival)
 flask_app.register_blueprint(JourChRout)
 flask_app.register_blueprint(ProductSource)
 flask_app.register_blueprint(SourceDifference)
+flask_app.register_blueprint(ColorSource, url_prefix='/cabinet/source')
 
 from .models import Users
 login_manager = LoginManager()

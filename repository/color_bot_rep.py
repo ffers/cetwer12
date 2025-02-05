@@ -1,3 +1,4 @@
+
 from server_flask.db import db
 from server_flask.models import Colorrep35, Colorrep45
 from flask import current_app
@@ -5,6 +6,20 @@ import re
 
 
 class ProductCounBot():
+
+    def add_color(self, data_dto):
+        name_tabl, size = self.count_size(f"{data_dto.size}:")
+        try:
+            data = name_tabl(
+                color=data_dto.color_num, 
+                quantity=data_dto.quantity
+                )
+            db.session.add(data)
+            db.session.commit()
+            return True
+        except Exception as e:
+            return False, e
+
     def parse_text(self, text):
         taken_text = re.findall(r'(\d+х-*\d+)', text)
         print(taken_text)

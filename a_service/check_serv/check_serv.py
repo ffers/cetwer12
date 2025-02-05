@@ -32,6 +32,9 @@ class CheckServ(object):
             else:
                 self.offline_mode() 
 
+    def cash_online_check(self):
+        self.cash_online = None
+
     def online_mode(self):
         fiscal_code = self.load_offline_codes(True)
         shifts = self.load_shift()
@@ -78,15 +81,32 @@ class CheckServ(object):
             while times <= 5:
                 status = self.api.shifts_status(shifts["id"])
                 if status.get["status"] == "OPENED":
-                    return status
+                    return self.add_shifts_base(status)
                 time.sleep(2)
                 times += 1
             else:
                 raise Exception(f"Змінна не відкрилася {body}")     
         except Exception as e:
             self.tg.sendMessage(self.tg.chat_id_info, str(e))
-            return None   
-        
+            return False   
+    
+    def add_shifts_base(self, data):
+        ShiftDTO(
+            shifd_id=data["id"],
+            open=data["opened_at"],
+            closed=data["closed_at"]
+        )
+        return self.shift_rep.add()
+
+    def update_shifts_base(self, data):
+        d = ShiftDTO(
+            shifd_id=data["id"],
+            open=data["opened_at"],
+            closed=data["closed_at"]
+        )
+        return self.shift_rep.update(d)
+
+    
     def shift_to_base(self, id):
         ShiftDTO.model_validate(id)
         self.shift_rep.add()

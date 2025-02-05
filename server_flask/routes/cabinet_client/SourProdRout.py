@@ -1,21 +1,30 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
+from flask import Blueprint, render_template, request, g
+from flask import flash, redirect, url_for, jsonify
 from flask_principal import Permission, RoleNeed
 from flask_login import login_required, current_user
 from pydantic import RedisDsn
 from server_flask.models import  Users
 from decimal import Decimal
 from repository import sour_an_rep as rep
-from black import sour_an_cntrl as cntrl
+from black import SourAnCntrl
 
 manager = RoleNeed('manager')
 manager_permission = Permission(manager)
 admin_permission = Permission(RoleNeed('admin'))
 bp = Blueprint('ProductSource', __name__, template_folder='templates')
 
+
+def get_instance(class_name, class_type):
+    if not hasattr(g, class_name):
+        setattr(g, class_name, class_type())
+    return getattr(g, class_name)
+
+
 @bp.route('/cabinet/source/get_source', methods=['POST', 'GET'])
 @login_required
 @admin_permission.require(http_exception=403)
 def get_source():
+    cntrl = get_instance('sour_an_cntrl', SourAnCntrl)
     result = cntrl.get_search(request)
     if result:
         return jsonify({'results': result})
@@ -29,6 +38,7 @@ def get_source():
 def add():
     if request.method == 'POST':
         print("ПРацюєм")
+        cntrl = get_instance('sour_an_cntrl', SourAnCntrl)
         resp_bool = cntrl.add(request)
         for item in request.form:
             print(item)
@@ -51,6 +61,7 @@ def add():
 def update(id):
     item = cntrl.load_item(id)
     if request.method == 'POST':
+        cntrl = get_instance('sour_an_cntrl', SourAnCntrl)
         resp_bool = cntrl.update(id, request)
         resp_bool = True
         for item in request.form:
@@ -70,6 +81,7 @@ def update(id):
 @login_required
 @admin_permission.require(http_exception=403)
 def all():
+    cntrl = get_instance('sour_an_cntrl', SourAnCntrl)
     items = cntrl.load_all()
     money = 0
     for item in items:
@@ -81,6 +93,7 @@ def all():
 @login_required
 @admin_permission.require(http_exception=403)
 def delete_product_source(id):
+    cntrl = get_instance('sour_an_cntrl', SourAnCntrl)
     product = cntrl.delete(id)
     print(f"Перевірка {product}")
     flash('Продукт видалено', category='success')

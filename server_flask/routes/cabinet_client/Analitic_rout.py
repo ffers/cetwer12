@@ -2,8 +2,8 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
 from flask_login import login_required, current_user
 from flask_principal import Permission, RoleNeed
 from black import ProductAnaliticControl
-from black import an_cntrl
-from black import sour_an_cntrl
+from black import AnCntrl
+from black import SourAnCntrl
 from black import SourDiffAnCntrl
 
 def get_instance(class_name, class_type):
@@ -33,6 +33,7 @@ def analitic_test():
 @admin_permission.require(http_exception=403)
 def analitic():
     if request.method == 'GET':
+        an_cntrl = AnCntrl()
         items = an_cntrl.load_all()
         print("Починаєм аналітику!")
         return render_template('cabinet_client/analitic/analitic.html',
@@ -53,6 +54,7 @@ def delete_product(id):
 @login_required
 @admin_permission.require(http_exception=403)
 def update_all():
+    sour_an_cntrl = get_instance('sour_an_cntrl', SourAnCntrl)
     product = sour_an_cntrl.update_all_analitic()
     print(f"Перевірка {product}")
     flash('Аналітику оновлено ALL', category='success')
@@ -62,6 +64,7 @@ def update_all():
 @login_required
 @admin_permission.require(http_exception=403)
 def update_day():
+    sour_an_cntrl = get_instance('sour_an_cntrl', SourAnCntrl)
     product = sour_an_cntrl.sort_analitic("day")
     print(f"Перевірка {product}")
     flash('Аналітику оновлено DAY', category='success')
@@ -71,6 +74,7 @@ def update_day():
 @login_required
 @admin_permission.require(http_exception=403)
 def update_week():
+    sour_an_cntrl = get_instance('sour_an_cntrl', SourAnCntrl)
     product = sour_an_cntrl.sort_analitic("week")
     print(f"Перевірка {product}")
     flash('Аналітику оновлено week', category='success')
@@ -80,6 +84,7 @@ def update_week():
 @login_required
 @admin_permission.require(http_exception=403)
 def update_month():
+    sour_an_cntrl = get_instance('sour_an_cntrl', SourAnCntrl)
     product = sour_an_cntrl.sort_analitic("month")
     print(f"Перевірка {product}")
     flash('Аналітику оновлено month', category='success')
@@ -89,6 +94,7 @@ def update_month():
 @login_required
 @admin_permission.require(http_exception=403)
 def update_year():
+    sour_an_cntrl = get_instance('sour_an_cntrl', SourAnCntrl)
     product = sour_an_cntrl.sort_analitic("year")
     print(f"Перевірка {product}")
     flash('Аналітику року оновлено', category='success')

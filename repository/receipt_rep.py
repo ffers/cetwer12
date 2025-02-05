@@ -34,8 +34,17 @@ class ShiftRep:
         except Exception as e:
             return False, str(e) 
     
-    def update(self):
-        pass
+    def update(self, d: ShiftDTO):
+        load = Shift.query.filter_by(shift_id=d.shift_id).first()
+        try:
+            item = Shift(d) 
+            db.session.add(item)
+            db.session.commit()
+            db.session.close()
+            return True
+        except Exception as e:
+            return False, str(e) 
+    
 
     def delete(self):
         pass

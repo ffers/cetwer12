@@ -1,17 +1,41 @@
-from .repository import ProductCounBot
+from repository.color_bot_rep import ProductCounBot
+from pydantic import BaseModel
 
-pc_cl = ProductCounBot()
+class ColorDTO(BaseModel):
+    size: int
+    color_num: int
+    quantity: int
+
 
 class BotProductSrv():
+    def __init__(self)      :
+        self.pc_cl = ProductCounBot()
+
     def work_with_product(self, data):
         if "text" in data["message"]:
             text = data["message"]["text"]
             chat_id = data["message"]["chat"]["id"]
             print(text)
-            update_color = pc_cl.manager_bot(text)
+            update_color = self.pc_cl.manager_bot(text)
             return update_color
         else:
             return "Щось не те..."
+         
+    def make_int(self, data):
+        new_data = {}
+        for a, b in data.items():
+            new_data.update({a: int(b)})
+        return new_data
+        
+    def add_color(self, data):
+        print(data)
+        new_data = self.make_int(data)
+        print(new_data)
+        data_dto = ColorDTO.model_validate(new_data)
+        return self.pc_cl.add_color(data_dto)
+
+    def delete_color(self, id):
+        return self.pc_cl.delete(id)
 
 
 

@@ -1,15 +1,15 @@
-from .product_cntrl import prod_cntrl
+from ..product_cntrl import prod_cntrl
 from a_service import SourAnServ
-from .jour_ch_cntrl import jour_ch_cntrl as journal
-from .analitic_cntrl import an_cntrl
+from ..jour_ch_cntrl import jour_ch_cntrl as journal
+from .analitic_table_cntrl import an_cntrl
 from repository import ord_rep
 from datetime import datetime
 from repository import sour_an_rep as rep
-from .telegram_controller import tg_cntrl
-from .work_time_cntrl import WorkTimeCntrl
+from ..telegram_controller import tg_cntrl
+from ..work_time_cntrl import WorkTimeCntrl
 from repository import SourAnRep
 from a_service import CacheService
-from .sour_difference_an_cntrl import SourDiffAnCntrl
+from ..sour_difference_an_cntrl import SourDiffAnCntrl
 
 class SourAnCntrl:
     def __init__(self):
@@ -99,9 +99,8 @@ class SourAnCntrl:
                     if sale_quantity and description:
                         print('fixed_process')
                         self.fixed_process(prod_comp.product_source.id, sale_quantity, description, curent_time)
-                    else:
-                        return False
-        return True
+                        return True
+        return False
       
     def fixed_process(self, source_id, sale_quantity, description, event_date=None): # получает компонент не имеет а из прихода отправляю
         journal = self.stock_journal(source_id, sale_quantity, description, event_date)
@@ -116,7 +115,7 @@ class SourAnCntrl:
         elif action_type == 'confirmed':
             sale_quantity = self.sour_an_serv.count_new_quantity(prod_comp, product)
             return -sale_quantity, f"{order.order_code} {product.products.article}"
-        else:
+        else: 
             # Невідомий тип дії
             return None, None
     

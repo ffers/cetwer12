@@ -143,63 +143,6 @@ class SourAnServ:
         print(resp)
         return resp
 
-
-    # def balance_func(self):
-    #     balance = 0
-    #     items = self.an_cntrl.load_period("all")
-    #     balance_w = self.rep.load_article("balance")
-    #     for item in items:
-    #         if item.income:
-    #             print(item.income)
-    #             balance += item.income
-    #             if balance_w:
-    #                 balance += balance_w.money
-    #         else:
-    #             balance += 0
-    #     return balance
-
-    # def wait_func(self):
-    #     orders = self.ord_rep.load_period_all()
-    #     wait = self.torg_func(orders)
-    #     items = self.an_cntrl.load_period("all")
-    #     for item in items:
-    #         if item.income:
-    #             wait -= item.income
-    #         else:
-    #             wait -= 0
-    #     return wait
-
-    # def stock_func(self): # сток зависит от товара
-    #     stock = 0
-    #     items = self.rep.load_all()
-    #     if items:
-    #         for item in items:
-    #             stock += item.money
-    #     return stock
-
-    # def inwork_func(self): # зависит от всего в последнюю очередь
-    #     inwork = 0
-    #     item = self.an_cntrl.load_period("all")
-    #     if item and item[0].wait:
-    #         item = item[0]
-    #         inwork += item.wait + item.stock + item.balance
-    #     return inwork
-
-    # def salary_func(self, period):
-    #     salary = 0
-    #     start_time, stop_time = self.w_time_cntrl.load_work_time(period)
-    #     item = self.an_cntrl.load_period_sec(period, start_time, stop_time)
-    #     if item and item.profit:
-    #         salary += item.profit - item.worker \
-    #             - item.prom - item.rozet - item.insta
-    #     return salary
-
-    # def income_func(self):
-    #     resp = self.rep.load_article("income")
-    #     if resp:
-    #         return resp.money
-    #     return 0
-
     def profit_f(self):
         profit = 0
         items = self.an_cntrl.load_all()

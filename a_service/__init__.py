@@ -1,4 +1,4 @@
-from .product.bot import ProductCounBot, BotProductSrv
+from .product.bot import BotProductSrv
 from a_service.product_serv import ProductServ
 from .delivery.delivery_order_serv import DeliveryOrderServ
 from .tg_serv import tg_serv

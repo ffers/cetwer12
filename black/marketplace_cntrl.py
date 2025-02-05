@@ -1,7 +1,7 @@
 from a_service import prom_serv
 from api import prom_api, RozetMain
 from .telegram_controller import TelegramController
-from black import OrderCntrl
+from .order_cntrl import OrderCntrl
 
 
 

@@ -9,6 +9,8 @@ class Shift(db.Model):
     shift_id = db.Column(db.String(255))
     open = db.Column(db.DateTime)
     closed = db.Column(db.DateTime)
+    cash_id = db.Column(db.Integer, db.ForeignKey(
+        'cash.id', name='fk_shift_cash_id'))
     receipts =  db.relationship('Receipt', backref='shift')
 
     def __init__(self, d: ReceiptDTO):

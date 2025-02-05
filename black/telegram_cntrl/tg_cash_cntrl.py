@@ -1,5 +1,5 @@
 from a_service import TgCashServ
-from black.sour_an_cntrl import SourAnCntrl
+from asx.black.analitic_cntrl.sour_an_cntrl import SourAnCntrl
 from black.telegram_controller import TelegramController
 
 class TgCashCntrl:

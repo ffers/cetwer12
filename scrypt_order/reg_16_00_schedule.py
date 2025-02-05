@@ -3,7 +3,7 @@ from black.order_cntrl import OrderCntrl
 from black.delivery_order_cntrl import del_ord_cntrl
 from server_flask.flask_app import flask_app
 from utils import util_asx
-from black.sour_an_cntrl import SourAnCntrl
+from asx.black.analitic_cntrl.sour_an_cntrl import SourAnCntrl
 from black.telegram_cntrl.tg_cash_cntrl import TgCashCntrl
 from black import SourDiffAnCntrl
 from utils import SendRequest

@@ -11,7 +11,7 @@ from .dependencies import get_token_header
 import uvicorn, multiprocessing, logging
 
 from .routers import order, analitic
-from .routers import admin
+from .routers import admin, button
 from .routers import check
  
 logging.basicConfig(
@@ -51,6 +51,12 @@ app.include_router(
     prefix="/v2/analitic",
     tags=["analitic"],
 )
+
+app.include_router(
+    button,
+    prefix="/v2/button",
+    tags=["button"], 
+        )
 
 @app.get("/v2")
 async def read_items(token: Annotated[str, Depends(oauth2_scheme)]):

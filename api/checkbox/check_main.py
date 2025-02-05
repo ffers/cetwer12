@@ -9,7 +9,7 @@ class HeadersModel(BaseModel):
     X_Client_Version: str = os.getenv('CHECKBOX_CLIENT_VERSION')
     X_License_Key: Optional[str] = None
     X_Device_ID: Optional[str] = None
-    Authorization: Optional[str] = None
+    Authorization: Optional[str] = None 
     Content_Type: str = None
         
     model_config = ConfigDict(
@@ -112,8 +112,15 @@ class CheckboxClient(object):
         headers = obj.model_dump(by_alias=True)
         responce = self.request_go("GET", prefix, headers)
         return responce
-
+    
     def cash_registers(self):
+        prefix = f"cash-registers/"
+        obj = HeadersModel()
+        headers = obj.model_dump(by_alias=True)
+        responce = self.request_go("GET", prefix, headers)
+        return responce
+
+    def cash_registers_info(self):
         prefix = f"cash-registers/info"
         obj = HeadersModel(
             X_License_Key=self.license_key

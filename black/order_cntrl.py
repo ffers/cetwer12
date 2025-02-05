@@ -14,10 +14,9 @@ from .add_order_to_crm import pr_to_crm_cntr
 from a_service import tg_serv
 from .prom_cntrl import prom_cntrl
 from utils import util_asx
-from .sour_an_cntrl import sour_an_cntrl
 from datetime import datetime
-from black.sour_an_cntrl import SourAnCntrl
-from black.telegram_cntrl.tg_cash_cntrl import TgCashCntrl
+from .analitic_cntrl.sour_an_cntrl import SourAnCntrl
+from .telegram_cntrl.tg_cash_cntrl import TgCashCntrl
 from .product_cntrl import ProductCntrl
 
  
@@ -240,13 +239,13 @@ class OrderCntrl:
         bool = self.ord_rep.change_status(order_id, status)
         bool_prom = prom_cntrl.change_status(order.order_code, 2)
         # update_analitic = prod_an_cntrl.product_in_order(order)
-        resp_sour_bool = sour_an_cntrl.return_prod(order)
+        resp_sour_bool = self.sour.return_prod(order)
         # resp = self.check_del_method(order)
         return resp_sour_bool
 
     def send_storage(self, order_id):
         order = self.ord_rep.load_item(order_id)
-        resp_sour = sour_an_cntrl.confirmed(order)
+        resp_sour = self.sour.confirmed(order)
         return resp_sour
 
     def check_del_method(self, order):

@@ -4,7 +4,6 @@ from flask_principal import Permission, RoleNeed
 from flask_paginate import Pagination
 
 from black import jour_ch_cntrl as journal
-from black import sour_an_cntrl
 
 
 author_permission = Permission(RoleNeed('manager'))
