@@ -5,6 +5,7 @@ class Orders(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     phone = db.Column(db.String(50))
+    email = db.Column(db.String(50))
     ttn = db.Column(db.String(50))
     ttn_ref = db.Column(db.String(50)) # edit
     client_firstname = db.Column(db.String(50))

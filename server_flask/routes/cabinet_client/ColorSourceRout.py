@@ -17,7 +17,7 @@ admin_permission = Permission(RoleNeed('admin'))
 bp = Blueprint(
     'ColorSource', __name__,              
     template_folder='templates'
-    )
+    ) 
 
 @bp.route("/add_color", methods=['POST', 'GET'])
 @login_required

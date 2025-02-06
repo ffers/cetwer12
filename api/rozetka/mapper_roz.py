@@ -16,6 +16,7 @@ class MapperRoz():
         return OrderDTO(
             timestamp=data.created,  # чи інша дата з маркетплейсу
             phone=data.user_phone,
+            email=data.delivery.email,
             ttn=None,
             ttn_ref=None,  # Приклад для поля ttn_ref
             client_firstname=data.recipient_title.first_name,

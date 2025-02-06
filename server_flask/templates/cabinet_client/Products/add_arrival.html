@@ -17,7 +17,11 @@
 			Прихід Товару
 		</h1>
 		
-			<form action="{{ url_for('Arrival.add_arrival') }}" method="post">
+			<form 
+                action="{{ url_for('Arrival.add_arrival') }}" 
+                method="post"
+                style="margin-bottom: 200px;"
+            >
                 <div id="product-container">
                     <div class="row">   
                         <div class="col-sm col-lg-2">                
@@ -34,7 +38,7 @@
                       </div></br>
                     <div class="row">
                         <!-- Товар та кількість -->
-                        <div class="col-sm col-lg-2" >
+                        <div class="col-sm" >
                             <input 
                                 style="text-align: center;" 
                                 class="form-control" 
@@ -42,11 +46,11 @@
                                 name="description" 
                                 min="1" 
                                 placeholder="Опис" 
-                                value="Товар"
+                                value="Прихід"
                                 required>
                         </div>
                 					
-                        <div class="col-sm col-lg-2">
+                        <div class="col-sm">
                             <select  
                                 class="form-control select-source" 
                                 name="article" 
@@ -73,9 +77,16 @@
 				<!-- <div class="col-sm"><input type="button" class="text-button"  value="Створити товар" data-bs-toggle="modal" data-bs-target="#myModal" ></div> -->
                 <!-- <div class="col-sm"><a href="get_product/send_with_prom_test">Підвердити</a></div> -->
             </div></br>
-            <div class="row">
+            <div class="row" >
                 <div class="col-sm"></div>
-                <div class="col-sm"><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поставити на прихід</button></div>
+                <div class="col-sm">
+                    <button 
+                    class="btn 
+                        btn-outline-success 
+                        my-2 my-sm-0" 
+                    type="submit">
+                        Поставити на прихід
+                    </button></div>
             </div>
 		</form>
 

@@ -8,7 +8,7 @@ class ColorDTO(BaseModel):
 
 
 class BotProductSrv():
-    def __init__(self)      :
+    def __init__(self):
         self.pc_cl = ProductCounBot()
 
     def work_with_product(self, data):
@@ -36,19 +36,61 @@ class BotProductSrv():
 
     def delete_color(self, id):
         return self.pc_cl.delete(id)
+    
+    # def add_quantity(self, text):
+    #     try:
+    #         if "35:" in text and "45:" in text:
+    #             clean_35, clean_45 = self.crete_two(text)
+    #             self.update_base(clean_35, "Colorrep35", flag)
+    #             self.update_base(clean_45, "Colorrep45", flag)
+    #         else:
+    #             print(data)
+    #             base, size = self.count_size(text)
+    #             self.update_base(data, base, flag)
+    #             print(f"ОСЬ ВИЙШЛО {data, flag, size}")
+    #         create_response = self.actual_count()
+    #         return create_response
+    #     except:
+    #         return "Неправильно сформульоване повідомлення"
+    
+    # def manager_bot(self, text):
+    #     has_hashtag = "#взял" in text or "#склад" in text
+    #     has_35 = "35:" in text
+    #     has_45 = "45:" in text
+    #     if not has_hashtag or not (has_35 or has_45):
+    #         return "Неправильно сформульоване повідомлення"
+    #     return self.add_quantity(text)
+    
+    # Chain of Responsibility
+    class Handler:
+        def __init__(self, next_handler=None):
+            self.next_handler = next_handler
+    
+        def handle(self, text):
+            if self.next_handler:
+                return self.next_handler.handle(text)
+            return "Команда не знайдена"
+    
+    class StartCommand(Handler):
+        def handle(self, text):
+            if text == "/start":
+                return "Привіт! Я Telegram-бот."
+            return super().handle(text)
+    
+    class HelpCommand(Handler):
+        def handle(self, text):
+            if text == "/help":
+                return "Ось список доступних команд..."
+            return super().handle(text)
+    
+    # Ланцюжок обробників
+    # commands = StartCommand(HelpCommand())
+    
+    # print(commands.handle("/start"))  # Привіт! Я Telegram-бот.
+    # print(commands.handle("/help"))   # Ось список доступних команд...
+    # print(commands.handle("/unknown"))  # Команда не знайдена
+        
 
 
 
-# {'update_id': 677781446, 'message': {'message_id': 5237,
-#                                      'from': {'id': 196584706, 'is_bot': False, 'first_name': 'Denys',
-#                                               'username': 'fferses', 'language_code': 'uk'},
-#                                      'chat': {'id': 196584706, 'first_name': 'Denys', 'username': 'fferses',
-#                                               'type': 'private'}, 'date': 1724321039, 'photo': [
-#         {'file_id': 'AgACAgIAAxkBAAIUdWbHDQ9988wxqxW0YzkifoaBSoxpAAK31jEbGsoISBKbThvzHGUpAQADAgADcwADNQQ',
-#          'file_unique_id': 'AQADt9YxGxrKCEh4', 'file_size': 338, 'width': 67, 'height': 90},
-#         {'file_id': 'AgACAgIAAxkBAAIUdWbHDQ9988wxqxW0YzkifoaBSoxpAAK31jEbGsoISBKbThvzHGUpAQADAgADbQADNQQ',
-#          'file_unique_id': 'AQADt9YxGxrKCEhy', 'file_size': 1928, 'width': 240, 'height': 320},
-#         {'file_id': 'AgACAgIAAxkBAAIUdWbHDQ9988wxqxW0YzkifoaBSoxpAAK31jEbGsoISBKbThvzHGUpAQADAgADeAADNQQ',
-#          'file_unique_id': 'AQADt9YxGxrKCEh9', 'file_size': 7036, 'width': 600, 'height': 800},
-#         {'file_id': 'AgACAgIAAxkBAAIUdWbHDQ9988wxqxW0YzkifoaBSoxpAAK31jEbGsoISBKbThvzHGUpAQADAgADeQADNQQ',
-#          'file_unique_id': 'AQADt9YxGxrKCEh-', 'file_size': 11879, 'width': 960, 'height': 1280}]}}
+

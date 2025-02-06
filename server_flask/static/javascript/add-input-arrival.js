@@ -12,7 +12,7 @@ $('#addButton').on('click', function() {
                                 name="description" 
                                 min="1" 
                                 placeholder="Опис" 
-                                value="Товар"
+                                value="Прихід"
                                 required>
                         </div>
                 					
@@ -32,7 +32,14 @@ $('#addButton').on('click', function() {
                             placeholder="* Кількість" 
                             required>
                         </div>
-                        <div class="col-sm col-lg-2"><button type="button" class="removeButton text-button">Видалити</button></div>
+                        <div class="col-sm col-lg-2">
+                            <button 
+                                type="button" 
+                                class="removeButton 
+                                text-button">
+                                    Видалити
+                            </button>
+                        </div>
                     </div>       
 `);
 

@@ -16,6 +16,7 @@ class Product(BaseModel):
 class OrderDTO(BaseModel):
     timestamp: datetime
     phone: str
+    email: Optional[str] = None
     ttn: str|None
     ttn_ref: Optional[str]
     client_firstname: Optional[str] = None
