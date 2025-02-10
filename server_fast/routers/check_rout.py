@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from typing import Annotated
-from black import CheckCntrl, MarketplaceCntrl
+from black import CheckCntrl
 from pydantic import BaseModel
 from server_flask.flask_app import flask_app, jsonify
 

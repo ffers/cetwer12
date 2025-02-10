@@ -360,6 +360,9 @@ class OrderCntrl:
             tg_cntrl.sendMessage(tg_cntrl.chat_id_info, "Немає такого компоненту ")
         return resp_sour
     
+    def order_api_factory(self, get_type):
+        pass
+    
 
 
 

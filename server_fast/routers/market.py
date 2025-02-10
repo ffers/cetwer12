@@ -1,8 +1,7 @@
 from fastapi import APIRouter
 from fastapi import APIRouter, Depends, HTTPException
 
-from black import OrderCntrl
-from black import MarketplaceCntrl
+from black.order_controller.get_order import PromAPIHandler, RozetkaAPIHandler
 from server_flask.flask_app import flask_app, jsonify
 
 
@@ -15,20 +14,23 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
-@router.get("/16")
-async def close_day():
-    with flask_app.app_context():
-        ord_cntrl = OrderCntrl()
-        load_order = ord_cntrl.load_confirmed_order()
-        print(load_order, "Test fast api")
-        return jsonify({"message": "Admin getting schwifty"})
+# @router.get("/16")
+# async def close_day():
+#     with flask_app.app_context():
+#         ord_cntrl = OrderCntrl()
+#         load_order = ord_cntrl.load_confirmed_order()
+#         print(load_order, "Test fast api")
+#         return jsonify({"message": "Admin getting schwifty"})
     
 @router.get("/get_orders")
 async def close_day():
     with flask_app.app_context():
-        market = MarketplaceCntrl("Rozet")
-        load = market.get_orders()
-        return {"message": "Order get successfuly"}
+        handler = PromAPIHandler()
+        handler.set_next(RozetkaAPIHandler())
+        market = handler.handle("rozetka", "get_orders")
+        if market:
+            return {"message": "Order get successfuly"}
+        return {"message": "Not succesful"}
 
 
 # @router.get("/")

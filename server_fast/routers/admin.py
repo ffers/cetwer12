@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from typing import Annotated
-from black import CheckCntrl, MarketplaceCntrl
+
 from pydantic import BaseModel
 from server_flask.flask_app import flask_app, jsonify
 
@@ -16,15 +16,14 @@ router = APIRouter(
 )
   
 
-@router.get("/market_get_orders")
-async def market_sign():
-        check = MarketplaceCntrl("Rozet")
-        resp = check.get_orders()
-        print("відповідь сервера {}".format(resp))
-        if resp:
-            return 200, {"message": "SUCCESS"}
-        # print(load_order, "Test fast api")
-        return 200, {"message": "FALSE"}
+# @router.get("/market_get_orders")
+# async def market_sign():
+#         check = MarketFactory.factory("rozetka")
+#         print("відповідь сервера {}".format(resp))
+#         if resp:
+#             return 200, {"message": "SUCCESS"}
+#         # print(load_order, "Test fast api")
+#         return 200, {"message": "FALSE"}
 
 
 
