@@ -10,7 +10,12 @@
 
 		  
  
-		<form id="myForm" action="{{ url_for('Order.add_order') }}" method="post">
+		<form 
+			id="myForm" 
+			action="{{ url_for('Order.add_order') }}" 
+			method="post"
+			style="margin-bottom: 200px;"
+			>
 			<div class="row">
 				<div class="col-sm"><input type="tel" class="form-control" name="phone" rows="1" cols="50" pattern="[0-9]{12}" style="text-align: center;" placeholder="*Номер телефону 380909009000" required><br></div>
 				<div class="col-sm"><input class="form-control  " style="text-align: center;" id="client_lastname" name="client_lastname" rows="1" cols="50" placeholder="* Призвіще" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Тут є латиниця"><br></div>

@@ -1,35 +1,46 @@
-from a_service import prom_serv
-from api import prom_api, RozetMain
+from api import EvoClient, RozetMain
 from .telegram_controller import TelegramController
 from .order_cntrl import OrderCntrl
+from dataclasses import dataclass, field
 
 
 
-import sys
+import sys, os
 sys.path.append('../')
 from common_asx.utilits import Utils
 
+class MarketFactory:
+    @staticmethod
+    def factory(condition):
+        match condition:
+            case "prom": 
+                token = os.getenv("token_prom")
+                return EvoClient(token) 
+            case "rozetka": 
+                return RozetMain()
+            case _: 
+                return ValueError(f"Неизвестный маркетплейс: {condition}")
 
+
+
+
+@dataclass
 class MarketplaceCntrl:
-    def __init__(self, condition):
-        self.marketplats = self.init_class(condition)
-        self.tg = TelegramController()
-        self.fuse = Utils()
-        self.order_cntrl = OrderCntrl()
+    tg: TelegramController = field(default_factory=TelegramController)
+    util: Utils = field(default_factory=Utils)
+    order_cntrl: OrderCntrl = field(default_factory=OrderCntrl)
     
     def get_orders(self):
         try:
-            list_order, list_standart = self.marketplats.get_orders()
+            list_order, list_standart_dto = self.marketplats.get_orders()
             if list_order:
                 for order in list_order:
                     text = self.make_text(order)
                     send_tg = self.tg.sendMessage(self.tg.chat_id_confirm, text)
                     print(order.id, "order id")
-                    resp = self.fuse.change_status_rozet(order.id, 26)
+                    resp = self.util.change_status_rozet(order.id, 26)
 
-                    # print(resp, "status")
-            
-                for order in list_standart:
+                for order in list_standart_dto:
                     resp = self.add_order(order)
                     print(resp)
                 return True
@@ -45,9 +56,6 @@ class MarketplaceCntrl:
                 product_db = self.order_cntrl.add_ordered_product(p, order_db.id)
                 return True if product_db else False
         return False 
-
-
-
         
     def change_status(self, order_id, status):
         resp =self.marketplats.create_status_get(order_id, status)        
@@ -58,7 +66,7 @@ class MarketplaceCntrl:
         return order_dr
 
     def send_ttn(self, order_id, invoice_n, delivery):
-        dict_ = prom_serv.dict_invoice(order_id, invoice_n, delivery)
+        dict_ = self.prom_serv.dict_invoice(order_id, invoice_n, delivery)
         resp = utils_dev_change.change_ttn(dict_)
         return resp
 
@@ -73,8 +81,10 @@ class MarketplaceCntrl:
     def get_delivery(self):
         self.marketplats.available_delivery()
         return True
+    
+    def other_actions(self, **kwargs):
+        raise NotImplementedError
             
-
     def make_text(self, order):
         user_name = f"{order.user_title.last_name} {order.user_title.first_name}"
         recipient = f"{order.recipient_title.last_name} {order.recipient_title.first_name}"
@@ -112,7 +122,6 @@ class MarketplaceCntrl:
             f"{dev_text}\n"
             "=========================================================="
         )
-
 
 
 

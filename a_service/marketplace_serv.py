@@ -1,6 +1,20 @@
 
 
+import requests
 
+class APIClient:
+    _instance = None
+
+    def __new__(cls, base_url):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance.session = requests.Session()
+            cls._instance.base_url = base_url
+        return cls._instance
+
+    def request(self, method, endpoint, **kwargs):
+        url = f"{self.base_url}/{endpoint}"
+        return self.session.request(method, url, **kwargs)
 
 class MarketplaceServ:
     def create_status_get(self, order_id, status_order):
@@ -34,4 +48,3 @@ class MarketplaceServ:
         return dict_ttn_prom
 
 
-prom_serv = PromServ()

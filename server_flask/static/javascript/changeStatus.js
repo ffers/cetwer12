@@ -10,7 +10,7 @@ document.getElementById("changeStatus").addEventListener("change", function() {
                 selectedOrders.push(checkboxes[i].value);
                 var selectedOption = this.value;
                 console.log("Перебираєм");
-            }
+            } 
         }
     } else if (document.getElementById("selectedItems")) {
         console.log("selectedItems")
@@ -28,7 +28,7 @@ document.getElementById("changeStatus").addEventListener("change", function() {
     changeStatusFunc(dataToSend)
   });
 
-
+  
  function changeStatusFunc(data) {
     var toastLite = document.getElementById('toastLite');
     var toast = new bootstrap.Toast(toastLite);

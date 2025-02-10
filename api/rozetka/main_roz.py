@@ -19,6 +19,15 @@ from a_service import TokenRepServ
 #  61 	Заплановано передачу перевізникові 	
 #  26 "Обробляється менеджером"
 
+# from urllib.parse import urlencode
+
+# params = {
+#     "expand": "delivery,purchases,payment,status_payment",
+#     "status": 1
+# }
+
+# prefix = f"orders/search?{urlencode(params)}"
+
 class RozetMain(): 
     def __init__(self):
         self.bear_req = BearRequest()

@@ -1,3 +1,4 @@
+
 import random
 from flask import jsonify
 
@@ -48,6 +49,3 @@ class OrderServ:
         orders = data["id"]
         status = data["status"]
         return orders, status
-
-
-

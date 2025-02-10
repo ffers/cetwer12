@@ -1,9 +1,9 @@
 import os, logging, sys
 from repository import OrderRep
 from black.crm_to_telegram import CrmToTelegram
-from a_service.order import  OrderServ
+from a_service.order_service import OrderServ
 from a_service.delivery import NpServ
-from a_service import DeliveryOrderServ
+from a_service import DeliveryOrderServ, StatusProcess
 from dotenv import load_dotenv
 from api.nova_poshta.create_data import NpClient
 from .telegram_controller import tg_cntrl, TelegramController
@@ -11,7 +11,7 @@ from .np_cntrl import NpCntrl
 from .product_analitic_cntrl import ProductAnaliticControl
 from .delivery_order_cntrl import DeliveryOrderCntrl
 from .add_order_to_crm import pr_to_crm_cntr
-from a_service import tg_serv
+from a_service import tg_serv, TgServ
 from .prom_cntrl import prom_cntrl
 from utils import util_asx
 from datetime import datetime
@@ -19,8 +19,7 @@ from .analitic_cntrl.sour_an_cntrl import SourAnCntrl
 from .telegram_cntrl.tg_cash_cntrl import TgCashCntrl
 from .product_cntrl import ProductCntrl
 
- 
-
+# order1 = StatusProcess.update_order(2487, 6, TelegramController)
 
 sys.path.append('../')
 from common_asx.utilits import Utils
@@ -58,6 +57,7 @@ class OrderCntrl:
         self.tg_cntrl = TelegramController()
         self.np_client = NpClient()
         self.ord_rep = OrderRep()
+        self.status_procces = StatusProcess
         
 
     def reg_17_00(self):
@@ -126,8 +126,6 @@ class OrderCntrl:
 
     def add_order2(self, o):
         order_db = self.ord_rep.add_order(o)
-        for p in o.ordered_product:
-            product_db = None
         return order_db
 
     def add_ordered_product(self, p, ord_id):
@@ -342,10 +340,11 @@ class OrderCntrl:
 
     def change_status_item(self, id, status):
         resp = self.ord_rep.change_status(id, status)
+        StatusProcess.update_order(id, int(status), TelegramController, TgServ, OrderRep)
         resp_tg = tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, "{ordered_status} {order_code}".format(**resp))
         print(resp_tg)
         return resp.update( {"message_id": resp_tg["result"]["message_id"]})
-
+ 
     def change_status_roz(self):
         orders = self.ord_rep.load_registred_roz()
         if orders:
@@ -353,7 +352,7 @@ class OrderCntrl:
                 self.change_status_item(order.id, 8)
 
 
-
+ 
     def test_order(self, order_id):
         orders = self.ord_rep.load_item_all()
         resp_sour = None

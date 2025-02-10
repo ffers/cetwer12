@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from .manager_ttn import ManagerTTN
 from a_service.tg_serv import tg_serv
 from a_service import BotProductSrv
-from a_service.order import OrderServ
+from a_service.order_service import OrderServ
 from black.crm_to_telegram import CrmToTelegram
 from repository import OrderRep
 from .product_analitic_cntrl import ProductAnaliticControl

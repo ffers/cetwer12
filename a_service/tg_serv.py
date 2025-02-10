@@ -10,48 +10,6 @@ class TgServ():
     def __init__(self):
         logging.basicConfig(filename='../common_asx/log_order.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
-    # def send_order_curier(self, order):
-    #     order_id = order["id"]
-    #     logging.info(f"Обробка ордера send_curier: {order_id}")
-    #     client_name = order["client_last_name"] + " " + order["client_first_name"]
-    #     delivery_option = order["delivery_option"]["name"]
-    #     delivery_address = order["delivery_address"]
-    #     payment_option = order["payment_option"]["name"]
-    #     full_price = order["full_price"]
-    #     if "client_notes" in order and order["client_notes"]:
-    #         client_notes = "Нотатка: " + order["client_notes"]
-    #     else:
-    #         client_notes = "Нотаток від клієнта нема"
-    #     status = self.payment_data_status(order["payment_data"])
-    #     all_products = []
-    #     for sku in order["products"]:
-    #         product = {
-    #             "artikul": sku["sku"],
-    #             "name_multilang": sku["name_multilang"]["uk"],
-    #             "price": sku["price"],
-    #             "quantity": sku["quantity"],
-    #             "measure_unit": sku["measure_unit"],
-    #             "image_url": sku["image"],
-    #             "total_price": sku["total_price"]
-    #         }
-    #         all_products.append(product)
-
-    #     phone_num = order["phone"]
-    #     sum_order = order["full_price"]
-    #     formatted_text = ""
-    #     up_text = ""
-    #     for product in all_products:
-    #         up_text += f"{product['artikul']} - {product['quantity']} {product['measure_unit']} - {product['price']} \n"
-    #         formatted_text += f"{product['artikul']} - {product['quantity']} {product['measure_unit']} - {product['price']} \n"
-    #         formatted_text += f"Название: {product['name_multilang']}"
-
-    #     data_get_order = (
-    #         f"🟢 {up_text} Cумма {sum_order}\n\n{client_notes}\n\n"
-    #         f"{delivery_address}\n\n🟢 Замовлення № {order_id}\n\n{phone_num};ТТН немає\n{client_name}\n{delivery_option}\n"
-    #         f"Способ оплати - {payment_option}, {status} \n\n  На будь якій випадок:\n"
-    #         f"{formatted_text}\n\n=========================================================="
-    #     )
-
 
     def payment_data_status(self, payment_data):
         print(payment_data)
