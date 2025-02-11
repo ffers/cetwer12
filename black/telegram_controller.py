@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 from api import tg_api
-from a_service import tg_serv
+
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)

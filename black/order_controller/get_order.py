@@ -34,7 +34,7 @@ from ..telegram_controller import TelegramController
 #         else:
 #             raise ValueError(f"Unknown order status: {type_api}")\
 
-
+# 
 class Handler:
     """Базовый обработчик цепочки обязанностей"""
     def __init__(self):
