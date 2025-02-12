@@ -5,67 +5,34 @@ sys.path.append('../')
 from common_asx.utilits import Utils
 from api import EvoClient, RozetMain
 
-        
-class Market:
-    def __init__(self, market, order_cntrl, tg):
-        self.market = market
-        self.order_cntrl = order_cntrl()
-        self.tg = tg
+# роутер принимает get_orders та в хідер отримує якій апі
 
-    def process(self):
-        raise NotImplementedError("Subclasses must implement process()")
+# передає команду в order_api_procces з апі header, 
+# OrderApi дивимось якій апі та передаємо обʼєкт апі та визваєм команду
 
-class GetOrdersMarket(Market):
-    def process(self):
-        market_cntrl = MarketplaceCntrl(self.market, self.tg)
-        order = market_cntrl.get_orders()
-        if order:
-            return self.add_order(order)
-        return False
-    
-    def add_order(self, o):
-        order_db = self.order_cntrl.add_order2(o)
-        if order_db:
-            for p in o.ordered_product:
-                product_db = self.order_cntrl.add_ordered_product(p, order_db.id)
-                return True if product_db else False
-        return False 
-    
-class RozetkaMarketFactory:
+class FactoryApi:
     @staticmethod
-    def factory(task, order_cntrl, tg):
-        order_classes = {
-                    "get_orders": GetOrdersMarket
+    def factory(api):
+        apis = {
+                    "rozetka": RozetMain,
+                    "prom": EvoClient
                 }
-        if task in order_classes:
-            return order_classes[task](RozetMain, order_cntrl, tg)
+        if api in apis:
+            return apis[api]()
         else:
-            raise ValueError(f"Unknown order status: {task}")
-
-
-    
-class PromMarketFactory:
-    @staticmethod
-    def factory(task,  type_process):
-        order_classes = {
-                    "get_orders": None
-                }
-        if task in order_classes:
-            return order_classes[task](EvoClient)
-        else:
-            raise ValueError(f"Unknown order status: {task}")
-                    
+            raise ValueError(f"We dont have api: {api}")                
             
 
-class MarketplaceCntrl:
-    def __init__(self, marketplats, tg):
-        self.marketplats = marketplats()
-        self.tg = tg()
+class OrderApi:
+    def __init__(self, api, OrderCntrl, TG):
+        self.api = FactoryApi.factory(api)
+        self.order_cntrl = OrderCntrl()
+        self.tg = TG()
         self.util = Utils()
     
     def get_orders(self):
         try:
-            list_order, list_standart_dto = self.marketplats.get_orders()
+            list_order, list_standart_dto = self.api.get_orders()
             if list_order:
                 for order in list_order:
                     text = self.make_text(order)
@@ -81,36 +48,34 @@ class MarketplaceCntrl:
         except Exception as e:
             text = f"🔴 Помилка додавання замовлення в розетку {e}"
             return self.tg.sendMessage(self.tg.chat_id_info, text)
+        
+    def add_order(self, o):
+        order_db = self.order_cntrl.add_order2(o)
+        if order_db:
+            for p in o.ordered_product:
+                product_db = self.order_cntrl.add_ordered_product(p, order_db.id)
+                return True if product_db else False
+        return False 
 
     
         
     def change_status(self, order_id, status):
-        resp =self.marketplats.create_status_get(order_id, status)        
+        resp =self.api.create_status_get(order_id, status)        
         return resp
 
     def get_order(self, order_id):
-        order_dr = self.marketplats.get_order_id(order_id)
+        order_dr = self.api.get_order_id(order_id)
         return order_dr
 
     def send_ttn(self, order_id, invoice_n, delivery):
         dict_ = self.prom_serv.dict_invoice(order_id, invoice_n, delivery)
         resp = self.utils.change_ttn(dict_)
         return resp
-
-    def init_class(self, condition):
-        if condition == "Rozet":
-            return RozetMain()
-        elif condition == "Prom":
-            return prom_api
-        else:
-            raise ValueError("Невідомий тип платформи")
         
     def get_delivery(self):
-        self.marketplats.available_delivery()
+        self.api.available_delivery()
         return True
     
-    def other_actions(self, **kwargs):
-        raise NotImplementedError
             
     def make_text(self, order):
         user_name = f"{order.user_title.last_name} {order.user_title.first_name}"

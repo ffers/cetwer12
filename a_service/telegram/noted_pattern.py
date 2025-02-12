@@ -72,9 +72,6 @@ class ButtonCommandFactory:
             return commands[data_keyb]()
         return None
 
-command = ButtonCommandFactory.create_command("1")
-command.execute(order_id)
-
 class FlagStrategy:
     @staticmethod
     def get_flag(text):

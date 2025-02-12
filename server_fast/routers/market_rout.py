@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from fastapi import APIRouter, Depends, HTTPException
 
-from black.order_controller.get_order import PromAPIHandler, RozetkaAPIHandler
+from black.order_controller.get_order import GetOrder
 from server_flask.flask_app import flask_app, jsonify
 
 
@@ -25,12 +25,12 @@ router = APIRouter(
 @router.get("/get_orders")
 async def close_day():
     with flask_app.app_context():
-        handler = PromAPIHandler()
-        handler.set_next(RozetkaAPIHandler())
-        market = handler.handle("rozetka", "get_orders")
-        if market:
+        api = GetOrder("rozetka")
+        result = api.get_orders()
+        print(result)
+        if result:
             return {"message": "Order get successfuly"}
-        return {"message": "Not succesful"}
+        return {"message": "All the orders have alredy been download"}
 
 
 # @router.get("/")

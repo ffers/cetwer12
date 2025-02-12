@@ -5,23 +5,23 @@ class Chat(ABC):
     def __init__(self, chat_id):
         self.chat_id = chat_id
 
-    def execute(self, text):
+    def execute(self, data):
         pass
 
 class Manager(Chat):
-    def execute(self, text):
+    def execute(self, data):
         return "Comand for chat meneger"
     
 class Stock(Chat):
-    def execute(self, text):
+    def execute(self, data):
         return "Comand for chat stock"
     
 class Courier(Chat):
-    def execute(self, text):
+    def execute(self, data):
         return "Comand for chat courier"
     
 class CheckText:
-    def execute(self, text):
+    def execute(self, data, target_key):
         pass
     pass
 
@@ -31,14 +31,14 @@ class FlagStrategy:
     def __init__(self, settings):
         self.settings = settings or Settings()
 
-    def get_flag(self, chat_id, text):
+    def get_flag(self, chat_id, data):
         chat = {
             self.settings.CHAT_ID_MANAGER: Manager,
             self.settings.CH_ID_STOCK: Stock,
             self.settings.CH_ID_COURIER: Courier
         }
         if chat.get(chat_id, None):
-            return chat[chat_id](text)
+            return chat[chat_id](data)
 
     
 
