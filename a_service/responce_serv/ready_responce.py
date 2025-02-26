@@ -17,7 +17,7 @@ class ResponceCommand(Command):
         print(pointer, "ResponceCommand")
         if pointer.resp:
             pointer = self.parse(pointer)
-            resp = self.tg.sendMessage(self.tg.chat_id_cash, pointer.text)
+            resp = self.tg.sendMessage(self.tg.chat_id_, pointer.text)
             return f"додано Ярік {resp}"
         return None
 

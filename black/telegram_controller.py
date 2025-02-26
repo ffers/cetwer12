@@ -19,6 +19,7 @@ class TelegramController():
         self.chat_id_confirm = os.getenv("CHAT_ID_CONFIRMATION")
         self.chat_id_cash = os.getenv("CH_ID_CASH")
         self.chat_id_shop = os.getenv("CH_ID_SHOP")
+        self.chat_id_courier = os.getenv("CH_ID_CORECTOR")
 
 
     def sendPhoto(self, id_photo):
