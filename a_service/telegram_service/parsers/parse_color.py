@@ -73,8 +73,9 @@ class TextColorParser():
                 print("Ось вийшло два розміри")
                 print(clean_35)
                 print(clean_45)
-                chat_data.content = [{"article": "35", "data":clean_35}]
-                chat_data.content.append({"article": "45", "data":clean_45})
+                chat_data.comment = "Додано Ярік\n"
+                chat_data.content = [{"article": "35N", "data":clean_35}]
+                chat_data.content.append({"article": "45N", "data":clean_45})
             else:
                 print(data)
                 size = self.count_size(text)

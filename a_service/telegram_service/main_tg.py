@@ -16,6 +16,7 @@ class ChatData:
     reply: str = None
     content: list = None
     resp: list = None
+    comment: str = None
 
 class Resp:
     def __init__(self, data):
@@ -84,6 +85,7 @@ class Group(Resp):
             # "ukr_delivery": UKRdelivery.factory(cmd),
         }
         chat_data = chats.get(data.chat, None)
+        print(chat_data.content, "Group")
         return chat_data
 
       

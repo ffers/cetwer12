@@ -17,11 +17,12 @@ class ResponceCommand(Command):
         print(pointer, "ResponceCommand")
         if pointer.resp:
             pointer = self.parse(pointer)
-        resp = self.tg.sendMessage(self.tg.chat_id_cash, pointer.text)
-        return f"додано Ярік {resp}"
-    
+            resp = self.tg.sendMessage(self.tg.chat_id_cash, pointer.text)
+            return f"додано Ярік {resp}"
+        return None
+
     def parse(self, pointer):
-        pointer.text = "Додано Ярік\n"
+        pointer.text = pointer.comment
         for item in pointer.resp:
             pointer.text += "{}: {}\n".format(
                 item["article"], 

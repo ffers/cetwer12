@@ -6,46 +6,28 @@ class Command:
         self.text_p = T()
         self.msg_p = M()
 
-    def execute(self, content, markup):
+    def execute(self, chat_data):
         pass
 
-
-# 🔹 Telegram-команди
 class MsgCommand(Command):
-    def execute(self, content, markup):
+    def execute(self, chat_data):
         pass
         
-    
 class ArrivalCommand(Command):
-    def execute(self, content, murkup):
-        data = self.text_p.parse_colon(content) #парсим 
-        print(data)
+    def execute(self, chat_data):
+        data = self.text_p.parse_colon(chat_data) #парсим 
+        print(data.content, "ArrivalCommand")
         #добавляєм на склад
         #возвращаєм результат
-        return "Привіт! Я добавляю на склад"
-    
-class TakeCommand(Command):
-    def execute(self):
-        #парсим 
-        #убавляєм на складе
-        #возвращаєм результат
-        return "Привіт! Я віднімаю з склада"
+        return data
 
-
-
-
-        return None
-
-# 🔹 Клас, що виконує команду
 class CommandHandler:
     @staticmethod
     def factory(chat_data):
         commands = {
-            # "take": "take",
-            # "stock": "stock",
-            # "edit": "edit",
-            "arrival": ArrivalCommand,
-            # "comment":"comment"
+
+            "stock": ArrivalCommand,
+
         } 
         if chat_data.cmd in commands:
             return commands[chat_data.cmd](

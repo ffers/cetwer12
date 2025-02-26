@@ -83,7 +83,8 @@ class Settings:
             "#редактируєм": "edit",
             "#прихід": "arrival",
             "#коментар":"comment",
-            "#нові":"new_orders"
+            "#нові":"new_orders",
+            "/new_orders":"new_orders",
             }
         
         self.chats = {
