@@ -5,7 +5,7 @@ from server_flask.models import Users
 from black import ArrivelCntrl, SourAnCntrl
 
 
-arriv_cntrl = ArrivelCntrl()
+arriv_cntrl = ArrivelCntrl() 
 manager = RoleNeed('manager')
 manager_permission = Permission(manager)
 admin_permission = Permission(RoleNeed('admin'))

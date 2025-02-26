@@ -21,6 +21,23 @@ from .product_cntrl import ProductCntrl
 
 # order1 = StatusProcess.update_order(2487, 6, TelegramController)
 
+#  id |        name        | description
+# ----+--------------------+-------------
+#   1 | Підтвердити        |
+#   2 | Підтвержено        |
+#   3 | Оплачено           |
+#   4 | Несплачено         |
+#   5 | Скасовано          |
+#   6 | Предзамовлення     |
+#   7 | Питання            |
+#   8 | Відправлено        |
+#   9 | Отримано           |
+#  10 | Нове               |
+#  11 | Очікує відправленя |
+#  12 | Виконано           |
+#  13 | Тест
+#  14 | Повернення
+
 sys.path.append('../')
 from common_asx.utilits import Utils
 
@@ -93,7 +110,7 @@ class OrderCntrl:
 
     def load_order_for_code(self, order_code):
         order = self.ord_rep.load_for_code(order_code)
-        return order.id
+        return order.id 
 
     def load_for_order_code(self, order_code):
         order = self.ord_rep.load_for_order_code(order_code)
@@ -181,7 +198,7 @@ class OrderCntrl:
                 self.ord_rep.add_order_code(order, order_code)
                 return
 
-    def send_order_tg(self, order_id, text="🍊 Редагування"):
+    def send_order_tg(self, order_id, text="🟠 Редагування"):
         order = self.ord_rep.load_item(order_id)
         data_tg_dict = tg_serv.create_text_order(order)
         keyboard_json = tg_cntrl.keyboard_func()
@@ -341,9 +358,9 @@ class OrderCntrl:
     def change_status_item(self, id, status):
         resp = self.ord_rep.change_status(id, status)
         StatusProcess.update_order(id, int(status), TelegramController, TgServ, OrderRep)
-        resp_tg = tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, "{ordered_status} {order_code}".format(**resp))
-        print(resp_tg)
-        return resp.update( {"message_id": resp_tg["result"]["message_id"]})
+        # resp_tg = tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, "{ordered_status} {order_code}".format(**resp))
+        # print(resp_tg)
+        return resp# resp.update( {"message_id": resp_tg["result"]["message_id"]})
  
     def change_status_roz(self):
         orders = self.ord_rep.load_registred_roz()

@@ -17,3 +17,5 @@ from .source_rep_serv import SourRepServ
 from .user_token_rep_serv import TokenRepServ
 from .check_serv import CheckServ
 from .order_service import StatusProcess
+from .telegram_service.main_tg import TGDirector
+from .responce_serv.responce_serv import ResponceDirector

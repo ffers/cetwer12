@@ -1,11 +1,12 @@
-from repository.color_bot_rep import ProductCounBot
+from a_service.telegram_service.parsers.color_bot_rep import ProductCounBot
 from pydantic import BaseModel
+
 
 class ColorDTO(BaseModel):
     size: int
     color_num: int
     quantity: int
-
+ 
 
 class BotProductSrv():
     def __init__(self):
@@ -14,8 +15,6 @@ class BotProductSrv():
     def work_with_product(self, data):
         if "text" in data["message"]:
             text = data["message"]["text"]
-            chat_id = data["message"]["chat"]["id"]
-            print(text)
             update_color = self.pc_cl.manager_bot(text)
             return update_color
         else:

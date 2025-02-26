@@ -17,7 +17,7 @@ class OrderRep:
                         city_name=item.city_name,
                         city_ref=item.city_ref,
                         warehouse_text=item.warehouse_text,
-                        warehouse_ref=item.warehouse_ref,
+                        warehouse_ref=item.warehouse_ref, 
                         phone=item.phone,
                         author_id=item.author_id,
                         client_firstname=item.client_firstname,

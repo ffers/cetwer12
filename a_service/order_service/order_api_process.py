@@ -14,9 +14,9 @@ class FactoryApi:
     @staticmethod
     def factory(api):
         apis = {
-                    "rozetka": RozetMain,
-                    "prom": EvoClient
-                }
+                "rozetka": RozetMain,
+                "prom": EvoClient
+        }
         if api in apis:
             return apis[api]()
         else:

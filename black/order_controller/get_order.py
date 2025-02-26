@@ -5,9 +5,8 @@ from ..telegram_controller import TelegramController
 
 class GetOrder:
     def __init__(self, api):
-        self.api = api
         self.service = OrderApi(
-            self.api,
+            api,
             OrderCntrl, 
             TelegramController
         )

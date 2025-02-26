@@ -50,8 +50,10 @@ class ProductCounBot():
             db.session.commit()
 
     def update_base(self, taken_data, name_tabl, flag):
+        # all_color = 0
         with current_app.app_context():
             for number, quantity in taken_data.items():
+                # all_color += quantity
                 print(f"ДОДАЄМ {number, quantity}")
                 color = name_tabl.query.filter_by(color=number).first()
                 if color:
@@ -59,8 +61,17 @@ class ProductCounBot():
                         color.quantity -= quantity
                     if flag == "#склад":
                         color.quantity += quantity
-                    db.session.add(color)
+                    db.session.add(color)                    
             db.session.commit()
+        # self.arrival_crm(all_color, name_tabl)
+
+    # def arrival_crm(self, all_color, name_tabl):         
+    #     articles = {Colorrep35:"35N",
+    #                 Colorrep45:"45N",}
+    #     add = ProductSource.query.filter_by(article=articles.get(name_tabl)).first()
+    #     db.session.add(add)  
+    #     db.session.commit()
+
 
     def see_update(self, name_tabl):
     # Виведення оновленої бази даних (замініть print на необхідні дії)
@@ -123,7 +134,7 @@ class ProductCounBot():
         print(f" 45 {clean_45}")
         return clean_35, clean_45
 
-    def count_all(self, data):
+    def count_all(self, data): 
         count = 0
         for item in data:
              count += item.quantity

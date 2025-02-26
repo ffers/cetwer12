@@ -22,7 +22,7 @@ class SourAnCntrl:
         self.sour_an_diff_cntrl = SourDiffAnCntrl()
 
     def my_time(self):
-        yield (datetime.now())
+        yield (datetime.now()) 
 
     def add(self, request):
         args = self.sour_an_serv.add_source(request)

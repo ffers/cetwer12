@@ -12,10 +12,12 @@ from .product_analitic_cntrl import ProductAnaliticControl
 from .add_order_to_crm import PromToCrm
 from .handling_b import search_reply_message
 from a_service.update_to_crm import up_to_srm
-from .telegram_controller import tg_cntrl
-from .order_cntrl import ord_cntrl
-from a_service import TgAnswerSerw
+from .telegram_controller import tg_cntrl, TelegramController
+from .order_cntrl import ord_cntrl, OrderCntrl
+from .analitic_cntrl.sour_an_cntrl import SourAnCntrl
+from a_service import TgAnswerSerw, ResponceDirector
 from .telegram_cntrl.tg_cash_cntrl import TgCashCntrl
+
 
 
 env_path = '../common_asx/.env'
@@ -34,6 +36,7 @@ class TgAnswerCntrl:
     def __init__(self):
         self.arrival = TgCashCntrl()
         self.serv = TgAnswerSerw()
+        self.order_cntrl = OrderCntrl()
 
     def await_order(self, order, flag=None, id=None):
         print(f"ДИвимось флаг {flag}")
@@ -66,6 +69,8 @@ class TgAnswerCntrl:
         return resp
 
     def await_tg_button(self, data):
+        result = ResponceDirector().construct(data, OrderCntrl, SourAnCntrl, TelegramController)
+        print(result, "tg_command_new")
         if "message" in data: #працює з усіма відповдями
             self.await_telegram(data)
             # button_hand(data)
@@ -75,6 +80,8 @@ class TgAnswerCntrl:
 
     def await_telegram(self, data): #працює з чатами Склад, Каштан, Розетка
         chat_id = data["message"]["chat"]["id"]
+        
+        # return 200, "Ok"
         if int(ch_id_sk) == chat_id:
             print("Отримали повідомлення з Робочого чату")
             text_colour = pr_bt_srv.work_with_product(data)

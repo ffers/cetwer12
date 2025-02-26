@@ -32,20 +32,20 @@ class Settings:
 
         # Database
         self.DB_USERNAME = os.getenv("DB_USERNAME")
-        self.DB_PASSWORD = os.getenv("DB_PASSWORD")
+        self.DB_PASSWORD = os.getenv("DB_PASSWORD") 
         self.SECRET_KEY_FLASK = os.getenv("SECRET_KEY_FLASK")
 
         # Telegram Chat IDs
-        self.CHAT_ID_INFO = os.getenv("CHAT_ID_INFO")
-        self.CHAT_ID_MANAGER = os.getenv("CHAT_ID_CONFIRMATION")
-        self.CHAT_ID_HELPER = os.getenv("CHAT_ID_HELPER")
-        self.CH_ID_NP = os.getenv("CH_ID_NP")
-        self.CH_ID_STOCK = os.getenv("CH_ID_SK")
-        self.CH_ID_UKR = os.getenv("CH_ID_UKR")
-        self.CH_ID_ROZ = os.getenv("CH_ID_ROZ")
-        self.CH_ID_CASH = os.getenv("CH_ID_CASH")
-        self.CH_ID_SHOP = os.getenv("CH_ID_SHOP")
-        self.CH_ID_COURIER = os.getenv("CH_ID_CORECTOR")
+        self.CH_ID_INFO = int(os.getenv("CHAT_ID_INFO"))
+        self.CH_ID_MANAGER = int(os.getenv("CHAT_ID_CONFIRMATION"))
+        self.CH_ID_HELPER = int(os.getenv("CHAT_ID_HELPER"))
+        self.CH_ID_NP = int(os.getenv("CH_ID_NP"))
+        self.CH_ID_STOCK = int(os.getenv("CH_ID_SK"))
+        self.CH_ID_UKR = int(os.getenv("CH_ID_UKR"))
+        self.CH_ID_ROZ = int(os.getenv("CH_ID_ROZ"))
+        self.CH_ID_CASH = int(os.getenv("CH_ID_CASH"))
+        self.CH_ID_SHOP = int(os.getenv("CH_ID_SHOP"))
+        self.CH_ID_COURIER = int(os.getenv("CH_ID_CORECTOR"))
 
         # CRM & API URLs
         self.URL_TO_CRM = os.getenv("URL_TO_CRM")
@@ -70,5 +70,31 @@ class Settings:
 
         # CRM Host
         self.HOSTCRM = os.getenv("HOSTCRM")
+
+        self.handlers =  {
+            "callback_query",
+            "edited_message",
+            "message"
+            }  
+        
+        self.commands = {
+            "#взял": "take",
+            "#склад": "stock",
+            "#редактируєм": "edit",
+            "#прихід": "arrival",
+            "#коментар":"comment",
+            "#нові":"new_orders"
+            }
+        
+        self.chats = {
+            self.CH_ID_COURIER: "courier",
+            self.CH_ID_MANAGER: "manager",
+            self.CH_ID_STOCK: "stock",
+            self.CH_ID_NP: "np_delivery",
+            self.CH_ID_ROZ: "roz_delivery",
+            self.CH_ID_UKR: "urk_delivery",
+        }
+        
+        
 
 
