@@ -26,7 +26,7 @@ class ActionResponce(Responce):
     def execute(self, pointer):
         return ActionFactory.factory(pointer, self.OrderCntrl, self.SourAnCntrl)  
     
-class ReadyResponce(Responce):  
+class TGResponce(Responce):  
     def execute(self, pointer):
         print(pointer, "ReadyResponce")
         resp = ReadyFactory.factory(pointer, 
@@ -42,7 +42,7 @@ class Builder:
         return self
 
     def build(self, data, OrderCntrl, SourAnCntrl, TelegramCntrl):
-        try:   
+        # try:   
             pointer = None
             for cmd_class in self.commands:
                 pointer = cmd_class(data, OrderCntrl, SourAnCntrl, TelegramCntrl).execute(pointer)
@@ -50,8 +50,8 @@ class Builder:
                 if not pointer:
                     break
             return pointer
-        except:
-            return "Не працює"
+        # except:
+        #     return "Не працює responce_serv"
     
 class ResponceDirector:
     def __init__(self):
@@ -62,6 +62,6 @@ class ResponceDirector:
             self.builder
             .add_command(IncomeResponce)
             .add_command(ActionResponce)
-            .add_command(ReadyResponce)
+            .add_command(TGResponce)
             .build(data, OrderCntrl, SourAnCntrl, TelegramCntrl)
         )

@@ -7,6 +7,7 @@ class Command:
     def __init__(self, OrderCntrl, SourAnCntrl):
         self.order = OrderCntrl()
         self.SourAnCntrl = SourAnCntrl()
+        self.parse = Parse()
 
     def execute(self, content):
         pass
@@ -15,28 +16,12 @@ class AddtoBaseCommand(Command):
     def execute(self, data_chat):
         data_chat.resp = []
         for item in data_chat.content:
-            article = item["article"] 
-            quantity = self.quantity_parse(item)
-            item = self.SourAnCntrl.load_article(article)
-            if not item:
-                quantity = "Нема такого товару"
-            else:
-                # event_time = datetime.strptime(next(my_time()), "%a %b %Y")
-                # print(event_time)
-                resp = self.SourAnCntrl.fixed_process(item.id, quantity, data_chat.comment)               
-            pointer = self.parser_item(data_chat, article, quantity)    
-        return data_chat
-    
-    def quantity_parse(self, item):
-        if "data" in item:
-            return Parse().all_color(item["data"])
-        return item["quantity"]
-
-    def parser_item(self, data_chat, article, quantity):
-        data_chat.resp.append({
-            "article": article,
-            "quantity": quantity
-        })
+            quantity = "Нема такого товару"
+            item_prod = self.SourAnCntrl.load_article(item["article"])
+            if item_prod:
+                quantity = self.parse.quantity_parse(item)
+                self.SourAnCntrl.fixed_process(item_prod.id, quantity, data_chat.comment, next(my_time()))               
+            data_chat = self.parse.parser_item(data_chat, item["article"], quantity)    
         return data_chat
 
 

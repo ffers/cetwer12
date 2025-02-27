@@ -20,6 +20,13 @@ class ArrivalCommand(Command):
         #добавляєм на склад
         #возвращаєм результат
         return data
+    
+class TakeArrivalCommand(Command):
+    def execute(self, chat_data):
+        data = self.text_p.parse_colon(chat_data)  
+        print(data.content, "ArrivalCommand")
+
+        return data
 
 class CommandHandler:
     @staticmethod
@@ -27,6 +34,7 @@ class CommandHandler:
         commands = {
 
             "stock": ArrivalCommand,
+            "take": TakeArrivalCommand
 
         } 
         if chat_data.cmd in commands:
