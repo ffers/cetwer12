@@ -51,6 +51,16 @@ class OrderRep:
         db.session.commit()
         return product_obj
 
+    def update_history(self, order_id, new_comment):
+        try:
+            order = self.load_item(order_id)
+            if order.history:
+                new_comment = order.history + new_comment
+            order.history = new_comment
+            db.session.commit()
+            return True
+        except:
+            return False
 
 
     def load_item(self, order_id):

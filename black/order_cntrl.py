@@ -75,8 +75,12 @@ class OrderCntrl:
         self.np_client = NpClient()
         self.ord_rep = OrderRep()
         self.status_procces = StatusProcess
+        self.order_serv = OrderServ()
         
-
+    def update_history(self, order_id, comment):
+        resp = self.order_serv.update_history(order_id, comment)
+        return resp
+    
     def reg_17_00(self):
         black_pic = self.tg_cntrl.black_pic()
         dict_order = self.createReg()
@@ -107,6 +111,9 @@ class OrderCntrl:
 
     def load_status_id(self, id):
         return self.ord_rep.load_status_id(id)
+    
+    def load_for_order_id(self, order_id):
+        return self.ord_rep.load_item(order_id)
 
     def load_order_for_code(self, order_code):
         order = self.ord_rep.load_for_code(order_code)

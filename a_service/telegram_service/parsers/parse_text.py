@@ -29,6 +29,12 @@ class ParseText:
                 })
         return chat_data
     
+    def search_order_code(self, text):
+        pattern = r'Замовлення № (\S+)'
+        number_order = re.search(pattern, text)
+        print(number_order)
+        return number_order.group(1).strip()
+    
     
             
     def parse_stock(self, chat_data):

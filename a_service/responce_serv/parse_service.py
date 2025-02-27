@@ -1,4 +1,5 @@
-
+from utils import my_time
+from datetime import datetime
 
 
 class Parse:
@@ -22,3 +23,11 @@ class Parse:
             "quantity": quantity
         })
         return data_chat
+    
+    def add_comment(self, data_chat, order_cntrl):
+        time = next(my_time()).strftime("%d-%m-%Y %H:%M")
+        comment = time + ": " + data_chat.comment
+        order = order_cntrl.load_for_order_code(data_chat.text)
+        add_comment = order_cntrl.update_history(order.id, comment)
+        print(add_comment, "update_history")
+        return add_comment

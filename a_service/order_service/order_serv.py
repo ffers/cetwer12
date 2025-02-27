@@ -1,8 +1,12 @@
-
+from repository import OrderRep
 import random
 from flask import jsonify
 
+
 class OrderServ:
+    def __init__(self):
+        self.order_rep = OrderRep()
+
     def generate_order_code(self, prefix='ASX'):
         digits = [random.choice('0123456789') for _ in range(6)]
         unique_id = ''.join(digits)  # Генеруємо унікальний ID та беремо перші 6 символів
@@ -15,6 +19,10 @@ class OrderServ:
     #         if not order:  # Перевіряємо, чи таке значення ще не використовувалось
     #             used_values.add(new_digits)  # Додаємо нове значення до множини використаних
     #             return new_digits  # Повертаємо унікальне значення
+
+    def update_history(self, order_id, comment):
+        new_comment = "\n" + comment
+        return self.order_rep.update_history(order_id, new_comment)
  
     def search_for_order(self, order):
         order_list = []
@@ -26,7 +34,6 @@ class OrderServ:
                     print(order_list)
             return jsonify({'results': order_list})
         return jsonify({'results': []})
-
 
     def create_text(self, item):
         product_text = ' '

@@ -1,12 +1,9 @@
 from ..parsers.parse_text import ParseText
-from ..parsers.parse_message import ParseMsgFactory
-from a_service.telegram_service.parsers.color_bot_rep import ProductCounBot
-from ..parsers.parse_color import TextColorParser
+
 
 class Command:
-    def __init__(self, PT: ParseText, PM: ParseMsgFactory):
-        self.text_p = PT()
-        self.msg_p = PM()
+    def __init__(self, PT: ParseText):
+        self.text_parse = PT()
 
 
     def execute(self, chat_data):
@@ -16,16 +13,26 @@ class NewOrders(Command):
     def execute(self, chat_data):
         return chat_data
     
-# 🔹 Клас, що виконує команду
+class AddComment(Command):
+    def execute(self, chat_data):
+        if "Замовлення №" in chat_data.reply:
+            chat_data.cmd = "reply_manager"
+            chat_data.comment = chat_data.text
+            chat_data.text = self.text_parse.search_order_code(chat_data.reply)
+            return chat_data
+        raise
+    
+# 🔹 Клас, що виконує команду 
 class CommandHandler:
     @staticmethod
     def factory(chat_data):
         commands = {
             "new_orders": NewOrders,
+            "reply_to_message": AddComment
         } 
         if chat_data.cmd in commands:
             return commands[chat_data.cmd](
-                ParseText, ParseMsgFactory
+                ParseText
                 ).execute(chat_data)
         return f"Немає команди {chat_data.cmd}"
             

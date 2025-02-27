@@ -5,7 +5,7 @@ from datetime import datetime
 
 class Command:
     def __init__(self, OrderCntrl, SourAnCntrl):
-        self.order = OrderCntrl()
+        self.order_cntrl = OrderCntrl()
         self.SourAnCntrl = SourAnCntrl()
         self.parse = Parse()
 
@@ -27,18 +27,22 @@ class AddtoBaseCommand(Command):
 
 class NewOrders(Command):
     def execute(self, data_chat):
-        items = self.order.load_status_id(10)
+        items = self.order_cntrl.load_status_id(10)
         if items:
             for item in items:
-                result = self.order.send_order_tg(item.id, "⚪️ Нові")
-        items = self.order.load_status_id(3)
+                result = self.order_cntrl.send_order_tg(item.id, "⚪️ Нові")
+        items = self.order_cntrl.load_status_id(3)
         if items:
             for item in items:
-                result = self.order.send_order_tg(item.id, "⚪️ Оплачені")
+                result = self.order_cntrl.send_order_tg(item.id, "⚪️ Оплачені")
         return None
 
+class AddComment(Command):
+    def execute(self, data_chat):
+        resp = self.parse.add_comment(data_chat, self.order_cntrl)
+        
 
-
+        return data_chat
 
 class ActionFactory:
     @staticmethod
@@ -46,7 +50,8 @@ class ActionFactory:
         commands = {
             # "take": "take",
             "stock": AddtoBaseCommand,
-            "new_orders": NewOrders
+            "new_orders": NewOrders,
+            "reply_manager": AddComment,
         } 
         if data_chat.cmd in commands:
             return commands[data_chat.cmd](
