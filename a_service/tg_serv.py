@@ -2,6 +2,7 @@
 from dotenv import load_dotenv
 import os, logging, re
 import html
+from datetime import datetime
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
@@ -35,6 +36,7 @@ class TgServ():
         else:
             sum_check = order.sum_price 
         product_article = ""
+        event_date = order.timestamp.strftime("%d-%m-%Y %H:%M")
         product_text = "На всяк випадок:\n"
         for product in order.ordered_product:
             product_article += f"🟢 {product.products.article} - {product.quantity}шт - {product.price}\n"
@@ -42,6 +44,7 @@ class TgServ():
         data_get_order = (
             f"{product_article} Сумма: {order.sum_price} \n\n{description}\n\n"
             f"{order.city_name}, {order.warehouse_text} \n\n🟢 {order.source_order.name} Замовлення № {order.order_code}\n"
+            f"{event_date}\n"
             f"Cтатус: {order.ordered_status.name}\n"
             f"\n{order.phone};{ttn}\n{order.client_lastname} {order.client_firstname}\n"
             f"Спосіб доставки - {order.delivery_method.name}\n"
