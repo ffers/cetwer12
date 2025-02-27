@@ -21,7 +21,7 @@ class OrderServ:
     #             return new_digits  # Повертаємо унікальне значення
 
     def update_history(self, order_id, comment):
-        new_comment = "\n" + comment
+        new_comment = comment + "\n"
         return self.order_rep.update_history(order_id, new_comment)
  
     def search_for_order(self, order):

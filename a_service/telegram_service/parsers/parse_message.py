@@ -53,6 +53,8 @@ class CommandText(ParseMsg):
             print(key, item, "CommandText")
             if key in self.pointer:
                 return item
+        if "#" in self.pointer:
+            return "somethin"
 
 class ChatKeyParse(ParseMsg):
     def execute(self):

@@ -45,6 +45,7 @@ class TgServ():
             f"{product_article} Сумма: {order.sum_price} \n\n{description}\n\n"
             f"{order.city_name}, {order.warehouse_text} \n\n🟢 {order.source_order.name} Замовлення № {order.order_code}\n"
             f"{event_date}\n"
+            f"{order.history}\n"
             f"Cтатус: {order.ordered_status.name}\n"
             f"\n{order.phone};{ttn}\n{order.client_lastname} {order.client_firstname}\n"
             f"Спосіб доставки - {order.delivery_method.name}\n"

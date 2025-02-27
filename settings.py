@@ -85,6 +85,7 @@ class Settings:
             "#коментар":"comment",
             "#нові":"new_orders",
             "/new_orders":"new_orders",
+            "somthin":"somthin",
             }
         
         self.chats = {
