@@ -98,7 +98,7 @@ class Builder:
         return self
 
     def build(self, data):
-        # try:    
+        try:    
             data_chat = ChatData
             for cmd_class in self.commands:
                 pointer = cmd_class(data).execute(data_chat)
@@ -106,8 +106,8 @@ class Builder:
                 if not pointer:
                     break
             return data_chat
-        # except:
-        #     return None
+        except:
+            return None
     
 class TGDirector:
     def __init__(self):
