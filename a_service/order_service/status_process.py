@@ -16,9 +16,9 @@ class Order:
         raise NotImplementedError("Subclasses must implement process()")
 
 # Класи для кожного статусу
-class NewOrder(Order):
-    def process(self):
-        return f"🆕 Order {self.order_id} created for {self.customer}."
+class ConfirmedOrder(Order):
+    def process(self): # треба виконати шагі підвердження та додати підпис
+        pass
 
 class PaidOrder(Order):
     def process(self):
@@ -51,7 +51,7 @@ class StatusProcess:
     def update_order(order_id: int, status: int, tg_cntrl, tg_serv, ord_rep):
         print(order_id, status, "pre_order")
         order_classes = {
-            1: PassOrder, 2: PassOrder, 
+            1: PassOrder, 2: ConfirmedOrder, 
             3: PassOrder, 4: PassOrder,
             5: PassOrder, 6: PreOrder, 
             7: PassOrder, 8: PassOrder,

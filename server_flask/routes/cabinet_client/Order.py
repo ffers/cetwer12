@@ -128,7 +128,7 @@ def update(id):
         print(">>> Update in datebase")
         flash(f'Замовлення {task_update.order_code} оновлено', category='success')
         ord_cntrl.send_order_tg(task_update.id)
-        return redirect('/cabinet/orders')
+        return redirect('/cabinet/orders/filter/registered/10')
         # except:
         #     return 'There was an issue updating your task'
 
@@ -168,10 +168,10 @@ def add_order():
         db.session.commit()
         ord_cntrl.send_order_tg(order.id)
         flash('Замовлення створено', category='success')
-        return redirect(url_for('Order.Order'))
+        return redirect('/cabinet/orders/filter/registered/10')
 
     return render_template('cabinet_client/add_order.html', user=current_user)
-
+  
 
 
 @bp.route('/cabinet/orders/confirmed/<int:id>', methods=['POST', 'GET'])

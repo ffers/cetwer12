@@ -13,3 +13,4 @@ from .cabinet_client.JourChRout import bp as JourChRout
 from .cabinet_client.SourProdRout import bp as ProductSource
 from .cabinet_client.Source_Difference import bp as SourceDifference
 from .cabinet_client.ColorSourceRout import bp as ColorSource
+from .cabinet_client.panel.PanelRout import bp as Panel

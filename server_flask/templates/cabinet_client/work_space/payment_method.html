@@ -1,0 +1,65 @@
+{% extends 'cabinet_client/Products/layout/base.html' %} {% block title %}Home{% endblock %}
+
+{% block body %}
+<!-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script> -->
+<link href="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.1.8/datatables.min.css" rel="stylesheet">
+<script src="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.1.8/datatables.min.js"></script>
+<head>
+  <title>Методи оплат</title>
+</head>
+<h1 style="text-align: center;">{% block header %}Методи оплат{% endblock %}</h1>
+
+<div class="content">   
+  <div class="col-sm">
+    <div class="button-pult">
+    <button id="saveBtn" type="button" class="btn btn-outline-info my-2 my-sm-0">Зберегти редагування таблиці</button>
+    </div>
+      </div>
+ <!-- <div id="arrival-list">
+    <div class="table-responsive-sm" > -->
+      <table id="editableTable" class="table table-hover table-striped" style="margin-bottom: 200px;">
+        <thead>
+          <tr>
+            <th style="width: 10%; text-align: center;">Редагування</th>
+            <th scope="col" style="text-align: center;">Метод ID</th>
+            <th scope="col" style="text-align: center;">Назва</th> 
+
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+           <tr data-id="{{item.id}}">
+            <td style="text-align: center;"> 
+              <a href=#>
+                <button type="button" class="btn btn-info">
+                  <i class="fa-solid fa-pen"></i>
+                </button>
+              </a>
+            </td>
+            <td contenteditable="False" style="text-align: center; font-weight: bold;">{{item.id}}</td>
+            <td contenteditable="False"><input class="form-control bg-light" name="name" autocomplete="off" rows="1" cols="50" placeholder="* Назва" value="{{item.name}}"></td>  
+          </tr>
+         {% endfor %}
+        </tbody>
+        </table>
+    </div>
+ <!-- </div>
+</div> -->
+
+ 
+{% endblock %} 
+{% block footer %}
+{% if product == none %}
+<div class="text-center">
+  <a href="/cabinet/products/add_product"> 
+    <button type="button" class="btn btn-info btn-lg">
+      Створити Продукт
+    </button></a
+  >
+   <br/>
+   <br/>
+</div>
+{% endif %}
+
+
+{% endblock %}

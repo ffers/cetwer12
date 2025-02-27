@@ -18,6 +18,7 @@ from datetime import datetime
 from .analitic_cntrl.sour_an_cntrl import SourAnCntrl
 from .telegram_cntrl.tg_cash_cntrl import TgCashCntrl
 from .product_cntrl import ProductCntrl
+from utils import my_time
 
 # order1 = StatusProcess.update_order(2487, 6, TelegramController)
 
@@ -231,7 +232,7 @@ class OrderCntrl:
         delivery = self.check_del_method(order)
         result = self.result(crm_status, bool_prom,
                              update_analitic, delivery)
-
+        self.update_history(order_id, next(my_time()).strftime("%d-%m-%Y %H:%M")+" Підтверджено")
         resp_tg = tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, "{ordered_status} {order_code}".format(**crm_status))
         return result
 

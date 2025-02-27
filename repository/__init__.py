@@ -12,3 +12,4 @@ from .sour_an_rep import SourAnRep
 from .sour_difference_an_rep import SourDiffAnRep
 from .user_token_rep import UserTokenRep
 from .receipt_rep import ReceiptRep, ShiftRep
+from .panel_settings_rep import PanelSetRep

@@ -49,7 +49,7 @@
           <td>{{order.payment_method.name}}{% if order.payment_method.id == 5 %}:{{order.prompay_status.name}}{% endif %}</td>
           <td>{{order.source_order.name}}</td>
           <td>{{order.order_code}}</td>
-          <td><a href="orders/confirmed/{{order.id}}">{{order.ordered_status.name}}</a></td>
+          <td><a href="/cabinet/orders/confirmed/{{order.id}}">{{order.ordered_status.name}}</a></td>
           <td>{{order.timestamp.strftime('%H:%M %d-%m-%Y')}}</td>
 
       </tr>

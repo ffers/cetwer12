@@ -10,7 +10,7 @@ class Command:
         self.tg = TelegramCntrl()
 
     def execute(self, pointer):
-        pass
+        pass 
 
 class ResponceCommand(Command):
     def execute(self, pointer):
@@ -19,7 +19,7 @@ class ResponceCommand(Command):
             pointer = self.parse(pointer)
             resp = self.tg.sendMessage(self.tg.chat_id_courier, pointer.text)
             return f"додано Ярік {resp}"
-        return None
+        return None  
 
     def parse(self, pointer):
         pointer.text = pointer.comment
@@ -29,7 +29,7 @@ class ResponceCommand(Command):
                 item["quantity"]
                 )
         return pointer
-
+ 
 class ReadyFactory:
     @staticmethod
     def factory(pointer, OrderCntrl, SourAnCntrl, TelegramCntrl):

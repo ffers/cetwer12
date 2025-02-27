@@ -13,7 +13,7 @@ from .db import db
 from .routes import Blog, Auth, Comment, User_post, Bot, \
     Order, Cabinet, Admin, Products, Analitic, \
     Arrival, JourChRout, ProductSource, SourceDifference, \
-    ColorSource
+    ColorSource, Panel
 from utils import util_asx
 OC_log = util_asx.oc_log("flas_app")
 
@@ -56,6 +56,7 @@ flask_app.register_blueprint(JourChRout)
 flask_app.register_blueprint(ProductSource)
 flask_app.register_blueprint(SourceDifference)
 flask_app.register_blueprint(ColorSource, url_prefix='/cabinet/source')
+flask_app.register_blueprint(Panel, url_prefix='/cabinet/panel')
 
 from .models import Users
 login_manager = LoginManager()

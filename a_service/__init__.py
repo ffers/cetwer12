@@ -19,3 +19,4 @@ from .check_serv import CheckServ
 from .order_service import StatusProcess
 from .telegram_service.main_tg import TGDirector
 from .responce_serv.responce_serv import ResponceDirector
+from .panel_settings_serv import PanelSetServ
