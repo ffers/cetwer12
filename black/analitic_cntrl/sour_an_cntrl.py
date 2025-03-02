@@ -99,7 +99,7 @@ class SourAnCntrl:
                     if sale_quantity and description:
                         print('fixed_process')
                         self.fixed_process(prod_comp.product_source.id, sale_quantity, description, curent_time)
-                        return True
+            return True
         return False
       
     def fixed_process(self, source_id, sale_quantity, description, event_date=None): # получает компонент не имеет а из прихода отправляю

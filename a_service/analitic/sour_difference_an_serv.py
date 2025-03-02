@@ -11,7 +11,7 @@ class SourDiffAnServ():
         event_date = datetime.strptime(req.form['event_date'], "%d-%m-%Y")
         source_id = req.form['source_id']
         quantity_crm = req.form['quantity_crm'] 
-        quantity_stock = req.form['quantity_stock'] 
+        quantity_stock = req.form['quantity_stock']  
         difference = req.form['difference']
         return (event_date, source_id, quantity_crm,  
                 quantity_stock, difference)
