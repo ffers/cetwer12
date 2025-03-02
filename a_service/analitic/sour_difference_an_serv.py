@@ -10,7 +10,7 @@ class SourDiffAnServ():
     def add_source_difference_req(self, req):
         event_date = datetime.strptime(req.form['event_date'], "%d-%m-%Y")
         source_id = req.form['source_id']
-        quantity_crm = req.form['quantity_crm']
+        quantity_crm = req.form['quantity_crm'] 
         quantity_stock = req.form['quantity_stock'] 
         difference = req.form['difference']
         return (event_date, source_id, quantity_crm,  
@@ -64,7 +64,7 @@ class SourDiffAnServ():
             comps_bool = self.sour_an_serv.definetion_prod(order)
             if all(comps_bool):
                 for product in order.ordered_product:
-                    prod_comps = prod_cntrl.load_prod_relate_product_id_all(product.product_id)
+                    prod_comps = self.prod_rep.load_prod_relate_product_id_all(product.product_id)
                     for prod_comp in prod_comps:
                         if item == prod_comp:
                             print(f"prod_comps {prod_comps}")

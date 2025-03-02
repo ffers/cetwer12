@@ -108,7 +108,7 @@ class ProductRep():
         return products
 
     def load_product_relate_item(self, product_id):
-        item = ProductRelate.query.get_or_404(product_id)
+        item = ProductRelate.query.get_or_404(product_id) 
         return item
 
     def load_prod_relate_product_id(self, id):
