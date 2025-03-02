@@ -20,14 +20,20 @@ class ParseText:
             chat_data.comment = command_match.group(2)+"\n"  # Ім'я ("Игорь")
         chat_data.content = []
         for line in lines[1:]:  # Обробляємо кожен рядок після команди
-            match = re.match(r"(\w+):\s*(\d+)\((\d+)\)", line)
+            match = re.match(r"(\w+):\s*(\d+)\s*\((\d+)\)", line)
             if match:
-                chat_data.content.append({
+                chat_data = self.parse_colon_true(chat_data, match)
+        return chat_data
+    
+    def parse_colon_true(self, chat_data, match):
+        chat_data.content.append({
                     "article": match.group(1),   # Артикул (45N10)
                     "pack": int(match.group(2)),  # Кількість (20)
                     "quantity": int(match.group(3))  # Загальна сума (240)
                 })
         return chat_data
+    
+    
     
     def search_order_code(self, text):
         pattern = r'Замовлення № (\S+)'

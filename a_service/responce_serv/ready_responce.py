@@ -19,7 +19,9 @@ class ResponceCommand(Command):
             pointer = self.parse(pointer)
             resp = self.tg.sendMessage(self.tg.chat_id_courier, pointer.text)
             return f"додано Ярік {resp}"
-        return None  
+        else:
+            self.tg.sendMessage(self.tg.chat_id_courier, "Невірна команда")
+        return None   
 
     def parse(self, pointer):
         pointer.text = pointer.comment

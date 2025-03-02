@@ -14,7 +14,7 @@ class Command:
 
 class AddtoBaseCommand(Command):
     def execute(self, data_chat):
-        data_chat.resp = []
+        data_chat.resp = [] 
         for item in data_chat.content:
             quantity = "Нема такого товару"
             item_prod = self.SourAnCntrl.load_article(item["article"])

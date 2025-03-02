@@ -16,10 +16,10 @@ class SourAnRep:
             print(article)
             item = ProductSource.query.filter_by(article=article).first()
             return item
-        except Exception as e:
+        except Exception:
             db.session.rollback()
             print("Не найден артикль")
-            return False, e
+            return False
 
     def load_id(self, id):
         try:
