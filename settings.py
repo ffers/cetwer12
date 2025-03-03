@@ -95,6 +95,7 @@ class Settings:
             self.CH_ID_NP: "np_delivery",
             self.CH_ID_ROZ: "roz_delivery",
             self.CH_ID_UKR: "urk_delivery",
+
         }
         
         

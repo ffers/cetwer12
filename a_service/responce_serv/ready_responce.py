@@ -36,7 +36,7 @@ class ReadyFactory:
     @staticmethod
     def factory(pointer, OrderCntrl, SourAnCntrl, TelegramCntrl):
         commands = {
-            # "take": "take",
+            "take": ResponceCommand,
             "stock": ResponceCommand,
             # "edit": "edit",
             # "arrival": "ArrivalCommand,",

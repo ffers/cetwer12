@@ -14,14 +14,12 @@ class Command:
 
 class AddtoBaseCommand(Command):
     def execute(self, data_chat):
-        data_chat.resp = [] 
-        for item in data_chat.content:
-            quantity = "Нема такого товару"
-            item_prod = self.SourAnCntrl.load_article(item["article"])
-            if item_prod:
-                quantity = self.parse.quantity_parse(item)
-                self.SourAnCntrl.fixed_process(item_prod.id, quantity, data_chat.comment, next(my_time()))               
-            data_chat = self.parse.parser_item(data_chat, item["article"], quantity)    
+        data_chat = self.parse.parse_stock(data_chat, self.SourAnCntrl)
+        return data_chat
+    
+class TakeCommand(Command):
+    def execute(self, data_chat):
+        data_chat = self.parse.parse_stock(data_chat, self.SourAnCntrl)
         return data_chat
 
 
@@ -40,9 +38,9 @@ class NewOrders(Command):
 class AddComment(Command):
     def execute(self, data_chat):
         resp = self.parse.add_comment(data_chat, self.order_cntrl)
-        
-
         return data_chat
+    
+
 
 class ActionFactory:
     @staticmethod
@@ -52,6 +50,7 @@ class ActionFactory:
             "stock": AddtoBaseCommand,
             "new_orders": NewOrders,
             "reply_manager": AddComment,
+            "take": TakeCommand
         } 
         if data_chat.cmd in commands:
             return commands[data_chat.cmd](

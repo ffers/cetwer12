@@ -67,7 +67,7 @@ del_ord_cntrl = DeliveryOrderCntrl()
 util_cntrl = Utils()
 
 
-class OrderCntrl:
+class OrderCntrl: 
     def __init__(self) -> None:
         self.OC_log = util_asx.oc_log("reg_16_00")
         self.sour = SourAnCntrl()

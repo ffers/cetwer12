@@ -12,17 +12,7 @@ class Parse:
             sum += b
         return sum
     
-    def quantity_parse(self, item):
-        if "data" in item:
-            return self.all_color(item["data"])
-        return item["quantity"]
 
-    def parser_item(self, data_chat, article, quantity):
-        data_chat.resp.append({
-            "article": article,
-            "quantity": quantity
-        })
-        return data_chat
     
     def add_comment(self, data_chat, order_cntrl):
         time = next(my_time()).strftime("%d-%m-%Y %H:%M")
@@ -31,3 +21,28 @@ class Parse:
         add_comment = order_cntrl.update_history(order.id, comment)
         print(add_comment, "update_history")
         return add_comment
+    
+    def quantity_parse(self, item, data_chat):
+        if "data" in item:
+            return self.all_color(item["data"])
+        if data_chat.cmd == "take": 
+            return -item["quantity"]
+        return item.content["quantity"]
+    
+    def parser_item(self, data_chat, article, quantity):
+        data_chat.resp.append({
+            "article": article,
+            "quantity": quantity
+        })
+        return data_chat
+    
+    def parse_stock(self, data_chat, sour_cntrl):
+        data_chat.resp = [] 
+        for item in data_chat.content:
+            quantity = "Нема такого товару"
+            item_prod = sour_cntrl.load_article(item["article"])
+            if item_prod:
+                quantity = self.quantity_parse(item, data_chat)
+                sour_cntrl.fixed_process(item_prod.id, quantity, data_chat.comment, next(my_time()))               
+            data_chat = self.parser_item(data_chat, item["article"], quantity)   
+        return data_chat

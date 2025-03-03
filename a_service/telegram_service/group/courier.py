@@ -8,7 +8,7 @@ class Command:
 
     def execute(self, chat_data):
         pass
-
+ 
 class MsgCommand(Command):
     def execute(self, chat_data):
         pass

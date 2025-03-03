@@ -42,7 +42,7 @@ class Builder:
         return self
 
     def build(self, data, OrderCntrl, SourAnCntrl, TelegramCntrl):
-        try:   
+        # try:   
             pointer = None
             for cmd_class in self.commands:
                 pointer = cmd_class(data, OrderCntrl, SourAnCntrl, TelegramCntrl).execute(pointer)
@@ -50,8 +50,8 @@ class Builder:
                 if not pointer:
                     break
             return pointer
-        except:
-            return "Не працює responce_serv"
+        # except:
+        #     return "Не працює responce_serv"
     
 class ResponceDirector:
     def __init__(self):

@@ -59,6 +59,7 @@ def add():
 @login_required
 @admin_permission.require(http_exception=403)
 def update(id):
+    cntrl = get_instance('sour_an_cntrl', SourAnCntrl)
     item = cntrl.load_item(id)
     if request.method == 'POST':
         cntrl = get_instance('sour_an_cntrl', SourAnCntrl)

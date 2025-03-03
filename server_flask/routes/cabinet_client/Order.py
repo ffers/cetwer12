@@ -355,7 +355,7 @@ def delete(id):
     try:
         task_to_delete = ord_cntrl.delete_order(id)
         flash(f'Замовлення видалено', category='success')
-        return redirect('/cabinet/orders')
+        return redirect('/cabinet/orders/filter/registered/10')
     except:
         return 'Це замовлення вже було видаленно'
 
@@ -365,7 +365,7 @@ def delete(id):
 @author_permission.require(http_exception=403)
 def dublicate(id):
     ord_cntrl.dublicate(id)
-    return redirect('/cabinet/orders')
+    return redirect('/cabinet/orders/filter/registered/10')
 
 
 @bp.route('/cabinet/orders/search_for_phone', methods=['POST', 'GET'])
