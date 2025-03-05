@@ -66,24 +66,26 @@ class TextColorParser():
         if "35:" in text or "45:" in text:
             print("ПРАЦЮЄ")
             data = self.parse_text(text)
-            # try:
-            if "35:" in text and "45:" in text:
-                size = self.count_size(text)
-                clean_35, clean_45 = self.crete_two(text)
-                print("Ось вийшло два розміри")
-                print(clean_35)
-                print(clean_45)
-                chat_data.comment = "Додано Ярік\n"
-                chat_data.content = [{"article": "35N", "data":clean_35}]
-                chat_data.content.append({"article": "45N", "data":clean_45})
-            else:
-                print(data)
-                size = self.count_size(text)
-                print(f"ОСЬ ВИЙШЛО {data, size}")
-                chat_data.content = [{"article": size, "data":data}]
-            return chat_data
-            # except:
-            #     return "Неправильно сформульоване повідомлення"
+            chat_data.comment = "Додано Ярік\n"
+            chat_data.content = []
+            try:
+                if "35:" in text and "45:" in text:
+                    size = self.count_size(text)
+                    clean_35, clean_45 = self.crete_two(text)
+                    print("Ось вийшло два розміри")
+                    print(clean_35) 
+                    print(clean_45)
+                    chat_data.content.append({"article": "35N", "data":clean_35})
+                    chat_data.content.append({"article": "45N", "data":clean_45})
+                else:
+                    print(data)
+                    size = self.count_size(text)
+                    print(f"ОСЬ ВИЙШЛО {data, size}")
+                    chat_data.content.append({"article": size, "data":data})
+                return chat_data
+            except:
+                return "Неправильно сформульоване повідомлення"
+        return "Неправильно сформульоване повідомлення"
 
 
 

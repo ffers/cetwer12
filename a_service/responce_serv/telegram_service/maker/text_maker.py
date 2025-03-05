@@ -34,7 +34,6 @@ class TextBuilder:
         pointer = None
         for cmd_class in self.commands:
             pointer = cmd_class(data, settings).execute(pointer)
-            print(pointer, "text_maker")
         return pointer
 
 class TextDirector:

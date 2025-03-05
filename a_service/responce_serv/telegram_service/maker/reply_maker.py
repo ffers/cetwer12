@@ -16,7 +16,7 @@ class IfReply(Command): # парсинг текста
         text = ParseMsgFactory.factory("replytext", self.data, pointer)
         if text:
             return text
-        
+        return "Don`t have respone."
     
 class Builder:
     def __init__(self):
@@ -30,9 +30,7 @@ class Builder:
         pointer = None
         for cmd_class in self.commands:
             pointer = cmd_class(data, settings).execute(pointer)
-            print(pointer, "reply_maker")
             if not pointer:
-                print("Отмена поиска reply")
                 break
         return pointer
 

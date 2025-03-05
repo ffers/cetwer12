@@ -27,7 +27,7 @@ async def close_day():
     with flask_app.app_context():
         api = GetOrder("rozetka")
         result = api.get_orders()
-        print(result)
+        print("Get orders: ", result)
         if result:
             return {"message": "Order get successfuly"}
         return {"message": "All the orders have alredy been download"}

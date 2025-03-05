@@ -44,7 +44,6 @@ class Builder:
             pointer = cmd_class(data, settings).execute(pointer)
             if pointer == "Чат не зареєстровано":
                 raise
-            print(pointer, "chatname_maker")
         return pointer
 
 

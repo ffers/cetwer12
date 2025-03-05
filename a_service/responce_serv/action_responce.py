@@ -12,12 +12,12 @@ class Command:
     def execute(self, content):
         pass
 
-class AddtoBaseCommand(Command):
+class Stock(Command):
     def execute(self, data_chat):
         data_chat = self.parse.parse_stock(data_chat, self.SourAnCntrl)
         return data_chat
     
-class TakeCommand(Command):
+class Take(Command):
     def execute(self, data_chat):
         data_chat = self.parse.parse_stock(data_chat, self.SourAnCntrl)
         return data_chat
@@ -47,12 +47,13 @@ class ActionFactory:
     def factory(data_chat, OrderCntrl, SourAnCntrl):
         commands = {
             # "take": "take",
-            "stock": AddtoBaseCommand,
+            "stock": Stock,
             "new_orders": NewOrders,
             "reply_manager": AddComment,
-            "take": TakeCommand
+            "take": Take
         } 
         if data_chat.cmd in commands:
+            print("Action Step: ", data_chat.cmd)
             return commands[data_chat.cmd](
                 OrderCntrl, SourAnCntrl
                 ).execute(data_chat)

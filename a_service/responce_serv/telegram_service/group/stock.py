@@ -1,6 +1,5 @@
 from ..parsers.parse_text import ParseText
 from ..parsers.parse_message import ParseMsgFactory
-from a_service.telegram_service.parsers.color_bot_rep import ProductCounBot
 from ..parsers.parse_color import TextColorParser
 
 class Command:

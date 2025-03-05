@@ -1,4 +1,4 @@
-from ..telegram_service.main_tg import TGDirector
+from .telegram_service.main_tg import TGDirector
 
 from settings import Settings
 
@@ -19,7 +19,6 @@ class Responce:
 class IncomeResponce(Responce):  # Группи должни вернуть стандарт и команду с темой которой надо работать
     def execute(self, pointer):
         pointer = TGDirector().construct(self.data)
-        print( "IncomeResponce")
         return pointer
     
 class ActionResponce(Responce):  
@@ -28,7 +27,6 @@ class ActionResponce(Responce):
     
 class TGResponce(Responce):  
     def execute(self, pointer):
-        print(pointer, "ReadyResponce")
         resp = ReadyFactory.factory(pointer, 
                     self.OrderCntrl, self.SourAnCntrl, self.TelegramCntrl)
         return pointer  
@@ -46,7 +44,7 @@ class Builder:
             pointer = None
             for cmd_class in self.commands:
                 pointer = cmd_class(data, OrderCntrl, SourAnCntrl, TelegramCntrl).execute(pointer)
-                print(pointer, "Responce_step")
+                print("Працює: ", cmd_class.__name__)
                 if not pointer:
                     break
             return pointer

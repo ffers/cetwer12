@@ -14,8 +14,8 @@ class BearRequest:
         while retries < max_retries:
             try:
                 response = requests.request(method, url, data=body, headers=headers, timeout=timeout)
-                print(f"Відповідь сервера {json.loads(response.content)}")
                 response.raise_for_status()  # Підняти виключення, якщо код статусу не 200
+                print(f"Responce server: OK")
                 break
             except requests.exceptions.RequestException as e:
                 if response.status_code in [422, 403, 401]:

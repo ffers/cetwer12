@@ -7,6 +7,7 @@ from .telegram_controller import tg_cntrl
 from dotenv import load_dotenv
 from utils import util_asx
 
+
 OC_log = util_asx.oc_log('order_to_crm')
 
 env_path = '../common_asx/.env'
@@ -67,6 +68,7 @@ class PromToCrm():
     def prepare_for_db(self, order, dict_parse):
         try:
             new_order = Orders(
+                email=order["email"],
                 order_id_sources=str(order["id"]),
                 order_code = str(order["id"]),
                 description=dict_parse["description"],

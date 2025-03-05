@@ -12,7 +12,6 @@ bp = Blueprint('Bot', __name__, template_folder='templates')
 def bot():
     if request.method == 'POST':
         data = request.json
-        print(request.json)
         # try:
         tg_answ_cntrl.await_tg_button(data)
         # except:

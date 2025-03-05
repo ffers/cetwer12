@@ -14,7 +14,7 @@ class Command:
 
 class ResponceCommand(Command):
     def execute(self, pointer):
-        print(pointer, "ResponceCommand")
+
         if pointer.resp:
             pointer = self.parse(pointer)
             resp = self.tg.sendMessage(self.tg.chat_id_courier, pointer.text)
@@ -30,13 +30,13 @@ class ResponceCommand(Command):
                 item["article"], 
                 item["quantity"]
                 )
-        return pointer
+        return pointer 
  
 class ReadyFactory:
     @staticmethod
     def factory(pointer, OrderCntrl, SourAnCntrl, TelegramCntrl):
         commands = {
-            "take": ResponceCommand,
+            "take": ResponceCommand, 
             "stock": ResponceCommand,
             # "edit": "edit",
             # "arrival": "ArrivalCommand,",

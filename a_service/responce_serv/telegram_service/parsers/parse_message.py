@@ -50,13 +50,12 @@ class ReplyText(ParseMsg):
 class CommandText(ParseMsg):
     def execute(self):
         for key, item in self.data.items():
-            print(key, item, "CommandText")
             if key in self.pointer:
                 return item
         if "#" in self.pointer:
             return "somethin"
 
-class ChatKeyParse(ParseMsg):
+class ChatName(ParseMsg):
     def execute(self):
         for key, item in self.data.items():
             if key == self.pointer:
@@ -69,7 +68,7 @@ class ParseMsgFactory:
         commands = {
             "type": SearchType,
             "takechat" : TakeChat,
-            "chatname": ChatKeyParse,
+            "chatname": ChatName,
             "commandtext": CommandText,
             "taketext": TakeText,
             "replytext": ReplyText,

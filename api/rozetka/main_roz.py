@@ -4,7 +4,7 @@ from .mapper_roz import MapperRoz
 
 import os, base64
 from a_service import TokenRepServ
-
+from utils import Stub
   
   # статуси
   # 1 - новий 
@@ -35,9 +35,13 @@ class RozetMain():
         self.cash = "Nj2HNztLCMG1pBnr18GtDZ-SSfj4-j5B"
         self.token_new = TokenRepServ()
         self.mapper = MapperRoz()
+        self.stub = Stub()
 
     def get_orders(self):
-        prefix = "orders/search?expand=delivery,purchases,payment,status_payment&status=1"
+        status_load = self.stub.status_order_load()
+        prefix = "orders/search?expand="
+        prefix += "delivery,purchases,payment,status_payment"
+        prefix += f"&status={status_load}"
         resp = self.make_request("GET", prefix)
         if "content" in resp:
             if "orders" in resp["content"]:
@@ -109,8 +113,6 @@ class RozetMain():
             headers = {
                 "Content-Type": "application/json", "Authorization": f"Bearer {self.cash}"
             }
-        print(headers, "headers")
-
         responce = self.request_go(method, url, headers, body)
         return responce
     

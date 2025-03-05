@@ -25,7 +25,6 @@ class IfReply(Command):
 class IfMessage(Command): # парсинг текста
     def execute(self, pointer):
         if "message" == pointer: 
-            print("обработка месседж")
             text = self.data.get("message", None).get("text", None)
             pointer =  ParseMsgFactory.factory("commandtext", self.settings.commands, text)
         return pointer
@@ -42,7 +41,6 @@ class Builder:
         pointer = None  # Берем первый элемент (если есть)
         for cmd in self.commands:  # Проходим по остальным
             pointer = cmd(data, settings).execute(pointer)
-            print(pointer, "command_maker")
             if not pointer:
                 break
         return pointer

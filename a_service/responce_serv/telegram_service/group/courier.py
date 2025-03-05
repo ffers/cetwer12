@@ -15,17 +15,12 @@ class MsgCommand(Command):
         
 class ArrivalCommand(Command):
     def execute(self, chat_data):
-        data = self.text_p.parse_colon(chat_data) #парсим 
-        print(data.content, "ArrivalCommand")
-        #добавляєм на склад
-        #возвращаєм результат
+        data = self.text_p.parse_colon(chat_data) 
         return data
     
 class TakeArrivalCommand(Command):
     def execute(self, chat_data):
         data = self.text_p.parse_colon(chat_data)  
-        print(data.content, "ArrivalCommand")
-
         return data
 
 class CommandHandler:
