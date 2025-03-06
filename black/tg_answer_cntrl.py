@@ -1,14 +1,9 @@
 import os
-import time
-
 from dotenv import load_dotenv
 from .manager_ttn import ManagerTTN
 from a_service.tg_serv import tg_serv
 from a_service import BotProductSrv
-from a_service.order_service import OrderServ
 from black.crm_to_telegram import CrmToTelegram
-from repository import OrderRep
-from .product_analitic_cntrl import ProductAnaliticControl
 from .add_order_to_crm import PromToCrm
 from .handling_b import search_reply_message
 from a_service.update_to_crm import up_to_srm
@@ -19,31 +14,26 @@ from a_service import TgAnswerSerw, ResponceDirector
 from .telegram_cntrl.tg_cash_cntrl import TgCashCntrl
 
 
-
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
 ch_id_sk = os.getenv("CH_ID_SK")
-
-pr_bt_srv = BotProductSrv()
-ord_serv = OrderServ()
-ord_rep = OrderRep()
-crmtotg_cl = CrmToTelegram()
-crm_cl = PromToCrm()
-mng_cl = ManagerTTN()
-prod_an_cntrl = ProductAnaliticControl()
 
 class TgAnswerCntrl:
     def __init__(self):
         self.arrival = TgCashCntrl()
         self.serv = TgAnswerSerw()
         self.order_cntrl = OrderCntrl()
+        self.bot_color = BotProductSrv()
+        self.send_order = CrmToTelegram()
+        self.add_order = PromToCrm()
+        self.manager_ttn = ManagerTTN()
 
     def await_order(self, order, flag=None, id=None):
         print(f"ДИвимось флаг {flag}")
         resp = None
         if flag == "prom_to_crm":
-            data_for_tg = crmtotg_cl.manger(order)
-            resp = crm_cl.add_order(order, data_for_tg)
+            data_for_tg = self.send_order.manger(order)
+            resp = self.add_order.add_order(order, data_for_tg)
         if flag == "update_to_crm":
             resp = up_to_srm.manager(order)
         else:
@@ -51,8 +41,8 @@ class TgAnswerCntrl:
         return resp
 
     def await_interface(self, order_id):
-        ttn_data = mng_cl.create_ttn(order_id)
-        resp_ok = mng_cl.add_ttn_crm(order_id, ttn_data)
+        ttn_data = self.manager_ttn.create_ttn(order_id)
+        resp_ok = self.manager_ttn.add_ttn_crm(order_id, ttn_data)
         return ttn_data
 
     def await_cabinet_json(self, data):
@@ -84,7 +74,7 @@ class TgAnswerCntrl:
         # return 200, "Ok"
         if int(ch_id_sk) == chat_id:
             print("Отримали повідомлення з Робочого чату")
-            text_colour = pr_bt_srv.work_with_product(data)
+            text_colour = self.bot_color.work_with_product(data)
             tg_cntrl.sendMessage(tg_cntrl.chat_id_sk, text_colour)
         if int(tg_cntrl.chat_id_cash) == chat_id:
             print("Hello")

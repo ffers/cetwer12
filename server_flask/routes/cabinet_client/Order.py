@@ -179,7 +179,7 @@ def add_order():
 @author_permission.require(http_exception=403)
 def send_cab(id):
     if request.method == 'POST':
-        return redirect('/cabinet/orders')
+        return redirect('/cabinet/orders/filter/registered/10')
     else:
         print(f"Працює {id}")
         resp = ord_cntrl.confirmed_order(id)
@@ -187,7 +187,7 @@ def send_cab(id):
             flash('Замовлення підтвержено', category='success')
         else:
             flash('Замовлення підтверджено але ттн не створено: ' + resp["delivery"], category='error')
-        return redirect('/cabinet/orders')
+        return redirect('/cabinet/orders/filter/registered/10')
 
 
 @bp.route('/cabinet/orders/return/<int:id>', methods=['POST', 'GET'])
@@ -195,7 +195,7 @@ def send_cab(id):
 @admin_permission.require(http_exception=403)
 def return_order(id):
     if request.method == 'POST':
-        return redirect('/cabinet/orders')
+        return redirect('/cabinet/orders/filter/registered/10')
     else:
         print(f"Працює {id}")
         resp = ord_cntrl.return_order(id, 14)
@@ -203,7 +203,7 @@ def return_order(id):
             flash('Замовлення повернено', category='success')
         else:
             flash('Замовлення підтверджено але ттн не створено: ', category='error')
-        return redirect('/cabinet/orders')
+        return redirect('/cabinet/orders/filter/registered/10')
 
 @bp.route('/cabinet/orders/get_cities', methods=['POST', 'GET'])
 @login_required

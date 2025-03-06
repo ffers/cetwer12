@@ -1,43 +1,44 @@
 
-from .parse_service import Parse
 from utils import my_time
 from datetime import datetime
+from .parsers import ParseResponce
 
 class Command:
     def __init__(self, OrderCntrl, SourAnCntrl, TelegramCntrl):
         self.OrderCntrl = OrderCntrl()
         self.SourAnCntrl = SourAnCntrl()
         self.tg = TelegramCntrl()
+        self.parser = ParseResponce()
 
     def execute(self, pointer):
         pass 
 
 class ResponceCommand(Command):
     def execute(self, pointer):
-
         if pointer.resp:
-            pointer = self.parse(pointer)
+            pointer = self.parser.text_report_add(pointer)
             resp = self.tg.sendMessage(self.tg.chat_id_courier, pointer.text)
             return f"додано Ярік {resp}"
         else:
-            self.tg.sendMessage(self.tg.chat_id_courier, "Невірна команда")
-        return None   
-
-    def parse(self, pointer):
-        pointer.text = pointer.comment
-        for item in pointer.resp:
-            pointer.text += "{}: {}\n".format(
-                item["article"], 
-                item["quantity"]
-                )
+            self.tg.sendMessage(self.tg.chat_id_courier, "Неправильно сформульоване повідомлення")
         return pointer 
+
+class UnknownCommandResponce(Command):
+    def execute(self, pointer):
+        if pointer.resp:
+            pointer = self.parser.text_unknown_command(pointer)
+            resp = self.tg.sendMessage(self.tg.chat_id_courier, pointer.text)
+            return pointer
+
+
  
-class ReadyFactory:
+class ResponceFactory:
     @staticmethod
     def factory(pointer, OrderCntrl, SourAnCntrl, TelegramCntrl):
         commands = {
             "take": ResponceCommand, 
             "stock": ResponceCommand,
+            "unknown_command": UnknownCommandResponce
             # "edit": "edit",
             # "arrival": "ArrivalCommand,",
             # "comment":"comment"
@@ -46,4 +47,4 @@ class ReadyFactory:
             return commands[pointer.cmd](
                 OrderCntrl, SourAnCntrl, TelegramCntrl
                 ).execute(pointer)
-        return None
+        return pointer

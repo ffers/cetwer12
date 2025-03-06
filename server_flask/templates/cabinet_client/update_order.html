@@ -111,7 +111,18 @@
 				<div class="col-sm"><input type="tel" class="form-control   " name="phone" rows="1" cols="50" pattern="[0-9]{12}" style="text-align: center;" placeholder="*Номер телефону 380909009000" value="{{order.phone}}" required><br></div>
 				<div class="col-sm"><input class="form-control" style="text-align: center;" name="client_lastname" rows="1" cols="50" placeholder="* Призвіще" value="{{order.client_lastname}}" id="client_lastname" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Тут є латиниця"><br></div>
 				<div class="col-sm"><input class="form-control   " style="text-align: center;" name="client_firstname" rows="1" cols="50" placeholder="* Ім'я" value="{{order.client_firstname}}" id="client_firstname" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Тут є латиниця"><br></div>
-				<div class="col-sm"><input class="form-control   " style="text-align: center;" name="client_surname" rows="1" cols="50" placeholder="Побатькові(необов.)" value="{{order.email}}"><br></div>
+				<div class="col-sm"><input class="form-control   " style="text-align: center;" 
+					name="client_surname" rows="1" cols="50" 
+					placeholder="Побатькові(необов.)" 
+					value="{{order.client_surname}}">
+					<br>
+				</div>
+				<div class="col-sm"><input class="form-control   " style="text-align: center;" 
+					name="email" rows="1" cols="50" 
+					placeholder="email" 
+					value="{{order.email}}">
+					<br>
+				</div>
 			</div>
 			<!-- Змінна сервісу доставкі та группи >>> треба змінити додавання ордеру та js який додає поля -->
 			<!-- <div class="row">

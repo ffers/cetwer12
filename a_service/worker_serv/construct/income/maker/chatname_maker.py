@@ -43,7 +43,7 @@ class Builder:
         for cmd_class in self.commands:
             pointer = cmd_class(data, settings).execute(pointer)
             if pointer == "Чат не зареєстровано":
-                raise
+                return pointer
         return pointer
 
 

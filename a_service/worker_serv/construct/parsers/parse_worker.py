@@ -3,7 +3,7 @@ from datetime import datetime
 
 
 class Parse:
-    def __init__(self):
+    def __init__(self): 
         pass
 
     def all_color(self, items):
@@ -11,8 +11,6 @@ class Parse:
         for a,b in items.items():
             sum += b
         return sum
-    
-
     
     def add_comment(self, data_chat, order_cntrl):
         time = next(my_time()).strftime("%d-%m-%Y %H:%M")

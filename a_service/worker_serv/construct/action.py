@@ -1,5 +1,5 @@
 
-from .parse_service import Parse
+from .parsers.parse_worker import Parse
 from utils import my_time
 from datetime import datetime
 
@@ -24,8 +24,8 @@ class Take(Command):
 
 
 class NewOrders(Command):
-    def execute(self, data_chat):
-        items = self.order_cntrl.load_status_id(10)
+    def execute(self, data_chat): 
+        items = self.order_cntrl.load_status_id(10) 
         if items:
             for item in items:
                 result = self.order_cntrl.send_order_tg(item.id, "⚪️ Нові")
@@ -40,21 +40,25 @@ class AddComment(Command):
         resp = self.parse.add_comment(data_chat, self.order_cntrl)
         return data_chat
     
+class UnknownCommandAction(Command):
+    def execute(self, data_chat):
+        return data_chat
+    
 
 
-class ActionFactory:
+class Action:
     @staticmethod
     def factory(data_chat, OrderCntrl, SourAnCntrl):
         commands = {
-            # "take": "take",
             "stock": Stock,
             "new_orders": NewOrders,
             "reply_manager": AddComment,
-            "take": Take
+            "take": Take,
+            "unknown_command": UnknownCommandAction
         } 
         if data_chat.cmd in commands:
             print("Action Step: ", data_chat.cmd)
             return commands[data_chat.cmd](
                 OrderCntrl, SourAnCntrl
                 ).execute(data_chat)
-        return None
+        return data_chat

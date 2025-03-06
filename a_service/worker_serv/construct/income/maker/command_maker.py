@@ -1,5 +1,6 @@
 from settings import Settings
 from ..parsers.parse_message import ParseMsgFactory
+from ...command import Cmd_dict
 
 
 class Command:
@@ -16,7 +17,7 @@ class Type(Command):    # очень похоже на ifmessage но
         return pointer
     
 class IfReply(Command):
-    def execute(self, pointer):
+    def execute(self, pointer): 
         result = ParseMsgFactory.factory("replytext", self.data, self.settings.handlers)
         if result:
             return "reply_to_message"
@@ -26,7 +27,7 @@ class IfMessage(Command): # парсинг текста
     def execute(self, pointer):
         if "message" == pointer: 
             text = self.data.get("message", None).get("text", None)
-            pointer =  ParseMsgFactory.factory("commandtext", self.settings.commands, text)
+            pointer =  ParseMsgFactory.factory("commandtext", Cmd_dict.command, text)
         return pointer
     
 class Builder:

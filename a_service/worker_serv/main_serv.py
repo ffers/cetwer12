@@ -1,11 +1,27 @@
-from .telegram_service.main_tg import TGDirector
+from dataclasses import dataclass
+from .construct import Income, Action, ResponceFactory
 
 from settings import Settings
 
-from .action_responce import ActionFactory
-from .ready_responce import ReadyFactory
+"""
+чтоби добавить новую команду
+В command надо прописать новую команду 
+В group прописать команду соответвующую чату 
+В екшен добавить действие прописать возможно парсер 
+В респонс подготовить ответ для тг если необходим
 
-class Responce:
+"""
+@dataclass
+class ChatData:
+    chat: str = None
+    cmd: str = None
+    text: str = None 
+    reply: str = None
+    content: list = None
+    resp: list = None
+    comment: str = None
+
+class Worker: 
     def __init__(self, data, OrderCntrl, SourAnCntrl, TelegramCntrl):
         self.data = data
         self.OrderCntrl = OrderCntrl
@@ -14,20 +30,31 @@ class Responce:
         self.settings = Settings()
 
     def execute(self, pointer):
-        return pointer
-
-class IncomeResponce(Responce):  # Группи должни вернуть стандарт и команду с темой которой надо работать
+        return pointer 
+ 
+class IncomeResponce(Worker):  # Группи должни вернуть стандарт и команду с темой которой надо работать
     def execute(self, pointer):
-        pointer = TGDirector().construct(self.data)
+        pointer = Income().construct(self.data, pointer) 
+        print(
+            "{}\n{}\n{}\n{}\n{}\n{}\n{}\n".format( 
+                pointer.chat,
+                pointer.cmd,
+                pointer.text,
+                pointer.reply,
+                pointer.content,
+                pointer.resp, 
+                pointer.comment,
+            )
+        )
         return pointer
     
-class ActionResponce(Responce):  
+class ActionResponce(Worker):  
     def execute(self, pointer):
-        return ActionFactory.factory(pointer, self.OrderCntrl, self.SourAnCntrl)  
+        return Action.factory(pointer, self.OrderCntrl, self.SourAnCntrl)  
     
-class TGResponce(Responce):  
+class TGResponce(Worker):  
     def execute(self, pointer):
-        resp = ReadyFactory.factory(pointer, 
+        resp = ResponceFactory.factory(pointer, 
                     self.OrderCntrl, self.SourAnCntrl, self.TelegramCntrl)
         return pointer  
 
@@ -41,7 +68,7 @@ class Builder:
 
     def build(self, data, OrderCntrl, SourAnCntrl, TelegramCntrl):
         # try:   
-            pointer = None
+            pointer = ChatData()
             for cmd_class in self.commands:
                 pointer = cmd_class(data, OrderCntrl, SourAnCntrl, TelegramCntrl).execute(pointer)
                 print("Працює: ", cmd_class.__name__)

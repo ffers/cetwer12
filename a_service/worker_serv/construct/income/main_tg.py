@@ -6,17 +6,9 @@ from .maker import CommandDirector, ChatDirector, \
 from .group import CRM, Courier, Manager, Stock, \
             NPdelivery, ROZdelivery, UKRdelivery
 
-from dataclasses import dataclass
 
-@dataclass
-class ChatData:
-    chat: str = None
-    cmd: str = None
-    text: str = None 
-    reply: str = None
-    content: list = None
-    resp: list = None
-    comment: str = None
+
+
 
 class Resp:
     def __init__(self, data):
@@ -27,31 +19,31 @@ class Resp:
         return pointer
 
 class ChatHandler(Resp):
-    def execute(self, chat_data: ChatData):
+    def execute(self, chat_data):
         result = ChatDirector().construct(self.data, self.settings)
         chat_data.chat = result
         return result
 
 class CommandHandler(Resp):
-    def execute(self, chat_data: ChatData):
+    def execute(self, chat_data):
         result = CommandDirector().construct(self.data, self.settings)
         chat_data.cmd = result
         return result
 
 class TextHandler(Resp):
-    def execute(self, chat_data: ChatData):
+    def execute(self, chat_data):
         result = TextDirector().construct(self.data, self.settings)
         chat_data.text = result
         return result
 
 class ReplyHandler(Resp):
-    def execute(self, chat_data: ChatData):
+    def execute(self, chat_data):
         result = ReplyDirector().construct(self.data, self.settings)
         chat_data.reply = result
         return result
 
 class Group(Resp):
-    def execute(self, data: ChatData):
+    def execute(self, data):
         chats = {
             "courier": Courier.factory(data),
             "manager": Manager.factory(data),
@@ -72,23 +64,21 @@ class Builder:
         self.commands.append(command_class)
         return self
 
-    def build(self, data):
-        try:    
-            data_chat = ChatData
-            for cmd_class in self.commands:
-                pointer = cmd_class(data).execute(data_chat)
-                print(pointer, "main_tg")
-                if not pointer:
-                    break
-            return data_chat
-        except:
-            return False
+    def build(self, data,  data_chat):  
+        for cmd_class in self.commands:
+            pointer = cmd_class(data).execute(data_chat)
+            print(pointer, "main_tg")
+            if pointer == "just_message":
+                print("Останавливаем")
+                return data_chat
+        return data_chat
+
     
-class TGDirector:
+class Income: 
     def __init__(self):
         self.builder = Builder()
 
-    def construct(self, data):
+    def construct(self, data, data_chat):
         return (
             self.builder
             .add_command(ChatHandler)
@@ -96,5 +86,5 @@ class TGDirector:
             .add_command(TextHandler)
             .add_command(ReplyHandler)
             .add_command(Group)
-            .build(data)
+            .build(data, data_chat)
         )

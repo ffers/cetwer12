@@ -1,4 +1,4 @@
-from a_service.responce_serv.telegram_service.parsers.color_bot_rep import ProductCounBot
+from .color_bot_rep import ProductCounBot
 from pydantic import BaseModel
 
 
