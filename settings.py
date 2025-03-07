@@ -72,9 +72,9 @@ class Settings:
         self.HOSTCRM = os.getenv("HOSTCRM")
 
         self.handlers =  {
-            "callback_query",
-            "edited_message",
-            "message"
+            "callback_query.id",
+            "edited_message.text",
+            "message.text"
             }  
         
         self.commands = {

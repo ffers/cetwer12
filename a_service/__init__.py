@@ -17,5 +17,5 @@ from .source_rep_serv import SourRepServ
 from .user_token_rep_serv import TokenRepServ
 from .check_serv import CheckServ
 from .order_service import StatusProcess
-from .worker_serv.main_serv import ResponceDirector
+from .telegram_handler.main_serv import ResponceDirector
 from .panel_settings_serv import PanelSetServ  

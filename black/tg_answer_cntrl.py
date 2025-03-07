@@ -66,7 +66,7 @@ class TgAnswerCntrl:
             # button_hand(data)
         if "callback_query" in data:
             self.await_button(data)
-        return '', 200
+        return result
 
     def await_telegram(self, data): #працює з чатами Склад, Каштан, Розетка
         chat_id = data["message"]["chat"]["id"]

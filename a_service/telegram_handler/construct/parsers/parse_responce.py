@@ -13,3 +13,4 @@ class ParseResponce:
     
     def text_unknown_command(self, pointer):
         pointer.text = "Невідома команда або не використовуйте: #"
+        return pointer

@@ -14,6 +14,7 @@ from settings import Settings
 @dataclass
 class ChatData:
     chat: str = None
+    chat_nummer: str = None
     cmd: str = None
     text: str = None 
     reply: str = None
@@ -73,7 +74,8 @@ class Builder:
                 pointer = cmd_class(data, OrderCntrl, SourAnCntrl, TelegramCntrl).execute(pointer)
                 print("Працює: ", cmd_class.__name__)
                 if not pointer:
-                    break
+                    print("Невиконано!: ", cmd_class.__name__)
+                    return pointer
             return pointer
         # except:
         #     return "Не працює responce_serv"

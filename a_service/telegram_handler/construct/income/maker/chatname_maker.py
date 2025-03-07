@@ -12,18 +12,12 @@ class Command:
     
 class Type(Command):    # очень похоже на ifmessage но
     def execute(self, pointer):
-        pointers = {
-            "callback_query",
-            "edited_message",
-            "message", # при условии что message парсить команду
-            }          # я нехочу передавать много данних
-        return ParseMsgFactory.factory("type", self.data, pointers)
+        return ParseMsgFactory.factory("type", self.data, self.settings.handlers)
 
     
 class TakeChat(Command):
     def execute(self, pointer):
-        data = flatten(self.data, "dot")
-        return ParseMsgFactory.factory("takechat", data, pointer)
+        return ParseMsgFactory.factory("takechat", self.data, pointer)
     
 class ChatName(Command):
     def execute(self, pointer):
@@ -42,12 +36,12 @@ class Builder:
         pointer = None
         for cmd_class in self.commands:
             pointer = cmd_class(data, settings).execute(pointer)
-            if pointer == "Чат не зареєстровано":
+            if pointer == "unknown_chat":
                 return pointer
         return pointer
 
 
-class ChatDirector:
+class ChatNameDirector:
     def __init__(self):
         self.builder = Builder()
 

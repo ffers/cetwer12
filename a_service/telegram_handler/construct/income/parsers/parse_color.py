@@ -42,12 +42,12 @@ class TextColorParser():
         return text
 
     def exect_text(self, text):
-            data35_and_45 = re.search(r'35:(.*?45:|$)', text, re.DOTALL)
+            data35_and_45 = re.search(r'35:(.*?)(?=45:|$)', text, re.DOTALL)
             data45 = re.findall(r'45:(.*?)(?:\d+х-*\d+:|$)', text, re.DOTALL)
             return data35_and_45[0], data45[0]
 
 
-    def crete_two(self, text):
+    def crete_two(self, text): 
         data35, data45 = self.exect_text(text)
         clean_35 = self.parse_text(data35)
         clean_45 = self.parse_text(data45)

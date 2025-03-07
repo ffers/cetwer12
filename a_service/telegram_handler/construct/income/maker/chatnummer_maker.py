@@ -1,5 +1,6 @@
-from ..parsers.parse_message import ParseMsgFactory
 
+from ..parsers.parse_message import ParseMsgFactory
+from flatten_dict import flatten
 
 class Command:
     def __init__(self, data, settings):
@@ -11,18 +12,14 @@ class Command:
     
 class Type(Command):    # очень похоже на ifmessage но
     def execute(self, pointer):
-        pointers = {
-            "callback_query",
-            "edited_message",
-            "message", # при условии что message парсить команду
-            }          # я нехочу передавать много данних
-        return ParseMsgFactory.factory("type", self.data, pointers)
+        return ParseMsgFactory.factory("type", self.data, self.settings.handlers)
 
-class TakeText(Command):
-    def execute(self, pointer):
-        return ParseMsgFactory.factory("taketext", self.data, pointer)
     
-class TextBuilder:
+class TakeChat(Command):
+    def execute(self, pointer):
+        return ParseMsgFactory.factory("takechat", self.data, pointer)
+    
+class Builder:
     def __init__(self):
         self.commands = []
 
@@ -34,16 +31,19 @@ class TextBuilder:
         pointer = None
         for cmd_class in self.commands:
             pointer = cmd_class(data, settings).execute(pointer)
+            if pointer == "unknown_chat":
+                return pointer
         return pointer
 
-class TextDirector:
+
+class ChatNummerDirector:
     def __init__(self):
-        self.builder = TextBuilder()
+        self.builder = Builder()
 
     def construct(self, data, settings):
         return (
             self.builder
             .add_command(Type)  
-            .add_command(TakeText)
+            .add_command(TakeChat)
             .build(data, settings)
         )

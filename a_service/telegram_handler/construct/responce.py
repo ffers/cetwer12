@@ -10,25 +10,30 @@ class Command:
         self.tg = TelegramCntrl()
         self.parser = ParseResponce()
 
+    def sendMessage(self, data_chat):
+        resp = self.tg.sendMessage(data_chat.chat_nummer, data_chat.text)
+        print(resp)
+        if resp:
+            print("Telegram result: ", resp["ok"])
+
     def execute(self, pointer):
         pass 
 
 class ResponceCommand(Command):
-    def execute(self, pointer):
-        if pointer.resp:
-            pointer = self.parser.text_report_add(pointer)
-            resp = self.tg.sendMessage(self.tg.chat_id_courier, pointer.text)
+    def execute(self, data_chat):
+        if data_chat.resp:
+            data_chat = self.parser.text_report_add(data_chat)
+            resp = self.tg.sendMessage(self.tg.chat_id_courier, data_chat.text)
             return f"додано Ярік {resp}"
         else:
             self.tg.sendMessage(self.tg.chat_id_courier, "Неправильно сформульоване повідомлення")
-        return pointer 
+        return data_chat 
 
 class UnknownCommandResponce(Command):
-    def execute(self, pointer):
-        if pointer.resp:
-            pointer = self.parser.text_unknown_command(pointer)
-            resp = self.tg.sendMessage(self.tg.chat_id_courier, pointer.text)
-            return pointer
+    def execute(self, data_chat):
+        data_chat = self.parser.text_unknown_command(data_chat)
+        self.sendMessage(data_chat)
+        return data_chat
 
 
  

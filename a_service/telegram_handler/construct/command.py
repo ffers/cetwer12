@@ -1,4 +1,4 @@
-class Cmd_dict:
+class CmdDict:
     command = {
         "#взял": "take",
         "#склад": "stock",
@@ -8,6 +8,7 @@ class Cmd_dict:
         "#нові":"new_orders",
         "/new_orders":"new_orders",
         "unknown_command":"unknown_command",
+        "unknown_chat":"unknown_chat"
         }
 
     
