@@ -18,8 +18,8 @@ class TestClassDemoInstance:
         print(pointer)
         assert pointer.cmd == "unknown_command"
     
-    def test_stock_stock(self):
-        pointer = self.await_button_tg(Lib.message_stock_stock)
+    def test_stock_stock_false(self):
+        pointer = self.await_button_tg(Lib.message_stock_stock_false)
         print(pointer)
         assert  pointer.chat == "stock"
         assert  pointer.cmd == "stock"
@@ -80,6 +80,12 @@ class TestClassDemoInstance:
             # assert  pointer.content == [{'article': '45N', 'data': {28: 12, 29: 12, 30: 12, 31: 12}}]
             # assert  pointer.resp == [{'article': '45N', 'quantity': 48}]
             # assert  pointer.comment == "Додано Ярік\n" 
+
+    def test_callback_query(self):
+        with flask_app.app_context():
+            pointer = self.await_button_tg(Lib.callback_query_confirmation)
+            print(pointer)
+            assert "manager" ==  pointer.chat 
 
 
     # def test_two(self):

@@ -20,6 +20,7 @@ class TelegramController():
         self.chat_id_cash = os.getenv("CH_ID_CASH")
         self.chat_id_shop = os.getenv("CH_ID_SHOP")
         self.chat_id_courier = os.getenv("CH_ID_CORECTOR")
+        self.env = os.getenv("ENV")
 
 
     def sendPhoto(self, id_photo):
@@ -31,6 +32,8 @@ class TelegramController():
         return resp
 
     def sendMessage(self, chat_id, text, keyboard_json=None):
+        if self.env == "dev":
+            return tg_api.send_message_f("-421982888", text, keyboard_json)
         resp = tg_api.send_message_f(chat_id, text, keyboard_json)
         return resp
 

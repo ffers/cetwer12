@@ -76,6 +76,9 @@ class Builder:
                 if not pointer:
                     print("Невиконано!: ", cmd_class.__name__)
                     return pointer
+                if pointer.chat == "unknown_chat":
+                    print("Невідомий чат")
+                    return pointer
             return pointer
         # except:
         #     return "Не працює responce_serv"

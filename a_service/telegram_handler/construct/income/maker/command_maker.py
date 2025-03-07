@@ -16,19 +16,18 @@ class Type(Command):    # очень похоже на ifmessage но
         pointer =  ParseMsgFactory.factory("type", self.data, self.settings.handlers)
         return pointer
     
-class IfReply(Command):
+class CheckCommand(Command):
     def execute(self, pointer): 
-        result = ParseMsgFactory.factory("replytext", self.data, self.settings.handlers)
-        if result:
-            return "reply_to_message"
-        return pointer
+        return ParseMsgFactory.factory("request", self.data, self.settings.handlers)
+        
 
 class IfMessage(Command): # парсинг текста
     def execute(self, pointer):
         if "message.text" == pointer:
             text = self.data.get("message", None).get("text", None)
             if text:             
-                pointer =  ParseMsgFactory.factory("commandtext", CmdDict.command, text)
+                pointer = ParseMsgFactory.factory("commandtext", CmdDict.command, text)
+        
         return pointer
     
 class Builder:
@@ -44,6 +43,7 @@ class Builder:
         for cmd in self.commands:  # Проходим по остальным
             pointer = cmd(data, settings).execute(pointer)
             if not pointer:
+                print("Command not found!")
                 break
         return pointer
 
@@ -55,7 +55,7 @@ class CommandDirector:
         return (
             self.builder
             .add_command(Type) 
-            .add_command(IfReply)
+            .add_command(CheckCommand)
             .add_command(IfMessage)
             .build(data, settings)
         )

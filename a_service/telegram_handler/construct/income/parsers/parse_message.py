@@ -21,8 +21,8 @@ class TakeChat(ParseMsg):
     def execute(self):
         data = flatten(self.data, "dot")
         chat_way = {
-            "callback_query": "callback_query.message.chat.id",
-            "edited_message": "edited_message.chat.id",
+            "callback_query.id": "callback_query.message.chat.id",
+            "edited_message.text": "edited_message.chat.id",
             "message.text": "message.chat.id",
         }
         if self.pointer in chat_way:
@@ -32,8 +32,8 @@ class TakeText(ParseMsg):
     def execute(self):
         data = flatten(self.data, "dot")
         way = {
-            "callback_query": "callback_query.message.text",
-            "edited_message": "edited_message.text",
+            "callback_query.id": "callback_query.message.text",
+            "edited_message.text": "edited_message.text",
             "reply_to_message": "message.reply_to_message.text",
             "message.text": "message.text",
         }
@@ -63,10 +63,19 @@ class CommandText(ParseMsg):
 class ChatName(ParseMsg):
     def execute(self):
         for key, item in self.data.items():
-            print("ChatName: ", key, self.pointer)
             if key == self.pointer:
                 return item
         return "unknown_chat"
+    
+class CheckAnswerWithoutText(ParseMsg):
+    def execute(self):
+        data = flatten(self.data, "dot")
+        if "message.reply_to_message.text" in data:
+            return "reply_to_message"
+        if "callback_query.message.reply_markup.inline_keyboard" in data:
+            return "callback_query"
+        if "message.text" in data:
+            return "message.text"
 
 class ParseMsgFactory:
     @staticmethod
@@ -78,6 +87,7 @@ class ParseMsgFactory:
             "commandtext": CommandText,
             "taketext": TakeText,
             "replytext": ReplyText,
+            "request": CheckAnswerWithoutText
         }
         if cmd in commands:
             return commands[cmd](data, pointer).execute()

@@ -61,7 +61,7 @@ class Group(Resp):
             # "ukr_delivery": UKRdelivery.factory(cmd),
         }
         chat_data = chats.get(self.chat_data.chat, None)
-        return chat_data
+        return "Group responce: ok"
       
 class Builder:
     def __init__(self):
@@ -71,12 +71,12 @@ class Builder:
         self.commands.append(command_class)
         return self
 
-    def build(self, data,  data_chat): 
+    def build(self, data, data_chat): 
         pointer = None 
         for cmd_class in self.commands:
             pointer = cmd_class(data, data_chat).execute()
             print(pointer, "main_tg")
-            if pointer == "just_message":
+            if pointer == "just_message" or pointer == "unknown_chat":
                 print("Останавливаем")
                 return data_chat
         return data_chat

@@ -20,7 +20,7 @@ class AddComment(Command):
             chat_data.comment = chat_data.text
             chat_data.text = self.text_parse.search_order_code(chat_data.reply)
             return chat_data
-        raise
+        return chat_data
     
 # 🔹 Клас, що виконує команду 
 class CommandHandler:
