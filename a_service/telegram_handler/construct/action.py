@@ -38,6 +38,7 @@ class NewOrders(Command):
 class AddComment(Command):
     def execute(self, data_chat):
         resp = self.parse.add_comment(data_chat, self.order_cntrl)
+        print("AddComment:", resp)
         return data_chat
     
 class UnknownCommandAction(Command):

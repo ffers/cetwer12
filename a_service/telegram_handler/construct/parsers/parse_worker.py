@@ -16,6 +16,7 @@ class Parse:
         time = next(my_time()).strftime("%d-%m-%Y %H:%M")
         comment = time + ": " + data_chat.comment
         order = order_cntrl.load_for_order_code(data_chat.text)
+        print("Order:", order)
         add_comment = order_cntrl.update_history(order.id, comment)
         return add_comment
     
