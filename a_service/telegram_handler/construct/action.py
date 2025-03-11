@@ -7,22 +7,22 @@ class Command:
     def __init__(self, OrderCntrl, SourAnCntrl):
         self.order_cntrl = OrderCntrl()
         self.SourAnCntrl = SourAnCntrl()
-        self.parse = Parse()
+        self.parse = Parse()     
 
-    def execute(self, content):
-        pass
-
+    def execute(self, content):     
+        pass     
+     
 class Stock(Command):
     def execute(self, data_chat):
         data_chat = self.parse.parse_stock(data_chat, self.SourAnCntrl)
-        return data_chat
-    
+        return data_chat 
+       
 class Take(Command):
-    def execute(self, data_chat):
+    def execute(self, data_chat): 
         data_chat = self.parse.parse_stock(data_chat, self.SourAnCntrl)
         return data_chat
-
-
+      
+        
 class NewOrders(Command):
     def execute(self, data_chat): 
         items = self.order_cntrl.load_status_id(10) 
@@ -33,7 +33,7 @@ class NewOrders(Command):
         if items:
             for item in items:
                 result = self.order_cntrl.send_order_tg(item.id, "⚪️ Оплачені")
-        return None
+        return None 
 
 class AddComment(Command):
     def execute(self, data_chat):

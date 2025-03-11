@@ -74,42 +74,38 @@ document.getElementById('ChangeProduct').addEventListener('click', function() {
         });
         
         
-        document.addEventListener('DOMContentLoaded', function () {
-            // Отримуємо всі поля total
-            var totalInputs = document.querySelectorAll('.total');
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     // Отримуємо всі поля total
+        //     var totalInputs = document.querySelectorAll('.total');
         
-            // Додаємо обробник подій для кожного поля total
-            totalInputs.forEach(function (totalInput) {
-                totalInput.addEventListener('input', calculateSum);
-            });
+        //     // Додаємо обробник подій для кожного поля total
+        //     totalInputs.forEach(function (totalInput) {
+        //         totalInput.addEventListener('input', calculateSum);
+        //     });
         
-            // Функція для розрахунку суми всіх total
-            function calculateSum() {
-                // Отримуємо всі значення total і сумуємо їх
-                var sum = Array.from(totalInputs).reduce(function (acc, totalInput) {
-                    var value = parseFloat(totalInput.value) || 0;
-                    return acc + value;
-                }, 0);
+        //     // Функція для розрахунку суми всіх total
+        //     function calculateSum() {
+        //         // Отримуємо всі значення total і сумуємо їх
+        //         var sum = Array.from(totalInputs).reduce(function (acc, totalInput) {
+        //             var value = parseFloat(totalInput.value) || 0;
+        //             return acc + value;
+        //         }, 0);
         
-                // Виводимо суму
-                console.log('Загальна сума: ' + sum.toFixed(2));
-                // Тут ви можете вивести суму куди завгодно на ваш вибір
-            }
-        });
+        //         // Виводимо суму
+        //         console.log('Загальна сума: ' + sum.toFixed(2));
+        //         // Тут ви можете вивести суму куди завгодно на ваш вибір
+        //     }
+        // });
         
-        calculateTotal();
-        calculateSum();
+        // calculateTotal();
+        // calculateSum();
         
-        // Відслідковування змін у кожному полі ціни та кількості
-        $('#product-container').on('input', '.price, .quantity', calculateTotal);
-        $('#product-container').on('input', '.price, .quantity, .total', calculateSum);
+        // // Відслідковування змін у кожному полі ціни та кількості
+        // $('#product-container').on('input', '.price, .quantity', calculateTotal);
+        // $('#product-container').on('input', '.price, .quantity, .total', calculateSum);
         
-        // Відслідковування події кліку на кнопці видалення
-        $('#product-container').on('click', '.removeButton', function() {
-            $(this).closest('.row').remove();
-            calculateTotal(); // Виклик функції для розрахунку суми при видаленні товару
-
-
-
-            
-        });
+        // // Відслідковування події кліку на кнопці видалення
+        // $('#product-container').on('click', '.removeButton', function() {
+        //     $(this).closest('.row').remove();
+        //     calculateTotal(); // Виклик функції для розрахунку суми при видаленні товару      
+        // });

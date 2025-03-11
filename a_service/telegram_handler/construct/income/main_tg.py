@@ -54,11 +54,11 @@ class Group(Resp):
         chats = {
             "courier": Courier,
             "manager": Manager,
-            # "crm": CRM.factory(cmd),
+            # "crm": CRM,
             "stock": Stock,
-            # "np_delivery": NPdelivery.factory(cmd),
-            # "roz_delivery": ROZdelivery.factory(cmd),
-            # "ukr_delivery": UKRdelivery.factory(cmd),
+            # "np_delivery": NPdelivery,
+            # "roz_delivery": ROZdelivery,
+            # "ukr_delivery": UKRdelivery,
         }
         if self.chat_data.chat in chats:
             return chats[self.chat_data.chat].factory(self.chat_data)

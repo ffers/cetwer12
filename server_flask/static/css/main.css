@@ -23,7 +23,7 @@ form {
     /* margin-bottom: 20px; */
 }
 form textarea {
-    width: 100%;
+    width: 97%;
     /* padding: 10px; */
 }
 
@@ -35,6 +35,10 @@ form textarea {
 
     margin: 2px;
     
+}
+.center {
+    margin: 0 auto;
+    width: 99%;
 }
 h2 {
     padding: 10px 0;    

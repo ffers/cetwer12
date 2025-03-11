@@ -8,8 +8,8 @@ from server_flask.db import db
 from black import tg_answ_cntrl
 from helperkit.filekit import FileKit
 from itertools import zip_longest
-import logging, requests, json
-from urllib.parse import unquote
+import logging, requests, json 
+from urllib.parse import unquote   
 from pytz import timezone, utc
 from datetime import datetime
 from black import OrderCntrl, DeliveryOrderCntrl
@@ -18,9 +18,9 @@ from collections import Counter
 
 OC_log = util_asx.oc_log("order")
 
-def format_float(num_str):
-    try:
-        num = float(num_str)
+def format_float(num_str):  
+    try:  
+        num = float(num_str)   
         # Якщо число - ціле, додаємо ".00"
         if num.is_integer():
             num_dr = f"{int(num)}.00"
@@ -114,7 +114,7 @@ def update(id):
             sum_price_draft = request.form['total-all']
             task_update.sum_price = format_float(sum_price_draft)
             task_update.description = request.form['description']
-            task_update.sum_after_goods = None
+            task_update.sum_after_goods = None 
             task_update.ordered_product = []
             product_id = request.form.getlist('product')
             price = request.form.getlist('price')
@@ -122,10 +122,10 @@ def update(id):
             print(f"data {product_id} & {price} & {quantity}")
             combined_list = list(zip_longest(product_id, price, quantity, fillvalue=None))
             for item in combined_list:
-                product_id, price, quantity = item
+                product_id, price, quantity = item 
                 ordered_product = OrderedProduct(product_id=product_id, price=price, quantity=quantity, order_id=task_update.id)
                 task_update.ordered_product.append(ordered_product)
-        db.session.commit()    
+        db.session.commit()        
         print(">>> Update in datebase")
         flash(f'Замовлення {task_update.order_code} оновлено', category='success')
         ord_cntrl.send_order_tg(task_update.id)
@@ -141,16 +141,16 @@ def update(id):
                 order=task_update, 
                 user=current_user,
                 admin=admin
-            )
-
+            )  
+   
 @bp.route('/cabinet/orders/add_order', methods=['POST', 'GET'])
 @login_required
 @author_permission.require(http_exception=403)
-def add_order():
-    if request.method == 'POST':
-        sum_price_draft = request.form["total-all"]
+def add_order():      
+    if request.method == 'POST': 
+        sum_price_draft = request.form["total-all"] 
         sum_before_goods = None
-        if request.form['payment_option'] == "3":
+        if request.form['payment_option'] == "3": 
             sum_before_goods = request.form["sum_before_goods"] 
         print(f"ПРИНТУЄМ !!!! ")
         order = Orders(description=request.form['description'], city_name=request.form['CityName'], city_ref=request.form['CityREF'],
@@ -161,7 +161,7 @@ def add_order():
                        payment_method_id=request.form['payment_option'], sum_price=format_float(sum_price_draft),
                        sum_before_goods=sum_before_goods, delivery_method_id=request.form['delivery_method'], source_order_id=1, ordered_status_id=10,
                        description_delivery="Одяг Jemis")
-        db.session.add(order)
+        db.session.add(order) 
         db.session.commit()
         ord_cntrl.add_order_code(order)
         product_id = request.form.getlist('product')
@@ -220,7 +220,6 @@ def get_cities():
         search_query = request.args.get('q')
         # print(count)
         city_data = fl_cl.directory_load_json("api/nova_poshta/create_data/warehouses")
-        print(f"warehouse_option {search_query}")
         # print(city_data)
         # Фільтрація даних за текстовим запитом
         filtered_data = []
@@ -244,12 +243,11 @@ def get_cities():
 
 @bp.route('/cabinet/orders/get_warehouse', methods=['POST', 'GET'])
 @login_required
-@author_permission.require(http_exception=403)
+@author_permission.require(http_exception=403) 
 def get_warehouse():
     city_ref = request.args.get('cityRef')
-    print(f"отриманий реф міста {city_ref}")
+
     # warehouse_option = request.form['warehouse_option']
-    print(f"warehouse_option {request.args}")
     search_query = request.args.get('q', '').lower()
     cities_data = fl_cl.directory_load_json("api/nova_poshta/create_data/warehouses")
 
@@ -259,7 +257,6 @@ def get_warehouse():
     if city_data:
         # Здійснити пошук відділень в даному місті
         warehouse_data = [warehouse for warehouse in city_data['Warehouse'] if search_query in warehouse['Description'].lower()]
-        print(f"дивимось відділеня  {warehouse_data}")
         return jsonify({'results': warehouse_data})
     else:
         return jsonify({'results': []})
@@ -269,20 +266,14 @@ def get_warehouse():
 @author_permission.require(http_exception=403)
 def get_post():
     city_ref = request.args.get('cityRef')
-    print(f"warehouse_option {request.args}")
-    print(f"отриманий реф міста {city_ref}")
-
     search_query = request.args.get('q', '').lower()
     cities_data = fl_cl.directory_load_json("api/nova_poshta/create_data/warehouses")
-
     # Фільтрація даних за текстовим запитом
     city_data = next((item for item in cities_data["CityList"] if city_ref in item["CityRef"].lower()), None)
-
     # print(f"дивимось {city_data}")
     if city_data:
         # Здійснити пошук відділень в даному місті
         warehouse_data = [warehouse for warehouse in city_data['Post'] if search_query in warehouse['Description'].lower()]
-        print(f"дивимось поштомат  {warehouse_data}")
         return jsonify({'results': warehouse_data})
     else:
         return jsonify({'results': []})
@@ -301,7 +292,6 @@ def get_product():
                 'article': item.article + ' - ' + item.product_name
             }
             result.append(prod_data)
-        print(f"дивимось продукти  {result}")
     if result:
         return jsonify({'results': result})
     else:
@@ -324,7 +314,7 @@ def get_product():
 def get_prom_to_crm():
     token = request.headers.get("Authorization")
     json_data = request.json
-    if verify_token(token):
+    if verify_token(token): 
         if json_data:
             resp = ord_cntrl.add_order(json_data)
             return jsonify({'results': 'success', 'order_id': resp})
@@ -427,26 +417,26 @@ def reg():
 @bp.route('/cabinet/orders/changeStatus', methods=['POST', 'GET'])
 @login_required
 @author_permission.require(http_exception=403)
-def changeStatus():
+def changeStatus():  
     print(">>> Change status")
     print(f"order_draft {request.json}")
     bool = ord_cntrl.change_status(request.json)
     if bool: 
         # flash(f'Змінено статус', category='success')
         return jsonify({"succes": True})
-    else:
+    else:  
         # flash(f'Невийшло', category='error')
         return jsonify({"succes": False})
               
 @bp.route('/cabinet/orders/filter/confirmeded', methods=['POST', 'GET'])
 @login_required
-@author_permission.require(http_exception=403)
-def confirmeded():
+@author_permission.require(http_exception=403)       
+def confirmeded():  
     tasks_orders = ord_cntrl.load_confirmed_order()
     tasks_users = Users.query.order_by(Users.timestamp).all()
     page = request.args.get('page', default=1, type=int)
-    per_page = 50
-    total = len(tasks_orders)
+    per_page = 50  
+    total = len(tasks_orders) 
     pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap5')
     offset = (page - 1) * per_page
     data_subset = get_data(tasks_orders, offset=offset, per_page=per_page)
@@ -455,13 +445,13 @@ def confirmeded():
                            tasks_users=tasks_users, orders=data_subset, user=current_user)
 
 @bp.route('/cabinet/orders/filter/registered/<int:id>', methods=['POST', 'GET'])
-@login_required
+@login_required 
 @author_permission.require(http_exception=403) 
 def registered(id):
     tasks_orders = ord_cntrl.load_status_id(id)
     tasks_users = Users.query.order_by(Users.timestamp).all()
     page = request.args.get('page', default=1, type=int)
-    per_page = 50
+    per_page = 50 
     total = len(tasks_orders)
     pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap5')
     offset = (page - 1) * per_page

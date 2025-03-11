@@ -8,8 +8,8 @@ class Parse:
 
     def all_color(self, items):
         sum = 0
-        for a,b in items.items():
-            sum += b
+        for a,b in items.items():                      
+            sum += b 
         return sum
     
     def add_comment(self, data_chat, order_cntrl):
