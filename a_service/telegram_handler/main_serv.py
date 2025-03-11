@@ -36,17 +36,17 @@ class Worker:
 class IncomeResponce(Worker):  # Группи должни вернуть стандарт и команду с темой которой надо работать
     def execute(self, pointer):
         pointer = Income().construct(self.data, pointer) 
-        print(
-            "{}\n{}\n{}\n{}\n{}\n{}\n{}\n".format( 
-                pointer.chat,
-                pointer.cmd,
-                pointer.text,
-                pointer.reply,
-                pointer.content,
-                pointer.resp, 
-                pointer.comment,
-            )
-        )
+        # print(
+        #     "{}\n{}\n{}\n{}\n{}\n{}\n{}\n".format( 
+        #         pointer.chat,
+        #         pointer.cmd,
+        #         pointer.text,
+        #         pointer.reply,
+        #         pointer.content,
+        #         pointer.resp, 
+        #         pointer.comment,
+        #     )
+        # )
         return pointer
     
 class ActionResponce(Worker):  

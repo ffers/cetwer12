@@ -15,7 +15,6 @@ class TextParseColor(Command):
     def execute(self, chat_data):
         pointer = TextColorParser().manager_bot(chat_data)
         # result = ProductCounBot().manager_bot(text)
-        print(pointer, "ProductCounBot")
         # получить текст и распарсить и посчитать
         return pointer # має повернути команду, чат, готовий дікт, та відповідь можливо
     

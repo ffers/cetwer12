@@ -37,6 +37,7 @@ class WarehouseRefCl():
     def searchRegions(self, AreaRef):
         getRegion = NP.getSettlementCountryRegion(AreaRef)
         return getRegion
+    
     def WarehouseFilter(self, address):
         Warehouse = ""
         TypeOfWarehouseRef = None
@@ -82,6 +83,7 @@ class WarehouseRefCl():
             CityName = words[0].strip()
             print(CityName)
         return CityName
+    
     def extract_area(self, address):
         word = None
         if "обл" in address:

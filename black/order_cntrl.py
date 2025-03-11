@@ -82,6 +82,10 @@ class OrderCntrl:
         resp = self.order_serv.update_history(order_id, comment)
         return resp
     
+    def change_history(self, request_data):
+        resp = self.order_serv.change_history(request_data)
+        return resp
+    
     def reg_17_00(self):
         black_pic = self.tg_cntrl.black_pic()
         dict_order = self.createReg()
@@ -232,7 +236,8 @@ class OrderCntrl:
         delivery = self.check_del_method(order)
         result = self.result(crm_status, bool_prom,
                              update_analitic, delivery)
-        self.update_history(order_id, next(my_time()).strftime("%d-%m-%Y %H:%M")+" Підтверджено")
+        current_time = next(my_time()).strftime("%d-%m-%Y %H:%M")
+        self.update_history(order_id, f"\n{current_time} Підтверджено")
         resp_tg = tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, "{ordered_status} {order_code}".format(**crm_status))
         return result
 
@@ -287,8 +292,7 @@ class OrderCntrl:
 
     def del_method_np(self, order):
         resp = False
-        np_resp = np_cntrl.manager_data(
-            order)  # обработка зкаказа из срм создание ттн, телеграм курьеру заказ, додавання в пром ттн
+        np_resp = np_cntrl.manager_data(order)  # обработка зкаказа из срм создание ттн, телеграм курьеру заказ, додавання в пром ттн
         if np_resp["success"] == True:
             doc_ttn = np_resp["data"][0]["IntDocNumber"]
             resp_ttn = self.add_ttn_crm(order.id, doc_ttn)

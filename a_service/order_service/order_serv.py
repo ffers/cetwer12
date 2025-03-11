@@ -1,6 +1,7 @@
 from repository import OrderRep
 import random
 from flask import jsonify
+from utils.my_time_util import my_time
 
 
 class OrderServ:
@@ -21,8 +22,19 @@ class OrderServ:
     #             return new_digits  # Повертаємо унікальне значення
 
     def update_history(self, order_id, comment):
-        new_comment = comment + "\n"
+        new_comment =  "\n" + comment
         return self.order_rep.update_history(order_id, new_comment)
+    
+    def change_history(self, request_data):
+        form = request_data.form
+        order_id = form.get("order_id")
+        new_history = form.get("history") + "\n"
+        current_time = next(my_time()).strftime("%d-%m-%Y %H:%M")
+        new_history += f"{current_time}: Історія змінена"
+        resp = self.order_rep.change_history(order_id, new_history)
+        print("dev_change_history:", resp)
+        return resp
+    
  
     def search_for_order(self, order):
         order_list = []

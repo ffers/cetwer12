@@ -60,13 +60,6 @@ class CommandDirector:
             .build(data, settings)
         )
 
-# === Использование ===
-# data = {
-#     "message": {"chat": {"id": 12345}, "text": "#приход"}
-# }
-# pointer = "message"
 
-# result = CommandPipelineFactory.execute(data, pointer)
-# print(result)  # Должно вернуть "command1"
 
 

@@ -83,6 +83,25 @@
 			</div> 
 		</nav>
 	</div>
+	{% include "cabinet_client/change_history_order.html" %}
+	{% if admin %} 
+		<div class="button-container">
+			<nav class="nav">
+				<div class="button-pult">
+					<button 
+						type="button" 
+						value="Створити товар" 
+						data-bs-toggle="modal" 
+						data-bs-target="#historyModal"
+						class="btn btn-outline-info my-2 my-sm-0" >
+							Змінити Історію
+					</button>
+				</div>
+			</nav>
+		</div>
+	{% else %}
+    	<p>403: Доступ заборонено</p>
+	{% endif %}
 		
 		<div class="row"> 
 			<div class="col-sm"><h3 style="text-align: center;" > Замовлення №
@@ -90,7 +109,7 @@
 					<i class="fa-regular fa-copy"></i>
 				</span>  </h3><!-- Кнопка копіювання --></div>
 		</div>
-		
+		 
 		<div class="row"> 
 			<div class="col-sm"><p style="text-align: center;">
 				<small class="text-muted">
@@ -98,7 +117,7 @@
 				</small> {{order.timestamp.strftime('%H:%M %d-%m-%Y')}}</p>
 			</div>
 		</div> 
-		
+		 
 	
 	<div class="content">
 		<form 
@@ -107,23 +126,48 @@
 			method="post"
 			style="margin-bottom: 200px;"
 		>
-			<div class="row">
-				<div class="col-sm"><input type="tel" class="form-control   " name="phone" rows="1" cols="50" pattern="[0-9]{12}" style="text-align: center;" placeholder="*Номер телефону 380909009000" value="{{order.phone}}" required><br></div>
-				<div class="col-sm"><input class="form-control" style="text-align: center;" name="client_lastname" rows="1" cols="50" placeholder="* Призвіще" value="{{order.client_lastname}}" id="client_lastname" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Тут є латиниця"><br></div>
-				<div class="col-sm"><input class="form-control   " style="text-align: center;" name="client_firstname" rows="1" cols="50" placeholder="* Ім'я" value="{{order.client_firstname}}" id="client_firstname" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Тут є латиниця"><br></div>
-				<div class="col-sm"><input class="form-control   " style="text-align: center;" 
+			<div class="row" ">
+				<div class="col-sm">
+					<footer><small class="text-muted">Телефон:</small></footer>
+					<input type="tel" class="form-control" name="phone" rows="1" cols="50" pattern="[0-9]{12}" style="text-align: center;" placeholder="*Номер телефону 380909009000" value="{{order.phone}}" required><br>
+				</div>
+				<div class="col-sm">
+					<footer><small class="text-muted">Призвіще:</small></footer>
+					<input class="form-control" 
+					style="text-align: center;" 
+					name="client_lastname" 
+					rows="1" cols="50" placeholder="* Призвіще" 
+					value="{{order.client_lastname}}" id="client_lastname" 
+					data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Тут є латиниця">
+					<br>
+				</div>
+				<div class="col-sm">
+					<footer><small class="text-muted">Імʼя:</small></footer>
+					<input class="form-control   " 
+					style="text-align: center;" 
+					name="client_firstname" 
+					rows="1" cols="50" placeholder="* Ім'я" 
+					value="{{order.client_firstname}}" 
+					id="client_firstname" 
+					data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Тут є латиниця">
+					<br>
+				</div>
+				<div class="col-sm"><footer><small class="text-muted">Побатькові:</small></footer><input class="form-control   " style="text-align: center;" 
 					name="client_surname" rows="1" cols="50" 
 					placeholder="Побатькові(необов.)" 
 					value="{{order.client_surname}}">
 					<br>
 				</div>
-				<div class="col-sm"><input class="form-control   " style="text-align: center;" 
+				<div class="col-sm"><footer><small class="text-muted">Email:</small></footer>
+					<input class="form-control   " style="text-align: center;" 
 					name="email" rows="1" cols="50" 
 					placeholder="email" 
 					value="{{order.email}}">
 					<br>
 				</div>
+				
 			</div>
+
 			<!-- Змінна сервісу доставкі та группи >>> треба змінити додавання ордеру та js який додає поля -->
 			<!-- <div class="row">
                 <div class="col-sm"><input type="radio" class="form-check-input text-radio" id="1" name="delivery_method" value="1"/><label for="1" class="form-check-label" required> Нова Пошта</label></div>
@@ -131,141 +175,133 @@
                 <div class="col-sm"><input type="radio" class="form-check-input text-radio" id="3" name="delivery_method" value="3"/><label for="3" class="form-check-label" required> Укрпошта</label></div>
 				<div class="col-sm"><input type="radio" class="form-check-input text-radio" id="5" name="delivery_method" value="5"/><label for="5" class="form-check-label" required> Шопзаказ</label></div>				                    
 			</div>  -->
-        <div class="row"></div> 
 		<!-- Адресса поля -->
 			<div id="address_row">
-				<div class="row AdsressOld" id="AdsressOld">					
-					<div class="col-sm">
-						<input class="form-control   " style="text-align: center;" name="old_city" rows="1" cols="50" placeholder="Місто" 
-						value="{% if order.city_name %} {{order.city_name}} {%else%} Адреси нема {%endif%}" readonly><br></div>
-					<div class="col-sm"><input class="form-control   " style="text-align: center;" name="old_warehouse" rows="1" cols="50" placeholder="Відділення" value="{{order.warehouse_text}}" readonly><br></div>
-					<div class="col-sm"><input class="form-control   " style="text-align: center;" name="ttn" rows="1" cols="50" placeholder="TTN" 
-						value="{% if order.ttn %} {{order.ttn}}{%else%} ТТН нема {%endif%}" readonly><br></div>
-					<div class="col-sm"><input class="form-control   " style="text-align: center;" name="ttn" rows="1" cols="50" placeholder="Реєстр" 
-						value="{% if order.delivery_order.number_registr %} {{order.delivery_order.number_registr}} {%else%} Реєстру нема {%endif%}" readonly><br></div>
+				<div class="row AdsressOld" id="AdsressOld">
+					<div class="row">
+						<div class="col-sm">
+							<footer><small class="text-muted">Місто:</small></footer>			
+							<input class="form-control" 
+								style="text-align: center;" 
+								name="old_city" 
+								rows="1" cols="50" 
+								placeholder="Місто" 
+								value="{% if order.city_name %} {{order.city_name}} {%else%} Адреси нема {%endif%}" 
+								readonly><br>
+						</div>
+						<div class="col-sm">
+							<footer><small class="text-muted">Адреса:</small></footer>
+							<input class="form-control" 
+								style="text-align: center;" 
+								name="old_warehouse" 
+								rows="1" cols="50" 
+								placeholder="Відділення" 
+								value="{{order.warehouse_text}}" 
+								readonly><br>
+							</div>
+						<div class="col-sm">
+							<footer><small class="text-muted">ТТН:</small></footer>	
+							<input class="form-control" 
+								style="text-align: center;" 
+								name="ttn" rows="1" 
+								cols="50" 
+								placeholder="TTN" 
+								value="{% if order.ttn %} {{order.ttn}}{%else%} ТТН нема {%endif%}" 
+								readonly>
+						</div>
+					</div>
+				
+					<div class="row">
+						<div class="col-sm">
+							<input 
+								type="button" 
+								class="text-button"  
+								value="Змінити 'Адресу доставки'" 
+								id="ChangeAddress">
+						</div>
+						<div class="col-sm">
+							<input class="form-control" 
+								id="delivery_method_detail"
+								style="text-align: center;" 
+								name="delivery_method_detail" rows="1" 
+								cols="50" 
+								placeholder="Метод доставки"
+								{% if order.payment_method.name %} 
+								value="{{order.delivery_method.name}}" 
+								{%else%}
+								value="Спосіб доставкі не обрано" 
+								{%endif%}
+								readonly>
+						</div>
+					</div>
 				</div>
-		<div class="col-sm"><input type="button" class="text-button"  value="Змінити Адресу доставки" id="ChangeAddress"></div></br>
 		</div>
-			<!-- <div class="row">
-  				<legend></legend>
-                <div class="col"><input class="form-check-input text-radio" type="radio" id="warehouse" name="warehouse_option" value="warehouse" onclick="toggleField()" ><label for="warehouse" class="form-check-label"> Відділення</label></div>
-                <div class="col"><input type="radio" id="poshtomat " class="form-check-input text-radio" name="warehouse_option" value="poshtomat" onclick="toggleField()" /><label for="poshtomat" class="form-check-label"> Поштомат</label></div>
-                <div class="col"><input type="radio" id="address" class="form-check-input text-radio" name="warehouse_option" value="address" onclick="toggleField()" /><label for="address" class="form-check-label"> Адреса</label></div>
-			</div></br>
-			
-			<div class="row "> 
-  				<legend></legend>
-				<div class="col"><select id="citySelect" class="js-data-example-ajax    form-control" name="city"  required></select><br></div>
-				<div id="hiddenFieldWar" style="display:block;" class="col"><select id="warhousSelect" class="form-control   " name="warehouse" rows="1" cols="50" placeholder="Відділення"></select><br></div>
-				<div id="hiddenFieldPost" style="display:none;" class="col"><select id="postSelect" class="form-control   " name="warehouse" rows="1" cols="50" placeholder="Поштомат"></select><br></div>
-				<div id="hiddenFieldAdr" style="display:none;" class="col"><textarea id="addressText" class="form-control   " name="warehouse" rows="1" cols="50" placeholder="* Адреса"></textarea><br></div>
-			</div></br> -->
-			<div class="row">
-<!--  				<legend>Спосіб оплати:</legend>-->
-                <div class="col-sm"><input type="radio" class="form-check-input text-radio" id="nalogka" name="payment_option" value="1" {% if order.payment_method_id == 1 %}checked{% endif %} onclick="togglePaybefore()"/><label for="nalogka" class="form-check-label"> Післяплата</label></div>
-                <div class="col-sm"><input type="radio" class="form-check-input text-radio" id="card_pay" name="payment_option" value="2"{% if order.payment_method_id == 2 %}checked{% endif %} onclick="togglePaybefore()"/><label for="card_pay" class="form-check-label"> Оплата на рахунок</label></div>
-                <div class="col-sm"><input type="radio" class="form-check-input text-radio" id="peredpalata" name="payment_option" value="3" onclick="togglePaybefore()" {% if order.payment_method_id == 3 %}checked{% endif %}/><label for="peredpalata" id="labelPayBe" class="form-check-label" > Передплата</label></div>
-				<div id="hiddenFieldPay" style="display:none;" class="col"><input type="number" style="text-align: center;" class="   form-control" id="sum_before_goods" name="sum_before_goods" min="1" placeholder="Сумма" value="{{ order.sum_before_goods }}" required><br></div>
-				<div class="col-sm">
+		<div id="paymentMethotGeneral">
+			<div class="row" id="paymentMethotRow" style="margin-bottom: 20px;">
+				 <div class="col-sm">
 					<input 
-						type="radio" 
-						class="form-check-input text-radio" 
-						id="prom_oplata" 
-						name="payment_option" 
-						value="5" 
-						onclick="togglePaybefore()"/>
-						<label 
-							for="peredpalata" 
-							id="labelPayBe" 
-							class="form-check-label" 
-							required> ПромОплата
-						</label>			
+					type="button" 
+					class="text-button"  
+					value="Змінити 'Спосіб оплати'" 
+					id="ChangePaymentMethod">
 				</div>
 				<div class="col-sm">
-					<input 
-						type="radio" 
-						class="form-check-input text-radio" 
-						id="rozetka_pay" 
-						name="payment_option" 
-						value="6" 
-						onclick="togglePaybefore()"/>
-						<label 
-							for="peredpalata" 
-							id="labelPayBe" 
-							class="form-check-label" 
-							required> RozetkaPay
-						</label>			
+					<input class="form-control" 
+							style="text-align: center;" 
+							name="payment_method_detail" rows="1" 
+							cols="50" 
+							placeholder="Спосіб облати"
+							{% if order.payment_method.name %} 
+							value="{{order.payment_method.name}}" 
+							{%else%}
+							value="Метод оплати не обрано" 
+							{%endif%}
+							readonly>
 				</div>
-				<div class="col-sm">
-					<input 
-						type="radio" 
-						class="form-check-input text-radio" 
-						id="olx" 
-						name="payment_option" 
-						value="7" 
-						onclick="togglePaybefore()"/>
-						<label 
-							for="peredpalata" 
-							id="labelPayBe" 
-							class="form-check-label" 
-							required> OLX
-						</label>			
-				</div>
-				<div class="col-sm">
-					<input 
-						type="radio" 
-						class="form-check-input text-radio" 
-						id="another" 
-						name="payment_option" 
-						value="8" 
-						onclick="togglePaybefore()"/>
-						<label 
-							for="peredpalata" 
-							id="labelPayBe" 
-							class="form-check-label" 
-							required> Інше
-						</label>
-                               
 			</div>
-			
-					<div id="product_row">
-						<!-- Товари в замовлені  -->
-					<div class="row ProductOld" id="ProductOld">
-						{% for product in order.ordered_product %} 	
-						<div class="row">
-						<div class="col-sm"><footer><small class="text-muted">Артікул:</small></footer><input class="form-control   " style="text-align: center;" name="old_product_art" rows="1" cols="50" placeholder="Товар" value="{{product.products.article}}" readonly><br></div>
-						<div class="col-sm"><footer><small class="text-muted">Кількість:</small></footer><input class="form-control   " style="text-align: center;" name="old_product_quantity" rows="1" cols="50" placeholder="кількість" value="{{product.quantity}}" readonly><br></div>
-						<div class="col-sm"><footer><small class="text-muted">Назва:</small></footer><input class="form-control   " style="text-align: center;" name="old_product_name" rows="1" cols="50" placeholder="Назва Товару" value="{{product.products.product_name}}" readonly><br></div>
-						<div class="col-sm"><footer><small class="text-muted">Ціна:</small></footer><input class="form-control   " style="text-align: center;" name="old_product_price" rows="1" cols="50" placeholder="Сумма" value="{{product.price}}" readonly><br></div>
-						</div>
-						{% endfor %}
-						<div class="row">
-						<div class="col-sm"><footer><small class="text-muted">Сумма:</small></footer><input class="form-control   " style="text-align: center;" name="old_product_price" rows="1" cols="50" placeholder="Сумма" value="{{order.sum_price}}" readonly><br></div>
-						</div>
+		</div>
+		</br>
+		
+			<div id="product_row">
+				<!-- Товари в замовлені  -->
+				<div class="row ProductOld" id="ProductOld">
+					{% for product in order.ordered_product %} 	
+					<div class="row">
+					<div class="col-sm"><footer><small class="text-muted">Артікул:</small></footer><input class="form-control   " style="text-align: center;" name="old_product_art" rows="1" cols="50" placeholder="Товар" value="{{product.products.article}}" readonly><br></div>
+					<div class="col-sm"><footer><small class="text-muted">Кількість:</small></footer><input class="form-control   " style="text-align: center;" name="old_product_quantity" rows="1" cols="50" placeholder="кількість" value="{{product.quantity}}" readonly><br></div>
+					<div class="col-sm"><footer><small class="text-muted">Назва:</small></footer><input class="form-control   " style="text-align: center;" name="old_product_name" rows="1" cols="50" placeholder="Назва Товару" value="{{product.products.product_name}}" readonly><br></div>
+					<div class="col-sm"><footer><small class="text-muted">Ціна:</small></footer><input class="form-control   " style="text-align: center;" name="old_product_price" rows="1" cols="50" placeholder="Сумма" value="{{product.price}}" readonly><br></div>
 					</div>
-					
-					<div class="col-sm"><input type="button" class="text-button"  value="Змінити Товар в Замовленні" id="ChangeProduct"></div>
+					{% endfor %}
+					<div class="row">
+					<div class="col-sm"><footer><small class="text-muted">Сумма:</small></footer><input class="form-control   " style="text-align: center;" name="old_product_price" rows="1" cols="50" placeholder="Сумма" value="{{order.sum_price}}" readonly><br></div>
 					</div>
-            <!-- <div id="product-container">
-                <div class="row">
-                    <div class="col"><select  class="form-control product-select" id="product-select" name="product" required></select><br></div>
-                    <div class="col"><input type="number" style="text-align: center;" class="   form-control" id="quantity" name="quantity"  min="1" max="10000" placeholder="* Кількість" required><br></div>
-					<div class="col"><input type="number" style="text-align: center;" class="   form-control" id="price" name="sum_price" min="1" placeholder="Сумма" required><br></div>
-                </div>                
-            </div>
-            <div class="row">
-                <div class="col-sm"></div>
-                <div class="col-sm"><input type="button" class="text-button"  value="Додати товар" id="addButton"></div>
-				<div class="col-sm"><input type="button" class="text-button"  value="Створити товар" data-bs-toggle="modal" data-bs-target="#myModal" ></div>
-                <div class="col-sm"></div>
-            </div><br> -->
-			<textarea style="text-align: center;" class="   form-control" name="description"  rows="3" cols="50" placeholder="Нотатки" >{{order.description}}</textarea><br>
-			<textarea style="text-align: center;" class="   form-control" name="history"  rows="3" cols="50" placeholder="Історія" >{{order.history}}</textarea><br>
-			<button class="btn btn-outline-info my-2 my-sm-0" onclick="submitForm()" type="submit">Оновити Замовлення</button> </br>	
+				</div>
+				
+				<div class="col-sm"><input type="button" class="text-button"  value="Змінити Товар в Замовленні" id="ChangeProduct"></div>
+			</div>
+					<footer><small class="text-muted">Нотаткі:</small></footer>
+			<textarea style="text-align: center;" class="form-control" name="description"  rows="3" cols="50" placeholder="Нотатки" >{{order.description}}</textarea><br>
+			<footer><small class="text-muted">Історія:</small></footer>
+			<textarea 
+				style="text-align: center;" 
+				class="form-control" 
+				name="history"  
+				rows="3" 
+				cols="50" 
+				placeholder="Історія" 
+				>{{order.history}}</textarea>
+			<br>
+			<button class="btn btn-outline-info my-2 my-sm-0" 
+				onclick="submitForm()" 
+				type="submit">Оновити Замовлення</button> </br>	
 			
 		</form>
 	</div>
-	<input type="hidden" name="selectedItems" id="selectedItems" value="{{order.id}}">
+	<input type="hidden" 
+		name="selectedItems" 
+		id="selectedItems" 
+		value="{{order.id}}">
 
 	<!-- My Modal Add product -->
 <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -316,6 +352,7 @@
 	<script src="{{url_for('static', filename='javascript/sendDataToServerFile.js')}}"></script>
 	<script src="{{url_for('static', filename='javascript/changeProductOld.js')}}"></script>
 	<script src="{{url_for('static', filename='javascript/changeAddressOld.js')}}"></script>
+	<script src="{{url_for('static', filename='javascript/changePaymentMethod.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/add-select2.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/hiddenElement.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/submitFormUpdateOrd.js')}}"></script>

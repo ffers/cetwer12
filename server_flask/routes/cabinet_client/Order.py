@@ -91,17 +91,18 @@ def Order():
 def update(id): 
     task_update = Orders.query.get_or_404(id)
     if request.method == 'POST':
-        task_update.payment_method_id = request.form['payment_option']
         task_update.phone = request.form['phone']
         task_update.client_firstname = request.form['client_firstname']
         task_update.client_surname = request.form['client_surname']
         task_update.client_lastname = request.form['client_lastname']
         task_update.description = request.form['description']
         task_update.sum_before_goods = None
-        if request.form['payment_option'] == "3": 
-            sum_before_goods_dr = request.form["sum_before_goods"]
-            sum_before_goods = format_float(sum_before_goods_dr)
-            task_update.sum_before_goods = sum_before_goods
+        if 'payment_option' in request.form:
+            task_update.payment_method_id = request.form['payment_option']
+            if request.form['payment_option'] == "3": 
+                sum_before_goods_dr = request.form["sum_before_goods"]
+                sum_before_goods = format_float(sum_before_goods_dr)
+                task_update.sum_before_goods = sum_before_goods
         if "city" in request.form:
             task_update.warehouse_option = request.form['warehouse_option']
             task_update.city_ref = request.form['CityREF']
@@ -124,17 +125,23 @@ def update(id):
                 product_id, price, quantity = item
                 ordered_product = OrderedProduct(product_id=product_id, price=price, quantity=quantity, order_id=task_update.id)
                 task_update.ordered_product.append(ordered_product)
-        db.session.commit()
+        db.session.commit()    
         print(">>> Update in datebase")
         flash(f'Замовлення {task_update.order_code} оновлено', category='success')
         ord_cntrl.send_order_tg(task_update.id)
-        return redirect('/cabinet/orders/filter/registered/10')
-        # except:
+        return redirect(f'/cabinet/orders/update/{id}')
+        # except:   
         #     return 'There was an issue updating your task'
-
-    else:
+                        
+    else:     
+        admin = admin_permission.can()
         print(f"перевірка {vars(current_user.roles)}")
-        return render_template('cabinet_client/update_order.html', order=task_update, user=current_user)
+        return render_template(
+                'cabinet_client/update_order.html', 
+                order=task_update, 
+                user=current_user,
+                admin=admin
+            )
 
 @bp.route('/cabinet/orders/add_order', methods=['POST', 'GET'])
 @login_required
@@ -416,7 +423,7 @@ def reg():
     else:
         # flash(f'Невийшло', category='error')
         return jsonify({"succes": False})
-
+   
 @bp.route('/cabinet/orders/changeStatus', methods=['POST', 'GET'])
 @login_required
 @author_permission.require(http_exception=403)
@@ -424,13 +431,13 @@ def changeStatus():
     print(">>> Change status")
     print(f"order_draft {request.json}")
     bool = ord_cntrl.change_status(request.json)
-    if bool:
+    if bool: 
         # flash(f'Змінено статус', category='success')
         return jsonify({"succes": True})
     else:
         # flash(f'Невийшло', category='error')
         return jsonify({"succes": False})
-
+              
 @bp.route('/cabinet/orders/filter/confirmeded', methods=['POST', 'GET'])
 @login_required
 @author_permission.require(http_exception=403)
@@ -478,6 +485,22 @@ def test_order(id):
     resp = ord_cntrl.test_order(id)
     print(resp)
     return jsonify({"error": resp[1], "success": resp[0]})
+ 
+@bp.route('/cabinet/orders/change_history', methods=['POST', 'GET'])
+@login_required 
+@author_permission.require(http_exception=403)
+def change_history():
+    if request.method == 'POST':
+        cntrl =OrderCntrl()
+        resp = cntrl.change_history(request)
+        responce_data = {'status': 'success', 'message': 'False'}
+        if resp == True: 
+            responce_data['message'] = "Success"
+            return jsonify(responce_data)
+        else:
+            return jsonify(responce_data)
+
+    return render_template('cabinet_client/Products/add_product.html', user=current_user )
 
 
 
@@ -564,6 +587,7 @@ def test_order(id):
  #    delivery_method = db.relationship("DeliveryMethod", back_populates="orders")
  #    delivery_method_id = db.Column(db.Integer, db.ForeignKey(
  #        'delivery_method.id', name='fk_orders_delivery_method_id'))
+
  #    author_id = db.Column(db.Integer, db.ForeignKey(
  #        'users.id', name='fk_orders_users_id', ondelete="CASCADE"), nullable=True)
  #    comments = db.relationship('Comment', backref='orders', passive_deletes=True)

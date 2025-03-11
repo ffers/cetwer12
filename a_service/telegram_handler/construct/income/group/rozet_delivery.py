@@ -6,7 +6,7 @@ class Command:
 class ArrivalCommand(Command):
     def execute(self):
         return "Привіт! Я добавляю на склад"
-    
+                     
 class TakeCommand(Command):
     def execute(self):
         return "Привіт! Я віднімаю з склада"

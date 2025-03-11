@@ -75,7 +75,7 @@ class NpClient(object):
         max_retries = 5  # Максимальна кількість спроб
         retries = 0
         timeout = 10
-        response = None
+        response = None 
         while retries < max_retries:
             try:
                 response = requests.get(api_url, data=updated_json, timeout=timeout)

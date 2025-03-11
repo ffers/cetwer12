@@ -109,7 +109,7 @@ class PromToCrm():
                 dict_parse.update(self.add_warehouse_method(dict_parse))
             except:
                 order_id = order["id"]
-                tg_cntrl.sendMessage(tg_cntrl.chat_id_info, f"️❗️❗️❗️ Замовлення додано але адреси нема в № {order_id} ")
+                tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, f"️❗️❗️❗️ Замовлення додано але адреси нема в № {order_id} ")
         return dict_parse
 
 

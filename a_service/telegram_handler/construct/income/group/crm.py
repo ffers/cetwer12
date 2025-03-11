@@ -40,4 +40,3 @@ class CommandHandler:
     def handle_command(self, text):
         command = CommandFactory.get_command(text)
         return command.execute() if command else "Команда не знайдена"
-# 🔹 Використанняhandler = CommandHandler()print(handler.handle_command("/start"))  # Привіт! Я Telegram-бот.print(handler.handle_command("Щось написав #взял"))  # Обробка команди 'взял'.print(handler.handle_command("Невідома команда"))  # Команда не знайдена

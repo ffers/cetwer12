@@ -52,15 +52,34 @@ class OrderRep:
         return product_obj
 
     def update_history(self, order_id, new_comment):
-        # try:
+        try:
             order = self.load_item(order_id)
             if order.history:
                 new_comment = order.history + new_comment
             order.history = new_comment
             db.session.commit()
             return True
-        # except:
-        #     return False
+        except:
+            return False
+        
+    def change_history(self, order_id, new_comment):
+        try:
+            order = self.load_item(order_id)
+            print("devOrder_rep", new_comment)
+            order.history = new_comment
+            db.session.commit()
+            return True
+        except:
+            return False
+
+    def update_time_send(self, id, send_time):
+        try:
+            item = self.load_item(id)
+            item.send_time = send_time
+            db.session.commit()
+            return True, None
+        except Exception as e:
+            return False, str(e)
 
 
     def load_item(self, order_id):
@@ -156,14 +175,7 @@ class OrderRep:
         except Exception as e:
             return False, str(e)
 
-    def update_time_send(self, id, send_time):
-        try:
-            item = self.load_item(id)
-            item.send_time = send_time
-            db.session.commit()
-            return True, None
-        except Exception as e:
-            return False, str(e)
+
 
 
     def dublicate_item(self, item):

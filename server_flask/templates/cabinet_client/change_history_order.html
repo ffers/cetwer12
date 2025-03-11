@@ -1,0 +1,48 @@
+
+<div class="modal fade" id="historyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" 
+					class="btn-close" 
+					data-bs-dismiss="modal" 
+					aria-label="Close">
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="content text-center">
+					<h3 style="text-align: center;">
+						Редагування Історіі
+					</h3> 
+					<form id="changehistory">
+						<div class="row">	
+							<input 
+								name="order_id" 
+								style="display: none;" 
+								value="{{order.id}}" >
+							<textarea 
+								style="text-align: center;" 
+								class="form-control" 
+								name="history"  
+								rows="3" 
+								cols="50" 
+								placeholder="Історія" 
+								>{{order.history}}</textarea>
+						</div>
+						<button 
+							id="submitBtn" 
+							class="btn btn-outline-info my-2 my-sm-0" 
+							onclick="changeHistory()" 
+							type="button" >
+								Оновити
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>			
+	</div>
+</div>	
+
+<script src="{{url_for('static', filename='javascript/change_history.js')}}"></script>
+
+

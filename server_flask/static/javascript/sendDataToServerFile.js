@@ -28,7 +28,7 @@ function sendDataToServerW() {
         $('#myModal').modal('hide');
         var toastLite = document.getElementById('toastLite');
         var textToastLite = document.getElementById("textToastLite");
-        textToastLite.textContent = "Продукт стоврено";
+        textToastLite.textContent = "Продукт створено";
         var toast = new bootstrap.Toast(toastLite);
         toast.show();
 

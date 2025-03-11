@@ -21,7 +21,6 @@ class Resp:
 
 class ChatName(Resp):
     def execute(self):
-        print(self.data)
         result = ChatNameDirector().construct(self.data, self.settings)
         self.chat_data.chat = result
         return result

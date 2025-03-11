@@ -77,24 +77,50 @@ function validateAndTogglePopover(inputElement, popoverInstance) {
             priceInput.value === '' ||
             !selectedProduct
            ) {
-            alert('Будь ласка, заповніть всі обов\'язкові поля.');
+            alert('Будь ласка, заповніть всі обов\'язкові поля товару замовлення.');
             return false;
         } 
-      }
-      const paymentOptions = document.getElementsByName("payment_option");
-      const isChecked = Array.from(paymentOptions).some(option => option.checked);  
-      if (!isChecked) {
-          alert('Будь ласка, заповніть всі обов\'язкові поля.');
-          return false;
       } else {
-        return true;
+        return true
       }
+    };
+
+function paymentMethod(){
+  const paymentOptions = document.getElementsByName("payment_option");
+  console.log("dev_paymentOptions", paymentOptions)
+  
+      if (paymentOptions.length > 0) {
+        const isChecked = Array.from(paymentOptions).some(option => option.checked);  
+        if (!isChecked) {
+        alert('Будь ласка, заповніть всі обов\'язкові поля.');
+          return false;
+        } else {
+        return true
+        }
+      }
+      return true
+    };
+
+
+function methodDeliveryValid(){
+  const delivery_method_detail = document.getElementById('delivery_method_detail');
+  if (delivery_method_detail){
+    if(delivery_method_detail.value){
+      return true
+    } else {
+      console.log("dev_paymentOptions", "False")
+      alert('Будь ласка, заповніть поле спосіб доставки.');
+      return false
     }
+  }
+  return true
+};
   
 function submitForm() { 
   event.preventDefault();
-  if (isFormValid()) {    
+  if (isFormValid() && methodDeliveryValid() && paymentMethod()) { 
+    
     // Відправка форми
     $('#myForm').submit(); 
   } 
-};
+}

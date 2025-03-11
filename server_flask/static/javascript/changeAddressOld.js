@@ -9,6 +9,7 @@ document.getElementById('ChangeAddress').addEventListener('click', function() {
         .html(
             `
             <div class="row">
+            <footer><small class="text-muted">Метод доставкі:</small></footer>
                 <div class="col-sm"><input type="radio" class="form-check-input text-radio" id="1" name="delivery_method" value="1"/><label for="1" class="form-check-label" required> Нова Пошта</label></div>
                 <div class="col-sm"><input type="radio" class="form-check-input text-radio" id="2" name="delivery_method" value="2"/><label for="2" class="form-check-label" required> Розетка</label></div>
                 <div class="col-sm"><input type="radio" class="form-check-input text-radio" id="3" name="delivery_method" value="3"/><label for="3" class="form-check-label" required> Укрпошта</label></div>
@@ -27,7 +28,7 @@ document.getElementById('ChangeAddress').addEventListener('click', function() {
           <div id="hiddenFieldWar" style="display:block;" class="col"><select id="warhousSelect" class="form-control   " name="warehouse" rows="1" cols="50" placeholder="Відділення"></select><br></div>
           <div id="hiddenFieldPost" style="display:none;" class="col"><select id="postSelect" class="form-control   " name="warehouse" rows="1" cols="50" placeholder="Поштомат"></select><br></div>
           <div id="hiddenFieldAdr" style="display:none;" class="col"><textarea id="addressText" class="form-control   " name="warehouse" rows="1" cols="50" placeholder="* Адреса"></textarea></div>
-      </div></br>`
+      </div>`
             );
 
     // Добавление нового поля в контейнер
