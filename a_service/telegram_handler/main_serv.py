@@ -6,7 +6,7 @@ from settings import Settings
 """
 чтоби добавить новую команду
 В command надо прописать новую команду 
-В group прописать команду соответвующую чату 
+В group прописать команду соответвующую чату если нет команди то остановить виполнение
 В екшен добавить действие прописать возможно парсер 
 В респонс подготовить ответ для тг если необходим
 
@@ -75,6 +75,7 @@ class Builder:
                 print("Працює: ", cmd_class.__name__)
                 if not pointer:
                     print("Невиконано!: ", cmd_class.__name__)
+                    TelegramCntrl().sendMessage(-421982888, "dev Невиконано!: ", cmd_class.__name__)
                     return pointer
                 if pointer.chat == "unknown_chat":
                     print("Невідомий чат")

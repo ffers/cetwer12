@@ -92,6 +92,15 @@ class TestClassDemoInstance:
             pointer = self.await_button_tg(Lib.test_reply_make_comment)
             print(pointer)
             assert "manager" ==  pointer.chat 
+            assert "reply_manager" == pointer.cmd
+
+    def test_reply_make_comment_false_chat(self):
+        with flask_app.app_context():
+            pointer = self.await_button_tg(Lib.test_reply_make_comment_false)
+            print(pointer)
+            assert "np_delivery" ==  pointer.chat 
+            assert "reply_to_message" == pointer.cmd
+
 
 
     # def test_two(self):

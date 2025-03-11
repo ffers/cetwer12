@@ -52,15 +52,16 @@ class ReplyHandler(Resp):
 class Group(Resp):
     def execute(self):
         chats = {
-            "courier": Courier.factory(self.chat_data),
-            "manager": Manager.factory(self.chat_data),
+            "courier": Courier,
+            "manager": Manager,
             # "crm": CRM.factory(cmd),
-            "stock": Stock.factory(self.chat_data),
+            "stock": Stock,
             # "np_delivery": NPdelivery.factory(cmd),
             # "roz_delivery": ROZdelivery.factory(cmd),
             # "ukr_delivery": UKRdelivery.factory(cmd),
         }
-        chat_data = chats.get(self.chat_data.chat, None)
+        if self.chat_data.chat in chats:
+            return chats[self.chat_data.chat].factory(self.chat_data)
         return "Group responce: ok"
       
 class Builder:

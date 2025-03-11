@@ -10,6 +10,9 @@ version = "0.0.1"
 pythonpath = [
   "."
 ]
+filterwarnings = [
+    "ignore::DeprecationWarning"
+]
 addopts = [
     "--import-mode=importlib",
 ]
