@@ -2,10 +2,10 @@ from utils import my_time
 from datetime import datetime
 
 
-class Parse:                             
+class Parse:                                 
     def __init__(self): 
         pass
- 
+  
     def all_color(self, items):     
         sum = 0
         for a,b in items.items():                      

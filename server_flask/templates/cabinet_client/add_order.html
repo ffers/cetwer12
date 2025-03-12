@@ -28,7 +28,7 @@
                 <div class="col-sm"><input type="radio" class="form-check-input text-radio" id="3" name="delivery_method" value="3"/><label for="3" class="form-check-label" required> Укрпошта</label></div>
 				<div class="col-sm"><input type="radio" class="form-check-input text-radio" id="5" name="delivery_method" value="5"/><label for="5" class="form-check-label" required> Шопзаказ</label></div>				                    
 			</div> 
-			<div class="row">
+			<div class="row grey-background">
   				<legend></legend>
                 <div class="col-sm"><input class="form-check-input text-radio" type="radio" id="warehouse" name="warehouse_option" value="warehouse" onclick="toggleField()" /><label for="warehouse" class="form-check-label"> Відділення</label></div>
                 <div class="col-sm"><input type="radio" id="poshtomat" class="form-check-input text-radio" name="warehouse_option" value="poshtomat" onclick="toggleField()" /><label for="poshtomat" class="form-check-label"> Поштомат</label></div>
@@ -108,22 +108,59 @@
 
 				<div id="hiddenFieldPay" style="display:none;" class="col"><input type="number" style="text-align: center;" class="form-control" id="sum_before_goods" name="sum_before_goods" min="1" placeholder="Сумма" value="100"><br></div>                      
 			</div>
-            <div id="product-container">
-                <div class="row">
-					<!-- Товар та кількість -->
-                    <div class="col-sm"><select  class="  form-control product-select" name="product" required></select><br></div>
-					<div class="col-sm col-lg-2"><input type="number" style="text-align: center;" class="quantity form-control" id="quantity" name="quantity"  min="1" max="10000" placeholder="* Кількість" required><br></div>
-					<div class="col-sm col-lg-2" ><input type="number" style="text-align: center;" class="price form-control" id="price" name="price" min="1" placeholder="Ціна" required><br></div>					
-					<div class="col-sm col-lg-2"><input type="number" style="text-align: center; display: none;" class="total form-control" id="total" name="total" min="1" placeholder="Сумма" required><br></div>
-					<div class="col-sm col-lg-2"><input type="number" style="text-align: center;" class="totalall form-control" id="total-all" name="total-all" min="1" placeholder="Сумма" required><br></div>
-                </div>                
-            </div>
+			<div id="ProductOldItem" class="grey-background">
+				<div class="row" id="product-container" style="width: 100%">
+            
+					<div class="col-sm-3 col-lg-4 button-pult"><select class="form-control product-select" name="product"></select></div>
+					<div class="col-sm col-lg-2 button-pult"><input type="number" style="text-align: center;" class="quantity form-control" id="quantity" name="quantity"  min="1" max="10000" placeholder="* Кількість" required></div>
+					<div class="col-sm col-lg-2 button-pult"><input type="number" style="text-align: center;" class="price form-control" id="price" name="price" min="1" placeholder="Ціна" required></div>
+					<input type="number" style="text-align: center; display: none;" class="total form-control" id="sum_price" name="sum_price" min="1" placeholder="Сумма" required>
+			</div>
+			</div>
+			<div class="row">							
+				<div class="center" style="width: 60%;">
+						<input type="number" 
+							style="text-align: center;" 
+							class="totalall form-control" 
+							id="total-all" 
+							name="total-all" 
+							min="1" 
+							placeholder="Сумма" 
+							required>
+							<br>
+					</div>
+			</div>
 			
             <div class="row">
-                <div class="col-sm"></div>
-                <div class="col-sm"><input type="button" class="text-button"  value="Додати товар" id="addButton"></div>
-				<div class="col-sm"><input type="button" class="text-button"  value="Створити товар" data-bs-toggle="modal" data-bs-target="#myModal" ></div>			
-            </div>
+				<div class="col-sm">					
+				</div>
+				<div class="col-sm">
+					<!-- <input 
+						type="button" 
+						class="text-button"  
+						value="Додати товар" 
+						id="addButton"
+						onclick="addProduct()"> -->
+					<button 
+						type="button"
+						id="addButton"
+						class="btn btn-outline-info my-2 my-sm-0"   
+						onclick="addProduct()">
+						Додати товар
+					</button>
+				</div>
+				<div class="col-sm">
+					<button 
+						type="button"
+						class="btn btn-outline-info my-2 my-sm-0"   
+						data-bs-toggle="modal" 
+						data-bs-target="#myModal">
+						Створити товар
+					</button>
+				</div>
+				<div class="col-sm">					
+				</div>
+			</div>
 
 
 			<div class="row"><div class="col-sm"><textarea style="text-align: center;" class="  form-control" name="description" rows="3" cols="50" placeholder="Нотатки"></textarea><br></div></div>
@@ -173,13 +210,13 @@
 </div>
 </div>
 
+<script src="{{url_for('static', filename='javascript/changeProductOldItem.js')}}"></script>
 <script src="{{url_for('static', filename='javascript/sendDataToServerFile.js')}}"></script>
-<script type="module" src="{{url_for('static', filename='javascript/calculate.js')}}"></script>
 <script src="{{url_for('static', filename='javascript/add-select2.js')}}"></script>
 <script src="{{url_for('static', filename='javascript/hiddenElement.js')}}"></script>
 <script src="{{url_for('static', filename='javascript/submitFormSelect2.js')}}"></script>
-
-<script type="module" src="{{url_for('static', filename='javascript/add-button-product.js')}}"></script>
+<script src="{{url_for('static', filename='javascript/newCalculateTotal.js')}}"></script>
+<script src="{{url_for('static', filename='javascript/add-button-product.js')}}"></script>
 
 
 {% endblock %}		

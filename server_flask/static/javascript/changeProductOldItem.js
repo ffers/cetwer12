@@ -12,7 +12,7 @@ function changeBlock(id) {
   
     // Додаємо інший блок або виконайте інші дії, які вам потрібні
     var container = $('#ProductOldItem');
-    var newField = $('<div class="row" id="product-container">')
+    var newField = $('<div class="row" id="product-container"> style="width: 100%"')
         .html(`
                 <div class="col-sm-3 col-lg-4 button-pult">
                     <select  class="  form-control product-select1" 
@@ -48,7 +48,7 @@ function changeBlock(id) {
                         Видалити
                     </button>
                 </div>
-            </div>`);
+            `);
 
 // Добавление нового поля в контейнер
 container.append(newField);
