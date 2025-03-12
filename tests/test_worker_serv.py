@@ -27,7 +27,19 @@ class TestClassDemoInstance:
         assert  pointer.reply == "Don`t have respone."
         assert  pointer.content == []
         assert  pointer.resp == []
-        assert  pointer.comment == "Игорь\n"
+        assert  pointer.comment == None
+
+    def test_stock_courier(self):
+        with flask_app.app_context():
+            pointer = self.await_button_tg(Lib.message_stock_courier)
+            print(pointer)
+            assert  pointer.chat == "courier"
+            assert  pointer.cmd == "stock"
+            assert  pointer.text == "Игорь\n35N10: 300\n45N10: 300\n"
+            assert  pointer.reply == "Don`t have respone."
+            assert  pointer.content == [{'article': '35N10', 'pack': 25, 'quantity': 300}, {'article': '45N10', 'pack': 25, 'quantity': 300}]
+            assert  pointer.resp == [{'article': '35N10', 'quantity': 300}, {'article': '45N10', 'quantity': 300}]
+            assert  pointer.comment == 'Игорь\n'
 
     def test_add_color_35_45(self):
         with flask_app.app_context():
@@ -93,6 +105,7 @@ class TestClassDemoInstance:
             print(pointer)
             assert "manager" ==  pointer.chat 
             assert "reply_manager" == pointer.cmd
+            assert "Denys" == pointer.author
 
     def test_reply_make_comment_false_chat(self):
         with flask_app.app_context():

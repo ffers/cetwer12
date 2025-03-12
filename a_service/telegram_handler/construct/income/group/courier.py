@@ -16,6 +16,7 @@ class MsgCommand(Command):
 class ArrivalCommand(Command):
     def execute(self, chat_data):
         data = self.text_p.parse_colon(chat_data) 
+        print("ArrivalCommand:", data)
         return data
     
 class TakeArrivalCommand(Command):

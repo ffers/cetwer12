@@ -63,11 +63,11 @@ class TextColorParser():
         
     def manager_bot(self, chat_data):
         text = chat_data.text
+        chat_data.content = []
         if "35:" in text or "45:" in text:
             print("ПРАЦЮЄ")
             data = self.parse_text(text)
             chat_data.comment = "Додано Ярік\n"
-            chat_data.content = []
             try:
                 if "35:" in text and "45:" in text:
                     size = self.count_size(text)

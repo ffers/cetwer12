@@ -20,7 +20,9 @@ class ParseText:
             chat_data.comment = command_match.group(2)+"\n"  # Ім'я ("Игорь")
         chat_data.content = []
         for line in lines[1:]:  # Обробляємо кожен рядок після команди
-            match = re.match(r"(\w+):\s*(\d+)\s*\((\d+)\)", line)
+            print("line;", line)
+            match = re.search(r"(\w+):\s*(\d+)\s*\((\d+)\)", line)
+            print("match:", match)
             if match:
                 chat_data = self.parse_colon_true(chat_data, match)
         return chat_data

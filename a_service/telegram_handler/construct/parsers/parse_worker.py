@@ -14,7 +14,8 @@ class Parse:
     
     def add_comment(self, data_chat, order_cntrl):
         time = next(my_time()).strftime("%d-%m-%Y %H:%M")
-        comment = time + ": " + data_chat.comment
+        comment = time + ": " + data_chat.comment 
+        comment += " ("+data_chat.author+")"
         order = order_cntrl.load_for_order_code(data_chat.text)
         if order:
             print("Order:", order)

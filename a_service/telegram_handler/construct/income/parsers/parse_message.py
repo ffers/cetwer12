@@ -48,6 +48,16 @@ class ReplyText(ParseMsg):
         if "callback_query.message.reply_markup.inline_keyboard" in data:
             return data["callback_query.message.reply_markup.inline_keyboard"]
 
+class TakeAuthor(ParseMsg):
+    def execute(self):
+        data = flatten(self.data, "dot")
+        print("TakeAuthor:", data)
+        if "message.from.first_name" in data:
+            return data["message.from.first_name"]
+        if "message.from.username" in data:
+            return data["message.from.username"]
+        return "Невідомий"
+
     
 class CommandText(ParseMsg):
     def execute(self):
@@ -65,7 +75,7 @@ class ChatName(ParseMsg):
                 return item
         return "unknown_chat"
     
-class CheckAnswerWithoutText(ParseMsg):
+class CheckType(ParseMsg):
     def execute(self):
         data = flatten(self.data, "dot")
         if "message.reply_to_message.text" in data:
@@ -85,7 +95,8 @@ class ParseMsgFactory:
             "commandtext": CommandText,
             "taketext": TakeText,
             "replytext": ReplyText,
-            "request": CheckAnswerWithoutText
+            "request": CheckType,
+            "takeauthor": TakeAuthor
         }
         if cmd in commands:
             return commands[cmd](data, pointer).execute()

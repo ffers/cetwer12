@@ -1,7 +1,7 @@
 from settings import Settings
 
 from .maker import CommandDirector, ChatNameDirector, \
-            TextDirector, ReplyDirector, ChatNummerDirector
+            TextDirector, ReplyDirector, ChatNummerDirector, AuthorDirector
 
 from .group import CRM, Courier, Manager, Stock, \
             NPdelivery, ROZdelivery, UKRdelivery
@@ -47,6 +47,14 @@ class ReplyHandler(Resp):
     def execute(self):
         result = ReplyDirector().construct(self.data, self.settings)
         self.chat_data.reply = result
+        return result
+
+class AuthorHandler(Resp):
+    def execute(self):
+        result = AuthorDirector().construct(self.data, self.settings)
+        self.chat_data.author = result
+        print("devAuthorHandler:", result)
+        print("self.chat_data.author:", self.chat_data.author)
         return result
 
 class Group(Resp):
@@ -95,6 +103,7 @@ class Income:
             .add_command(CommandHandler)
             .add_command(TextHandler)
             .add_command(ReplyHandler)
+            .add_command(AuthorHandler)
             .add_command(Group)
             .build(data, data_chat)
         )

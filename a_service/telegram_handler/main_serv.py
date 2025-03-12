@@ -21,6 +21,7 @@ class ChatData:
     content: list = None
     resp: list = None
     comment: str = None
+    author: str = None
 
 class Worker: 
     def __init__(self, data, OrderCntrl, SourAnCntrl, TelegramCntrl):
