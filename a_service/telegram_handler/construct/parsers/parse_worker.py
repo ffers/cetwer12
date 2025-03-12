@@ -2,7 +2,7 @@ from utils import my_time
 from datetime import datetime
 
 
-class Parse:                          
+class Parse:                             
     def __init__(self): 
         pass
  
