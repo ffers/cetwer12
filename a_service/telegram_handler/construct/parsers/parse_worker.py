@@ -2,11 +2,11 @@ from utils import my_time
 from datetime import datetime
 
 
-class Parse:
+class Parse:                          
     def __init__(self): 
         pass
-
-    def all_color(self, items):
+ 
+    def all_color(self, items):     
         sum = 0
         for a,b in items.items():                      
             sum += b 
@@ -33,7 +33,7 @@ class Parse:
             "article": article,
             "quantity": quantity
         })
-        return data_chat 
+        return data_chat      
      
     def parse_stock(self, data_chat, sour_cntrl):
         data_chat.resp = [] 

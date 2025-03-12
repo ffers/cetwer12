@@ -10,7 +10,7 @@ class Command:
         self.parse = Parse()     
 
     def execute(self, content):     
-        pass     
+        pass      
      
 class Stock(Command):
     def execute(self, data_chat):

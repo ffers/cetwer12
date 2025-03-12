@@ -4,7 +4,7 @@ document.getElementById('ChangeAddress').addEventListener('click', function() {
     oldAddressBlock.parentNode.removeChild(oldAddressBlock);
   
     // Додаємо інший блок або виконайте інші дії, які вам потрібні
-    var container = $('#address_row');
+    var container = $('#AdressGeneral');
     var newField = $('<div>')
         .html(
             `

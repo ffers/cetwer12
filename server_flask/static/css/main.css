@@ -134,9 +134,17 @@ tr {
     align-items: center;
     /* height: 100vh; */
 } 
+.center {
+    margin: auto;
+    width: 95%; 
+}
 
 .button-pult {
     margin: 5px;
+}
+.button-col-sm {
+    margin: 5px;
+    padding: 24px 0;
 }
 
 .button-container {
@@ -169,6 +177,11 @@ tr {
 @media screen and (max-width: 928px) {
     .content {
         width: 97%; /* Занимает всю доступную ширину экрана */
+    }
+    .button-col-sm {
+        margin: auto;
+        width: 40%; 
+        padding: 0px 0;
     }
     /* .form-control {
         margin-top: 5px;

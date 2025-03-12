@@ -42,10 +42,11 @@ function changeBlock(id) {
                         
            
                 <div class="col-sm col-lg-2 button-pult">
-                    <button type="button" 
-                        class="removeButton text-button"
-                        onclick="deleteBlock(this)"
-                        >Видалити</button>
+                    <button 
+                        class="removeButton btn btn-outline-info my-2 my-sm-0"   
+                        onclick="deleteBlock(this)">
+                        Видалити
+                    </button>
                 </div>
             </div>`);
 

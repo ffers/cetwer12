@@ -8,10 +8,11 @@ function addProduct() {
             <div class="col-sm col-lg-2 button-pult"><input type="number" style="text-align: center;" class="price form-control" id="price" name="price" min="1" placeholder="Ціна" required></div>
             <input type="number" style="text-align: center; display: none;" class="total form-control" id="sum_price" name="sum_price" min="1" placeholder="Сумма" required>
             <div class="col-sm col-lg-2 button-pult">
-                <button type="button" 
-                    class="removeButton text-button"
-                    onclick="deleteBlock(this)"
-                    >Видалити</button>
+                <button 
+                    class="removeButton btn btn-outline-info my-2 my-sm-0"   
+                    onclick="deleteBlock(this)">
+                    Видалити
+                </button>								
             </div>
         </div>`
     );
