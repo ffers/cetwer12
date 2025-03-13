@@ -93,9 +93,15 @@ class TestClassDemoInstance:
             # assert  pointer.resp == [{'article': '45N', 'quantity': 48}]
             # assert  pointer.comment == "Додано Ярік\n" 
 
-    def test_callback_query(self):
+    def test_callback_query_rozet(self):
         with flask_app.app_context():
             pointer = self.await_button_tg(Lib.callback_query_confirmation)
+            print(pointer)
+            assert "manager" ==  pointer.chat 
+    
+    def test_callback_query_prom(self):
+        with flask_app.app_context():
+            pointer = self.await_button_tg(Lib.callback_query_confirmation_prom)
             print(pointer)
             assert "manager" ==  pointer.chat 
 

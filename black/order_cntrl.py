@@ -11,7 +11,7 @@ from .np_cntrl import NpCntrl
 from .product_analitic_cntrl import ProductAnaliticControl
 from .delivery_order_cntrl import DeliveryOrderCntrl
 from .add_order_to_crm import pr_to_crm_cntr
-from a_service import tg_serv, TgServ
+from a_service import tg_serv, TgServ, TextFactory
 from .prom_cntrl import prom_cntrl
 from utils import util_asx
 from datetime import datetime
@@ -236,8 +236,7 @@ class OrderCntrl:
         delivery = self.check_del_method(order)
         result = self.result(crm_status, bool_prom,
                              update_analitic, delivery)
-        current_time = next(my_time()).strftime("%d-%m-%Y %H:%M")
-        self.update_history(order_id, f"\n{current_time} Підтверджено")
+        self.update_history(order_id, "Підтверджено")
         resp_tg = tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, "{ordered_status} {order_code}".format(**crm_status))
         return result
 
@@ -278,16 +277,16 @@ class OrderCntrl:
 
     def check_del_method(self, order):
         resp = False
-        print("deliveri method", order.delivery_method_id)
+        text_courier = TextFactory.factory("courier", order)
         if order.delivery_method_id == 1:
             resp = self.del_method_np(order)
         elif order.delivery_method_id == 2 or order.delivery_method_id == 4:
             print("Розетка")
-            resp = self.del_method_roz(order)
+            resp = self.del_method_roz(order, text_courier)
         elif order.delivery_method_id == 3:
-            resp = self.del_method_ukr(order)
+            resp = self.del_method_ukr(order, text_courier)
         elif order.delivery_method_id == 5:
-            resp = self.del_method_shop(order)
+            resp = self.del_method_shop(order, text_courier)
         return resp
 
     def del_method_np(self, order):
@@ -297,8 +296,8 @@ class OrderCntrl:
             doc_ttn = np_resp["data"][0]["IntDocNumber"]
             resp_ttn = self.add_ttn_crm(order.id, doc_ttn)
             order = self.ord_rep.load_item(order.id)
-            data_tg_dict = tg_serv.create_text_order(order)  # if telegram True send to telegram
-            tg_cntrl.sendMessage(tg_cntrl.chat_id_np, data_tg_dict)
+            text_courier = TextFactory.factory("courier", order)
+            tg_cntrl.sendMessage(tg_cntrl.chat_id_np, text_courier)
             del_ord_cntrl.update_item(np_resp, order.id)
             resp = True, ""
             if order.source_order_id == 2:
@@ -318,40 +317,18 @@ class OrderCntrl:
         resp = self.ord_rep.add_ttn_crm(order_id, ttn)
         return resp
 
-    def del_method_roz(self, order): 
-        data_tg_dict = tg_serv.create_text_order(order)
-        print(f"data_tg_dict {data_tg_dict}" )
-        print(order.order_code)
-        # tg_cntrl.answerCallbackQuery(callback_query_id, f"Відсилаю в Розетку")
+    def del_method_roz(self, order, text_courier): 
         keyboard_rozet = tg_cntrl.keyboard_generate("Надіслати накладну", order.order_code)
-        resp = tg_cntrl.sendMessage(tg_cntrl.chat_id_rozet, data_tg_dict, keyboard_rozet)
-        print(resp)
+        resp = tg_cntrl.sendMessage(tg_cntrl.chat_id_rozet, text_courier, keyboard_rozet)
         return True
 
-    def del_method_ukr(self, order):
-        print("Відсилаю в Укрпошту")
-        data_tg_dict = tg_serv.create_text_order(order)
-        # tg_cntrl.answerCallbackQuery(callback_query_id, f"Відсилаю в Розетку")
-        # keyboard_rozet = tg_cntrl.keyboard_generate("Надіслати накладну", order.order_code)
-        resp = tg_cntrl.sendMessage(tg_cntrl.chat_id_ukr, data_tg_dict)
+    def del_method_ukr(self, order , text_courier):
+        resp = tg_cntrl.sendMessage(tg_cntrl.chat_id_ukr, text_courier)
         return True
 
-    def del_method_shop(self, order):
-        print("Відсилаю в Шопзаказ")
-        data_tg_dict = tg_serv.create_text_order(order)
-        # tg_cntrl.answerCallbackQuery(callback_query_id, f"Відсилаю в Розетку")
-        # keyboard_rozet = tg_cntrl.keyboard_generate("Надіслати накладну", order.order_code)
-        resp = tg_cntrl.sendMessage(tg_cntrl.chat_id_shop, data_tg_dict)
+    def del_method_shop(self, order, text_courier):
+        resp = tg_cntrl.sendMessage(tg_cntrl.chat_id_shop, text_courier)
         return True
-
-    # def await_order_cab_tg(self, order, flag=None, id=None): # дубль фукціі await_order щоб обійти діспетчер
-    #     print(f"see_flag {flag}")
-    #     resp = None
-    #     if flag == "Надіслати накладну":
-    #         resp = tg_serv.send_order_curier(order)
-    #     if flag == "crm_to_telegram":
-    #         resp = tg_serv.create_text_order(order)
-    #     return resp
 
     def delete_order(self, id):
         print(f"delete order {id}")
@@ -370,8 +347,6 @@ class OrderCntrl:
     def change_status_item(self, id, status):
         resp = self.ord_rep.change_status(id, status)
         StatusProcess.update_order(id, int(status), TelegramController, TgServ, OrderRep)
-        # resp_tg = tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, "{ordered_status} {order_code}".format(**resp))
-        # print(resp_tg)
         return resp# resp.update( {"message_id": resp_tg["result"]["message_id"]})
  
     def change_status_roz(self):

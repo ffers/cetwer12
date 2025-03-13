@@ -56,7 +56,7 @@ flask_app.register_blueprint(JourChRout)
 flask_app.register_blueprint(ProductSource)
 flask_app.register_blueprint(SourceDifference)
 flask_app.register_blueprint(ColorSource, url_prefix='/cabinet/source')
-flask_app.register_blueprint(Panel, url_prefix='/cabinet/panel')
+flask_app.register_blueprint(Panel, url_prefix='/cabinet/workspace')
 
 from .models import Users
 login_manager = LoginManager()

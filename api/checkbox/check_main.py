@@ -64,7 +64,7 @@ class CheckboxClient(object):
     #Якщо каса не перейшла у онлайн - варто відправити /api/v1/cash-registers/go-online ще раз та знову перевірити через хвилину статус каси, повторюючи дії в циклі, поки каса не вийде у онлайн-режим.
     def shifts(self, body):
         prefix = "shifts"
-        obj = HeadersModel(
+        obj = HeadersModel( 
             X_License_Key=self.license_key,
             Authorization=f"Bearer {self.cash}",
             Content_Type="application/json"

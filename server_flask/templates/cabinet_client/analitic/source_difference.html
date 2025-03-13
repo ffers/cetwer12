@@ -97,13 +97,19 @@
             </td>
             <td style="text-align: center;" >{{item.event_date.strftime('%d-%m-%Y')}}</td>
             <td contenteditable="true" style="text-align: center;">{{item.quantity_crm}}</td>
-            <td contenteditable="true"><input style="text-align: center;" class="quantity form-control" 
-              id="difference" name="difference"  min="1" max="10000" 
-              placeholder="* різниця" value="{{item.quantity_stock}}">
+            <td contenteditable="true">
+              <input 
+              style="text-align: center;" 
+              class="quantity form-control" 
+              id="difference" 
+              name="difference"  
+              min="1" max="10000" 
+              placeholder="-" 
+              value="{{ item.quantity_stock or '0'}}">
             </td>
-            <td style="text-align: center;" >{{item.difference}}</td>
-            <td style="text-align: center;" >{{item.sold}}</td>
-            <td contenteditable="false">{{item.comment}}</td>
+            <td style="text-align: center;" >{{item.difference or '0'}}</td>
+            <td style="text-align: center;" >{{item.sold or '0'}}</td>
+            <td contenteditable="false">{{item.comment or 'Нема руху'}}</td>
            
 
 

@@ -143,41 +143,43 @@
 			<div class="col-sm">
 				<footer><small class="text-muted">Призвіще:</small></footer>
 				<input class="form-control" 
-				style="text-align: center;" 
-				name="client_lastname" 
-				rows="1" cols="50" placeholder="* Призвіще" 
-				value="{{order.client_lastname}}" id="client_lastname" 
-				data-bs-container="body" 
-				data-bs-toggle="popover" 
-				data-bs-placement="top" 
-				data-bs-content="Тут є латиниця">
+					style="text-align: center;" 
+					name="client_lastname" 
+					rows="1" cols="50" placeholder="* Призвіще" 
+					value="{{order.client_lastname}}" id="client_lastname" 
+					data-bs-container="body" 
+					data-bs-toggle="popover" 
+					data-bs-placement="top" 
+					data-bs-content="Тут є латиниця">
 				<br>
 			</div>
 			<div class="col-sm">
 				<footer><small class="text-muted">Імʼя:</small></footer>
 				<input class="form-control   " 
-				style="text-align: center;" 
-				name="client_firstname" 
-				rows="1" cols="50" placeholder="* Ім'я" 
-				value="{{order.client_firstname}}" 
-				id="client_firstname" 
-				data-bs-container="body" 
-				data-bs-toggle="popover" 
-				data-bs-placement="top" 
-				data-bs-content="Тут є латиниця">
+					style="text-align: center;" 
+					name="client_firstname" 
+					rows="1" cols="50" placeholder="* Ім'я" 
+					value="{{order.client_firstname}}" 
+					id="client_firstname" 
+					data-bs-container="body" 
+					data-bs-toggle="popover" 
+					data-bs-placement="top" 
+					data-bs-content="Тут є латиниця">
 				<br>
 			</div>
-			<div class="col-sm"><footer><small class="text-muted">Побатькові:</small></footer><input class="form-control   " style="text-align: center;" 
-				name="client_surname" rows="1" cols="50" 
-				placeholder="Побатькові(необов.)" 
-				value="{{order.client_surname}}">
+			<div class="col-sm">
+				<footer><small class="text-muted">Побатькові:</small></footer>
+				<input class="form-control" style="text-align: center;" 
+					name="client_surname" rows="1" cols="50" 
+					placeholder="Побатькові(необов.)"
+					value="{{ order.client_surname or ''}}">
 				<br>
 			</div>
 			<div class="col-sm"><footer><small class="text-muted">Email:</small></footer>
 				<input class="form-control   " style="text-align: center;" 
 				name="email" rows="1" cols="50" 
-				placeholder="email" 
-				value="{{order.email}}">
+				placeholder="Email" 
+				value="{{order.email or ''}}">
 				<br>
 			</div>
 					
@@ -419,11 +421,11 @@
 				style="
 					text-align: center;
 					padding: 10px;
-					width: 60%;
+					width: 80%;
 					" 
 				class="form-control center" 
 				name="description"  
-				rows="3" 
+				rows="5" 
 				cols="50" 
 				placeholder="Нотатки" >{{order.description}}</textarea>
 		
@@ -439,10 +441,10 @@
 					" 
 				class="form-control center" 
 				name="history"  
-				rows="3" 
+				rows="5" 
 				cols="50" 
 				placeholder="Історія" 
-				>{{order.history}}</textarea>
+				>{{ order.history or "" }}</textarea>
 		</div>
 		<div class="row">
 			<button 

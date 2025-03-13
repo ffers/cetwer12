@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import os, logging, re
 import html
 from datetime import datetime
+from .telegram_handler.tg_serv_text_order_courier import TextOrderCourier
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
@@ -53,6 +54,8 @@ class TgServ():
             f"{product_text}\n=========================================================="
         )
         return data_get_order
+    
+
 
     def check_ttn(self, order):
         ttn = "ТТН немає"
@@ -93,3 +96,13 @@ class TgServ():
     #     return resp
 
 tg_serv = TgServ()
+
+class TextFactory:
+    @staticmethod
+    def factory(cmd, order):
+        commands = {
+            "courier": TextOrderCourier,
+        } 
+        if cmd in commands:
+            return commands[cmd](order).builder(order)
+        return f"Немає Текста для {cmd}"

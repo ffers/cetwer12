@@ -22,7 +22,8 @@ class OrderServ:
     #             return new_digits  # Повертаємо унікальне значення
 
     def update_history(self, order_id, comment):
-        new_comment =  "\n" + comment
+        current_time = next(my_time()).strftime("%d-%m-%Y %H:%M")
+        new_comment =  "\n" + f"{current_time}: " + comment
         return self.order_rep.update_history(order_id, new_comment)
     
     def change_history(self, request_data):
