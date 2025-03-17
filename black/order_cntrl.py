@@ -128,6 +128,9 @@ class OrderCntrl:
         order = self.ord_rep.load_for_order_code(order_code)
         return order
 
+    def load_orders_store(self, api_name):
+        self.order_serv.load_orders_store(api_name)
+
     def dublicate(self, order_id):
         item = self.ord_rep.load_item(order_id)
         dublicate_item = self.ord_rep.dublicate_item(item)
@@ -153,17 +156,7 @@ class OrderCntrl:
             OC_log.info(info)
             tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, info)
 
-    def add_order2(self, o):
-        order_db = self.ord_rep.add_order(o)
-        return order_db
-
-    def add_ordered_product(self, p, ord_id):
-        prod_cntrl = ProductCntrl()
-        prod_db = prod_cntrl.load_by_article(p.article)
-        p.order_id = ord_id
-        p.product_id = prod_db.id
-        product_db = self.ord_rep.add_ordered_product(p)
-        return product_db
+    
 
 
 

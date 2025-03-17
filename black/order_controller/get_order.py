@@ -1,7 +1,6 @@
 from datetime import datetime
 from a_service.order_service.order_api_process import OrderApi
-from ..order_cntrl import OrderCntrl
-from ..telegram_controller import TelegramController
+
 
 class GetOrder:
     def __init__(self, api):

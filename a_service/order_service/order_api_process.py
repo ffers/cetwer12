@@ -1,6 +1,5 @@
 
-from dataclasses import dataclass, field
-import sys, os
+import sys
 sys.path.append('../')
 from common_asx.utilits import Utils
 from api import EvoClient, RozetMain
@@ -37,7 +36,6 @@ class OrderApi:
                 for order in list_order:
                     text = self.make_text(order)
                     send_tg = self.tg.sendMessage(self.tg.chat_id_confirm, text)
-                    
                     print("Send to tg: ", send_tg["ok"])
                     resp = self.util.change_status_rozet(order.id, 26)
 
@@ -45,10 +43,10 @@ class OrderApi:
                     resp = self.add_order(order)
                     print("Add to crm: ", resp)
                 return True
-            return False
+            return list_standart_dto
         except Exception as e:
             text = f"🔴 Помилка додавання замовлення в розетку {e}"
-            return self.tg.sendMessage(self.tg.chat_id_info, text)
+            return False
         
     def add_order(self, o):
         order_db = self.order_cntrl.add_order2(o)
@@ -58,8 +56,6 @@ class OrderApi:
                 return True if product_db else False
         return False 
 
-    
-        
     def change_status(self, order_id, status):
         resp =self.api.create_status_get(order_id, status)        
         return resp

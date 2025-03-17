@@ -19,9 +19,9 @@ class TextOrderCourier:
     def take_store_color(self, order):
         store_id = order.source_order.id
         marketplace_color = { 
+        1: "🔵",
         2: "🟣",
         3: "🟢",
-        1: "🔵",
         }
         if store_id in marketplace_color:
             return marketplace_color[store_id]
@@ -82,7 +82,8 @@ class TextOrderCourier:
         return text
     
     def address_line(self, order):
-        return f"\n{order.city_name}, {order.warehouse_text}\n"
+        city_name = f"{order.city_name}, " if order.city_name else ""
+        return f"\n{city_name}{order.warehouse_text}\n"
     
     def client_comment(self, order):
         if order.description:
@@ -91,22 +92,9 @@ class TextOrderCourier:
             return "\nНотаток від клієнта нема\n"
         
     def product_block_header(self, order):
-        text = ""
+        text = "           ***\n"
         for product in order.ordered_product:
             text += f"{self.store_color} {product.products.article} - " 
             text += f"{product.quantity}шт - {product.price}\n"
         text += f"Сумма: {order.sum_price} грн\n"
         return text
-
-    def product(self, order):
-        product_article = ""
-        product_text = "На всяк випадок:\n"
-        for product in order.ordered_product:
-            product_article += f"{self.store_color} {product.products.article} - {product.quantity}шт - {product.price}\n"
-            product_text += f" {product.products.product_name}\n"
-    
-    def description(self, order, store_color):
-        if order.description:
-            return f"{store_color} Нотатка:\n" + order.description
-        else:
-            return "Нотаток від клієнта нема"

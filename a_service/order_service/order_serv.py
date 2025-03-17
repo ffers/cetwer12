@@ -1,7 +1,13 @@
-from repository import OrderRep
 import random
 from flask import jsonify
 from utils.my_time_util import my_time
+
+from .client_serv import ClientServ
+
+from repository import OrderRep, CostumerRep, RecipientRep
+# from .order_api_process import OrderApi
+from ..telegram_handler.text_formater.text_order_manager import TextOrderManager
+
 
 
 class OrderServ:
@@ -14,12 +20,56 @@ class OrderServ:
         order_code = f'{prefix}-{unique_id}'
         return order_code
 
-    # def examine_code(self, order, code):
-    #     while True:
-    #           # Генеруємо нове значення
-    #         if not order:  # Перевіряємо, чи таке значення ще не використовувалось
-    #             used_values.add(new_digits)  # Додаємо нове значення до множини використаних
-    #             return new_digits  # Повертаємо унікальне значення
+        #нужно написать функцію для копирования всех кліентов
+        # в другую таблицу с записью установленого айди в главной таблице
+    def start(self):
+        orders = self.order_rep.load_item_all
+        resp = self.change_order(orders)
+
+    def change_order(self, orders):
+        for order in orders:
+            resp1 = self.create_client(order, CostumerRep)
+            resp2 = self.create_client(order, RecipientRep)
+            # нужно создать костюмера
+            # нужно создать отримувача
+
+    def create_client(self, order, Repo):
+        c = ClientServ(Repo)
+        return c.create_item(order)
+
+
+    def load_orders_store(self, api_name, TelegramCntrl):
+        order_api = OrderApi(api_name)
+        telegram_cntrl = TelegramCntrl()
+        orders = order_api.get_orders()
+        if orders:
+            return self.observer_order(orders, telegram_cntrl)
+        else: 
+            return False
+
+    def observer_order(self, orders, telegram_cntrl):
+        for order in orders:
+            order_db = self.add_order2(order)
+            if order_db:
+                text_order = TextOrderManager(order_db).builder()
+                telegram_cntrl.sendMessage(telegram_cntrl.chat_id_confirm, text_order)
+        return True 
+
+    def add_order2(self, order_dto):
+        order_db = self.order_rep.add_order(order_dto)
+        if order_db:
+            for product in order_dto.ordered_product:
+                product_db = self.add_ordered_product(product, order_db.id)
+        order_db = self.order_rep.load_item(order_db.id)
+        return order_db
+
+    def add_ordered_product(self, product_dto, ord_id, ProductCntrl):
+        prod_cntrl = ProductCntrl()
+        prod_db = prod_cntrl.load_by_article(product_dto.article)
+        product_dto.order_id = ord_id
+        product_dto.product_id = prod_db.id
+        product_db = self.ord_rep.add_ordered_product(product_dto)
+        return product_db
 
     def update_history(self, order_id, comment):
         current_time = next(my_time()).strftime("%d-%m-%Y %H:%M")
@@ -69,3 +119,4 @@ class OrderServ:
         orders = data["id"]
         status = data["status"]
         return orders, status
+    

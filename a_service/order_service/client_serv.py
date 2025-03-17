@@ -1,0 +1,44 @@
+
+from repository  import CostumerRep, RecipientRep
+from dataclasses import dataclass
+
+@dataclass
+class Data:
+    first_name: str = None
+    last_name: str = None
+    second_name: str = None
+    phone: str = None
+    email: str = None
+
+class ClientServ:
+    def __init__(self, Repo):
+        self.repo = Repo()
+
+    def parser_from_order(self, order):
+        item = Data()
+        item.firs_tname = order.client_firstname
+        item.last_name = order.client_lastname
+        item.second_name = order.client_surname
+        item.phone = order.phone
+        item.email = order.email
+        return item
+    
+    def create_item(self, order):
+        item = self.parser_from_order(order)
+        return self.repo.create(item)
+    
+class Builder:
+    def __init__(self):
+        self.commands = [
+            ClientServ,
+            ClientServ
+        ]
+
+
+    def build(self, data):
+        pointer = None
+        for cmd_class in self.commands:
+            pointer = cmd_class(data).execute()
+            print(pointer, "builder")
+        return pointer
+

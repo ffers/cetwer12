@@ -11,8 +11,12 @@ class Orders(db.Model):
     client_firstname = db.Column(db.String(50))
     client_lastname = db.Column(db.String(50))
     client_surname = db.Column(db.String(50))
-    # recipient_id = db.Column(db.Integer, db.ForeignKey(
-    #     'recipient_delivery.id', name='fk_orders_recipient_delivery_id'))
+    recipient = db.relationship("Recipient", back_populates="orders")
+    recipient_id = db.Column(db.Integer, db.ForeignKey(
+        'recipient.id', name='fk_orders_recipient_id'))
+    costumer = db.relationship("Costumer", back_populates="orders")
+    costumer_id = db.Column(db.Integer, db.ForeignKey(
+        'costumer.id', name='fk_orders_costumer_id'))
     delivery_option = db.Column(db.String(50))
     city_name = db.Column(db.String(50))
     city_ref = db.Column(db.String(50))
@@ -21,7 +25,6 @@ class Orders(db.Model):
     warehouse_option = db.Column(db.String(50))
     warehouse_text = db.Column(db.String(255))
     warehouse_ref = db.Column(db.String(50))
-    # payment_option = db.Column(db.String(50))
     sum_price = db.Column(db.Float)
     sum_before_goods = db.Column(db.Float)
     description = db.Column(db.String(300))

@@ -118,8 +118,7 @@ class PromToCrm():
             description = order["client_notes"]
             return description
         else:
-            description = "Нотаток нема"
-            return description
+            return None
 
     def add_delivery_method(self, order):
         mapping = {

@@ -19,7 +19,6 @@ class Stock(Command):
        
 class Take(Command):
     def execute(self, data_chat): 
-        data_chat = self.parse.parse_stock(data_chat, self.SourAnCntrl)
         return data_chat
       
         

@@ -52,9 +52,6 @@ class TestClassDemoInstance:
             assert  pointer.content == [{'article': '35N', 'data': {28: 12, 29: 12, 30: 12, 31: 12}}, {'article': '45N', 'data': {28: 12, 29: 12, 30: 12, 31: 12}}]
             assert  pointer.resp == [{'article': '35N', 'quantity': 48}, {'article': '45N', 'quantity': 48}]
             assert  pointer.comment == "Додано Ярік\n"
-    
-    def test_comand_just(self):
-        assert  2 == 2
 
     def test_add_color_35(self):
         with flask_app.app_context():
@@ -79,6 +76,42 @@ class TestClassDemoInstance:
             assert  pointer.content == [{'article': '45N', 'data': {28: 12, 29: 12, 30: 12, 31: 12}}]
             assert  pointer.resp == [{'article': '45N', 'quantity': 48}]
             assert  pointer.comment == "Додано Ярік\n" 
+
+    def test_take_color_35_45(self):
+        with flask_app.app_context():
+            pointer = self.await_button_tg(Lib.take_color_35_45)
+            print(pointer)
+            assert  pointer.chat == "stock"
+            assert  pointer.cmd == "take"
+            # assert  pointer.text == "Додано Ярік\n35N: 48\n45N: 48\n"
+            # assert  pointer.reply == "Don`t have respone."
+            # assert  pointer.content == [{'article': '35N', 'data': {28: 12, 29: 12, 30: 12, 31: 12}}, {'article': '45N', 'data': {28: 12, 29: 12, 30: 12, 31: 12}}]
+            # assert  pointer.resp == [{'article': '35N', 'quantity': 48}, {'article': '45N', 'quantity': 48}]
+            # assert  pointer.comment == "Додано Ярік\n"
+
+    def test_take_color_35(self):
+        with flask_app.app_context():
+            pointer = self.await_button_tg(Lib.take_color_35)
+            print(pointer)
+            assert  pointer.chat == "stock"
+            assert  pointer.cmd == "take"
+            # assert  pointer.text == "Додано Ярік\n35N: 48\n"
+            # assert  pointer.reply == "Don`t have respone."
+            # assert  pointer.content == [{'article': '35N', 'data': {28: 12, 29: 12, 30: 12, 31: 12}}]
+            # assert  pointer.resp == [{'article': '35N', 'quantity': 48}]
+            # assert  pointer.comment == "Додано Ярік\n" 
+
+    def test_take_color_45(self):
+        with flask_app.app_context():
+            pointer = self.await_button_tg(Lib.take_color_45)
+            print(pointer)
+            assert  pointer.chat == "stock"
+            assert  pointer.cmd == "take"
+            # assert  pointer.text == "Додано Ярік\n45N: 48\n"
+            # assert  pointer.reply == "Don`t have respone."
+            # assert  pointer.content == [{'article': '45N', 'data': {28: 12, 29: 12, 30: 12, 31: 12}}]
+            # assert  pointer.resp == [{'article': '45N', 'quantity': 48}]
+            # assert  pointer.comment == "Додано Ярік\n" 
 
 
     def test_unknown_chat_unknown_command(self):

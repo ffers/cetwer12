@@ -13,3 +13,6 @@ from .sour_difference_an_rep import SourDiffAnRep
 from .user_token_rep import UserTokenRep
 from .receipt_rep import ReceiptRep, ShiftRep
 from .work_space_rep import WorkSpaceRep
+from .recipient_rep import RecipientRep
+from .costumer_rep import CostumerRep
+

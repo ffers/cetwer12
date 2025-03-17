@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from fastapi import APIRouter, Depends, HTTPException
 
-from black.order_controller.get_order import GetOrder
+from black.order_cntrl import OrderCntrl
 from server_flask.flask_app import flask_app, jsonify
 
 
@@ -23,10 +23,10 @@ router = APIRouter(
 #         return jsonify({"message": "Admin getting schwifty"})
     
 @router.get("/get_orders")
-async def close_day():
+async def get_orders():
     with flask_app.app_context():
-        api = GetOrder("rozetka")
-        result = api.get_orders()
+        order_cntrl = OrderCntrl()
+        result = order_cntrl.load_orders_store("rozetka")
         print("Get orders: ", result)
         if result:
             return {"message": "Order get successfuly"}
