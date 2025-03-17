@@ -19,6 +19,7 @@ from .analitic_cntrl.sour_an_cntrl import SourAnCntrl
 from .telegram_cntrl.tg_cash_cntrl import TgCashCntrl
 from .product_cntrl import ProductCntrl
 from utils import my_time
+from api import EvoClient, RozetMain
 
 # order1 = StatusProcess.update_order(2487, 6, TelegramController)
 
@@ -64,7 +65,7 @@ prod_an_cntrl = ProductAnaliticControl()
 np_cntrl = NpCntrl()
 del_ord_serv = DeliveryOrderServ()
 del_ord_cntrl = DeliveryOrderCntrl()
-util_cntrl = Utils()
+util_cntrl = Utils(EvoClient, RozetMain)
 
 
 class OrderCntrl: 
@@ -129,7 +130,7 @@ class OrderCntrl:
         return order
 
     def load_orders_store(self, api_name):
-        self.order_serv.load_orders_store(api_name)
+        return self.order_serv.load_orders_store(api_name, OrderCntrl, TelegramController, EvoClient, RozetMain)
 
     def dublicate(self, order_id):
         item = self.ord_rep.load_item(order_id)
@@ -156,9 +157,26 @@ class OrderCntrl:
             OC_log.info(info)
             tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, info)
 
+    # 
+    # Для РОЗЕТКІ
+    #
+    #
+
+    def add_order2(self, order_obj):
+        return self.ord_rep.add_order(order_obj)
     
+    def add_ordered_product(self, product_dto, ord_id):
+        prod_cntrl = ProductCntrl()
+        prod_db = prod_cntrl.load_by_article(product_dto.article)
+        product_dto.order_id = ord_id
+        product_dto.product_id = prod_db.id
+        product_db = self.ord_rep.add_ordered_product(product_dto)
+        return product_db
 
-
+    #
+    #
+    #
+    #
 
     
 

@@ -5,8 +5,8 @@ from utils.my_time_util import my_time
 from .client_serv import ClientServ
 
 from repository import OrderRep, CostumerRep, RecipientRep
-# from .order_api_process import OrderApi
-from ..telegram_handler.text_formater.text_order_manager import TextOrderManager
+from .order_api_process import OrderApi
+from ..telegram_handler.text_formater.text_order_manager import TextOrderManager  
 
 
 
@@ -38,14 +38,15 @@ class OrderServ:
         return c.create_item(order)
 
 
-    def load_orders_store(self, api_name, TelegramCntrl):
-        order_api = OrderApi(api_name)
+    def load_orders_store(self, api_name, OrderCntrl, TelegramCntrl, EvoClient, RozetMain):
+        order_api = OrderApi(api_name, OrderCntrl, TelegramCntrl, EvoClient, RozetMain)
         telegram_cntrl = TelegramCntrl()
-        orders = order_api.get_orders()
-        if orders:
-            return self.observer_order(orders, telegram_cntrl)
-        else: 
-            return False
+        return order_api.get_orders()
+
+        # if orders:
+        #     return self.observer_order(orders, telegram_cntrl)
+        # else: 
+        #     return False
 
     def observer_order(self, orders, telegram_cntrl):
         for order in orders:

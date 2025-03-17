@@ -1,6 +1,6 @@
 
 from api.nova_poshta import create_ttn_button
-from api.prom import EvoClient
+from api import EvoClient, RozetMain
 from api.nova_poshta.create_data import RegistrDoc
 from api.nova_poshta.create_data import ListClient
 from api.nova_poshta import CreateNpData
@@ -26,7 +26,7 @@ ls_cl = ListClient()
 reg_cl = RegistrDoc()
 crnp_cl = CreateNpData()
 # cab_cl = NpCabinetCl()
-ut_cl = Utils()
+ut_cl = Utils(EvoClient, RozetMain)
 ord_rep = OrderRep()
 del_ord_cntrl = DeliveryOrderCntrl()
 

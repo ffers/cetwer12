@@ -2,7 +2,7 @@
 import sys
 sys.path.append('../')
 from common_asx.utilits import Utils
-from api import EvoClient, RozetMain
+
 
 # роутер принимает get_orders та в хідер отримує якій апі
 
@@ -11,7 +11,7 @@ from api import EvoClient, RozetMain
 
 class FactoryApi:
     @staticmethod
-    def factory(api):
+    def factory(api, EvoClient, RozetMain):
         apis = {
                 "rozetka": RozetMain,
                 "prom": EvoClient
@@ -23,11 +23,11 @@ class FactoryApi:
             
 
 class OrderApi:
-    def __init__(self, api, OrderCntrl, TG):
-        self.api = FactoryApi.factory(api)
+    def __init__(self, api, OrderCntrl, TG, EvoClient, RozetMain):
+        self.api = FactoryApi.factory(api, EvoClient, RozetMain)
         self.order_cntrl = OrderCntrl()
         self.tg = TG()
-        self.util = Utils()
+        self.util = Utils(EvoClient, RozetMain)
     
     def get_orders(self):
         try:
@@ -53,7 +53,7 @@ class OrderApi:
         if order_db:
             for p in o.ordered_product:
                 product_db = self.order_cntrl.add_ordered_product(p, order_db.id)
-                return True if product_db else False
+            return True if product_db else False
         return False 
 
     def change_status(self, order_id, status):
