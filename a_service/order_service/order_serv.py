@@ -2,7 +2,7 @@ import random
 from flask import jsonify
 from utils.my_time_util import my_time
 
-from .client_serv import ClientServ
+from .client_serv import ClientBuilder
 
 from repository import OrderRep, CostumerRep, RecipientRep
 from .order_api_process import OrderApi
@@ -28,14 +28,14 @@ class OrderServ:
 
     def change_order(self, orders):
         for order in orders:
-            resp1 = self.create_client(order, CostumerRep)
-            resp2 = self.create_client(order, RecipientRep)
+            resp = self.create_client(order, CostumerRep)
+  
             # нужно создать костюмера
             # нужно создать отримувача
 
     def create_client(self, order, Repo):
-        c = ClientServ(Repo)
-        return c.create_item(order)
+        return ClientBuilder(Repo).build(order, Repo)
+        
 
 
     def load_orders_store(self, api_name, OrderCntrl, TelegramCntrl, EvoClient, RozetMain):

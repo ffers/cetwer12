@@ -23,22 +23,23 @@ class ClientServ:
         item.email = order.email
         return item
     
-    def create_item(self, order):
+    def execute(self, order):
         item = self.parser_from_order(order)
         return self.repo.create(item)
     
-class Builder:
+class ClientBuilder:
     def __init__(self):
         self.commands = [
-            ClientServ,
-            ClientServ
+            ClientServ(CostumerRep),
+            ClientServ(RecipientRep)
         ]
 
 
-    def build(self, data):
+    def build(self, order):
         pointer = None
         for cmd_class in self.commands:
-            pointer = cmd_class(data).execute()
-            print(pointer, "builder")
+            pointer = cmd_class.execute(order)
+            if not pointer:
+                break
         return pointer
 

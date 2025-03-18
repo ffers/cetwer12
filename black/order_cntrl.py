@@ -158,7 +158,7 @@ class OrderCntrl:
             tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, info)
 
     # 
-    # Для РОЗЕТКІ
+    # Для РОЗЕТКІ =======================
     #
     #
 
@@ -173,7 +173,7 @@ class OrderCntrl:
         product_db = self.ord_rep.add_ordered_product(product_dto)
         return product_db
 
-    #
+    #-----==========================
     #
     #
     #
