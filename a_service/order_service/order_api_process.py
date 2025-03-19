@@ -57,8 +57,8 @@ class OrderApi:
         return False 
 
     def change_status(self, order_id, status):
-        resp =self.api.create_status_get(order_id, status)        
-        return resp
+        return self.api.create_status_get(order_id, status)    
+
 
     def get_order(self, order_id):
         order_dr = self.api.get_order_id(order_id)

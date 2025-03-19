@@ -132,6 +132,9 @@ class OrderCntrl:
     def load_orders_store(self, api_name):
         return self.order_serv.load_orders_store(api_name, OrderCntrl, TelegramController, EvoClient, RozetMain)
 
+    def update_client_info(self):
+        return self.order_serv.update_client_info()
+
     def dublicate(self, order_id):
         item = self.ord_rep.load_item(order_id)
         dublicate_item = self.ord_rep.dublicate_item(item)

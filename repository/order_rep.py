@@ -50,6 +50,7 @@ class OrderRep:
         db.session.add(product_obj)
         db.session.commit()
         return product_obj
+    
 
     def update_history(self, order_id, new_comment):
         try:
@@ -80,6 +81,23 @@ class OrderRep:
             return True, None
         except Exception as e:
             return False, str(e)
+        
+    def update_new_dataclass(self, order_id: int, data):
+        # Отримуємо поточний запис
+        order = self.load_item(order_id)
+        if not order:
+            return None  # Якщо ордер не знайдено
+
+        # Оновлюємо тільки ті атрибути, які не є `None`
+        for key in data.__dataclass_fields__:  # Перебираємо поля `dataclass`
+            value = getattr(data, key)
+            if value is not None:
+                setattr(order, key, value)
+
+        # Зберігаємо зміни
+        db.session.commit()
+        db.session.refresh(order)
+        return order  # Повертаємо оновлений об'єкт
 
 
     def load_item(self, order_id):

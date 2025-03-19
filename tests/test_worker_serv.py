@@ -41,6 +41,18 @@ class TestClassDemoInstance:
             assert  pointer.resp == [{'article': '35N10', 'quantity': 300}, {'article': '45N10', 'quantity': 300}]
             assert  pointer.comment == 'Игорь\n'
 
+    def test_take_courier(self):
+        with flask_app.app_context():
+            pointer = self.await_button_tg(Lib.message_take_courier)
+            print(pointer)
+            assert  pointer.chat == "courier"
+            assert  pointer.cmd == "take_courier"
+            assert  pointer.text == "Ярик отдал на покрас\n45W1: -50\n"
+            assert  pointer.reply == "Don`t have respone."
+            assert  pointer.content == [{'article': '45W1', 'pack': 1, 'quantity': 50}]
+            assert  pointer.resp == [{'article': '45W1', 'quantity': -50}]
+            assert  pointer.comment == 'Ярик отдал на покрас\n'
+
     def test_add_color_35_45(self):
         with flask_app.app_context():
             pointer = self.await_button_tg(Lib.add_color_35_45)

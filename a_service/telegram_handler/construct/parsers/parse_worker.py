@@ -23,7 +23,7 @@ class Parse:
     def quantity_parse(self, item, data_chat):
         if "data" in item:
             return self.all_color(item["data"])
-        if data_chat.cmd == "take": 
+        if data_chat.cmd == "take_courier": 
             return -item["quantity"]
         return item["quantity"]
     

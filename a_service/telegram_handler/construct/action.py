@@ -20,6 +20,10 @@ class Stock(Command):
 class Take(Command):
     def execute(self, data_chat): 
         return data_chat
+    
+class TakeCourier(Command):
+    def execute(self, data_chat): 
+        return self.parse.parse_stock(data_chat, self.SourAnCntrl)
       
         
 class NewOrders(Command):
@@ -54,6 +58,7 @@ class Action:
             "new_orders": NewOrders,
             "reply_manager": AddComment,
             "take": Take,
+            "take_courier": TakeCourier,
             "unknown_command": UnknownCommandAction
         } 
         if data_chat.cmd in commands:

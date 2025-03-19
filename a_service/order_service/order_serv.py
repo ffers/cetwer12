@@ -2,9 +2,9 @@ import random
 from flask import jsonify
 from utils.my_time_util import my_time
 
-from .client_serv import ClientBuilder
+from .client_serv import OrderProcessingPipeline
 
-from repository import OrderRep, CostumerRep, RecipientRep
+from repository import OrderRep
 from .order_api_process import OrderApi
 from ..telegram_handler.text_formater.text_order_manager import TextOrderManager  
 
@@ -22,20 +22,33 @@ class OrderServ:
 
         #нужно написать функцію для копирования всех кліентов
         # в другую таблицу с записью установленого айди в главной таблице
-    def start(self):
-        orders = self.order_rep.load_item_all
+    def update_client_info(self):
+        orders = self.order_rep.load_item_all()
         resp = self.change_order(orders)
+        if not resp:
+            print("change_order: Невийшло")
+        return True
 
     def change_order(self, orders):
         for order in orders:
-            resp = self.create_client(order, CostumerRep)
+            resp = self.create_client(order)
+            if not resp:
+                break
+        return resp
   
             # нужно создать костюмера
             # нужно создать отримувача
 
-    def create_client(self, order, Repo):
-        return ClientBuilder(Repo).build(order, Repo)
-        
+    def create_client(self, order):
+        resp = "without answer"
+        # try: 
+        resp = OrderProcessingPipeline().process(order)
+        if not resp:
+            raise
+        return resp
+        # except:
+        #     print("create_client:", resp)
+        #     return False
 
 
     def load_orders_store(self, api_name, OrderCntrl, TelegramCntrl, EvoClient, RozetMain):

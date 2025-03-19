@@ -6,7 +6,7 @@ from server_flask.db import db
 class RecipientRep:
     def create(self, item_new):
         item = Recipient(
-            firs_tname=item_new.firs_tname,
+            first_name=item_new.first_name,
             last_name=item_new.last_name,
             second_name=item_new.second_name,
             phone=item_new.phone,
@@ -22,7 +22,7 @@ class RecipientRep:
 
     def update(self, item_id, item_new):
         item = self.read_item(item_id)
-        item.firs_tname=item_new.first_name,
+        item.first_name=item_new.first_name,
         item.last_name=item_new.last_name,
         item.second_name=item_new.second_name,
         item.phone=item_new.phone,

@@ -43,6 +43,7 @@ class ResponceFactory:
         commands = {
             "take": ResponceCommand, 
             "stock": ResponceCommand,
+            "take_courier": ResponceCommand,
             "unknown_command": UnknownCommandResponce
             # "edit": "edit",
             # "arrival": "ArrivalCommand,",
