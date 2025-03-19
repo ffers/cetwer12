@@ -1,7 +1,7 @@
 
 
 from black.tg_answer_cntrl import OrderCntrl, SourAnCntrl, TelegramController, TgAnswerCntrl
-from .lib.lib import Lib
+from .lib.lib_tg import LibTG
 from server_flask.flask_app import flask_app
 
 
@@ -9,17 +9,17 @@ class TestClassDemoInstance:
     await_button_tg = TgAnswerCntrl().await_tg_button
     
     def test_just_message(self):
-        pointer = self.await_button_tg(Lib.just_message)
+        pointer = self.await_button_tg(LibTG.just_message)
         print(pointer)
         assert pointer.cmd == "just_message"
 
     def test_hashtag(self):
-        pointer = self.await_button_tg(Lib.message_hashtag)
+        pointer = self.await_button_tg(LibTG.message_hashtag)
         print(pointer)
         assert pointer.cmd == "unknown_command"
     
     def test_stock_stock_false(self):
-        pointer = self.await_button_tg(Lib.message_stock_stock_false)
+        pointer = self.await_button_tg(LibTG.message_stock_stock_false)
         print(pointer)
         assert  pointer.chat == "stock"
         assert  pointer.cmd == "stock"
@@ -31,7 +31,7 @@ class TestClassDemoInstance:
 
     def test_stock_courier(self):
         with flask_app.app_context():
-            pointer = self.await_button_tg(Lib.message_stock_courier)
+            pointer = self.await_button_tg(LibTG.message_stock_courier)
             print(pointer)
             assert  pointer.chat == "courier"
             assert  pointer.cmd == "stock"
@@ -43,7 +43,7 @@ class TestClassDemoInstance:
 
     def test_take_courier(self):
         with flask_app.app_context():
-            pointer = self.await_button_tg(Lib.message_take_courier)
+            pointer = self.await_button_tg(LibTG.message_take_courier)
             print(pointer)
             assert  pointer.chat == "courier"
             assert  pointer.cmd == "take_courier"
@@ -55,7 +55,7 @@ class TestClassDemoInstance:
 
     def test_add_color_35_45(self):
         with flask_app.app_context():
-            pointer = self.await_button_tg(Lib.add_color_35_45)
+            pointer = self.await_button_tg(LibTG.add_color_35_45)
             print(pointer)
             assert  pointer.chat == "stock"
             assert  pointer.cmd == "stock"
@@ -67,7 +67,7 @@ class TestClassDemoInstance:
 
     def test_add_color_35(self):
         with flask_app.app_context():
-            pointer = self.await_button_tg(Lib.add_color_35)
+            pointer = self.await_button_tg(LibTG.add_color_35)
             print(pointer)
             assert  pointer.chat == "stock"
             assert  pointer.cmd == "stock"
@@ -79,7 +79,7 @@ class TestClassDemoInstance:
 
     def test_add_color_45(self):
         with flask_app.app_context():
-            pointer = self.await_button_tg(Lib.add_color_45)
+            pointer = self.await_button_tg(LibTG.add_color_45)
             print(pointer)
             assert  pointer.chat == "stock"
             assert  pointer.cmd == "stock"
@@ -91,7 +91,7 @@ class TestClassDemoInstance:
 
     def test_take_color_35_45(self):
         with flask_app.app_context():
-            pointer = self.await_button_tg(Lib.take_color_35_45)
+            pointer = self.await_button_tg(LibTG.take_color_35_45)
             print(pointer)
             assert  pointer.chat == "stock"
             assert  pointer.cmd == "take"
@@ -103,7 +103,7 @@ class TestClassDemoInstance:
 
     def test_take_color_35(self):
         with flask_app.app_context():
-            pointer = self.await_button_tg(Lib.take_color_35)
+            pointer = self.await_button_tg(LibTG.take_color_35)
             print(pointer)
             assert  pointer.chat == "stock"
             assert  pointer.cmd == "take"
@@ -115,7 +115,7 @@ class TestClassDemoInstance:
 
     def test_take_color_45(self):
         with flask_app.app_context():
-            pointer = self.await_button_tg(Lib.take_color_45)
+            pointer = self.await_button_tg(LibTG.take_color_45)
             print(pointer)
             assert  pointer.chat == "stock"
             assert  pointer.cmd == "take"
@@ -128,7 +128,7 @@ class TestClassDemoInstance:
 
     def test_unknown_chat_unknown_command(self):
         with flask_app.app_context():
-            pointer = self.await_button_tg(Lib.unknown_chat)
+            pointer = self.await_button_tg(LibTG.unknown_chat)
             print(pointer)
             assert "unknown_chat" ==  pointer.chat 
             # assert  pointer.cmd == "stock"
@@ -140,19 +140,19 @@ class TestClassDemoInstance:
 
     def test_callback_query_rozet(self):
         with flask_app.app_context():
-            pointer = self.await_button_tg(Lib.callback_query_confirmation)
+            pointer = self.await_button_tg(LibTG.callback_query_confirmation)
             print(pointer)
             assert "manager" ==  pointer.chat 
     
     def test_callback_query_prom(self):
         with flask_app.app_context():
-            pointer = self.await_button_tg(Lib.callback_query_confirmation_prom)
+            pointer = self.await_button_tg(LibTG.callback_query_confirmation_prom)
             print(pointer)
             assert "manager" ==  pointer.chat 
 
     def test_reply_make_comment(self):
         with flask_app.app_context():
-            pointer = self.await_button_tg(Lib.test_reply_make_comment)
+            pointer = self.await_button_tg(LibTG.test_reply_make_comment)
             print(pointer)
             assert "manager" ==  pointer.chat 
             assert "reply_manager" == pointer.cmd
@@ -160,7 +160,7 @@ class TestClassDemoInstance:
 
     def test_reply_make_comment_false_chat(self):
         with flask_app.app_context():
-            pointer = self.await_button_tg(Lib.test_reply_make_comment_false)
+            pointer = self.await_button_tg(LibTG.test_reply_make_comment_false)
             print(pointer)
             assert "np_delivery" ==  pointer.chat 
             assert "reply_to_message" == pointer.cmd

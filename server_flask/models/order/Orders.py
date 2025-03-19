@@ -27,7 +27,7 @@ class Orders(db.Model):
     warehouse_ref = db.Column(db.String(50))
     sum_price = db.Column(db.Float)
     sum_before_goods = db.Column(db.Float)
-    description = db.Column(db.String(300))
+    description = db.Column(db.String(500))
     history = db.Column(db.String(500))
     description_delivery = db.Column(db.String(50))
     cpa_commission = db.Column(db.String(50)) 
