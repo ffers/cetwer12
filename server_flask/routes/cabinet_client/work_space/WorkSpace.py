@@ -29,6 +29,17 @@ def delivery_method():
         items = WorkSpaceServ().load_delivery_methods()
         return render_template('cabinet_client/work_space/delivery_method.html', items=items,  user=current_user)
 
+@bp.route('/order_status', methods=['POST', 'GET'])
+@login_required
+@admin_permission.require(http_exception=403)
+def order_status():
+    if request.method == 'POST':
+        return redirect('/orders')
+    else:
+        items = WorkSpaceServ().load_delivery_methods()
+        return render_template('cabinet_client/work_space/delivery_method.html', items=items,  user=current_user)
+
+
 @bp.route('/sources_order', methods=['POST', 'GET'])
 @login_required
 @admin_permission.require(http_exception=403)

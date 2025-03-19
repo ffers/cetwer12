@@ -116,7 +116,7 @@ class OrderCntrl:
         return item
 
     def load_status_id(self, id):
-        return self.ord_rep.load_status_id(id)
+        return self.order_serv.load_status_id(id)
     
     def load_for_order_id(self, order_id):
         return self.ord_rep.load_item(order_id)

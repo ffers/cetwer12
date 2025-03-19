@@ -3,6 +3,7 @@ from flask import jsonify
 from utils.my_time_util import my_time
 
 from .client_serv import OrderProcessingPipeline
+from .status_new_with_payment import StatusNewWithPaidPipline
 
 from repository import OrderRep
 from .order_api_process import OrderApi
@@ -60,6 +61,11 @@ class OrderServ:
         #     return self.observer_order(orders, telegram_cntrl)
         # else: 
         #     return False
+
+    def load_status_id(self, id):
+        if id == 10:
+            return StatusNewWithPaidPipline().process(self.order_rep)
+        return self.order_rep.load_status_id(id)
 
     def observer_order(self, orders, telegram_cntrl):
         for order in orders:
