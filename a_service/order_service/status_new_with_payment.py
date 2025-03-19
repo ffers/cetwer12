@@ -31,9 +31,9 @@ class Handler:
         if self.next_handler:
             self.list_order.extend(context)
             print(f"handle: {self.list_order}")
-            result = Handler.list_order
-            self.reset_list_order()
             return self.next_handler.handle(repo)
+        result = Handler.list_order
+        self.reset_list_order()
         return result
     
     @classmethod
