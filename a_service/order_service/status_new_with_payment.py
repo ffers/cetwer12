@@ -26,19 +26,13 @@ class Handler:
         self.next_handler = next_handler
         
 
-    def handle(self, repo):
+    def handle(self, repo, list_order):
         context = self.process(repo)
         if self.next_handler:
-            self.list_order.extend(context)
+            list_order.extend(context)
             print(f"handle: {self.list_order}")
-            return self.next_handler.handle(repo)
-        result = Handler.list_order
-        self.reset_list_order()
-        return result
-    
-    @classmethod
-    def reset_list_order(cls):
-        cls.list_order = []  # 🔄 Створюємо новий об'єкт
+            return self.next_handler.handle(repo, list_order)
+        return list_order
 
     def process(self, repo):
         raise NotImplementedError("Override process() in subclass")
@@ -70,6 +64,7 @@ class StatusNewWithPaidPipline:
         )
 
     def process(self, repo):
-        result = self.pipeline.handle(repo)
+        list_order = []
+        result = self.pipeline.handle(repo, list_order)
         print("\nРезультат виконання:", "✅ Успішно" if result else "❌ Помилка")
         return result
