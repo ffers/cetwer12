@@ -21,7 +21,7 @@
 
 class Handler:
     list_order = []
-    
+
     def __init__(self, next_handler=None):
         self.next_handler = next_handler
         
@@ -31,8 +31,14 @@ class Handler:
         if self.next_handler:
             self.list_order.extend(context)
             print(f"handle: {self.list_order}")
+            result = Handler.list_order
+            self.reset_list_order()
             return self.next_handler.handle(repo)
-        return self.list_order
+        return result
+    
+    @classmethod
+    def reset_list_order(cls):
+        cls.list_order = []  # 🔄 Створюємо новий об'єкт
 
     def process(self, repo):
         raise NotImplementedError("Override process() in subclass")
