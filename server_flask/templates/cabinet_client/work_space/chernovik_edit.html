@@ -1,0 +1,434 @@
+<!-- контейнер редактирования інформациі  -->
+<div class="container-fluid px-3"> 
+  <div class="row">
+    <div class="col mb-4">
+      <div class="card product-card">
+              <h4 class="text-center mb-3">Product Info</h4>
+            
+              <div class="row mb-3 text-center">
+                <div class="col-md">
+                  <select class="form-control product-select1" name="product" required></select>
+                </div>
+            
+                <div class="col-md-2 mt-2 mt-md-0">
+                  <input type="number" class="form-control text-center quantity"
+                         name="quantity" min="1" max="10000"
+                         placeholder="* Кількість" required>
+                </div>
+            
+                <div class="col-md-2 mt-2 mt-md-0">
+                  <input type="number" class="form-control text-center price"
+                         name="price" min="1"
+                         placeholder="Ціна" required>
+                </div>
+            
+                <div class="col-md-2 d-none">
+                  <input type="number" class="form-control text-center total"
+                         name="total" min="1"
+                         placeholder="Сума" required>
+                </div>
+            
+                <div class="col-md-2 mt-2 mt-md-0">
+                  <input type="number" class="form-control text-center totalall"
+                         name="total-all" min="1"
+                         placeholder="Сума" required>
+                </div>
+              
+            
+              <div class="col-md mb-3">
+                <span style="cursor: pointer; color: #b591ef;">Змінити</span> /
+                <span style="cursor: pointer; color: #b591ef;">Видалити</span>
+              </div>
+            </div>
+            
+              <hr>
+            
+            <div class="row ">
+                  <div class="col">
+                    <div style=" left: 16px;">
+                      <span style="cursor: pointer; color: #b591ef;">Додати товар</span> /
+                      <span style="cursor: pointer; color: #b591ef;">Створити товар</span>
+                    </div>
+                    
+                  </div>
+                  <div class="col">
+                      <div style="position: absolute; right: 16px;">
+                        <footer><small class="text-muted">Сума замовлення:</small></footer>
+                        <div>1700 грн</div>
+                      </div>
+                  </div>
+                  
+            </div>
+              
+            
+      </div>
+    </div>
+    
+  </div>
+  <div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card">
+          
+          <h4 style="text-align:center;">Customer Info</h4>
+
+          <div class="mb-3">
+            <footer><small class="text-muted">Телефон:</small></footer>
+            <input type="tel" class="form-control" name="phone"
+              pattern="[0-9]{12}" style="text-align: center;"
+              placeholder="*Номер телефону 380909009000" required>
+          </div>
+        
+          <div class="mb-3">
+            <footer><small class="text-muted">Призвіще:</small></footer>
+            <input class="form-control" style="text-align: center;"
+              name="client_lastname" placeholder="* Призвіще"
+              id="client_lastname" data-bs-container="body"
+              data-bs-toggle="popover" data-bs-placement="top"
+              data-bs-content="Тут є латиниця">
+          </div>
+        
+          <div class="mb-3">
+            <footer><small class="text-muted">Імʼя:</small></footer>
+            <input class="form-control"
+              name="client_firstname" placeholder="* Ім'я"
+              id="client_firstname" data-bs-container="body"
+              data-bs-toggle="popover" data-bs-placement="top"
+              data-bs-content="Тут є латиниця">
+          </div>
+        
+          <div class="mb-3">
+            <footer><small class="text-muted">Побатькові:</small></footer>
+            <input class="form-control" style="text-align: center;"
+              name="client_surname" placeholder="Побатькові (необов.)">
+          </div>
+        
+          <div class="mb-3">
+            <footer><small class="text-muted">Email:</small></footer>
+            <input class="form-control" style="text-align: center;"
+              name="email" placeholder="Email">
+          </div>
+        </div>
+      
+        <br>
+
+        <div class="card mb-4">
+          <h4 class="text-center mb-4">Способ оплати</h4>
+        
+          <div class="row text-center">
+            <div class="col-sm">
+              <input type="radio" class="form-check-input" id="nalogka"
+                     name="payment_option" value="1" onclick="togglePaybefore()">
+              <label for="nalogka" class="form-check-label">Післяплата</label>
+            </div>
+        
+            <div class="col-sm">
+              <input type="radio" class="form-check-input" id="card_pay"
+                     name="payment_option" value="2" onclick="togglePaybefore()">
+              <label for="card_pay" class="form-check-label">Оплата на рахунок</label>
+            </div>
+        
+            <div class="col-sm">
+              <input type="radio" class="form-check-input" id="peredpalata"
+                     name="payment_option" value="3" onclick="togglePaybefore()">
+              <label for="peredpalata" class="form-check-label">Передплата</label>
+            </div>
+        
+            <div class="col-sm">
+              <input type="radio" class="form-check-input" id="prom_oplata"
+                     name="payment_option" value="5" onclick="togglePaybefore()">
+              <label for="prom_oplata" class="form-check-label">ПромОплата</label>
+            </div>
+        
+            <div class="col-sm">
+              <input type="radio" class="form-check-input" id="rozetka_pay"
+                     name="payment_option" value="6" onclick="togglePaybefore()">
+              <label for="rozetka_pay" class="form-check-label">RozetkaPay</label>
+            </div>
+        
+            <div class="col-sm">
+              <input type="radio" class="form-check-input" id="olx"
+                     name="payment_option" value="7" onclick="togglePaybefore()">
+              <label for="olx" class="form-check-label">OLX</label>
+            </div>
+        
+            <div class="col-sm">
+              <input type="radio" class="form-check-input" id="another"
+                     name="payment_option" value="8" onclick="togglePaybefore()">
+              <label for="another" class="form-check-label">Інше</label>
+            </div>
+          </div>
+        
+          <div class="row mt-4" id="hiddenFieldPay" style="display: none;">
+            <div class="col-md-6 offset-md-3">
+              <input type="number" class="form-control text-center"
+                     id="sum_before_goods"
+                     name="sum_before_goods"
+                     min="1"
+                     placeholder="Сума" required>
+            </div>
+          </div>
+        </div>
+        
+
+
+      </div>
+  
+
+    <div class="col-md-4 mb-4">
+      <div class="card">
+        <h4 class="text-center mb-4">Shipping Address</h4>
+        <div class="mb-3">
+          <footer><small class="text-muted">Телефон:</small></footer>
+          <input type="tel" class="form-control" name="phone"
+            pattern="[0-9]{12}" style="text-align: center;"
+            placeholder="*Номер телефону 380909009000" required>
+        </div>
+      
+        <div class="mb-3">
+          <footer><small class="text-muted">Призвіще:</small></footer>
+          <input class="form-control" style="text-align: center;"
+            name="client_lastname" placeholder="* Призвіще"
+            id="client_lastname" data-bs-container="body"
+            data-bs-toggle="popover" data-bs-placement="top"
+            data-bs-content="Тут є латиниця">
+        </div>
+      
+        <div class="mb-3">
+          <footer><small class="text-muted">Імʼя:</small></footer>
+          <input class="form-control"
+            name="client_firstname" placeholder="* Ім'я"
+            id="client_firstname" data-bs-container="body"
+            data-bs-toggle="popover" data-bs-placement="top"
+            data-bs-content="Тут є латиниця">
+        </div>
+      
+        <div class="mb-3">
+          <footer><small class="text-muted">Побатькові:</small></footer>
+          <input class="form-control" style="text-align: center;"
+            name="client_surname" placeholder="Побатькові (необов.)">
+        </div>
+        
+          <div class="row text-center mb-4" style="padding: 10px">
+            <div class="col-sm">
+              <input type="radio" class="form-check-input" id="1"
+                     name="delivery_method" value="1">
+              <label for="1" class="form-check-label">Нова Пошта</label>
+            </div>
+            <div class="col-sm">
+              <input type="radio" class="form-check-input" id="2"
+                     name="delivery_method" value="2">
+              <label for="2" class="form-check-label">Розетка</label>
+            </div>
+            <div class="col-sm">
+              <input type="radio" class="form-check-input" id="3"
+                     name="delivery_method" value="3">
+              <label for="3" class="form-check-label">Укрпошта</label>
+            </div>
+            <div class="col-sm">
+              <input type="radio" class="form-check-input" id="5"
+                     name="delivery_method" value="5">
+              <label for="5" class="form-check-label">Шопзаказ</label>
+            </div>
+          </div>
+        
+          <h5 class="text-center mb-3">Тип відправки</h5>
+          <div class="row text-center mb-4" style="padding: 10px">
+            <div class="col">
+              <input type="radio" class="form-check-input"
+                     id="warehouse" name="warehouse_option"
+                     value="warehouse" onclick="toggleField()">
+              <label for="warehouse" class="form-check-label">Відділення</label>
+            </div>
+            <div class="col">
+              <input type="radio" class="form-check-input"
+                     id="poshtomat" name="warehouse_option"
+                     value="poshtomat" onclick="toggleField()">
+              <label for="poshtomat" class="form-check-label">Поштомат</label>
+            </div>
+            <div class="col">
+              <input type="radio" class="form-check-input"
+                     id="address" name="warehouse_option"
+                     value="address" onclick="toggleField()">
+              <label for="address" class="form-check-label">Адреса</label>
+            </div>
+          </div>
+        
+          <div class="row mb-3">
+            <div class="col-md">
+              <select id="citySelect" class="form-control" name="city" required></select>
+            </div>
+        
+            <div id="hiddenFieldWar" class="col-md" style="display: block;">
+              <select id="warhousSelect" class="form-control" name="warehouse"
+                      placeholder="Відділення"></select>
+            </div>
+        
+            <div id="hiddenFieldPost" class="col-md" style="display: none;">
+              <select id="postSelect" class="form-control" name="warehouse"
+                      placeholder="Поштомат"></select>
+            </div>
+        
+            <div id="hiddenFieldAdr" class="col-md" style="display: none;">
+              <textarea id="addressText" class="form-control" name="warehouse"
+                        placeholder="* Адреса" rows="2"></textarea>
+            </div>
+          </div>
+        
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+      <div class="card">
+      <h4 class="text-center mb-4">Нотатки</h4>
+
+
+              <textarea 
+                  class="form-control center" 
+                  name="description"  
+                  rows="12" 
+                  cols="50" 
+                  placeholder="Нотатки">Абонент не в мережі (Dashka)</textarea>
+        </div>
+        <br>
+      <div class="card">
+        <h4 class="text-center mb-4">Історія  </h4>
+
+        <textarea 
+            class="form-control" 
+            style=
+                "text-align: left;
+                padding: 10px; 
+                " 
+            name="description"  
+            rows="5" 
+            cols="50" 
+            placeholder="Історія">20-03-2025 08:12: Абонент не в мережі (Dashka) 20-03-2025 10:42: Написала вайбер (Dashka)
+        </textarea>
+          </div>
+    </div>
+        </div>
+    </div>
+    
+    
+  
+
+</div>
+
+
+<style>
+h4 {
+color: #626870;
+}
+body {
+margin: 0;
+font-family: sans-serif;
+background: radial-gradient(circle at center, #d0b0f0 0%, #73aff4 50%, #f99fe4 100%);
+height: 100%;
+}
+.form-control {
+border-radius: 14px;
+box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
+width: 100%;
+color: #626870;
+background-color: #edf1fd;
+/* border: 1px solid #b591ef; */
+}
+
+.form-control:hover {
+border-radius: 14px;
+box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.1);
+width: 100%;
+
+background-color: #edf1fd;
+border: 1px solid #b591ef;
+}
+
+.form-control:focus {
+border-radius: 14px;
+box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.1);
+width: 100%;
+color: #0a1421;
+background-color: #edf1fd;
+border: 1px solid #b591ef;
+}
+
+
+.container {
+display: flex;
+height: 100vh;
+}
+
+.sidebar {
+width: 200px;
+background: #1f3540;
+color: #fff;
+padding: 20px;
+border-radius: 0 20px 20px 0;
+}
+
+.sidebar ul {
+list-style: none;
+padding: 0;
+}
+
+.sidebar li {
+margin: 20px 0;
+}
+
+.main-content {
+flex: 1;
+padding: 40px;
+}
+
+.cards {
+display: flex;
+gap: 20px;
+margin-top: 30px;
+}
+
+.card {
+flex: 1;
+background: #ffffffaa;
+border-radius: 20px;
+padding: 30px;
+box-shadow: 4px 4px 12px #00000010;
+
+width: 100%;
+max-width: 600px;
+margin: auto;
+}
+.form-check-input {
+accent-color: #b591ef;
+transform: scale(1.2);
+margin-right: 6px;
+}
+
+.form-check-label {
+font-weight: 500;
+}
+
+select, textarea {
+border-radius: 20px;
+box-shadow: 2px 2px 6px rgba(0,0,0,0.05);
+text-align: center;
+}
+input[type="radio"] {
+accent-color: #9f70ec; /* фіолетовий */
+color: #1f3540;
+box-shadow: 4px 4px 12px #00000010;
+transform: scale(1.2);    
+}
+
+/* .product-card {
+max-width: 600px;
+margin: 0 auto;
+} */
+
+@media (min-width: 768px) {
+.product-card {
+max-width: 100%; /* на ПК — широка */
+}
+}
+
+
+</style>

@@ -136,7 +136,7 @@
 					pattern="[0-9]{12}" 
 					style="text-align: center;" 
 					placeholder="*Номер телефону 380909009000" 
-					value="{{order.phone}}" 
+					value="{{order.costumer.phone}}" 
 					required>
 				<br>
 			</div>
@@ -146,7 +146,7 @@
 					style="text-align: center;" 
 					name="client_lastname" 
 					rows="1" cols="50" placeholder="* Призвіще" 
-					value="{{order.client_lastname}}" id="client_lastname" 
+					value="{{order.costumer.last_name}}" id="client_lastname" 
 					data-bs-container="body" 
 					data-bs-toggle="popover" 
 					data-bs-placement="top" 
@@ -159,7 +159,7 @@
 					style="text-align: center;" 
 					name="client_firstname" 
 					rows="1" cols="50" placeholder="* Ім'я" 
-					value="{{order.client_firstname}}" 
+					value="{{order.costumer.first_name}}" 
 					id="client_firstname" 
 					data-bs-container="body" 
 					data-bs-toggle="popover" 
@@ -172,14 +172,77 @@
 				<input class="form-control" style="text-align: center;" 
 					name="client_surname" rows="1" cols="50" 
 					placeholder="Побатькові(необов.)"
-					value="{{ order.client_surname or ''}}">
+					value="{{ order.costumer.second_name or ''}}">
 				<br>
 			</div>
 			<div class="col-sm"><footer><small class="text-muted">Email:</small></footer>
 				<input class="form-control   " style="text-align: center;" 
 				name="email" rows="1" cols="50" 
 				placeholder="Email" 
-				value="{{order.email or ''}}">
+				value="{{order.costumer.email or ''}}">
+				<br>
+			</div>
+					
+		</div>
+		<!-- Recipient Data -->
+			<div class="col-sm"><p style="text-align: center;">
+				<small class="text-muted">
+					Отримувач
+			</div>
+
+		<div class="row">
+			<div class="col-sm">
+				<footer><small class="text-muted">Телефон:</small></footer>
+				<input type="tel" class="form-control" 
+					name="phone" rows="1" 
+					cols="50" 
+					pattern="[0-9]{12}" 
+					style="text-align: center;" 
+					placeholder="*Номер телефону 380909009000" 
+					value="{{order.recipient.phone}}" 
+					required>
+				<br>
+			</div>
+			<div class="col-sm">
+				<footer><small class="text-muted">Призвіще:</small></footer>
+				<input class="form-control" 
+					style="text-align: center;" 
+					name="client_lastname" 
+					rows="1" cols="50" placeholder="* Призвіще" 
+					value="{{order.recipient.last_name}}" id="client_lastname" 
+					data-bs-container="body" 
+					data-bs-toggle="popover" 
+					data-bs-placement="top" 
+					data-bs-content="Тут є латиниця">
+				<br>
+			</div>
+			<div class="col-sm">
+				<footer><small class="text-muted">Імʼя:</small></footer>
+				<input class="form-control   " 
+					style="text-align: center;" 
+					name="client_firstname" 
+					rows="1" cols="50" placeholder="* Ім'я" 
+					value="{{order.recipient.first_name}}" 
+					id="client_firstname" 
+					data-bs-container="body" 
+					data-bs-toggle="popover" 
+					data-bs-placement="top" 
+					data-bs-content="Тут є латиниця">
+				<br>
+			</div>
+			<div class="col-sm">
+				<footer><small class="text-muted">Побатькові:</small></footer>
+				<input class="form-control" style="text-align: center;" 
+					name="client_surname" rows="1" cols="50" 
+					placeholder="Побатькові(необов.)"
+					value="{{ order.recipient.second_name or ''}}">
+				<br>
+			</div>
+			<div class="col-sm"><footer><small class="text-muted">Email:</small></footer>
+				<input class="form-control   " style="text-align: center;" 
+				name="email" rows="1" cols="50" 
+				placeholder="Email" 
+				value="{{order.recipient.email or ''}}">
 				<br>
 			</div>
 					
@@ -517,7 +580,9 @@
     <script src="{{url_for('static', filename='javascript/submitFormUpdateOrd.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/add-button-product.js')}}"></script>
 	<script src="{{url_for('static', filename='javascript/copyText.js')}}"></script>
-	<script src="{{url_for('static', filename='javascript/checkbox-item.js')}}"></script>
+	<script src="{{url_for('static', filename='javascript/checkbox-item.js')}}"></script>  
+	<script src="{{url_for('static', filename='javascript/update_order/delete_product.js')}}"></script>
+
 
 
 {% endblock %}

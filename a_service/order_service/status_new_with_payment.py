@@ -20,17 +20,15 @@
 
 
 class Handler:
-    list_order = []
-
     def __init__(self, next_handler=None):
         self.next_handler = next_handler
         
 
     def handle(self, repo, list_order):
         context = self.process(repo)
+        list_order.extend(context)
         if self.next_handler:
-            list_order.extend(context)
-            print(f"handle: {self.list_order}")
+            print("handle", list_order)
             return self.next_handler.handle(repo, list_order)
         return list_order
 

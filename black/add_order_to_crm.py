@@ -1,7 +1,8 @@
 import os, re
 from api.nova_poshta.create_data import NpClient
 from server_flask.db import db
-from server_flask.models import Orders, OrderedProduct, Products, TelegramOrdered, ConfirmedAddressTg
+from server_flask.models import Orders, OrderedProduct, Products, TelegramOrdered, ConfirmedAddressTg, \
+            Recipient, Costumer
 from flask import current_app
 from .telegram_controller import tg_cntrl
 from dotenv import load_dotenv
@@ -20,56 +21,56 @@ class PromToCrm():
         pass
 
     def add_order(self, json_order, data_for_tg):
-        try:
+        # try:
             OC_log.info(f"НАЧАЛОСЬ ")
             order = self.parse_order(json_order)
             if not order:
                 raise
             order_id = order.id
             product = self.parse_product(json_order, order)
-            self.add_ordered_telegram(data_for_tg, order_id)
+            # self.add_ordered_telegram(data_for_tg, order_id)
             OC_log.info(f"ЗАКІНЧИЛОСЬ {order}")
             return order_id
-        except Exception as e:
-            order_id = json_order["id"]
-            OC_log.info(f"Спрацював exept {e} {json_order}")
-            tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, f"️❗️❗️❗️ НЕ ВИЙШЛО ДОДАТИ замовлення {order_id} В CRM сторона CRM")
+        # except Exception as e:
+        #     order_id = json_order["id"]
+        #     OC_log.info(f"Спрацював exept {e} {json_order}")
+        #     tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, f"️❗️❗️❗️ НЕ ВИЙШЛО ДОДАТИ замовлення {order_id} В CRM сторона CRM")
 
 
     def parse_order(self, order):
         prompay_status_id = self.add_prompay_status(order)
         payment_method_id = self.add_payment_method_id(order)
-        try:
-            dict_parse = {
-                "order_id_sources": order["id"],
-                "description": self.add_description(order),
-                "delivery_method_id": self.add_delivery_method(order),
-                "CityRef": None,
-                "CityName": None,
-                "TypeWarehouse": None,
-                "WarehouseText": order["delivery_address"],
-                "phone": self.add_phone(order),
-                "warehouse_method": None, 
-                "WarehouseRef": None,
-                "payment_method_id": payment_method_id,
-                "sum_before_goods": self.add_sum_before_goods(order, payment_method_id),
-                "prompay_status_id": prompay_status_id,
-                "ordered_status_id": self.add_order_status(prompay_status_id),
-                "full_price": self.format_float(order["full_price"]),
-
-            }
-            dict_parse.update(self.add_address_dict_np(order, dict_parse))
-            order = self.prepare_for_db(order, dict_parse)
-            dict_parse.clear()
-        except Exception as e:
-            OC_log.info(f"Не вийшло обробити замовленя json: {e}")
+        # try:
+        dict_parse = {
+            "order_id_sources": order["id"],
+            "description": self.add_description(order),
+            "delivery_method_id": self.add_delivery_method(order),
+            "CityRef": None,
+            "CityName": None,
+            "TypeWarehouse": None,
+            "WarehouseText": order["delivery_address"],
+            "phone": self.add_phone(order),
+            "warehouse_method": None, 
+            "WarehouseRef": None,
+            "payment_method_id": payment_method_id,
+            "sum_before_goods": self.add_sum_before_goods(order, payment_method_id),
+            "prompay_status_id": prompay_status_id,
+            "ordered_status_id": self.add_order_status(prompay_status_id),
+            "full_price": self.format_float(order["full_price"]),
+        }
+        dict_parse.update(self.add_address_dict_np(order, dict_parse))
+        order = self.choice_recipient(order)
+        print("parse-order:", order)
+        order = self.prepare_for_db(order, dict_parse)
+        print("parse-order2:", order)
+        dict_parse.clear()
+        # except Exception as e:
+        #     OC_log.info(f"Не вийшло обробити замовленя json: {e}")
         return order
 
     def prepare_for_db(self, order, dict_parse):
-        try:
+        # try:
             new_order = Orders(
-                email=order["email"],
-                order_id_sources=str(order["id"]),
                 order_code = str(order["id"]),
                 description=dict_parse["description"],
                 city_name=dict_parse["CityName"],
@@ -90,16 +91,56 @@ class PromToCrm():
                 cpa_commission=order["cpa_commission"]["amount"],
                 client_id=order["client_id"],
                 source_order_id=2,
-                author_id=55
+                author_id=55,
+                recipient_id=order["recipient_id"],
+                costumer_id=order["costumer_id"]
                 )
 
             db.session.add(new_order)
             db.session.commit()
             return new_order
-        except Exception as e:
-            OC_log.exception(f"Ордер не додано в базу: {e}")
-            pass
+        # except Exception as e:
+        #     OC_log.exception(f"Ордер не додано в базу: {e}")
+        #     pass
 
+    def choice_recipient(self, item):
+        costumer_db = self.add_costumer(item)
+        item["costumer_id"] = costumer_db.id
+        recipient_db = self.add_recipient(item)
+        item["recipient_id"] = recipient_db.id
+        return item
+
+    def add_recipient(self, item):
+        # try:
+            item_obj = Recipient(
+                first_name=item["client_first_name"],
+                last_name=item["client_last_name"],
+                second_name=item["client_second_name"],
+                phone=item["phone"],
+          
+            )
+            db.session.add(item_obj)
+            db.session.commit()
+            db.session.refresh(item_obj)
+            return item_obj
+        # except Exception as e:
+        #     print("add_recipient:", e)
+
+    def add_costumer(self, item):
+        # try:
+            item_obj = Costumer(
+                first_name=item["client_first_name"],
+                last_name=item["client_last_name"],
+                second_name=item["client_second_name"],
+                phone=item["phone"],
+                
+            )
+            db.session.add(item_obj)
+            db.session.commit()
+            db.session.refresh(item_obj)
+            return item_obj
+        # except Exception as e:
+        #     print("add_costumer:", e)
 
     def add_address_dict_np(self, order, dict_parse):
         if dict_parse["delivery_method_id"] == 1:

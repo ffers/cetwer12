@@ -1,0 +1,63 @@
+
+function addProduct() {
+    var container = $('#ProductOldItem');
+    var newField = $(`
+        <div class="row" id="product-container" style="width: 100%">
+            
+                <div class="col-sm-3 col-lg-4   "><select class="form-control product-select" name="product"></select></div>
+                <div class="col-sm col-lg-2   "><input type="number" style="text-align: center;" class="quantity form-control" id="quantity" name="quantity"  min="1" max="10000" placeholder="* Кількість" required></div>
+                <div class="col-sm col-lg-2   "><input type="number" style="text-align: center;" class="price form-control" id="price" name="price" min="1" placeholder="Ціна" required></div>
+                <input type="number" style="text-align: center; display: none;" class="total form-control" id="sum_price" name="sum_price" min="1" placeholder="Сумма" required>
+                <div class="col-sm col-lg-2   ">
+                    <span
+                      onclick="deleteBlock(this)"
+                        style="cursor: pointer; color: #9f70ec;">Видалити</span>							
+                </div>
+        </div>`
+    );
+
+    // Добавление нового поля в контейнер
+    container.append(newField);
+    // Викликаєм калькулятор 
+    // Инициализация Select2 для нового поля
+    newField.find('.product-select').select2({
+        width: '100%',
+        theme: 'bootstrap-5',
+        language: {
+        noResults: function () {
+        return 'Ничего не знайдено';
+        },
+        searching: function () {
+        return 'Пошук...';
+        },
+        inputTooShort: function (args) {
+        var remainingChars = args.minimum - args.input.length;
+        return 'Введіть хочаб ' + remainingChars + ' символ' + (remainingChars > 1 ? 'а' : '');
+        }
+        },
+        ajax: {
+        url: '/cabinet/orders/get_product',
+        dataType: 'json',
+        delay: 250,
+        processResults: function (data) {
+        return {
+            results: data.results.map(function (city) {
+                return {
+                    id: city.id,
+                    text: city.article
+                };
+            })
+        };
+        },
+        cache: true
+        },
+        placeholder: 'Товар',
+        templateResult: function (result) {
+        return result.text || result.text; // Виведення тексту міста
+        }
+        });
+  
+}
+
+
+

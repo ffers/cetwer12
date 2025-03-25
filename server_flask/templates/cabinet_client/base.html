@@ -25,7 +25,7 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap" rel="stylesheet">
+	<!-- <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap" rel="stylesheet"> -->
 	
 	
 
@@ -37,8 +37,8 @@
 
 <body>
 	<header>
-		<nav class="navbar navbar-expand-sm bg-body-tertiary " >
-			<div class="container-fluid">
+		<nav class="navbar navbar-expand-sm bg-body-tertiary">
+			<div class="container-fluid" >
 				<a class="navbar-brand" style="margin-left: 30px;" href="/">ASX</a>
 					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="navbar-toggler-icon"></span>
@@ -141,8 +141,8 @@
 						<nav class="nav">
 							<div class="button-pult">
 								<div id="q" class="">
-									<select id="mySelect32" onchange="redirectToSelectedPage()" class="form-select btn my-2 my-sm-0"  
-										style=" color: #0dcaf0; border: var(--bs-border-width) solid #0dcaf0;"
+									<select id="mySelect32" onchange="redirectToSelectedPage()" class="form-select btn"  
+										style="color: #626870;"
 										aria-label="Change status" >
 										<option selected>Фільтр</option>
 										<option value="/cabinet/orders/filter/registered/1" >На Підвердженя</option>
@@ -167,8 +167,9 @@
 								</div>
 							</div>
 							<div class="button-pult">
-								<div id="add_reg" style="display: none;"><button 
-									class="btn btn-outline-info my-2 my-sm-0"   
+								<div id="add_reg" style="display: none; "><button 
+									style="color: #626870;"
+									class="btn     my-sm-0"    
 									onclick="processOrders('add_reg')" >
 									Додати в реєстр
 								</button></div>
@@ -176,17 +177,17 @@
 							<div class="button-pult">
 								<div id="del_reg" style="display: none;">
 									<button 
-										class="btn btn-outline-info my-2 my-sm-0"  
+										style="color: #626870;"
+										class="btn     my-sm-0"  
 										onclick="processOrders('del_reg')" >
 										Видалити з реєстру
 									</button>
 								</div>
 							</div>
 							<div class="button-pult">
-								<div id="changeStatusSee" style="display: none;" >
-									<select id="changeStatus"  class="form-select btn my-2 my-sm-0"  
-										style=" color: #0dcaf0; border: var(--bs-border-width) solid #0dcaf0;"
-										aria-label="Change status" >
+								<div id="changeStatusSee" style="display: none; " >
+									<select id="changeStatus"  class="form-select btn   my-sm-0"  
+										aria-label="Change status" style="color: #626870;">
 										<option selected>Зміна статусу</option>
 										<option value="1">Підтвердити</option>
 										<option value="2">Підтвержено</option>
@@ -250,7 +251,7 @@
 <script src="{{url_for('static', filename='javascript/changeStatus.js')}}"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/uikit@3.19.4/dist/js/uikit.min.js" integrity="sha256-IdUsTC8QxXGINPUVxcbHAIfmCBpTGq9zqKmnDUNMuK4=" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.19.4/dist/css/uikit.min.css" integrity="sha256-fBLKFnO/BTwalJts1kv18aCsPopD4rxou6DSgfjrGd4=" crossorigin="anonymous">
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.19.4/dist/css/uikit.min.css" integrity="sha256-fBLKFnO/BTwalJts1kv18aCsPopD4rxou6DSgfjrGd4=" crossorigin="anonymous"> -->
 
 
 <div aria-live="polite" aria-atomic="true" class="position-relative">

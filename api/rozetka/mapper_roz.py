@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from DTO import OrderDTO, Product
+from DTO.order_dto import OrderDTO, ProductDto, CostumerDto, RecipientDto
 from .dto_roz import OrderRoz
 
 class MapperRoz():
@@ -18,10 +18,7 @@ class MapperRoz():
             phone=data.user_phone,
             email=data.delivery.email,
             ttn=None,
-            ttn_ref=None,  # Приклад для поля ttn_ref
-            client_firstname=data.recipient_title.first_name,
-            client_lastname=data.recipient_title.last_name,
-            client_surname=data.recipient_title.second_name,
+            ttn_ref=None,  # Приклад для поля ttn_re
             delivery_option=data.delivery.delivery_service_name,
             city_name=data.delivery.city.city_name,
             city_ref=data.delivery.city.uuid,
@@ -47,7 +44,31 @@ class MapperRoz():
             payment_method_name=data.payment.payment_method_name,
             delivery_method_id=self.delivery_method(data.delivery.delivery_service_id),
             author_id=55,
-            ordered_product=self.product(data.purchases))
+            ordered_product=self.product(data.purchases),
+            recipient=self.recipient(data),
+            costumer=self.costumer(data),
+            client_firstname=data.user_title.first_name,
+            client_lastname=data.user_title.last_name,
+            client_surname=data.user_title.second_name
+        )
+
+
+    
+    def costumer(self, data):
+        return CostumerDto(
+        first_name=data.user_title.first_name,
+        last_name=data.user_title.last_name,
+        second_name=data.user_title.second_name,
+        phone=data.recipient_phone,
+        )
+    
+    def recipient(self, data):
+        return RecipientDto(
+        first_name=data.recipient_title.first_name,
+        last_name=data.recipient_title.last_name,
+        second_name=data.recipient_title.second_name,
+        phone=data.user_phone
+        )
     
     def warehouse_method(self, d):
         mapping = {
@@ -57,7 +78,7 @@ class MapperRoz():
         return mapping.get(d)             
             
     def product(self, data):  
-        return [Product
+        return [ProductDto
                 (
                 quantity=product.quantity, 
                 price=product.price,
@@ -73,6 +94,7 @@ class MapperRoz():
             2024: 3,
             14383961: 4,
             13013935: 5, 
+            43660: 1
         }
         return mapping.get(order)
     

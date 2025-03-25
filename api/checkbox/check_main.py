@@ -17,7 +17,9 @@ class HeadersModel(BaseModel):
        serialization_alias = lambda field_name: field_name.replace("_", "-")
         )
     )
- 
+
+
+
 class CheckboxClient(object):
     def __init__(self, token=None):
         self.token = os.getenv("CHECKBOX_TOKEN")
@@ -115,7 +117,10 @@ class CheckboxClient(object):
     
     def cash_registers(self):
         prefix = f"cash-registers/"
-        obj = HeadersModel()
+        obj = HeadersModel(
+            X_License_Key=self.license_key,
+            Authorization=f"Bearer {self.cash}" 
+        )
         headers = obj.model_dump(by_alias=True)
         responce = self.request_go("GET", prefix, headers)
         return responce
@@ -131,6 +136,7 @@ class CheckboxClient(object):
     
     def cash_online(self, id): 
         prefix = f"cash-registers/7671f8df-8b98-4860-83c6-918e5001fad0"
+        print("cash_online: Змінити адишник через value")
         obj = HeadersModel(
             Authorization=f"Bearer {self.cash}"
         )

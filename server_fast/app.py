@@ -1,6 +1,7 @@
 from typing import Annotated
 from server_flask.flask_app import flask_app
 from fastapi.middleware.wsgi import WSGIMiddleware
+import os
 
 
 from fastapi import Depends, FastAPI
@@ -73,14 +74,14 @@ def main():
     try:
         uvicorn.run(
             "server_fast.app:app",
-            log_level="debug",
-            reload=True
-        )
+            log_level="debug" if os.getenv("ENV") == "dev" else False,
+            reload=True if os.getenv("ENV") == "dev" else False,
+        )  
     except Exception as e:
         # Запис повідомлення про помилку у журнал
         OC_log.exception("Помилка при створенні екземпляра фаст додатку: %s", e)
-
-
+  
+   
 try:
     app.mount("/", WSGIMiddleware(flask_app))
 except Exception as e:

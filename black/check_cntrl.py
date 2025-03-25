@@ -6,9 +6,9 @@ class CheckCntrl(object):
     def __init__(self, user_id):
         self.user_id = user_id
         
-    def start(self):
+    def test_check_registers(self):
         check = CheckServ(self.user_id)
-        resp = check.cash_registers()
+        resp = check.cash_register_operating()
         return resp
     
     

@@ -1,4 +1,4 @@
-from server_flask.models import Orders, OrderedProduct
+from server_flask.models import Orders, OrderedProduct, Costumer, Recipient
 from server_flask.db import db
 from sqlalchemy import desc
 from urllib.parse import unquote
@@ -32,7 +32,9 @@ class OrderRep:
                         source_order_id=item.source_order_id,
                         ordered_status_id=item.ordered_status_id,
                         description_delivery="Одяг Jemis",
-                        order_code=item.order_code
+                        order_code=item.order_code,
+                        costumer_id=item.costumer_id,
+                        recipient_id=item.recipient_id,
                         )
             db.session.add(order)
             db.session.commit()
@@ -50,6 +52,46 @@ class OrderRep:
         db.session.add(product_obj)
         db.session.commit()
         return product_obj
+    
+    def update_order(self, order_id, order_dto):
+        order = self.load_item(order_id)
+        order.timestamp = order_dto.timestamp
+        order.phone = order_dto.phone
+        order.email = order_dto.email
+        order.ttn = order_dto.ttn
+        order.ttn_ref = order_dto.ttn_ref
+        order.client_firstname = order_dto.client_firstname
+        order.client_lastname = order_dto.client_lastname
+        order.client_surname = order_dto.client_surname
+        order.delivery_option = order_dto.delivery_option
+        order.city_name = order_dto.city_name
+        order.city_ref = order_dto.city_ref
+        order.region = order_dto.region
+        order.area = order_dto.area
+        order.warehouse_option = order_dto.warehouse_option
+        order.warehouse_text = order_dto.warehouse_text
+        order.warehouse_ref = order_dto.warehouse_ref
+        order.sum_price = order_dto.sum_price
+        order.sum_before_goods = order_dto.sum_before_goods
+        order.description = order_dto.description
+        order.description_delivery = order_dto.description_delivery
+        order.cpa_commission = order_dto.cpa_commission
+        order.client_id = order_dto.client_id
+        order.send_time = order_dto.send_time
+        order.order_id_sources = order_dto.order_id_sources
+        order.order_code = order_dto.order_code
+        order.prompay_status_id = order_dto.prompay_status_id
+        order.ordered_status_id = order_dto.ordered_status_id
+        order.warehouse_method_id = order_dto.warehouse_method_id
+        order.source_order_id = order_dto.source_order_id
+        order.payment_method_id = order_dto.payment_method_id
+        order.delivery_method_id = order_dto.delivery_method_id
+        order.author_id = order_dto.author_id
+        order.recipient_id = order_dto.recipient_id
+        order.costumer_id = order_dto.costumer_id
+        db.session.commit()
+        db.session.refresh(order)
+        return order
     
 
     def update_history(self, order_id, new_comment):
@@ -81,6 +123,16 @@ class OrderRep:
             return True, None
         except Exception as e:
             return False, str(e)
+        
+    def update_model_from_dto(self, order_id, dto):
+        model = self.load_item(order_id)
+        for field, value in dto.model_dump().items():
+            if value is not None and hasattr(model, field):
+                setattr(model, field, value)
+        db.session.commit()
+        db.session.refresh(model)
+        return model
+
         
     def update_new_dataclass(self, order_id: int, data):
         # Отримуємо поточний запис

@@ -1,0 +1,564 @@
+{% extends 'cabinet_client/base.html' %} 
+{% block body %} 
+
+<head><title>Змінити {{order.order_code}}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/update_order.css') }}">
+	
+  </head>
+	<script>
+    function confirmDelete(id) {
+        // Викликаємо модальне вікно підтвердження
+        if (confirm("Ви впевнені, що хочете видалити замовлення?")) {
+            // Якщо користувач натиснув "OK", видалити елемент
+            window.location.href = "/cabinet/orders/delete/" + id;
+        } else {
+            // Якщо користувач натиснув "Скасувати", нічого не робимо
+            return false;
+        } 
+    }
+
+    function deleteElement() { 
+        // Видалення елементу
+        // Наприклад, можна використати jQuery для цього: $('#elementId').remove();
+    }
+	</script>
+
+    <script>
+        document.querySelectorAll('.textToCopy').forEach(function(element) {
+    		element.addEventListener('click', function() {
+			var textToCopy = this.getAttribute('data-text');
+			copyText(textToCopy);
+			});
+		});
+    </script> 
+	<div class="button-container">
+		<nav class="nav">
+				{% if 1 == user.id %} 
+			<div class="button-pult">
+				<button type="button" onclick="confirmDelete({{order.id}})" 
+					class="btn    my-sm-0" style="color: #626870;">
+						Видалити Замовлення
+				</button>
+			</div>
+
+			<div class="button-pult"><a href="/cabinet/orders/send_storage/{{order.id}}">
+				<button type="button" class="col-sm btn    my-sm-0" style="color: #626870;">
+					Провести на склад
+				</button></a>
+			</div>
+			<div class="button-pult"><a href="/cabinet/orders/test/{{order.id}}">
+				<button type="button" class="col-sm btn    my-sm-0" style="color: #626870;">
+					Тест ордер
+				</button></a>
+			</div>
+			{% endif %}
+			<div class="button-pult"><a href="/cabinet/orders/return/{{order.id}}">
+				<button type="button" class="col-sm btn   my-sm-0" style="color: #626870;">
+					Повернення Замовлення
+				</button></a>
+			</div>
+				
+			<div class="button-pult"><a href="/cabinet/orders/dublicate/{{order.id}}">
+					<button type="button" class="col-sm btn    my-sm-0" style="color: #626870;">
+						Дублювати Замовлення
+					</button></a>
+			</div>
+			<div class="button-pult">
+				<a href="/cabinet/orders/confirmed/{{order.id}}">
+					<button 
+						type="button" 
+						class="col-sm btn     my-sm-0"
+						style="color: #626870;"
+					>Підтвердити</button>
+				</a>
+			</div> 
+			<div class="button-pult"><a href="#">
+				<button type="button" class="col-sm btn     my-sm-0"
+						style="color: #626870;">
+					<!-- Статус -->
+					{{order.ordered_status.name}}
+				</button></a>
+			</div> 
+			<!-- <div class="button-pult"><a href="#">
+				<button type="button" class="col-sm btn     my-sm-0"
+					style="color: #626870;">
+					 Видалити дату відправкі 
+					
+				</button></a>
+			</div>  -->
+		</nav>
+	</div>
+	{% include "cabinet_client/change_history_order.html" %}
+	{% if admin %} 
+		<div class="button-container">
+			<nav class="nav">
+				<div class="button-pult" >
+					<button 
+						type="button" 
+						value="Створити товар" 
+						data-bs-toggle="modal" 
+						data-bs-target="#historyModal"
+						class="btn     my-sm-0"
+						style="color: #626870;" >
+							Змінити Історію
+					</button>
+				</div>
+			</nav>
+		</div>
+	{% else %}
+    	
+	{% endif %}
+	<div class="container-fluid px-3"> 
+		
+		 
+	
+	
+	<form 
+			id="myForm" 
+			action="/cabinet/orders/update/{{order.id}}" 
+			method="post"
+			style="margin-bottom: 200px;"
+		>
+		<div class="row"> 
+			<div class="col-sm">
+				<h3 style="text-align: center;" >Замовлення № <span 
+						class="textToCopy" 
+						data-text="{{order.order_code}}">{{order.order_code}} 
+						<i class="fa-regular fa-copy"></i>
+					</span></h3>
+											<input type="hidden" name="order_code" value="{{ order.order_code }}">
+
+			</div>
+		</div>
+		 
+		
+			<div class="row">
+			  <div class="col mb-4">
+				<div class="card product-card">
+				  <h4 class="text-center mb-3">Товари в Замовленні</h4>
+				  
+				  <div id="ProductOldItem">
+					{% for product in order.ordered_product %}
+					<div class="row">
+				
+					  <div class="col-md-4 mb-4">
+						<footer><small class="text-muted">Артикул:</small></footer>
+						<div>{{ product.products.article }}</div>
+					  </div>
+				
+					  <div class="col-md mb-3">
+						<footer><small class="text-muted">Кількість:</small></footer>
+						<div>{{ product.quantity }}</div>
+					  </div>
+				
+					  <div class="col-md mb-3">
+						<footer><small class="text-muted">Назва:</small></footer>
+						<div>{{ product.products.product_name }}</div>
+					  </div>
+				
+					  <div class="col-md mb-3">
+						<footer><small class="text-muted">Ціна:</small></footer>
+						<div>{{ product.price }} грн</div>
+					  </div>
+				
+					  <input type="number" style="display: none;" 
+							 class="total form-control" name="sum_price" value="{{ product.price }}" required>
+				
+					  <input type="number" style="display: none;" 
+							 class="form-control" name="product" value="{{ product.product_id }}" required>
+				
+					  <div class="col-md mb-3">
+						<span class="ChangeProductOldItem" onclick="changeBlock(this)" style="cursor: pointer; color: #9f70ec;">Змінити</span> /
+						<span onclick="deleteBlock(this)" style="cursor: pointer; color: #9f70ec;">Видалити</span>
+					  </div>
+					</div>
+					{% endfor %}
+				  </div> 
+					 
+		  
+						<hr>
+					  
+					  <div class="row ">
+							<div class="col">
+							  <div style=" left: 16px;">
+								<span
+								  onclick="addProduct()"
+								  style="cursor: pointer; color: #9f70ec;">Додати товар</span> /
+								<span style="cursor: pointer; color: #9f70ec;" data-bs-toggle="modal" 
+								data-bs-target="#myModal">Створити товар</span>
+							  </div>
+							  
+							</div>
+							<div class="col">
+								<div style="position: absolute; right: 16px;">
+								  <footer><small>Сума замовлення:</small></footer>
+									  <div id="totalAllDisplay">0 грн</div>
+								</div>
+							</div>
+						  </div>
+					  
+							
+			  </div> 
+				</div>
+			  </div>
+		  
+		  
+			<div class="row">
+			  <div class="col-md-4 mb-4">
+				<div class="card">
+					<h4 style="text-align:center;">Customer Info</h4>
+				  
+					<div class="mb-3">
+						<footer><small class="text-muted">Телефон:</small></footer>
+						<div class="editable" data-name="costumer_phone">{{ order.costumer.phone }}</div>
+						<input type="tel" class="form-control d-none"
+							   name="costumer_phone" value="{{ order.costumer.phone }}">
+						<!-- <input type="hidden" name="costumer_phone" value="{{ order.costumer.phone }}"> -->
+					  </div>
+					  
+					  <div class="mb-3">
+						<footer><small class="text-muted">Прізвище:</small></footer>
+						<div class="editable" data-name="costumer_lastname">{{ order.costumer.last_name }}</div>
+						<input type="text" class="form-control d-none" name="costumer_lastname" value="{{ order.costumer.last_name }}">
+						<input type="hidden" name="costumer_id" value="{{ order.costumer.id }}">
+					  </div>
+					  
+					  <div class="mb-3">
+						<footer><small class="text-muted">Імʼя:</small></footer>
+						<div class="editable" data-name="costumer_firstname">{{ order.costumer.first_name or "" }}</div>
+						<input type="text" class="form-control d-none" name="costumer_firstname" value="{{ order.costumer.first_name }}">
+						<!-- <input type="hidden" name="costumer_firstname" value="{{ order.costumer.first_name }}"> -->
+					  </div>
+					  
+					  <div class="mb-3">
+						<footer><small class="text-muted">Побатькові:</small></footer>
+						<div class="editable" data-name="costumer_secondname">{{ order.costumer.second_name }}</div>
+						<input type="text" class="form-control d-none" name="costumer_secondname" value="{{ order.costumer.second_name }}">
+						<!-- <input type="hidden" name="costumer_middlename" value="{{ order.costumer.second_name }}"> -->
+					  </div>
+					  
+					  <div class="mb-3">
+						<footer><small class="text-muted">Email:</small></footer>
+						<div class="editable" data-name="costumer_email"
+							style="min-height: 1.5rem; cursor: pointer;">
+							{{ order.costumer.email or "Немає"}}</div>
+						<input type="email" class="form-control d-none" name="costumer_email" value="{{ order.costumer.email  }}">
+						<!-- <input type="hidden" name="costumer_email" value="{{ order.costumer.email  }}"> -->
+					  </div>
+					  
+				</div>
+				
+				  <br>
+		  
+				  <div class="card mb-4">
+					<h4 class="text-center mb-4">Оплата</h4>
+				  
+					<div class="mb-3">
+						<footer><small class="text-muted">Спосіб оплати:</small></footer>
+						<div id="paymentDisplay" style="cursor: pointer;">
+						  <div id="paymentText">{{ order.payment_method.name }}</div>
+						  <input type="hidden" name="payment_method" id="paymentMethodInput"
+								 value="{{ order.payment_method_id }}">
+						</div>
+					  </div>
+					  
+					  <div id="paymentEdit" style="display: none;">
+						<div class="row text-center">
+						  <div class="col-sm">
+							<input type="radio" class="form-check-input" id="nalogka"
+								   name="payment_option" value="1"
+								   {% if order.payment_method_id == 1 %}checked{% endif %}>
+							<label for="nalogka" class="form-check-label">Післяплата</label>
+						  </div>
+						  <div class="col-sm">
+							<input type="radio" class="form-check-input" id="card_pay"
+								   name="payment_option" value="2"
+								   {% if order.payment_method_id == 2 %}checked{% endif %}>
+							<label for="card_pay" class="form-check-label">Оплата на рахунок</label>
+						  </div>
+						  <div class="col-sm">
+							<input type="radio" class="form-check-input" id="peredpalata"
+								   name="payment_option" value="3"
+								   {% if order.payment_method_id == 3 %}checked{% endif %}>
+							<label for="peredpalata" class="form-check-label">Передплата</label>
+						  </div>
+						  <div class="col-sm">
+							<input type="radio" class="form-check-input" id="prom_oplata"
+								   name="payment_option" value="5"
+								   {% if order.payment_method_id == 5 %}checked{% endif %}>
+							<label for="prom_oplata" class="form-check-label">ПромОплата</label>
+						  </div>
+						  <div class="col-sm">
+							<input type="radio" class="form-check-input" id="rozetka_pay"
+								   name="payment_option" value="6"
+								   {% if order.payment_method_id == 6 %}checked{% endif %}>
+							<label for="rozetka_pay" class="form-check-label">RozetkaPay</label>
+						  </div>
+						  <div class="col-sm">
+							<input type="radio" class="form-check-input" id="olx"
+								   name="payment_option" value="7"
+								   {% if order.payment_method_id == 7 %}checked{% endif %}>
+							<label for="olx" class="form-check-label">OLX</label>
+						  </div>
+						  <div class="col-sm">
+							<input type="radio" class="form-check-input" id="another"
+								   name="payment_option" value="8"
+								   {% if order.payment_method_id == 8 %}checked{% endif %}>
+							<label for="another" class="form-check-label">Інше</label>
+						  </div>
+						</div>
+					  
+						<div class="row mt-4" id="hiddenFieldPay"
+							style="{% if order.payment_method_id == 3 %}display: block;{% else %}display: none;{% endif %}">
+						
+							<input type="number" class="form-control text-center"
+								id="sum_before_goods"
+								name="sum_before_goods"
+								min="1"
+								placeholder="Сума"
+								value="{{ order.sum_before_goods or '' }}"
+								required>
+					
+						</div>
+
+					  </div>
+					  
+					  <div class="mb-3">
+						<footer><small class="text-muted">Статус оплати:</small></footer>
+						<div id="statusDisplay" style="cursor: pointer;">
+						  <div id="paymentStatus">
+							{% if order.prompay_status_id == 1 %}Оплачено{% else %}Не оплачено{% endif %}
+						  </div>
+						  <input type="hidden" name="payment_status" id="paymentStatusInput"
+								 value="{{ order.prompay_status_id }}">
+						</div>
+					  </div>
+					  <div id="statusEdit" style="display: none;" class="text-center mt-3">
+						<label>
+						  <input type="checkbox" id="statusToggle" class="form-check-input me-2"
+								 {% if order.prompay_status_id == 1 %}checked{% endif %}>
+						  Оплачено
+						</label>
+					  </div>
+					  
+				  </div>
+			
+			  </div>
+		  
+			  <div class="col-md-4 mb-4">
+				<div class="card">
+				  <h4 class="text-center mb-4">Адреса Доставки</h4>
+				  
+				  <div class="mb-3">
+					<footer><small class="text-muted">Телефон:</small></footer>
+					<div class="editable" data-name="recipient_phone">{{ order.recipient.phone }}</div>
+					<input type="tel" class="form-control d-none"
+						   name="recipient_phone" value="{{ order.recipient.phone }}">
+					<input type="hidden" name="recipient_id" value="{{ order.recipient.id }}">
+				  </div>
+				  
+				  <div class="mb-3">
+					<footer><small class="text-muted">Прізвище:</small></footer>
+					<div class="editable" data-name="recipient_lastname">{{ order.recipient.last_name }}</div>
+					<input type="text" class="form-control d-none"
+						   name="recipient_lastname" value="{{ order.recipient.last_name }}">
+					<!-- <input type="hidden" name="recipient_lastname" value="{{ order.recipient.last_name }}"> -->
+				  </div>
+				  
+				  <div class="mb-3">
+					<footer><small class="text-muted">Імʼя:</small></footer>
+					<div class="editable" data-name="recipient_firstname">{{ order.recipient.first_name }}</div>
+					<input type="text" class="form-control d-none"
+						   name="recipient_firstname" value="{{ order.recipient.first_name }}">
+					<!-- <input type="hidden" name="recipient_firstname" value="{{ order.recipient.first_name }}"> -->
+				  </div>
+				  
+				  <div class="mb-3">
+					<footer><small class="text-muted">Побатькові:</small></footer>
+					<div class="editable" data-name="recipient_secondname">{{ order.recipient.second_name }}</div>
+					<input type="text" class="form-control d-none"
+						   name="recipient_secondname" value="{{ order.recipient.second_name }}">
+					<!-- <input type="hidden" name="recipient_middlename" value="{{ order.recipient.second_name }}"> -->
+				  </div>
+				  
+		  
+				  
+		  
+				  
+					<!-- 📦 Блок перегляду (read-only) -->
+					<div id="deliveryDisplay">
+						<div id="AdsressOld">
+						<div class="mb-3">
+						  <footer><small class="text-muted">Місто:</small></footer>
+						  <div id="viewCity">{{ order.city_name }}</div>
+						</div>
+					  
+						<div class="mb-3">
+						  <footer><small class="text-muted">Адреса:</small></footer>
+						  <div id="viewAddress">{{ order.warehouse_text }}</div>
+						</div>
+					  
+						<div class="mb-3">
+						  <footer><small class="text-muted">ТТН:</small></footer>
+						  <div id="viewTTN">{{ order.ttn or "Ще не створено"}}</div>
+						</div>
+					  
+						<div class="mb-3">
+						  <footer><small class="text-muted">Метод доставки:</small></footer>
+						  <div id="viewMethod">{{ order.delivery_method.name or "Відсутній" }}</div>
+					<input type="hidden" name="delivery_method" value="{{ order.delivery_method_id }}">
+					<input type="hidden" name="CityName"  value="{{ order.city_name }}">
+					<input type="hidden" name="warehouse_option" value="{{ order.warehouse_option }}">
+					<input type="hidden" name="warehouse-text" value="{{ order.warehouse_text }}">
+					<input type="hidden" name="warehouse-id" value="{{ order.warehouse_ref }}">
+					
+
+						</div>
+					</div>
+						
+					  </div>
+					  <div class="mb-3 text-center">
+						<span id="ChangeAddress" style="cursor: pointer; color: #9f70ec;">
+						  Змінити
+						</span>
+						|
+						<span style="cursor: pointer; color: #9f70ec;">Копіювати</span>
+					  </div>
+				  
+					
+				  </div>
+				  
+				</div>
+		  
+		  
+			  <div class="col-md-4 mb-4">
+				<div class="card mb-4">
+				  <h4 class="text-center mb-4">Нотатки</h4>
+				
+
+				  <div id="notesDisplay" class="editable">
+					{{ order.description or "Нема нотаток" }}
+				  </div>
+				
+				  <!-- ✏️ Редагування -->
+				  <textarea id="notesInput"
+							name="description"
+							class="form-control d-none"
+							rows="12"
+							placeholder="Нотатки">{{ order.description }}</textarea>
+				
+				  <!-- 📤 Приховане поле для форми -->
+				  <input type="hidden" name="description" id="notesHidden"
+						 value="{{ order.description }}">
+				</div>
+				
+				  <br>
+				<div class="card">
+				  <h4 class="text-center mb-4">Історія  </h4>
+		  
+					  <footer><small class="text-muted">Нотатки:</small></footer>
+					  <div>{{ order.history or "Нема історії" }} </div>
+					</div>
+			  </div>
+				  </div>
+				  <div class="row" >
+					<div class=" center">
+						<button 
+							style="color: #626870;
+									background: #ffffffaa;
+									border-radius: 14px;
+									box-shadow: 4px 4px 12px #00000010;
+									width: 30%;
+									"
+							class="btn" 
+							onclick="submitForm()" 
+							type="submit">Оновити Замовлення</button> </br>	
+					</div>
+				</div>
+			  </div>
+			  
+			  
+			
+		  
+
+
+		  
+		  
+		  
+		  
+		
+	</form>
+</div>
+	<input type="hidden" 
+		name="selectedItems" 
+		id="selectedItems" 
+		value="{{order.id}}">
+
+	<!-- My Modal Add product -->
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content ">
+			<div class="modal-header">
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="content text-center">
+					<h1 style="text-align: center;">
+						Створеня Товару
+					</h1>
+					<form id="dataForm">
+						<textarea class="form-control " style="text-align: center;"  
+						id="article" name="article" rows="1" cols="50" placeholder="* Артікул"></textarea><br>
+						<div class="row">									
+							<div class="col-sm "><textarea class="form-control" 
+								style="text-align: center;" id="product_name" name="product_name" 
+								rows="1" cols="50" placeholder="* Назва"></textarea><br></div>
+						</div>
+						<div class="row">
+							<div class="col-sm "><input type="number" style="text-align: center;" 
+								class="form-control" id="price_prod" name="price" 
+								min="1" placeholder="Ціна" required><br></div>
+						<div class="modal-footer" style="text-align: center;">
+							<div class="col-sm ">
+								<button id="submitBtn" class="btn     my-sm-0" 
+										onclick="sendDataToServerW()" type="button">
+										Додати Товар
+								</button>
+							</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>	
+	</div>
+	</div>
+</div>
+
+	<script>
+		document.getElementById('changeStatusSee').style.display = 'block';
+		document.getElementById('add_reg').style.display = 'block';
+		document.getElementById('del_reg').style.display = 'block';
+	
+	</script>
+	<script src="{{url_for('static', filename='javascript/update_order/add-button-product.js')}}"></script>
+	<script src="{{url_for('static', filename='javascript/update_order/newCalculateTotal.js')}}"></script>
+	<script src="{{url_for('static', filename='javascript/update_order/noties.js')}}"></script>
+	<!-- <script src="{{url_for('static', filename='javascript/update_order/delivery.js')}}"></script> -->
+	<script src="{{url_for('static', filename='javascript/update_order/payment.js')}}"></script>
+	<script src="{{url_for('static', filename='javascript/update_order/input_field.js')}}"></script>
+	<script src="{{url_for('static', filename='javascript/update_order/changeProductOldItem.js')}}"></script>
+	<script src="{{url_for('static', filename='javascript/update_order/delete_product.js')}}"></script>
+	<script src="{{url_for('static', filename='javascript/update_order/update_enter.js')}}"></script>
+	<script src="{{url_for('static', filename='javascript/update_order/changeAddress.js')}}"></script>
+
+	<script src="{{url_for('static', filename='javascript/sendDataToServerFile.js')}}"></script>
+    <script src="{{url_for('static', filename='javascript/add-select2.js')}}"></script>
+    <script src="{{url_for('static', filename='javascript/hiddenElement.js')}}"></script>
+    <script src="{{url_for('static', filename='javascript/submitFormUpdateOrd.js')}}"></script>
+	<script src="{{url_for('static', filename='javascript/copyText.js')}}"></script>
+	<script src="{{url_for('static', filename='javascript/checkbox-item.js')}}"></script>  
+
+
+
+{% endblock %}

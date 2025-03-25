@@ -48,13 +48,27 @@ class OrderApi:
             text = f"🔴 Помилка додавання замовлення в розетку {e}"
             return False
         
-    def add_order(self, o):
-        order_db = self.order_cntrl.add_order2(o)
+    def add_order(self, dto):
+        dto = self.add_costumer(dto)
+        print("add_order:", dto)
+        dto = self.add_recipient(dto)
+        print("add_order:", dto)
+        order_db = self.order_cntrl.add_order2(dto)
         if order_db:
-            for p in o.ordered_product:
+            for p in dto.ordered_product:
                 product_db = self.order_cntrl.add_ordered_product(p, order_db.id)
             return True if product_db else False
         return False 
+    
+    def add_costumer(self, dto):
+        costumer = self.order_cntrl.add_costumer(dto.costumer)
+        dto.costumer_id = costumer.id
+        return dto
+    
+    def add_recipient(self, dto):
+        recipient = self.order_cntrl.add_recipient(dto.recipient)
+        dto.recipient_id = recipient.id
+        return dto
 
     def change_status(self, order_id, status):
         return self.api.create_status_get(order_id, status)    

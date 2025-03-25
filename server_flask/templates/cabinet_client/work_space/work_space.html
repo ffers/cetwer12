@@ -1,11 +1,14 @@
 {% extends 'layout/base.html' %}
 
 {% block head %}
-
 {% endblock %}
 
 {% block body %}
-<head><title>Середовище</title></head>
+<head><title>Середовище</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/update_order.css') }}">
+  
+</head>
 
 
 <div class="content">
@@ -43,4 +46,425 @@
 
 
 <script src="{{url_for('static', filename='javascript/selection-space.js')}}"></script>
+
+
+<!-- добавить пром ресіпіент розетка і адд -->
+  <!-- <aside class="sidebar">
+    <h2>CRM</h2>
+    <ul>
+      <li>Dashboard</li>
+      <li>Customers</li>
+      <li>Orders</li>
+      <li>Finances</li>
+    </ul>
+  </aside> -->
+<!-- контейнер редактирования інформациі  -->
+<div class="container-fluid px-3"> 
+  <div class="row">
+    <div class="col mb-4">
+      <div class="card product-card">
+        <h4 class="text-center mb-3">Product Info</h4>
+        
+        <div id="ProductOldItem">
+              <div class="row">
+                
+                  <div class="col-md-4 mb-4">
+                    <footer><small class="text-muted">Артикул:</small></footer>
+                    <div>123456</div>
+                  </div>
+              
+                  <div class="col-md mb-3">
+                    <footer><small class="text-muted">Кількість:</small></footer>
+                    <div>2</div>
+                  </div>
+              
+                  <div class="col-md mb-3">
+                    <footer><small class="text-muted">Назва:</small></footer>
+                    <div>Сорочка чоловіча синя</div>
+                  </div>
+              
+                  <div class="col-md mb-3">
+                    <footer><small class="text-muted">Ціна:</small></footer>
+                    <div>850 грн</div>
+                  </div>
+                  <input type="number" 
+                      style="text-align: center; display: none;" 
+                      class="total form-control" id="sum_price" 
+                      name="sum_price" min="1" value="850"
+                      required>			
+                    				
+                    <input type="number" 
+                      style="text-align: center; display: none;" 
+                      class="form-control" id="product" 
+                      name="product" min="1" 
+                      value="product.id"
+                      required>
+         
+              
+            
+                    <div class="col-md mb-3">
+                      <span 
+                        class="ChangeProductOldItem"
+                        onclick="changeBlock(this)" 
+                        style="cursor: pointer; color: #9f70ec;">Змінити</span> /
+                      <span
+                      onclick="deleteBlock(this)"
+                        style="cursor: pointer; color: #9f70ec;">Видалити</span>
+                    </div>
+                  </div>
+                </div>    
+           
+
+              <hr>
+            
+            <div class="row ">
+                  <div class="col">
+                    <div style=" left: 16px;">
+                      <span
+                        onclick="addProduct()"
+                        style="cursor: pointer; color: #9f70ec;">Додати товар</span> /
+                      <span style="cursor: pointer; color: #9f70ec;">Створити товар</span>
+                    </div>
+                    
+                  </div>
+                  <div class="col">
+                      <div style="position: absolute; right: 16px;">
+                        <footer><small>Сума замовлення:</small></footer>
+                            <div id="totalAllDisplay">0 грн</div>
+                      </div>
+                  </div>
+                </div>
+            
+                  
+    </div> 
+      </div>
+    </div>
+
+
+  <div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card">
+          
+          <h4 style="text-align:center;">Customer Info</h4>
+        
+          <div class="mb-3">
+            <footer><small class="text-muted">Телефон:</small></footer>
+            <div class="editable" data-name="phone">380909009000</div>
+            <input type="tel" class="form-control d-none"
+                    name="phone" value="380909009000">
+            <input type="hidden" name="phone" value="380909009000">
+          </div>
+        
+          <div class="mb-3">
+            <footer><small class="text-muted">Прізвище:</small></footer>
+            <div class="editable" data-name="lastname">Шевченко</div>
+            <input type="text" class="form-control d-none" name="lastname" value="Шевченко">
+            <input type="hidden" name="lastname" value="Шевченко">
+          </div>
+          
+          <div class="mb-3">
+            <footer><small class="text-muted">Імʼя:</small></footer>
+            <div class="editable" data-name="firstname">Олександр</div>
+            <input type="text" class="form-control d-none" name="firstname" value="Олександр">
+            <input type="hidden" name="firstname" value="Олександр">
+          </div>
+          
+          <div class="mb-3">
+            <footer><small class="text-muted">Побатькові:</small></footer>
+            <div class="editable" data-name="middlename">Володимирович</div>
+            <input type="text" class="form-control d-none" name="middlename" value="Володимирович">
+            <input type="hidden" name="middlename" value="Володимирович">
+          </div>
+          
+          <div class="mb-3">
+            <footer><small class="text-muted">Email:</small></footer>
+            <div class="editable" data-name="email">example@email.com</div>
+            <input type="email" class="form-control d-none" name="email" value="example@email.com">
+            <input type="hidden" name="email" value="example@email.com">
+          </div>
+          
+        </div>
+      
+        <br>
+
+        <div class="card mb-4">
+          <h4 class="text-center mb-4">Оплата</h4>
+        
+          <div class="mb-3">
+            <footer><small class="text-muted">Спосіб оплати:</small></footer>
+            <div id="paymentDisplay" style="cursor: pointer;">
+              <div id="paymentText">RozetkaPay</div>
+              <input type="hidden" name="payment_method" id="paymentMethodInput" value="6">
+            </div>
+          </div>
+
+        
+          <div id="paymentEdit" style="display: none;">
+            <div class="row text-center">
+              <div class="col-sm">
+                <input type="radio" class="form-check-input" id="nalogka"
+                       name="payment_option" value="1">
+                <label for="nalogka" class="form-check-label">Післяплата</label>
+              </div>
+              <div class="col-sm">
+                <input type="radio" class="form-check-input" id="card_pay"
+                       name="payment_option" value="2">
+                <label for="card_pay" class="form-check-label">Оплата на рахунок</label>
+              </div>
+              <div class="col-sm">
+                <input type="radio" class="form-check-input" id="peredpalata"
+                       name="payment_option" value="3">
+                <label for="peredpalata" class="form-check-label">Передплата</label>
+              </div>
+              <div class="col-sm">
+                <input type="radio" class="form-check-input" id="prom_oplata"
+                       name="payment_option" value="5">
+                <label for="prom_oplata" class="form-check-label">ПромОплата</label>
+              </div>
+              <div class="col-sm">
+                <input type="radio" class="form-check-input" id="rozetka_pay"
+                       name="payment_option" value="6">
+                <label for="rozetka_pay" class="form-check-label">RozetkaPay</label>
+              </div>
+              <div class="col-sm">
+                <input type="radio" class="form-check-input" id="olx"
+                       name="payment_option" value="7">
+                <label for="olx" class="form-check-label">OLX</label>
+              </div>
+              <div class="col-sm">
+                <input type="radio" class="form-check-input" id="another"
+                       name="payment_option" value="8">
+                <label for="another" class="form-check-label">Інше</label>
+              </div>
+            </div>
+            
+            <div class="row mt-4" id="hiddenFieldPay" style="display: none;">
+              <div class="col-md-6 offset-md-3">
+                <input type="number" class="form-control text-center"
+                       id="sum_before_goods"
+                       name="sum_before_goods"
+                       min="1"
+                       placeholder="Сума" required>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <footer><small class="text-muted">Статус оплати:</small></footer>
+            <div id="statusDisplay" style="cursor: pointer;">
+              <div id="paymentStatus">Оплачено</div>
+              <input type="hidden" name="payment_status" id="paymentStatusInput" value="1">
+            </div>
+          </div>
+          <div id="statusEdit" style="display: none;" class="text-center mt-3">
+            <label>
+              <input type="checkbox" id="statusToggle" class="form-check-input me-2">
+              Оплачено
+            </label>
+          </div>
+        </div>
+        
+
+
+      </div>
+  
+
+    <div class="col-md-4 mb-4">
+      <div class="card">
+        <h4 class="text-center mb-4">Shipping Address</h4>
+        
+        <div class="mb-3">
+          <footer><small class="text-muted">Телефон:</small></footer>
+          <div class="editable" data-name="phone">380909009000</div>
+          <input type="tel" class="form-control d-none"
+                  name="phone" value="380909009000">
+          <input type="hidden" name="phone" value="380909009000">
+        </div>
+      
+        <div class="mb-3">
+          <footer><small class="text-muted">Прізвище:</small></footer>
+          <div class="editable" data-name="lastname">Шевченко</div>
+          <input type="text" class="form-control d-none" name="lastname" value="Шевченко">
+          <input type="hidden" name="lastname" value="Шевченко">
+        </div>
+        
+        <div class="mb-3">
+          <footer><small class="text-muted">Імʼя:</small></footer>
+          <div class="editable" data-name="firstname">Олександр</div>
+          <input type="text" class="form-control d-none" name="firstname" value="Олександр">
+          <input type="hidden" name="firstname" value="Олександр">
+        </div>
+        
+        <div class="mb-3">
+          <footer><small class="text-muted">Побатькові:</small></footer>
+          <div class="editable" data-name="middlename">Володимирович</div>
+          <input type="text" class="form-control d-none" name="middlename" value="Володимирович">
+          <input type="hidden" name="middlename" value="Володимирович">
+        </div>
+
+        
+
+        
+          <!-- 📦 Блок перегляду (read-only) -->
+          <div id="deliveryDisplay">
+            <div class="mb-3">
+              <footer><small class="text-muted">Місто:</small></footer>
+              <div id="viewCity">Радовель</div>
+            </div>
+        
+            <div class="mb-3">
+              <footer><small class="text-muted">Адреса:</small></footer>
+              <div id="viewAddress">вул. Миколи Хоречка, 2а</div>
+            </div>
+        
+            <div class="mb-3">
+              <footer><small class="text-muted">ТТН:</small></footer>
+              <div id="viewTTN">20400000000001</div>
+            </div>
+        
+            <div class="mb-3">
+              <footer><small class="text-muted">Метод доставки:</small></footer>
+              <div id="viewMethod">Нова Пошта - Кур'єр</div>
+            </div>
+        
+            <div class="mb-3 text-center">
+              <span id="editDeliveryBtn" style="cursor: pointer; color: #9f70ec;">
+                Змінити
+              </span>
+              |
+              <span style="cursor: pointer; color: #9f70ec;">Копіювати</span>
+            </div>
+          </div>
+        
+          <!-- ✏️ Блок редагування -->
+          <div id="deliveryEdit" style="display: none;">
+            <div class="row text-center mb-4" style="padding: 30px">
+              <div class="col-sm">
+                <input type="radio" class="form-check-input" id="1"
+                       name="delivery_method" value="1">
+                <label for="1" class="form-check-label">Нова Пошта</label>
+              </div>
+              <div class="col-sm">
+                <input type="radio" class="form-check-input" id="2"
+                       name="delivery_method" value="2">
+                <label for="2" class="form-check-label">Розетка</label>
+              </div>
+              <div class="col-sm">
+                <input type="radio" class="form-check-input" id="3"
+                       name="delivery_method" value="3">
+                <label for="3" class="form-check-label">Укрпошта</label>
+              </div>
+              <div class="col-sm">
+                <input type="radio" class="form-check-input" id="5"
+                       name="delivery_method" value="5">
+                <label for="5" class="form-check-label">Шопзаказ</label>
+              </div>
+            </div>
+        
+            <h5 class="text-center mb-3">Тип відправки</h5>
+            <div class="row text-center mb-4" style="padding: 10px">
+              <div class="col">
+                <input type="radio" class="form-check-input"
+                       id="warehouse" name="warehouse_option"
+                       value="warehouse" onclick="toggleField()">
+                <label for="warehouse" class="form-check-label">Відділення</label>
+              </div>
+              <div class="col">
+                <input type="radio" class="form-check-input"
+                       id="poshtomat" name="warehouse_option"
+                       value="poshtomat" onclick="toggleField()">
+                <label for="poshtomat" class="form-check-label">Поштомат</label>
+              </div>
+              <div class="col">
+                <input type="radio" class="form-check-input"
+                       id="address" name="warehouse_option"
+                       value="address" onclick="toggleField()">
+                <label for="address" class="form-check-label">Адреса</label>
+              </div>
+            </div>
+        
+            <div class="row mb-3">
+              <div class="col-md">
+                <select id="citySelect" class="form-control" name="city" required></select>
+              </div>
+        
+              <div id="hiddenFieldWar" class="col-md" style="display: block;">
+                <select id="warhousSelect" class="form-control" name="warehouse"
+                        placeholder="Відділення"></select>
+              </div>
+        
+              <div id="hiddenFieldPost" class="col-md" style="display: none;">
+                <select id="postSelect" class="form-control" name="warehouse"
+                        placeholder="Поштомат"></select>
+              </div>
+        
+              <div id="hiddenFieldAdr" class="col-md" style="display: none;">
+                <textarea id="addressText" class="form-control" name="warehouse"
+                          placeholder="* Адреса" rows="2"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
+
+    <div class="col-md-4 mb-4">
+      <div class="card mb-4">
+        <h4 class="text-center mb-4">Нотатки</h4>
+      
+        <!-- 📄 Відображення -->
+        <div id="notesDisplay" style="cursor: pointer;">
+          Абонент не в мережі (Dashka)
+        </div>
+      
+        <!-- ✏️ Редагування -->
+        <textarea id="notesInput"
+                  name="description"
+                  class="form-control d-none"
+                  rows="12"
+                  placeholder="Нотатки">Абонент не в мережі (Dashka)</textarea>
+      
+        <!-- 📤 Приховане поле для форми -->
+        <input type="hidden" name="description" id="notesHidden"
+               value="Абонент не в мережі (Dashka)">
+      </div>
+      
+        <br>
+      <div class="card">
+        <h4 class="text-center mb-4">Історія  </h4>
+
+            <footer><small class="text-muted">Нотатки:</small></footer>
+            <div>
+              20-03-2025 08:12: Абонент не в мережі (Dashka)
+            </div>
+             <div>
+              20-03-2025 10:42: Написала вайбер (Dashka)
+            </div>
+          </div>
+    </div>
+        </div>
+    </div>
+    
+    
+  
+
+</div>
+<style>
+  /* Контейнер */
+
+
+
+
+</style>
+
+<script src="{{url_for('static', filename='javascript/update_order/add-button-product.js')}}"></script>
+<script src="{{url_for('static', filename='javascript/update_order/newCalculateTotal.js')}}"></script>
+<script src="{{url_for('static', filename='javascript/update_order/noties.js')}}"></script>
+<script src="{{url_for('static', filename='javascript/update_order/delivery.js')}}"></script>
+<script src="{{url_for('static', filename='javascript/update_order/payment.js')}}"></script>
+<script src="{{url_for('static', filename='javascript/update_order/input_field.js')}}"></script>
+<script src="{{url_for('static', filename='javascript/update_order/changeProductOldItem.js')}}"></script>
+<script src="{{url_for('static', filename='javascript/update_order/delete_product.js')}}"></script>
+
+
 {% endblock %}

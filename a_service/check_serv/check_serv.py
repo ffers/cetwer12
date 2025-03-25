@@ -1,39 +1,62 @@
 import uuid, time
 from datetime import datetime, timezone
 from repository import UserTokenRep
-from api import CheckboxClient
+
 from DTO import UserTokenDTO, ReceiptDTO, ShiftDTO
 from repository import ReceiptRep, ShiftRep
+from api import CheckboxClient
+from .authorization import Authorization
+from .api_call import ApiCall
+
+'''
+Управление смени нужно ручное
+также по расписанию
+
+Перевірити касса онлайн чи офлайн Раз в 2 хвилини (Планировщик)
+'''
  
 class CheckServ(object):
     def __init__(self, user_id):
         from black import TelegramController 
         self.tg = TelegramController()
         self.user_id = user_id
-        self.token = None
+        self.auth = Authorization(user_id, CheckboxClient, TelegramController)
+        self.token = self.auth.check_token()
         self.token_rep = UserTokenRep(None)
-        self.authorization()
-        self.api = CheckboxClient(self.token)
         self.receipt_rep = ReceiptRep()
         self.shift_rep = ShiftRep()
+        self.api_call = ApiCall(CheckboxClient, self.token)
+
 
     def cash_register_operating(self):
+        resp = self.api_call.cash_registers()
+        print("cash_register_operating:", self.token)
+        print("cash_register_operating:", resp)
         cash_online = self.cash_online_check()
-        if cash_online:
-            online = self.online_mode()
-            if online:
-                pass
-        if not cash_online:
-            ping = self.try_online()
-            if ping:
-                cash_online = self.cash_online_check()
-                if cash_online:
-                    self.online_mode()
-            else:
-                self.offline_mode() 
+    #    if cash_online:
+    #         online = self.online_mode()
+    #         if online:
+    #             pass
+    #     if not cash_online:
+    #         ping = self.try_online()
+    #         if ping:
+    #             cash_online = self.cash_online_check()
+    #             if cash_online:
+    #                 self.online_mode()
+    #         else:
+    #             self.offline_mode() 
 
     def cash_online_check(self):
         self.cash_online = None
+
+    
+    def validate_error(self, resp):
+        if "error" in resp: # додати обробку різних помилок
+                msg = ">>> {}".format(resp["error"])
+                send = self.tg.sendMessage(self.tg.chat_id_info, msg)
+                return True
+        return False
+    
 
     def online_mode(self):
         fiscal_code = self.load_offline_codes(True)
@@ -148,82 +171,10 @@ class CheckServ(object):
         if shifts_list:
             return True
         
-    
-    def shifts(self, body):
-        return self.universal_api_call(self.api.shifts(body))
 
-    def go_online(self):
-        return self.universal_api_call(self.api.go_online)
     
-    def go_offline(self):
-        return self.universal_api_call(self.api.go_offline)
 
-    def ask_offline_codes(self):
-        return self.universal_api_call(self.api.ask_offline_codes)
-    
-    def get_offline_codes(self):
-        return self.universal_api_call(self.api.get_offline_codes)
-
-    def cash_registers(self):
-        return self.universal_api_call(self.api.cash_registers)
-    
-    def cash_online(self, id):
-        return self.universal_api_call(self.api.cash_online(id))
-    
-    def ping_tax_service(self):
-        return self.universal_api_call(self.api.ping_tax_service)
-    
-    def add_token(self, token):
-        self.token = token
-        resp = self.rep.load_token_checkbox(self.user_id)
-        dto = UserTokenDTO(
-            user_id=self.user_id,
-            checkbox_access_token=token
-        ) 
-        if not resp:
-            print("Додаєм нового юзера")
-            success = self.rep.add_token(dto)
-            return success
-        print("Оновлюємо данні юзера", dto)
-        success = self.rep.update_token(dto)
-        print("db:", success)
-        return success
-    
-    def validate_error(self, resp):
-        if "error" in resp: # додати обробку різних помилок
-                msg = ">>> {}".format(resp["error"])
-                send = self.tg.sendMessage(tg.chat_id_info, msg)
-                return True
-        return False
         
-    def validate_token(self):
-        if not self.token:
-            self.authorization()
-            if not self.token:
-                raise ValueError("Токен відсутній. Авторизуватись не вийшло. відправка в тг")
-        self.api = CheckboxClient(self.token)
 
-    def universal_api_call(self, func, *args, **kwargs):
-        self.validate_token()
-        try:
-            resp = func(*args, **kwargs)
-            success = self.validate_error(resp)
-            if not success:
-                return resp 
-            raise
-        except Exception as e:
-            return False
-            
-    def authorization(self): # authorization
-        print("Authorization Checkbox")
-        self.token = self.rep.load_token_checkbox(self.user_id)
-        if not self.token:
-            api = CheckboxClient()
-            success, resp = api.signinPinCode()
-            if not success:
-                self.validate_error(resp)
-                print("Authorization unsuccessful")
-                return False
-            self.add_token(resp)
-            print(f"Authorization success {resp}")
-        return True
+
+

@@ -164,9 +164,17 @@ class OrderCntrl:
     # Для РОЗЕТКІ =======================
     #
     #
+    def add_costumer(self, costumer_dto): 
+        return self.order_serv.add_costumer(costumer_dto)
+    
+    def add_recipient(self, recipient_dto):
+        return self.order_serv.add_recipient(recipient_dto)
 
     def add_order2(self, order_obj):
         return self.ord_rep.add_order(order_obj)
+    
+    def update_order3(self, order_id, order_dto):
+        return self.order_serv.update_order3(order_id, order_dto)
     
     def add_ordered_product(self, product_dto, ord_id):
         prod_cntrl = ProductCntrl()

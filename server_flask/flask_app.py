@@ -29,7 +29,7 @@ migrate = Migrate(flask_app, db, directory='../common_asx/migrations')
 user_db = os.getenv('DB_USERNAME')
 password_db = os.getenv('DB_PASSWORD')
 
-flask_app.config['DEBUG'] = True
+flask_app.config['DEBUG'] = True if os.getenv("ENV") == "dev" else False
 flask_app.config['SECRET_KEY'] = os.getenv("SECRET_KEY_FLASK")
 flask_app.config["SQLALCHEMY_DATABASE_URI"] = f"postgresql://{user_db}:{password_db}@localhost:5432/flask_db"
 flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -39,7 +39,7 @@ flask_app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'  # URL для
 flask_app.config['CELERY_RESULT_BACKEND'] = 'redis://localhost:6379/0'  # URL для збереження результатів завдань
 
 celery = Celery(flask_app.name, broker=flask_app.config['CELERY_BROKER_URL'])
-db.init_app(flask_app)
+db.init_app(flask_app) 
 celery.conf.update(flask_app.config)
 flask_app.register_blueprint(Blog)
 flask_app.register_blueprint(Auth)
@@ -62,6 +62,10 @@ from .models import Users
 login_manager = LoginManager()
 login_manager.login_view = "auth.login"
 login_manager.init_app(flask_app)
+import logging
+logging.basicConfig()
+logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
+logging.getLogger('sqlalchemy.orm').setLevel(logging.INFO)
 
 def get_db_connection():
     conn = psycopg2.connect(host='localhost',

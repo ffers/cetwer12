@@ -92,7 +92,10 @@ newField.find('.product-select1').select2({
     scriptElement.src = "/static/javascript/add-button-product.js";
     document.body.appendChild(scriptElement);
     };
-
+    function deleteBlock(id){
+        let oldBlock = id.closest(".row");
+        oldBlock.remove();
+}
     
     
     // document.addEventListener('DOMContentLoaded', function () {

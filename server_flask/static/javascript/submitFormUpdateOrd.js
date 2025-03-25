@@ -51,7 +51,7 @@ function validateAndTogglePopover(inputElement, popoverInstance) {
       if (selectedCity) {
           let selectedCity = $('#citySelect').select2('data')[0];
           if ( !selectedCity ) {
-              alert('Будь ласка, заповніть всі обов\'язкові поля.');
+              alert('Будь ласка, заповніть "місто" обов\'язкове поле.');
               return false;
           } else {
             
@@ -119,7 +119,12 @@ function methodDeliveryValid(){
 function submitForm() { 
   event.preventDefault();
   if (isFormValid() && methodDeliveryValid() && paymentMethod()) { 
-    
+    // const form = document.getElementById('myForm');
+    // const formData = new FormData(form);
+
+    // for (const [key, value] of formData.entries()) {
+    //   console.log(`${key}: ${value}`);
+    // }
     // Відправка форми
     $('#myForm').submit(); 
   } 

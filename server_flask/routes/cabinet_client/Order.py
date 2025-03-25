@@ -15,6 +15,7 @@ from datetime import datetime
 from black import OrderCntrl, DeliveryOrderCntrl
 from utils import util_asx
 from collections import Counter
+from DTO.order_mapper_request import OrderFormMapper
 
 OC_log = util_asx.oc_log("order")
 
@@ -47,8 +48,7 @@ bp = Blueprint('Order', __name__, template_folder='templates')
 @author_permission.require(http_exception=403)
 def Order():
     if request.method == 'POST':
-        task_content = request.form['content']
-        task_name_post = request.form['name_post']
+        
         print(">>> Add datebase")
         return redirect('/orders')
     else:
@@ -85,51 +85,57 @@ def Order():
   
  
 
-@bp.route('/cabinet/orders/update/<int:id>', methods=['GET', 'POST'])
+@bp.route('/cabinet/orders/update/<int:order_id>', methods=['GET', 'POST'])
 @login_required
 @author_permission.require(http_exception=403)
-def update(id): 
-    task_update = Orders.query.get_or_404(id)
+def update(order_id): 
+    print("update:", order_id)
+    or_c = OrderCntrl()
+    order = or_c.load_for_order_id(order_id)
     if request.method == 'POST':
-        task_update.phone = request.form['phone']
-        task_update.client_firstname = request.form['client_firstname']
-        task_update.client_surname = request.form['client_surname']
-        task_update.client_lastname = request.form['client_lastname']
-        task_update.description = request.form['description']
-        task_update.sum_before_goods = None
-        if 'payment_option' in request.form:
-            task_update.payment_method_id = request.form['payment_option']
-            if request.form['payment_option'] == "3": 
-                sum_before_goods_dr = request.form["sum_before_goods"]
-                sum_before_goods = format_float(sum_before_goods_dr)
-                task_update.sum_before_goods = sum_before_goods
-        if "city" in request.form:
-            task_update.warehouse_option = request.form['warehouse_option']
-            task_update.city_ref = request.form['CityREF']
-            task_update.city_name = request.form['CityName']
-            task_update.warehouse_ref = request.form['warehouse-id']
-            task_update.warehouse_text = unquote(request.form['warehouse-text'])
-            task_update.delivery_method_id = request.form['delivery_method']
-        if "product" in request.form:
-            sum_price_draft = request.form['total-all']
-            task_update.sum_price = format_float(sum_price_draft)
-            task_update.description = request.form['description']
-            task_update.sum_after_goods = None 
-            task_update.ordered_product = []
-            product_id = request.form.getlist('product')
-            price = request.form.getlist('price')
-            quantity = request.form.getlist('quantity')
-            print(f"data {product_id} & {price} & {quantity}")
-            combined_list = list(zip_longest(product_id, price, quantity, fillvalue=None))
-            for item in combined_list:
-                product_id, price, quantity = item 
-                ordered_product = OrderedProduct(product_id=product_id, price=price, quantity=quantity, order_id=task_update.id)
-                task_update.ordered_product.append(ordered_product)
-        db.session.commit()        
-        print(">>> Update in datebase")
-        flash(f'Замовлення {task_update.order_code} оновлено', category='success')
-        ord_cntrl.send_order_tg(task_update.id)
-        return redirect(f'/cabinet/orders/update/{id}')
+
+        order_dto = OrderFormMapper.from_request(request)
+        # print(order_dto)
+        order = or_c.update_order3(order_id, order_dto)
+        # task_update.phone = request.form['costumer_phone']
+        # task_update.client_firstname = request.form['costumer_firstname']
+        # task_update.client_surname = request.form['costumer_middlename']
+        # task_update.client_lastname = request.form['costumer_lastname']
+        # task_update.description = request.form['description']
+        # task_update.sum_before_goods = None
+        # if 'payment_option' in request.form:
+        #     task_update.payment_method_id = request.form['payment_option']
+        #     if request.form['payment_option'] == "3": 
+        #         sum_before_goods_dr = request.form["sum_before_goods"]
+        #         sum_before_goods = format_float(sum_before_goods_dr)
+        #         task_update.sum_before_goods = sum_before_goods
+        # if "city" in request.form:
+        #     task_update.warehouse_option = request.form['warehouse_option']
+        #     task_update.city_ref = request.form['CityREF']
+        #     task_update.city_name = request.form['CityName']
+        #     task_update.warehouse_ref = request.form['warehouse-id']
+        #     task_update.warehouse_text = unquote(request.form['warehouse-text'])
+        #     task_update.delivery_method_id = request.form['delivery_method']
+        # if "product" in request.form:
+        #     sum_price_draft = request.form['total-all']
+        #     task_update.sum_price = format_float(sum_price_draft)
+        #     task_update.description = request.form['description']
+        #     task_update.sum_after_goods = None 
+        #     task_update.ordered_product = []
+        #     product_id = request.form.getlist('product')
+        #     price = request.form.getlist('price')
+        #     quantity = request.form.getlist('quantity')
+        #     print(f"data {product_id} & {price} & {quantity}")
+        #     combined_list = list(zip_longest(product_id, price, quantity, fillvalue=None))
+        #     for item in combined_list:
+        #         product_id, price, quantity = item 
+        #         ordered_product = OrderedProduct(product_id=product_id, price=price, quantity=quantity, order_id=task_update.id)
+        #         task_update.ordered_product.append(ordered_product)
+        # db.session.commit()        
+        # print(">>> Update in datebase")
+        # flash(f'Замовлення {task_update.order_code} оновлено', category='success')
+        # ord_cntrl.send_order_tg(task_update.id)
+        return redirect(f'/cabinet/orders/update/{order_id}')
         # except:   
         #     return 'There was an issue updating your task'
                         
@@ -137,8 +143,8 @@ def update(id):
         admin = admin_permission.can()
         print(f"перевірка {vars(current_user.roles)}")
         return render_template(
-                'cabinet_client/update_order.html', 
-                order=task_update, 
+                'cabinet_client/update_order_new.html', 
+                order=order, 
                 user=current_user,
                 admin=admin
             )  

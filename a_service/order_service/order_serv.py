@@ -5,7 +5,7 @@ from utils.my_time_util import my_time
 from .client_serv import OrderProcessingPipeline
 from .status_new_with_payment import StatusNewWithPaidPipline
 
-from repository import OrderRep
+from repository import OrderRep, RecipientRep, CostumerRep
 from .order_api_process import OrderApi
 from ..telegram_handler.text_formater.text_order_manager import TextOrderManager  
 
@@ -14,6 +14,8 @@ from ..telegram_handler.text_formater.text_order_manager import TextOrderManager
 class OrderServ:
     def __init__(self):
         self.order_rep = OrderRep()
+        self.costum_rep = CostumerRep()
+        self.recip_rep = RecipientRep()
 
     def generate_order_code(self, prefix='ASX'):
         digits = [random.choice('0123456789') for _ in range(6)]
@@ -63,8 +65,11 @@ class OrderServ:
         #     return False
 
     def load_status_id(self, id):
+        print("load_status_id", id)
         if id == 10:
-            return StatusNewWithPaidPipline().process(self.order_rep)
+            result = StatusNewWithPaidPipline().process(self.order_rep)
+            print("load_status_id", result)
+            return result
         return self.order_rep.load_status_id(id)
 
     def observer_order(self, orders, telegram_cntrl):
@@ -74,6 +79,12 @@ class OrderServ:
                 text_order = TextOrderManager(order_db).builder()
                 telegram_cntrl.sendMessage(telegram_cntrl.chat_id_confirm, text_order)
         return True 
+    
+    def add_costumer(self, costumer_dto):
+        return self.costum_rep.create(costumer_dto)
+    
+    def add_recipient(self, recipient):
+        return self.recip_rep.create(recipient)
 
     def add_order2(self, order_dto):
         order_db = self.order_rep.add_order(order_dto)
@@ -82,7 +93,29 @@ class OrderServ:
                 product_db = self.add_ordered_product(product, order_db.id)
         order_db = self.order_rep.load_item(order_db.id)
         return order_db
-
+    
+    def add_order3(self, dto):
+        dto = self.add_costumer(dto)
+        print("add_order3:", dto)
+        dto = self.add_recipient(dto)
+        print("add_order3:", dto)
+        order_db = self.order_cntrl.add_order2(dto)
+        if order_db:
+            for p in dto.ordered_product:
+                product_db = self.order_cntrl.add_ordered_product(p, order_db.id)
+            return True if product_db else False
+        return False 
+    
+    def add_costumer(self, dto):
+        costumer = self.order_cntrl.add_costumer(dto.costumer)
+        dto.costumer_id = costumer.id
+        return dto
+    
+    def add_recipient(self, dto):
+        recipient = self.order_cntrl.add_recipient(dto.recipient)
+        dto.recipient_id = recipient.id
+        return dto
+    
     def add_ordered_product(self, product_dto, ord_id, ProductCntrl):
         prod_cntrl = ProductCntrl()
         prod_db = prod_cntrl.load_by_article(product_dto.article)
@@ -90,6 +123,41 @@ class OrderServ:
         product_dto.product_id = prod_db.id
         product_db = self.ord_rep.add_ordered_product(product_dto)
         return product_db
+
+    def update_order3(self, order_id, order_dto):
+        resp = {}
+        print("update_order31:", order_dto)
+        resp.update(self.update_costumer(order_dto))
+        print("add_order3:", resp)
+        resp.update(self.update_recipient(order_dto))
+        print("add_order3:", resp)
+        order_db = self.order_rep.update_order(order_id, order_dto)
+        resp.update({"order_db": "ok"})
+        if order_db:
+            if order_dto.ordered_product:
+                self.update_product3(order_dto, resp)
+            return resp.update({"order_db": "ok"})
+        resp.update({"order_db": "unsuccess"})
+        return resp
+
+    def update_product3(self, order_dto, resp):
+        for prod in order_dto.ordered_product:
+                product_db = self.order_cntrl.add_ordered_product(prod, order_db.id)
+        return resp.update({prod.article: "ok"}) if product_db else resp.update({prod.article: "unsucces"})
+
+    def update_costumer(self, dto):
+        resp = self.costum_rep.update(dto.costumer_id, dto.costumer)
+        if not resp:
+            return {"costumer_update": "unsuccess"}
+        return {"costumer_update": "ok"}
+    
+    def update_recipient(self, dto):
+        resp = self.costum_rep.update(dto.recipient_id, dto.recipient)
+        if not resp:
+            return {"recipient_update": "unsuccess"}
+        return {"recipient_update": "ok"}
+    
+    
 
     def update_history(self, order_id, comment):
         current_time = next(my_time()).strftime("%d-%m-%Y %H:%M")

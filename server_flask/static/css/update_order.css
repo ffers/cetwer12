@@ -1,0 +1,173 @@
+h4 {
+    color: #626870;
+  }
+  body {
+    margin: 0;
+    font-family: sans-serif;
+    background: radial-gradient(circle at center, #d0b0f0 0%, #73aff4 50%, #f99fe4 100%);
+    height: 100%;
+  }
+  .editable {
+    min-height: 1.5rem; 
+    cursor: pointer;
+  }
+  .form-control  {
+      border-radius: 14px;
+      box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      color: #626870;
+      background-color: #edf1fd;
+      /* border: 1px solid #b591ef; */
+    }
+  
+  .form-control:hover {
+      border-radius: 14px;
+      box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.1);
+      width: 100%;
+  
+      background-color: #edf1fd;
+      border: 1px solid #b591ef;
+    }
+  
+  .form-control:focus {
+      border-radius: 14px;
+      box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      color: #0a1421;
+      background-color: #edf1fd;
+      border: 1px solid #b591ef;
+    }
+  
+  
+  .container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    width: 200px;
+    background: #1f3540;
+    color: #fff;
+    padding: 20px;
+    border-radius: 0 20px 20px 0;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar li {
+    margin: 20px 0;
+  }
+  
+  .main-content {
+    flex: 1;
+    padding: 40px;
+  }
+  
+  .cards {
+    display: flex;
+    gap: 20px;
+    margin-top: 30px;
+  }
+  
+  .card {
+    flex: 1;
+    background: #ffffffaa;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 4px 4px 12px #00000010;
+  
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+  }
+  .form-check-input {
+    accent-color: #b591ef;
+    transform: scale(1.2);
+    margin-right: 6px;
+  }
+  
+  .form-check-label {
+    font-weight: 500;
+  }
+  
+  select, textarea {
+    border-radius: 20px;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.05);
+    text-align: center;
+  }
+
+  .select2-container .select2-selection {
+    border-radius: 14px;
+
+    padding: 6px 12px;
+    height: auto;
+    background-color: #f8f9ff;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.05);
+  }
+
+  .select2-container:hover .select2-selection:hover {
+    border-radius: 14px;
+    border: 1px solid #b591ef;
+    padding: 6px 12px;
+    height: auto;
+    background-color: #f8f9ff;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.05);
+  }
+
+  .select2-container:focus .select2-selection:focus {
+    border-radius: 14px;
+    border: 1px solid #b591ef;
+    padding: 6px 12px;
+    height: auto;
+    background-color: #6c6d76;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Активний (у фокусі) */
+.select2-container--default .select2-selection--single:focus,
+.select2-container--default .select2-selection--single:active {
+  border-color: #a472ed;
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(181, 145, 239, 0.25);
+}
+
+/* Текст */
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  color: #333;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+/* Стрілка */
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Випадаючий список */
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+  background-color: #b591ef;
+  color: rgb(128, 124, 124);
+}
+  input[type="radio"] {
+    accent-color: #9f70ec; /* фіолетовий */
+    color: #1f3540;
+    box-shadow: 4px 4px 12px #00000010;
+    transform: scale(1.2);    
+  }
+  
+  /* .product-card {
+    max-width: 600px;
+    margin: 0 auto;
+  } */
+  
+  @media (min-width: 768px) {
+    .product-card {
+      max-width: 100%; /* на ПК — широка */
+    }
+  }
+  
+  
