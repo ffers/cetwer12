@@ -48,7 +48,7 @@
 				</button></a>
 			</div>
 			<div class="button-pult"><a href="/cabinet/orders/test/{{order.id}}">
-				<button type="button" class="col-sm btn    my-sm-0" style="color: #626870;">
+				<button type="button" class="button-color col-sm btn    my-sm-0 " >
 					Тест ордер
 				</button></a>
 			</div>
@@ -489,6 +489,13 @@
 							</script>
 						
 					</div>
+					<button onclick="fullHardReload()" style="width: 30%; margin-top: 20px;">Оновити все</button>
+
+<script>
+function fullHardReload() {
+  location.reload(true); // ⚠️ застаріло, але працює в деяких браузерах
+}
+</script>
 					
 				</div>
 			  </div>

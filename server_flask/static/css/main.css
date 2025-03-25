@@ -33,6 +33,9 @@ form textarea {
     margin: 2px;
     
 }
+.button_color {
+    color: #626870;
+}
 .center {
     margin: 0 auto;
     width: 99%;
