@@ -475,6 +475,21 @@
 							onclick="submitForm()" 
 							type="submit">Оновити Замовлення</button> </br>	
 					</div>
+					<br>
+					<div class="row">
+						<div class="center">
+							<button onclick="refreshWithVersion()" style="width: 30%; margin-top: 20px;">Оновити стилі</button>
+						</div>
+							<script>
+							function refreshWithVersion() {
+							const url = new URL(window.location.href);
+							url.searchParams.set('v', Date.now());
+							window.location.href = url.href;
+							}
+							</script>
+						
+					</div>
+					
 				</div>
 			  </div>
 			  
