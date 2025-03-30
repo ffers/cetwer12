@@ -55,6 +55,10 @@ function calculateSum() {
             if (totalAllDisplay) {
                 totalAllDisplay.textContent = sum.toFixed(2) + ' грн';
         }
+        const totalAllhidden = document.getElementById("totalAllhidden");
+            if (totalAllhidden) {
+                totalAllhidden.value = sum.toFixed(2);
+        }
             }
 
 

@@ -70,6 +70,7 @@ class OrderFormMapper:
 
 
     def update_order_dto_from_session(self, session_data, form):
+        print("update_order_dto_from_session", form)
         order_data = session_data
         products = self._parse_products(form)
         sum_before_goods=self._sum_before_goods(form)
