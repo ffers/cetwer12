@@ -6,21 +6,34 @@
 		<h1 style="text-align: center; color: #7d7f85;">Додайте Замовлення</h1>
 		<!-- <button type="button" class="btn btn-info" id="liveToastBtn">Show first toast</button>
 		<button type="button" class="btn btn-info" id="trigerToastLite">Show live toast</button> -->
-
-
-		  
- 
+		
+		
+		
+		
 		<form 
-			id="myForm" 
-			action="{{ url_for('Order.add_order') }}" 
-			method="post"
-			style="margin-bottom: 200px;"
-			>
+		id="myForm" 
+		action="{{ url_for('Order.add_order') }}" 
+		method="post"
+		style="margin-bottom: 200px;"
+		>
+		<input type="hidden" name="source_order_id" value="1">
+		<input type="hidden" name="order_status_id" value="10">
+		<input type="hidden" name="author_id" value="{{ user.id }}">
+		<input type="hidden" name="description_delivery" value="Замовлення Jemis">
+		
+		
+
+		<div class="row">
+				<div class="col-sm"><input type="tel" class="form-control" name="costumer_phone" rows="1" cols="50" pattern="[0-9]{12}" style="text-align: center;" placeholder="*Номер телефону 380909009000" required><br></div>
+				<div class="col-sm"><input class="form-control  " style="text-align: center;" id="client_lastname" name="costumer_lastname" rows="1" cols="50" placeholder="* Призвіще" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Тут є латиниця"><br></div>
+				<div class="col-sm"><input class="form-control  " style="text-align: center;"  id="client_firstname"  name="costumer_firstname" rows="1" cols="50" placeholder="* Ім'я" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Тут є латиниця"><br></div>
+				<div class="col-sm"><input class="form-control  " style="text-align: center;" name="costumer_secondname" rows="1" cols="50" placeholder="Побатькові(необов.)"><br></div>
+			</div>
 			<div class="row">
-				<div class="col-sm"><input type="tel" class="form-control" name="phone" rows="1" cols="50" pattern="[0-9]{12}" style="text-align: center;" placeholder="*Номер телефону 380909009000" required><br></div>
-				<div class="col-sm"><input class="form-control  " style="text-align: center;" id="client_lastname" name="client_lastname" rows="1" cols="50" placeholder="* Призвіще" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Тут є латиниця"><br></div>
-				<div class="col-sm"><input class="form-control  " style="text-align: center;"  id="client_firstname"  name="client_firstname" rows="1" cols="50" placeholder="* Ім'я" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Тут є латиниця"><br></div>
-				<div class="col-sm"><input class="form-control  " style="text-align: center;" name="client_surname" rows="1" cols="50" placeholder="Побатькові(необов.)"><br></div>
+				<div class="col-sm"><input type="tel" class="form-control" name="recipient_phone" rows="1" cols="50" pattern="[0-9]{12}" style="text-align: center;" placeholder="*Номер телефону 380909009000" required><br></div>
+				<div class="col-sm"><input class="form-control  " style="text-align: center;"  name="recipient_lastname" rows="1" cols="50" placeholder="* Призвіще" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Тут є латиниця"><br></div>
+				<div class="col-sm"><input class="form-control  " style="text-align: center;"  name="recipient_firstname" rows="1" cols="50" placeholder="* Ім'я" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Тут є латиниця"><br></div>
+				<div class="col-sm"><input class="form-control  " style="text-align: center;" name="recipient_secondname" rows="1" cols="50" placeholder="Побатькові(необов.)"><br></div>
 			</div>
 			<div class="row"> 
                 <div class="col-sm"><input type="radio" class="form-check-input text-radio" id="1" name="delivery_method" value="1"/><label for="1" class="form-check-label" required> Нова Пошта</label></div>
@@ -111,7 +124,7 @@
 			<div id="ProductOldItem" class="grey-background">
 				<div class="row" id="product-container" style="width: 100%">
             
-					<div class="col-sm-3 col-lg-4 button-pult"><select class="form-control product-select" name="product"></select></div>
+					<div class="col-sm-3 col-lg-4 button-pult"><select class="form-control product-select" name="product_id"></select></div>
 					<div class="col-sm col-lg-2 button-pult"><input type="number" style="text-align: center;" class="quantity form-control" id="quantity" name="quantity"  min="1" max="10000" placeholder="* Кількість" required></div>
 					<div class="col-sm col-lg-2 button-pult"><input type="number" style="text-align: center;" class="price form-control" id="price" name="price" min="1" placeholder="Ціна" required></div>
 					<input type="number" style="text-align: center; display: none;" class="total form-control" id="sum_price" name="sum_price" min="1" placeholder="Сумма" required>

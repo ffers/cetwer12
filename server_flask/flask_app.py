@@ -14,8 +14,8 @@ from .routes import Blog, Auth, Comment, User_post, Bot, \
     Order, Cabinet, Admin, Products, Analitic, \
     Arrival, JourChRout, ProductSource, SourceDifference, \
     ColorSource, Panel
-from utils import util_asx
-OC_log = util_asx.oc_log("flas_app")
+from utils import OC_logger
+OC_log = OC_logger.oc_log("flas_app")
 
 load_dotenv()
 try:
@@ -128,6 +128,12 @@ def handle_value_error(error):
 def load_indentity_session():
     if hasattr(current_user, 'id'):
         return Identity(current_user.id)
+    
+@flask_app.errorhandler(TypeError)
+def handle_type_error(e):
+    import traceback
+    traceback.print_exc()
+    return {"error": str(e)}, 500
 
 # @celery.task
 # def schedule_task():

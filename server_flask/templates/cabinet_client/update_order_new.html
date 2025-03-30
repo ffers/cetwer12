@@ -24,14 +24,7 @@
     }
 	</script>
 
-    <script>
-        document.querySelectorAll('.textToCopy').forEach(function(element) {
-    		element.addEventListener('click', function() {
-			var textToCopy = this.getAttribute('data-text');
-			copyText(textToCopy);
-			});
-		});
-    </script> 
+
 	<div class="button-container">
 		<nav class="nav">
 				{% if 1 == user.id %} 
@@ -120,18 +113,27 @@
 			method="post"
 			style="margin-bottom: 200px;"
 		>
+
 		<div class="row"> 
 			<div class="col-sm">
 				<h3 style="text-align: center;" >Замовлення № <span 
-						class="textToCopy" 
-						data-text="{{order.order_code}}">{{order.order_code}} 
+					class="textToCopy" 
+					data-text="{{order.order_code}}">{{order.order_code}} 
 						<i class="fa-regular fa-copy"></i>
 					</span></h3>
-											<input type="hidden" name="order_code" value="{{ order.order_code }}">
+			<input type="hidden" name="order_code" value="{{ order.order_code }}">
 
 			</div>
 		</div>
 		 
+					<script>
+						document.querySelectorAll('.textToCopy').forEach(function(element) {
+							element.addEventListener('click', function() {
+							var textToCopy = this.getAttribute('data-text');
+							copyText(textToCopy);
+							});
+						});
+					</script> 
 		
 			<div class="row">
 			  <div class="col mb-4">
@@ -150,6 +152,9 @@
 					  <div class="col-md mb-3">
 						<footer><small class="text-muted">Кількість:</small></footer>
 						<div>{{ product.quantity }}</div>
+						<input class="quantity" type="hidden" name="quantity" value="{{ product.quantity }}">
+						<input class="price" type="hidden" name="price" value="{{ product.price }}">
+						<input type="hidden" name="product_id" value="{{ product.product_id }}">
 					  </div>
 				
 					  <div class="col-md mb-3">
@@ -169,8 +174,8 @@
 							 class="form-control" name="product" value="{{ product.product_id }}" required>
 				
 					  <div class="col-md mb-3">
-						<span class="ChangeProductOldItem" onclick="changeBlock(this)" style="cursor: pointer; color: #9f70ec;">Змінити</span> /
-						<span onclick="deleteBlock(this)" style="cursor: pointer; color: #9f70ec;">Видалити</span>
+						<span class="ChangeProductOldItem" onclick="changeBlock(this)" style="cursor: pointer; color: #9f70ec;">Змінити</span> / 
+						<span class="removeButton" onclick="deleteBlock(this)" style="cursor: pointer; color: #9f70ec;">Видалити</span>
 					  </div>
 					</div>
 					{% endfor %}
@@ -309,15 +314,14 @@
 						  </div>
 						</div>
 					  
-						<div class="row mt-4" id="hiddenFieldPay"
-							style="{% if order.payment_method_id == 3 %}display: block;{% else %}display: none;{% endif %}">
+						<div class="row mt-4" id="hiddenFieldPay" style="{% if order.payment_method_id == 3 %}display: block;{% else %}display: none;{% endif %}">
 						
 							<input type="number" class="form-control text-center"
 								id="sum_before_goods"
 								name="sum_before_goods"
 								min="1"
 								placeholder="Сума"
-								value="{{ order.sum_before_goods or '' }}"
+								value="{{ order.sum_before_goods }}"
 								required>
 					
 						</div>

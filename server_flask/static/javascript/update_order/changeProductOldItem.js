@@ -16,7 +16,7 @@ function changeBlock(id) {
         .html(`
                 <div class="col-sm-3 col-lg-4   ">
                     <select  class="  form-control product-select1" 
-                        name="product" required></select>
+                        name="product_id" required></select>
                 </div>
                 <div class="col-sm col-lg-2   ">
                     <input type="number" style="text-align: center;" 
@@ -42,7 +42,7 @@ function changeBlock(id) {
                         
            
                 <div class="col-sm col-lg-2   ">
-                    <span
+                    <span class="removeButton"
                       onclick="deleteBlock(this)"
                         style="cursor: pointer; color: #9f70ec;">Видалити</span>
                 </div>

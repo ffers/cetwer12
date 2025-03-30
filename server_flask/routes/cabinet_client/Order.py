@@ -1,5 +1,6 @@
 import os
-from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
+from flask import Blueprint, render_template, request, \
+        flash, redirect, url_for, jsonify, session
 from server_flask.models import  Users, Orders, Products, OrderedProduct
 from flask_login import login_required, current_user
 from flask_principal import Permission, RoleNeed
@@ -13,11 +14,12 @@ from urllib.parse import unquote
 from pytz import timezone, utc
 from datetime import datetime
 from black import OrderCntrl, DeliveryOrderCntrl
-from utils import util_asx
+from utils import OC_logger
 from collections import Counter
-from DTO.order_mapper_request import OrderFormMapper
+from DTO.order_mapper_request import OrderFormMapper, OrderDTO
+from utils import OrderedProductSession
 
-OC_log = util_asx.oc_log("order")
+OC_log = OC_logger.oc_log("order")
 
 def format_float(num_str):  
     try:  
@@ -89,14 +91,27 @@ def Order():
 @login_required
 @author_permission.require(http_exception=403)
 def update(order_id): 
-    print("update:", order_id)
+    session.clear() 
+    # print("update_start:", order_id)
     or_c = OrderCntrl()
-    order = or_c.load_for_order_id(order_id)
+    order = or_c.load_for_order_id(order_id) # завнатаженя ордера
+    dto = OrderDTO.model_validate(order) # робимо ДТО
+    data = OrderedProductSession.proccess(dto) # для сесії з ДТО
+    session['order_dto'] = data # сесія з dto
+    # print("update_data:", data)
     if request.method == 'POST':
-
-        order_dto = OrderFormMapper.from_request(request)
-        # print(order_dto)
-        order = or_c.update_order3(order_id, order_dto)
+        saved = session.get('order_dto') # вертаємо ордер з сесії
+        # print("update_saved:", saved)
+        if not saved:
+            return "Session expired", 400
+        ord_mapp_sess = OrderFormMapper() # створюємо маппер для форми та сессії
+        #  створюємо ДТО для model
+        order_dto = ord_mapp_sess.update_order_dto_from_session(saved, request.form)
+        # print("order_dto:", order_dto)
+        dto = OrderDTO(**order_dto)
+        # print("dto:", dto)
+        order = or_c.update_order3(order_id, dto)
+        session.pop("order_dto", None)  
         # task_update.phone = request.form['costumer_phone']
         # task_update.client_firstname = request.form['costumer_firstname']
         # task_update.client_surname = request.form['costumer_middlename']
@@ -133,7 +148,7 @@ def update(order_id):
         #         task_update.ordered_product.append(ordered_product)
         # db.session.commit()        
         # print(">>> Update in datebase")
-        # flash(f'Замовлення {task_update.order_code} оновлено', category='success')
+        flash(f'Замовлення оновлено', category='success')
         # ord_cntrl.send_order_tg(task_update.id)
         return redirect(f'/cabinet/orders/update/{order_id}')
         # except:   
@@ -154,34 +169,46 @@ def update(order_id):
 @author_permission.require(http_exception=403)
 def add_order():      
     if request.method == 'POST': 
-        sum_price_draft = request.form["total-all"] 
-        sum_before_goods = None
-        if request.form['payment_option'] == "3": 
-            sum_before_goods = request.form["sum_before_goods"] 
-        print(f"ПРИНТУЄМ !!!! ")
-        order = Orders(description=request.form['description'], city_name=request.form['CityName'], city_ref=request.form['CityREF'],
-                      warehouse_text=unquote(request.form['warehouse-text']), warehouse_ref=request.form['warehouse-id'],
-                       phone=request.form['phone'], author_id=current_user.id, client_firstname=request.form['client_firstname'],
-                       client_lastname=request.form['client_lastname'], client_surname=request.form['client_surname'],
-                       warehouse_option=request.form['warehouse_option'], delivery_option="nova_poshta",
-                       payment_method_id=request.form['payment_option'], sum_price=format_float(sum_price_draft),
-                       sum_before_goods=sum_before_goods, delivery_method_id=request.form['delivery_method'], source_order_id=1, ordered_status_id=10,
-                       description_delivery="Одяг Jemis")
-        db.session.add(order) 
-        db.session.commit()
-        ord_cntrl.add_order_code(order)
-        product_id = request.form.getlist('product')
-        price = request.form.getlist('price')
-        quantity = request.form.getlist('quantity')
-        print(f"data {product_id} & {price} & {quantity}")
-        combined_list = list(zip_longest(product_id, price, quantity, fillvalue=None))
-        for item in combined_list:
-            data = OrderedProduct(product_id=item[0], price=item[1], quantity=item[2], order_id=order.id)
-            db.session.add(data)
-        db.session.commit()
-        ord_cntrl.send_order_tg(order.id)
-        flash('Замовлення створено', category='success')
-        return redirect('/cabinet/orders/filter/registered/10')
+        or_c = OrderCntrl()
+        print("add_order:}", request.form)
+        mapper = OrderFormMapper()
+        order_dto = mapper.from_request(request)
+        resp = or_c.add_order3(order_dto)
+        if resp.get("add_order3") == "ok":
+            order = resp.get("result")
+            flash('Замовлення створено', category='success')
+
+            return redirect(f'/cabinet/orders/update/{order.id}')
+        else:
+            flash('Замовлення нестворено', category='warning')
+            return redirect(f'/cabinet/orders/add_order')
+        # sum_price_draft = request.form["total-all"] 
+        # sum_before_goods = None
+        # if request.form['payment_option'] == "3": 
+        #     sum_before_goods = request.form["sum_before_goods"] 
+        # print(f"ПРИНТУЄМ !!!! ")
+        # order = Orders(description=request.form['description'], city_name=request.form['CityName'], city_ref=request.form['CityREF'],
+        #               warehouse_text=unquote(request.form['warehouse-text']), warehouse_ref=request.form['warehouse-id'],
+        #                phone=request.form['phone'], author_id=current_user.id, client_firstname=request.form['client_firstname'],
+        #                client_lastname=request.form['client_lastname'], client_surname=request.form['client_surname'],
+        #                warehouse_option=request.form['warehouse_option'], delivery_option="nova_poshta",
+        #                payment_method_id=request.form['payment_option'], sum_price=format_float(sum_price_draft),
+        #                sum_before_goods=sum_before_goods, delivery_method_id=request.form['delivery_method'], source_order_id=1, ordered_status_id=10,
+        #                description_delivery="Одяг Jemis")
+        # db.session.add(order) 
+        # db.session.commit()
+        # ord_cntrl.add_order_code(order)
+        # product_id = request.form.getlist('product')
+        # price = request.form.getlist('price')
+        # quantity = request.form.getlist('quantity')
+        # print(f"data {product_id} & {price} & {quantity}")
+        # combined_list = list(zip_longest(product_id, price, quantity, fillvalue=None))
+        # for item in combined_list:
+        #     data = OrderedProduct(product_id=item[0], price=item[1], quantity=item[2], order_id=order.id)
+        #     db.session.add(data)
+        # db.session.commit()
+        
+        
 
     return render_template('cabinet_client/add_order.html', user=current_user)
   

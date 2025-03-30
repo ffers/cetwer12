@@ -1,16 +1,16 @@
+
+
+from utils  import wrapper
+from utils import OC_logger
+from api import TgClient
 import os
-from dotenv import load_dotenv
-from api import tg_api
-from utils import  OC_logger
 
 
-env_path = '../common_asx/.env'
-load_dotenv(dotenv_path=env_path)
- # вп: -421982888; розет: -1001822083358; укр: -1001173544690; нп: -1001391714237
-
-
-class TelegramController():
+class TgServNew:
     def __init__(self):
+        self.client = TgClient()
+        self.env = os.getenv("ENV")
+        self.logger = OC_logger.oc_log("telegram_serv_new")
         self.chat_id_info = os.getenv("CHAT_ID_HELPER")
         self.chat_id_np = os.getenv("CH_ID_NP")
         self.chat_id_ukr = os.getenv("CH_ID_UKR")
@@ -21,59 +21,53 @@ class TelegramController():
         self.chat_id_cash = os.getenv("CH_ID_CASH")
         self.chat_id_shop = os.getenv("CH_ID_SHOP")
         self.chat_id_courier = os.getenv("CH_ID_CORECTOR")
-        self.env = os.getenv("ENV")
-        self.logger = OC_logger.oc_log("TelegramController")
 
 
+    @wrapper()
+    def sendMessage(self, chat_id, text, keyboard_json=None):
+        if self.env == "dev":
+            return self.client.send_message_f("-421982888", text, keyboard_json)
+        return self.client.send_message_f(chat_id, text, keyboard_json)
+    
     def sendPhoto(self, id_photo):
         chat_list = [self.chat_id_rozet, self.chat_id_np]
         resp = None
         for chat in chat_list:
-            resp = tg_api.sendPhoto(chat, id_photo)
+            resp = self.client.sendPhoto(chat, id_photo)
             print(resp)
         return resp
 
-    def sendMessage(self, chat_id, text, keyboard_json=None):
-        if self.env == "dev":
-            return tg_api.send_message_f("-421982888", text, keyboard_json)
-        resp = tg_api.send_message_f(chat_id, text, keyboard_json)
-        return resp
-
     def answerCallbackQuery(self, callback_query_id: str, text: str) -> bool:
-        resp = tg_api.answerCallbackQuery(callback_query_id, text)
+        resp = self.client.answerCallbackQuery(callback_query_id, text)
         return resp
 
     def forceReply(self, chat_id, callback_query_id=None, text=None):
-        resp = tg_api.forceReply(chat_id, callback_query_id, text)
+        resp = self.client.forceReply(chat_id, callback_query_id, text)
         return resp
 
     def editMessageText(self, chat_id, message_id, text):
-        resp = tg_api.editMessageText(chat_id, message_id, text)
+        resp = self.client.editMessageText(chat_id, message_id, text)
         return resp
 
     def deleteMessage(self, chat_id, message_id):
-        resp = tg_api.deleteMessage(chat_id, message_id)
+        resp = self.client.deleteMessage(chat_id, message_id)
         return resp
 
     def keyboard_func(self):
-        resp = tg_api.keyboard_func()
+        resp = self.client.keyboard_func()
         return resp
 
     def keyboard_generate(self,  text1, callback_data1, text2=None, callback_data2=None):
-        resp = tg_api.keyboard_generate(text1, callback_data1, text2, callback_data2)
+        resp = self.client.keyboard_generate(text1, callback_data1, text2, callback_data2)
         return resp
 
     def loadPhoto(self, chat_id):
-        return tg_api.loadPhoto(chat_id)
+        return self.client.loadPhoto(chat_id)
     
     def black_pic(self):
         id_photo = 'AgACAgIAAxkBAAIMl2YWFuaONHD9_7SWvzDiiK8vmNQSAAK31jEbGsoISBKbThvzHGUpAQADAgADbQADNAQ'
-        resp_photo = tg_cntrl.sendPhoto(id_photo)
+        resp_photo = self.client.sendPhoto(id_photo)
         if not resp_photo:
             self.logger.info("Телеграм не дал ответа Photo")
         self.logger.info(resp_photo)
         return True
-
-
-tg_cntrl = TelegramController()
-

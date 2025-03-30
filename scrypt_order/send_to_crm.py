@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 from scrypt_order.search_paym import process_order
 from black import ord_cntrl 
 
-from utils import UtilsAsx
+from utils import OC_logger
 from black import tg_cntrl 
 
 env_path = '../common_asx/.env'
@@ -11,8 +11,8 @@ load_dotenv(dotenv_path=env_path)
 url_send = os.getenv("URL_TO_CRM")
 url_update = os.getenv("URL_TO_UPDATE")
 
-ut_asx = UtilsAsx()
-OC_log = ut_asx.oc_log("send_to_crm")
+
+OC_log = OC_logger.oc_log("send_to_crm")
 
 
 logging.basicConfig(filename='../common_asx/log_order.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')

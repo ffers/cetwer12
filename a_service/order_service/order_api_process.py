@@ -32,20 +32,22 @@ class OrderApi:
     def get_orders(self):
         try:
             list_order, list_standart_dto = self.api.get_orders()
-            if list_order:
-                for order in list_order:
-                    text = self.make_text(order)
-                    send_tg = self.tg.sendMessage(self.tg.chat_id_confirm, text)
-                    print("Send to tg: ", send_tg["ok"])
-                    resp = self.util.change_status_rozet(order.id, 26)
+            return list_order
+            # if list_order:
+            #     for order in list_order:
+            #         text = self.make_text(order)
+            #         send_tg = self.tg.sendMessage(self.tg.chat_id_confirm, text)
+            #         print("Send to tg: ", send_tg["ok"])
+            #         resp = self.util.change_status_rozet(order.id, 26)
 
-                for order in list_standart_dto:
-                    resp = self.add_order(order)
-                    print("Add to crm: ", resp)
-                return True
-            return list_standart_dto
+            #     for order in list_standart_dto:
+            #         resp = self.add_order(order)
+            #         print("Add to crm: ", resp)
+            #     return True
+            # return list_standart_dto
         except Exception as e:
             text = f"🔴 Помилка додавання замовлення в розетку {e}"
+            print(str(text))
             return False
         
     def add_order(self, dto):

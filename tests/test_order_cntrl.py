@@ -22,11 +22,11 @@ class TestOrederCntrl:
   
     def test_change_client(self):
         with flask_app.app_context():
-            # order = DataClient()
-            # print(order)
-            # order_list = [order]
-            # print(order_list)
-            order_list = self.o_c.load_all_order()
+            order = DataClient()
+            print(order)
+            order_list = [order]
+            print(order_list)
+            # order_list = self.o_c.load_all_order()
             result = self.o_s.change_order(order_list)
             assert result == True
 

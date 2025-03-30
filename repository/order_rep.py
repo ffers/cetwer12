@@ -3,8 +3,9 @@ from server_flask.db import db
 from sqlalchemy import desc
 from urllib.parse import unquote
 from datetime import datetime, timedelta
+from sqlalchemy.exc import IntegrityError
+from .exception_serv import OrderAlreadyExistsError
 
- 
 
 class OrderRep:
 
@@ -31,7 +32,7 @@ class OrderRep:
                         delivery_method_id=item.delivery_method_id,
                         source_order_id=item.source_order_id,
                         ordered_status_id=item.ordered_status_id,
-                        description_delivery="Одяг Jemis",
+                        description_delivery=item.description_delivery,
                         order_code=item.order_code,
                         costumer_id=item.costumer_id,
                         recipient_id=item.recipient_id,
@@ -39,19 +40,12 @@ class OrderRep:
             db.session.add(order)
             db.session.commit()
             return order
-        except:
+        except IntegrityError as e:
+            db.session.rollback()
+            if "duplicate key" in str(e.orig):
+                raise OrderAlreadyExistsError("Order already exists")
+            print("add_order:", e)
             return False
-    
-    def add_ordered_product(self, p):
-        product_obj = OrderedProduct(
-            quantity=p.quantity,
-            price=p.price,
-            order_id=p.order_id,
-            product_id=p.product_id
-        )
-        db.session.add(product_obj)
-        db.session.commit()
-        return product_obj
     
     def update_order(self, order_id, order_dto):
         order = self.load_item(order_id)
@@ -92,6 +86,31 @@ class OrderRep:
         db.session.commit()
         db.session.refresh(order)
         return order
+
+    def update_ordered_product(self, order_id, products_dto):
+        try:
+            order = self.load_item(order_id)
+            order.ordered_product.clear()
+
+            for p in products_dto:
+                ordered_product = OrderedProduct(
+                    quantity=p.quantity,
+                    price=p.price,
+                    order_id=order_id,
+                    product_id=p.product_id
+                )
+                order.ordered_product.append(ordered_product)
+
+            db.session.commit()
+            db.session.refresh(order)
+            return  order
+        except Exception as e:
+            db.session.rollback()
+            print("update_ordered_product error:", e)
+            return False
+    
+    def load_ordered_product(self, item_id):
+        return OrderedProduct.query.get_or_404(int(item_id)) 
     
 
     def update_history(self, order_id, new_comment):

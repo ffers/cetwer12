@@ -1,4 +1,4 @@
 function deleteBlock(id){
     let oldBlock = id.closest(".row");
-    oldBlock.remove();
+    oldBlock.parentNode.removeChild(oldBlock);
 }

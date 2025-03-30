@@ -1,7 +1,11 @@
 from decimal import Decimal
 from itertools import zip_longest
+from repository import ProductRep
 
 class ProductServ:
+    def __init__(self):
+        self.prod_rep = ProductRep()
+
     def format_float(self, num):
         try:
             if isinstance(num, int):
@@ -46,6 +50,15 @@ class ProductServ:
         product_id = req.form.getlist('product')
         combined_list = list(zip_longest(article, quantity, product_id, fillvalue=None))
         return combined_list
+    
+    def load_item_by_article(self, artcl):
+        return self.prod_rep.load_by_article(artcl)
+    
+    def load_item_id(self, id):
+        return self.prod_rep.load_product_item(id)
+
+    def load_all(self):
+        return self.prod_rep.load_product_all()
   
     def create_data_relate_req(self, req):
         data = [

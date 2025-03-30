@@ -2,7 +2,7 @@ from black.telegram_controller import tg_cntrl
 from black.order_cntrl import OrderCntrl
 from black.delivery_order_cntrl import del_ord_cntrl
 from server_flask.flask_app import flask_app
-from utils import util_asx
+from utils import OC_logger
 from asx.black.analitic_cntrl.sour_an_cntrl import SourAnCntrl
 from black.telegram_cntrl.tg_cash_cntrl import TgCashCntrl
 from black import SourDiffAnCntrl
@@ -11,7 +11,7 @@ import time
 
 class RegSchedulleSrv():
     def __init__(self):
-        self.OC_log = util_asx.oc_log("reg_16_00")
+        self.OC_log = OC_logger.oc_log("reg_16_00")
         self.sour = SourAnCntrl()
         self.ord = OrderCntrl()
         self.quan_stok = TgCashCntrl()

@@ -13,7 +13,7 @@ from .delivery_order_cntrl import DeliveryOrderCntrl
 from .add_order_to_crm import pr_to_crm_cntr
 from a_service import tg_serv, TgServ, TextFactory
 from .prom_cntrl import prom_cntrl
-from utils import util_asx
+from utils import OC_logger
 from datetime import datetime
 from .analitic_cntrl.sour_an_cntrl import SourAnCntrl
 from .telegram_cntrl.tg_cash_cntrl import TgCashCntrl
@@ -51,8 +51,6 @@ token_ev = os.getenv("PROM_TOKEN")
 token_np = os.getenv("NP_TOKEN")
 chat_id_helper = os.getenv("CHAT_ID_HELPER")
 
-OC_log = util_asx.oc_log("order_cntrl_test")
-
 
 crmtotg_cl = CrmToTelegram()
 
@@ -70,7 +68,7 @@ util_cntrl = Utils(EvoClient, RozetMain)
 
 class OrderCntrl: 
     def __init__(self) -> None:
-        self.OC_log = util_asx.oc_log("reg_16_00")
+        self.OC_log = OC_logger.oc_log("reg_16_00")
         self.sour = SourAnCntrl()
         self.quan_stok = TgCashCntrl()
         self.tg_cntrl = TelegramController()
@@ -172,6 +170,9 @@ class OrderCntrl:
 
     def add_order2(self, order_obj):
         return self.ord_rep.add_order(order_obj)
+    
+    def add_order3(self, order_dto):
+        return self.order_serv.add_order3(order_dto)
     
     def update_order3(self, order_id, order_dto):
         return self.order_serv.update_order3(order_id, order_dto)

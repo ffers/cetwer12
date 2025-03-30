@@ -1,8 +1,8 @@
 const option = { trigger: 'manual',}
-let client_lastname_input = document.getElementById('client_lastname');
-let client_firstname_input = document.getElementById('client_firstname');
-let popoverTriggerEl_lastname = document.getElementById('client_lastname');
-let popoverTriggerEl_firstname = document.getElementById('client_firstname');
+let client_lastname_input = document.getElementById('costumer_lastname');
+let client_firstname_input = document.getElementById('costumer_firstname');
+let popoverTriggerEl_lastname = document.getElementById('costumer_lastname');
+let popoverTriggerEl_firstname = document.getElementById('costumer_firstname');
 let popover_lastname = new bootstrap.Popover(popoverTriggerEl_lastname, option);
 let popover_firstname = new bootstrap.Popover(popoverTriggerEl_firstname, option);
 

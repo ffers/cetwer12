@@ -45,7 +45,7 @@ function validateAndTogglePopover(inputElement, popoverInstance) {
 
     // Ваша власна функція для перевірки заповненості полів
  function isFormValid() {
-      const productSelect = document.querySelector('[name="product"]');
+      const productSelect = document.querySelector('[name="product_id"]');
       const quantityInput = document.getElementById('quantity');
       const priceInput = document.getElementById('price');
       const selectedCity = $('#citySelect').select2('data')[0];

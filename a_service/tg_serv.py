@@ -13,6 +13,7 @@ class TgServ():
         logging.basicConfig(filename='../common_asx/log_order.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
+
     def payment_data_status(self, payment_data):
         print(payment_data)
         if payment_data != None:

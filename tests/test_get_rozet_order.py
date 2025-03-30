@@ -18,9 +18,9 @@ class TestRozet:
             prefix += "delivery,purchases,payment,status_payment"
             prefix += f"&status={status_load}"
             responses.add(
-            responses.GET, host+prefix,
-            json=RozetDict.rozet_order, status=200
-            )
+                responses.GET, host+prefix,
+                json=RozetDict.rozet_order, status=200
+                )
             self.make_response_tg()
             pointer = self.order_c.load_orders_store("rozetka")
             print(pointer)

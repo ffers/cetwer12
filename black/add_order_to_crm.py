@@ -6,10 +6,10 @@ from server_flask.models import Orders, OrderedProduct, Products, TelegramOrdere
 from flask import current_app
 from .telegram_controller import tg_cntrl
 from dotenv import load_dotenv
-from utils import util_asx
+from utils import OC_logger
 
 
-OC_log = util_asx.oc_log('order_to_crm')
+OC_log = OC_logger.oc_log('order_to_crm')
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)

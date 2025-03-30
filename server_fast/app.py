@@ -7,7 +7,6 @@ import os
 from fastapi import Depends, FastAPI
 from fastapi.security import OAuth2PasswordBearer
 
-from utils import util_asx
 from .dependencies import get_token_header
 import uvicorn, multiprocessing, logging
 
@@ -23,8 +22,9 @@ logging.basicConfig(
         logging.FileHandler("../common_asx/log/all_app.log"),  # Для запису у файл
     ]
 )
+from utils import OC_logger
 
-OC_log = util_asx.oc_log("fast_api")
+OC_log = OC_logger.oc_log("fast_api")
 app = FastAPI(responses={404: {"description": "Not found"}})
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")

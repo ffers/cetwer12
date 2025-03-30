@@ -1,10 +1,9 @@
 from utils import BearRequest
-from .dto_roz import OrderRoz
-from .mapper_roz import MapperRoz
+from DTO import OrderRozetkaDTO
 
 import os, base64
 from a_service import TokenRepServ
-from utils import Stub
+from utils import Stub 
   
   # статуси
   # 1 - новий 
@@ -34,7 +33,6 @@ class RozetMain():
         self.host = "https://api-seller.rozetka.com.ua/"
         self.cash = "Nj2HNztLCMG1pBnr18GtDZ-SSfj4-j5B"
         self.token_new = TokenRepServ()
-        self.mapper = MapperRoz()
         self.stub = Stub()
 
     def get_orders(self):
@@ -51,12 +49,12 @@ class RozetMain():
                     orders = []
                     order_standart = []
                     for order in resp["content"]["orders"]:
-                        ob_order = OrderRoz.model_validate(order)
+                        ob_order = OrderRozetkaDTO.model_validate(order)
                         orders.append(ob_order)
-                        order_standart.append(self.mapper.order(ob_order))
+                        # order_standart.append(self.mapper.order(ob_order))
                     # print(order_standart.model_dump_json(indent=4), "order")
                     # print(orders, "dict_order")
-                    return orders, order_standart                        
+                    return orders, None                        
         return None, None
     
     def change_status_order(self, order_id, status):
