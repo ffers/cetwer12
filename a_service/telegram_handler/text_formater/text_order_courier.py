@@ -65,6 +65,7 @@ class TextOrderCourier:
     
     def sum_before_goods(self, order):
         if order.sum_before_goods:
+            print("sum_before_goods:", order.sum_before_goods)
             return order.sum_before_goods
         else:
             return order.sum_price 

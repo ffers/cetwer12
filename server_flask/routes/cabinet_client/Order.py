@@ -227,7 +227,7 @@ def send_cab(id):
             flash('Замовлення підтвержено', category='success')
         else:
             flash('Замовлення підтверджено але ттн не створено: ' + resp["delivery"], category='error')
-        return redirect('/cabinet/orders/filter/registered/10')
+        return redirect(f'/cabinet/orders/update/{id}')
 
 
 @bp.route('/cabinet/orders/return/<int:id>', methods=['POST', 'GET'])

@@ -163,11 +163,11 @@ class OrderServ:
     @wrapper()
     def update_order3(self, order_id, order_dto):
         resp = {}
-        # print("update_order3:", order_dto)
+        print("update_order3:", order_dto)
         resp.update(self.update_costumer(order_dto))
-        # print("update_order3:", resp)
+        print("update_order3:", resp)
         resp.update(self.update_recipient(order_dto))
-        # print("update_order3:", resp)
+        print("update_order3:", resp)
         order_db = self.order_rep.update_order(order_id, order_dto)
         resp.update({"order_db": "ok"})
         if order_db:
@@ -192,7 +192,7 @@ class OrderServ:
     
     @wrapper()
     def update_recipient(self, dto):
-        resp = self.costum_rep.update(dto.recipient_id, dto.recipient)
+        resp = self.recip_rep.update(dto.recipient_id, dto.recipient)
         if not resp:
             return {"recipient_update": "unsuccess"}
         return {"recipient_update": "ok"}

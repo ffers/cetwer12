@@ -18,7 +18,8 @@ class RecipientRep:
         return item
 
     def read_item(self, item_id):
-        item = Recipient.query.get_or_404(item_id)
+        return Recipient.query.get_or_404(item_id)
+
 
     def update(self, item_id, item_new):
         item = self.read_item(item_id)

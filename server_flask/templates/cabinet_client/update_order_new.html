@@ -234,14 +234,14 @@
 						<footer><small class="text-muted">Імʼя:</small></footer>
 						<div class="editable" data-name="costumer_firstname">{{ order.costumer.first_name or "" }}</div>
 						<input type="text" class="form-control d-none" name="costumer_firstname" value="{{ order.costumer.first_name }}">
-						<!-- <input type="hidden" name="costumer_firstname" value="{{ order.costumer.first_name }}"> -->
+						<input type="hidden" name="costumer_firstname" value="{{ order.costumer.first_name }}">
 					  </div>
 					  
 					  <div class="mb-3">
 						<footer><small class="text-muted">Побатькові:</small></footer>
 						<div class="editable" data-name="costumer_secondname">{{ order.costumer.second_name }}</div>
 						<input type="text" class="form-control d-none" name="costumer_secondname" value="{{ order.costumer.second_name }}">
-						<!-- <input type="hidden" name="costumer_middlename" value="{{ order.costumer.second_name }}"> -->
+						<input type="hidden" name="costumer_middlename" value="{{ order.costumer.second_name }}">
 					  </div>
 					  
 					  <div class="mb-3">
@@ -250,7 +250,7 @@
 							style="min-height: 1.5rem; cursor: pointer;">
 							{{ order.costumer.email or "Немає"}}</div>
 						<input type="email" class="form-control d-none" name="costumer_email" value="{{ order.costumer.email  }}">
-						<!-- <input type="hidden" name="costumer_email" value="{{ order.costumer.email  }}"> -->
+						<input type="hidden" name="costumer_email" value="{{ order.costumer.email  }}">
 					  </div>
 					  
 				</div>
@@ -267,8 +267,13 @@
 						  <input type="hidden" name="payment_method" id="paymentMethodInput"
 								 value="{{ order.payment_method_id }}">
 						</div>
+						<!-- <div id="paymentEdit" style="display: none;">
+					
+						  </div> -->
+						  
 					  </div>
-					  
+					  <div id="add_sum_before_goods" data-sum="{{ order.sum_before_goods or '' }}">
+					  </div>
 					  <div id="paymentEdit" style="display: none;">
 						<div class="row text-center">
 						  <div class="col-sm">
@@ -315,17 +320,7 @@
 						  </div>
 						</div>
 					  
-						<div class="row mt-4" id="hiddenFieldPay" style="{% if order.payment_method_id == 3 %}display: block;{% else %}display: none;{% endif %}">
 						
-							<input type="number" class="form-control text-center"
-								id="sum_before_goods"
-								name="sum_before_goods"
-								min="1"
-								placeholder="Сума"
-								value="{{ order.sum_before_goods }}"
-								required>
-					
-						</div>
 
 					  </div>
 					  
@@ -394,6 +389,17 @@
 					<!-- 📦 Блок перегляду (read-only) -->
 					<div id="deliveryDisplay">
 						<div id="AdsressOld">
+							<div class="mb-3">
+							  <footer><small class="text-muted">Метод доставки:</small></footer>
+							  <div id="viewMethod">{{ order.delivery_method.name or "Відсутній" }}</div>
+								<input type="hidden" name="delivery_method" value="{{ order.delivery_method_id }}">
+								<input type="hidden" name="CityName"  value="{{ order.city_name }}">
+								<input type="hidden" name="warehouse_option" value="{{ order.warehouse_option }}">
+								<input type="hidden" name="warehouse-text" value="{{ order.warehouse_text }}">
+								<input type="hidden" name="warehouse-id" value="{{ order.warehouse_ref }}">
+						
+	
+							</div>
 						<div class="mb-3">
 						  <footer><small class="text-muted">Місто:</small></footer>
 						  <div id="viewCity">{{ order.city_name }}</div>
@@ -409,17 +415,6 @@
 						  <div id="viewTTN">{{ order.ttn or "Ще не створено"}}</div>
 						</div>
 					  
-						<div class="mb-3">
-						  <footer><small class="text-muted">Метод доставки:</small></footer>
-						  <div id="viewMethod">{{ order.delivery_method.name or "Відсутній" }}</div>
-					<input type="hidden" name="delivery_method" value="{{ order.delivery_method_id }}">
-					<input type="hidden" name="CityName"  value="{{ order.city_name }}">
-					<input type="hidden" name="warehouse_option" value="{{ order.warehouse_option }}">
-					<input type="hidden" name="warehouse-text" value="{{ order.warehouse_text }}">
-					<input type="hidden" name="warehouse-id" value="{{ order.warehouse_ref }}">
-					
-
-						</div>
 					</div>
 						
 					  </div>
@@ -462,7 +457,7 @@
 				<div class="card">
 				  <h4 class="text-center mb-4">Історія  </h4>
 		  
-					  <footer><small class="text-muted">Нотатки:</small></footer>
+					  <footer><small class="text-muted">Історія:</small></footer>
 					  <div>{{ order.history or "Нема історії" }} </div>
 					</div>
 			  </div>
@@ -571,6 +566,7 @@ function fullHardReload() {
 	<script src="{{url_for('static', filename='javascript/update_order/add-button-product.js')}}"></script>
 	<script src="{{url_for('static', filename='javascript/update_order/newCalculateTotal.js')}}"></script>
 	<script src="{{url_for('static', filename='javascript/update_order/noties.js')}}"></script>
+	<script src="{{url_for('static', filename='javascript/update_order/sum_before_goods.js')}}"></script>
 	<!-- <script src="{{url_for('static', filename='javascript/update_order/delivery.js')}}"></script> -->
 	<script src="{{url_for('static', filename='javascript/update_order/payment.js')}}"></script>
 	<script src="{{url_for('static', filename='javascript/update_order/input_field.js')}}"></script>

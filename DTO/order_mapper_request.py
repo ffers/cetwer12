@@ -7,21 +7,8 @@ class OrderFormMapper:
     def from_request(self, req: request) -> OrderDTO:
         form = req.form
 
-        costumer = CostumerDto(
-            first_name=form.get('costumer_firstname'),
-            last_name=form.get('costumer_lastname'),
-            second_name=form.get('costumer_secondname'),
-            phone=form.get('costumer_phone'),
-            email=form.get('costumer_email'),
-        )
-
-        recipient = RecipientDto(
-            first_name=form.get('recipient_firstname'),
-            last_name=form.get('recipient_lastname'),
-            second_name=form.get('recipient_secondname'),
-            phone=form.get('recipient_phone'),
-            email=None,
-        )
+        costumer = self.update_costumer(form)
+        recipient = self.update_recipient(form)
 
         products = self._parse_products(form)
         sum_before_goods=self._sum_before_goods(form)
@@ -71,6 +58,8 @@ class OrderFormMapper:
 
     def update_order_dto_from_session(self, session_data, form):
         print("update_order_dto_from_session", form)
+        costumer = self.update_costumer(form)
+        recipient = self.update_recipient(form)
         order_data = session_data
         products = self._parse_products(form)
         sum_before_goods=self._sum_before_goods(form)
@@ -92,7 +81,9 @@ class OrderFormMapper:
             "description": form.get('description'),
             "delivery_method_id": form.get('delivery_method'),
             "payment_method_id": form.get('payment_option'),
-            "ordered_product": products
+            "ordered_product": products,
+            "costumer": costumer,
+            "recipient": recipient
         })
 
         return order_data
@@ -121,7 +112,25 @@ class OrderFormMapper:
 
     def _sum_before_goods(self, form):
         sum = form.get('sum_before_goods', None)
-        if sum:
+        if sum and sum > '':
             return sum
         else:
             return None
+        
+    def update_costumer(self, form):
+        return CostumerDto(
+            first_name=form.get('costumer_firstname'),
+            last_name=form.get('costumer_lastname'),
+            second_name=form.get('costumer_secondname'),
+            phone=form.get('costumer_phone'),
+            email=form.get('costumer_email'),
+        )
+        
+    def update_recipient(self, form):
+        return RecipientDto(
+            first_name=form.get('recipient_firstname'),
+            last_name=form.get('recipient_lastname'),
+            second_name=form.get('recipient_secondname'),
+            phone=form.get('recipient_phone'),
+            email=None,
+        )
