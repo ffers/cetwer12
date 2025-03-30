@@ -155,7 +155,7 @@ class OrderCntrl:
             return resp
         except:
             info = f"Замовленя можливо не додано в CRM {order_code}"
-            OC_log.info(info)
+            self.OC_log.info(info)
             tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, info)
 
     # 
