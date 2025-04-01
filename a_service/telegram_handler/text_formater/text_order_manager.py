@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from DTO import OrderDTO
+import re
 
 @dataclass
 class TextBlocks:
@@ -56,7 +57,7 @@ class TextOrderManager:
         self.tx_bl.costumer_comment = self.costumer_comment(self.order)
         self.tx_bl.product_block_header = self.product_block_header(self.order)
         self.tx_bl.costumer_name = self.costumer_name(self.order)
-        self.tx_bl.costumer_phone = self.contact_number_phone_number(self.order)
+        self.tx_bl.costumer_phone = self.costumer_phone(self.order)
         self.tx_bl.address_line = self.address_line(self.order)
         self.tx_bl.payment_method_sum = self.payment_method_sum(self.order)
         self.tx_bl.delivery_method = self.delivery_method(self.order)
@@ -73,17 +74,17 @@ class TextOrderManager:
             f"{self.tx_bl.costumer_comment}\n"
             f"{self.tx_bl.costumer_name}"
             f"{self.tx_bl.costumer_phone}\n"
-            f"{self.tx_bl.address_line}"
             f"{self.tx_bl.payment_method_sum}"
-            f"{self.tx_bl.delivery_method}"
-            f"{self.tx_bl.recipient_name}"
-            f"{self.tx_bl.recipient_phone}\n"
+            f"{self.tx_bl.delivery_method}\n"
+            f"{self.tx_bl.address_line}"
+            f"{self.tx_bl.recipient_phone}"
+            f"{self.tx_bl.recipient_name}\n"
             f"{self.tx_bl.product_footer}"
             f"🫴"
         )
     
     def status_order(self, order: OrderDTO):
-        return f"{self.status_color} {order.ordered_status.name}"
+        return f"{self.status_color} {order.ordered_status.name}\n"
     
     def product_block_header(self, order):
         text = ""
@@ -105,13 +106,16 @@ class TextOrderManager:
         return text
     
     def costumer_phone(self, order):
-        return f"{order.costumer.phone}\n"
+        phone = re.sub(r"^\d{2}", "", order.costumer.phone)
+        return f"{phone}\n"
     
-        
+    def delivery_method(self, order: OrderDTO):
+        return f"{order.delivery_method.name}\n"
+    
     def payment_method_sum(self, order):
         sum_before_goods = self.sum_before_goods(order)
         text = f"Спосіб оплати - {order.payment_method.name}, " 
-        text += f"{sum_before_goods} \n\n" 
+        text += f"{sum_before_goods}\n" 
         return text
     
     def sum_before_goods(self, order):
@@ -121,8 +125,7 @@ class TextOrderManager:
             return order.sum_price 
     
     def recipient_name(self, order):
-        text = "Отримувач:\n"
-        text += f"{order.recipient.last_name} {order.recipient.first_name}\n"
+        text = f"{order.recipient.last_name} {order.recipient.first_name}\n"
         return text
 
     
@@ -134,17 +137,13 @@ class TextOrderManager:
         text = f"{self.store_color} {order.source_order.name} "
         text += f"Замовлення № {order.order_code}\n"
         return text
-    
-    def contact_number_phone_number(self, order):
-        ttn = order.ttn if order.ttn else "ТТН немає"        
-        return f"{order.costumer.phone};{ttn}\n"
+
     
     def address_line(self, order):
-        city_name = f"{order.city_name}, " if order.city_name else ""
+        city_name = "Адреса Доставки:\n"
+        city_name += f"{order.city_name}, " if order.city_name else ""
         return f"{city_name}{order.warehouse_text}\n"
     
-    def delivery_method(self, order: OrderDTO):
-        return f"{order.delivery_method.name}"
     
     def product_block_footer(self, order):
         text = "На всяк випадок:\n"

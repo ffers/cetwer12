@@ -41,7 +41,7 @@ class RozetMain():
         prefix += "delivery,purchases,payment,status_payment"
         prefix += f"&status={status_load}"
         resp = self.make_request("GET", prefix)
-        print("dev_main_roz:", resp)
+        # print("dev_main_roz:", resp)
         if "content" in resp:
             if "orders" in resp["content"]:
                 if resp["content"]["orders"]:
@@ -119,9 +119,9 @@ class RozetMain():
             headers = {
                 "Content-Type": "application/json", "Authorization": f"Bearer {self.cash}"
             }
-            print("make_request12", headers)
+            # print("make_request12", headers)
         responce = self.request_go(method, url, headers, body)
-        print("Rozetka_make_request:", responce)
+        # print("Rozetka_make_request:", responce)
         return responce
     
     def request_go(self, method, url, headers, body):
