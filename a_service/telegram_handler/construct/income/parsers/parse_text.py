@@ -43,6 +43,21 @@ class ParseText:
         print(number_order)
         return number_order.group(1).strip()
     
+    def search_6_number(self, text):
+        patterns = [
+            r"ASX-\d{6,}",
+            r"R-\d{6,}",
+            r"P-\d{6,}",
+            r"\b\d{9}\b"
+        ]
+
+        combined = "|".join(patterns)
+        regex = re.compile(combined)
+
+        matches = regex.findall(text)
+        return matches if matches else False
+
+    
     
             
     def parse_stock(self, chat_data):

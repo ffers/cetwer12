@@ -127,8 +127,13 @@ class OrderCntrl:
         order = self.ord_rep.load_for_order_code(order_code)
         return order
 
-    def load_orders_store(self, api_name):
-        return self.order_serv.load_orders_store(api_name, OrderCntrl, TelegramController, EvoClient, RozetMain)
+    def load_orders_store(self, api_name, token):
+        return self.order_serv.load_orders_store(api_name,
+                                                token,
+                                                OrderCntrl, 
+                                                TelegramController, 
+                                                EvoClient,
+                                                RozetMain)
 
     def update_client_info(self):
         return self.order_serv.update_client_info()
@@ -141,6 +146,9 @@ class OrderCntrl:
         self.add_order_code(dublicate_item)
         self.send_order_tg(dublicate_item.id)
         return True
+    
+    def dublicate2(self, order_id):
+        pass
 
     def add_order(self, order_js):
         order_code = order_js["id"]
@@ -200,14 +208,14 @@ class OrderCntrl:
             order_id = order["id"]
             delivery_provider_data = order["delivery_provider_data"]
             try:
-                OC_log.info(f"Обробка стандартна, ордер:{order_id}\n Інформація по адресі {delivery_provider_data} ")
+                self.OC_log.info(f"Обробка стандартна, ордер:{order_id}\n Інформація по адресі {delivery_provider_data} ")
                 tg_cntrl.send_message_f(chat_id_helper,
                                      f"Обробка стандартна, ордер:{order_id}\n Інформація по адресі {delivery_provider_data} ")
                 self.update_address(order)
             except:
                 tg_cntrl.send_message_f(chat_id_helper,
                                 f"️❗️❗️❗️ Повторно адреси нема в № {order_id} ")
-                OC_log.info(
+                self.OC_log.info(
                     f"Обробка ордера: {order_id}\n "
                     f"Інформація по адресі {delivery_provider_data} ")
 
@@ -222,7 +230,7 @@ class OrderCntrl:
                 resp_bool = self.ord_rep.change_address((order["id"]), address_dict_np)
                 return resp_bool
             return True
-        OC_log.info(f"Викликаєм помилку {order}")
+        self.OC_log.info(f"Викликаєм помилку {order}")
         raise
 
     def add_order_code(self, order):

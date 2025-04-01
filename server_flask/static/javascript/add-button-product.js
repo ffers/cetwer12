@@ -4,7 +4,7 @@ function addProduct() {
     var newField = $('<div class="row" id="product-container"> style="width: 100%"')
         .html(`
         <div class="col-sm-3 col-lg-4   ">
-                    <select  class="  form-control product-select1" 
+                    <select  class="  form-control product-select" 
                         name="product" required></select>
                 </div>
                 <div class="col-sm col-lg-2   ">

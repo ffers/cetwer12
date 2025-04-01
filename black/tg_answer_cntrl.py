@@ -12,6 +12,7 @@ from .order_cntrl import ord_cntrl, OrderCntrl
 from .analitic_cntrl.sour_an_cntrl import SourAnCntrl
 from a_service import TgAnswerSerw, ResponceDirector
 from .telegram_cntrl.tg_cash_cntrl import TgCashCntrl
+from a_service.order_service import OrderServ
 
 
 env_path = '../common_asx/.env'
@@ -59,7 +60,11 @@ class TgAnswerCntrl:
         return resp
 
     def await_tg_button(self, data):
-        result = ResponceDirector().construct(data, OrderCntrl, SourAnCntrl, TelegramController)
+        result = ResponceDirector().construct(data, OrderCntrl=OrderCntrl,
+                                               SourAnCntrl=SourAnCntrl, 
+                                               TelegramCntrl=TelegramController,
+                                               OrderServ=OrderServ
+                                               )
         print(result, "tg_command_new")
         if "message" in data: #працює з усіма відповдями
             self.await_telegram(data)

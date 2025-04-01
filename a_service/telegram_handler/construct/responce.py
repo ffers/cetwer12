@@ -3,11 +3,11 @@ from utils import my_time
 from datetime import datetime
 from .parsers import ParseResponce
 
+
 class Command:
-    def __init__(self, OrderCntrl, SourAnCntrl, TelegramCntrl):
-        self.OrderCntrl = OrderCntrl()
-        self.SourAnCntrl = SourAnCntrl()
-        self.tg = TelegramCntrl()
+    def __init__(self, **deps):
+        self.tg = deps["TelegramCntrl"]()
+        self.text = deps["TextFormat"]
         self.parser = ParseResponce()
 
     def sendMessage(self, data_chat):
@@ -28,10 +28,16 @@ class ResponceCommand(Command):
         else:
             self.tg.sendMessage(self.tg.chat_id_courier, "Неправильно сформульоване повідомлення")
         return data_chat 
-
+    
 class UnknownCommandResponce(Command):
     def execute(self, data_chat):
         data_chat = self.parser.text_unknown_command(data_chat)
+        self.sendMessage(data_chat)
+        return data_chat
+
+class Search6NumbersResp(Command):
+    def execute(self, data_chat):
+        data_chat = self.parser.search_6_numbers(data_chat)
         self.sendMessage(data_chat)
         return data_chat
 
@@ -39,18 +45,18 @@ class UnknownCommandResponce(Command):
  
 class ResponceFactory:
     @staticmethod
-    def factory(pointer, OrderCntrl, SourAnCntrl, TelegramCntrl):
+    def factory(pointer, **deps):
         commands = {
             "take": ResponceCommand, 
             "stock": ResponceCommand,
             "take_courier": ResponceCommand,
-            "unknown_command": UnknownCommandResponce
-            # "edit": "edit",
+            "unknown_command": UnknownCommandResponce,
+            "search_order_manager": "edit",
             # "arrival": "ArrivalCommand,",
             # "comment":"comment"
         } 
         if pointer.cmd in commands:
             return commands[pointer.cmd](
-                OrderCntrl, SourAnCntrl, TelegramCntrl
-                ).execute(pointer)
+                **deps
+            ).execute(pointer)
         return pointer

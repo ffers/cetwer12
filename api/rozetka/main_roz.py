@@ -28,10 +28,10 @@ from utils import Stub
 # prefix = f"orders/search?{urlencode(params)}"
 
 class RozetMain(): 
-    def __init__(self):
+    def __init__(self, token):
         self.bear_req = BearRequest()
         self.host = "https://api-seller.rozetka.com.ua/"
-        self.cash = "Nj2HNztLCMG1pBnr18GtDZ-SSfj4-j5B"
+        self.cash = token # "Nj2HNztLCMG1pBnr18GtDZ-SSfj4-j5B"
         self.token_new = TokenRepServ()
         self.stub = Stub()
 
@@ -54,8 +54,8 @@ class RozetMain():
                         # order_standart.append(self.mapper.order(ob_order))
                     # print(order_standart.model_dump_json(indent=4), "order")
                     # print(orders, "dict_order")
-                    return orders, None                        
-        return None, None
+                    return orders                  
+        return None
     
     def change_status_order(self, order_id, status):
         prefix = f"orders/{order_id}"
@@ -117,7 +117,9 @@ class RozetMain():
             headers = {
                 "Content-Type": "application/json", "Authorization": f"Bearer {self.cash}"
             }
+            print("make_request12", headers)
         responce = self.request_go(method, url, headers, body)
+        print("Rozetka_make_request:", responce)
         return responce
     
     def request_go(self, method, url, headers, body):

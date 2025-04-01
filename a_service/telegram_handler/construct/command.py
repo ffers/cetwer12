@@ -1,3 +1,5 @@
+import re
+
 class CmdDict:
     command = {
         "#взял": "take",
@@ -12,6 +14,7 @@ class CmdDict:
         "callback_query.id": "callback_query",
         "reply_to_message": "reply_to_message",
         "just_message": "just_message"
+
         }
 
     

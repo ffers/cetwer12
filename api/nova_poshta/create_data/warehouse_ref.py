@@ -75,6 +75,12 @@ class WarehouseRefCl():
             print(Warehouse)
         self.SUN.update({"warehouse_n": Warehouse, "TypeOfWarehouseRef": TypeOfWarehouseRef})
         return Warehouse, TypeOfWarehouseRef
+    
+    def optionSeat(self, typeWareh):
+        if typeWareh == "f9316480-5f2d-425d-bc2c-ac7cd29decf0":
+             self.SUN.update(OptionsSeat)
+        return True
+
 
     def CityFilter(self, order):
         words = re.search(r'[A-ZА-ЯІЄЇ][^,(]+(?=\()*', order)
@@ -101,6 +107,7 @@ class WarehouseRefCl():
             if len(words) != 0:
                 word = words[0]
         return word
+    
     def extract_desc_street(self, address):
         print(address)
         desc_address = None
@@ -192,9 +199,12 @@ class WarehouseRefCl():
         Region = self.extract_region(order_address)
         Area = self.extract_area(order_address)
         data_address = self.search_address(order)
+        print("compact_data:", data_address)
         CityName = data_address["data"][0]["CityDescription"]
+        TypeOfWarehouseRef = data_address["data"][0]["TypeOfWarehouse"]
+        Warehouse = data_address["data"][0]["Number"]
         self.SUN.update({"CityName": CityName})
-        Warehouse, TypeOfWarehouseRef = self.WarehouseFilter(order_address)
+        self.optionSeat(TypeOfWarehouseRef)
         HouseNumber = None
         CityRef = data_address["data"][0]["CityRef"]
         data_dict = {

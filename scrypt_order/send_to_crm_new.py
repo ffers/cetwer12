@@ -1,4 +1,4 @@
-from utils import BearRequest, UtilsAsx
+from utils import BearRequest, OC_logger
 from black import TelegramController
 import os, json
 
@@ -8,7 +8,7 @@ import os, json
 class SendToCrmNew:
     def __init__(self):
         self.bear = BearRequest()
-        self.log = UtilsAsx()
+        self.log = OC_logger
         self.set_log = self.log.oc_log("send_to_crm")
 
     def get_count_sold(self):
@@ -16,8 +16,8 @@ class SendToCrmNew:
         resp = self.milky_way("GET", url)
 
 
-    def get_orders_rozet(self):
-        url = "v2/order/get_orders"
+    def get_orders(self, api_name, token):
+        url = f"v2/order/get_orders?api_name={api_name}&store_token={token}"
         resp = self.milky_way("GET", url)
 
 

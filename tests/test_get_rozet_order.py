@@ -12,25 +12,25 @@ class TestRozet:
     def test_get_order(self):
         with flask_app.app_context():
             self.stub = Stub()
-            host = "https://api-seller.rozetka.com.ua/"
-            status_load = self.stub.status_order_load()
-            prefix = "orders/search?expand="
-            prefix += "delivery,purchases,payment,status_payment"
-            prefix += f"&status={status_load}"
-            responses.add(
-                responses.GET, host+prefix,
-                json=RozetDict.rozet_order, status=200
-                )
-            self.make_response_tg()
-            pointer = self.order_c.load_orders_store("rozetka")
+            # host = "https://api-seller.rozetka.com.ua/"
+            # status_load = self.stub.status_order_load()
+            # prefix = "orders/search?expand="
+            # prefix += "delivery,purchases,payment,status_payment"
+            # prefix += f"&status={status_load}"
+            # responses.add(
+            #     responses.GET, host+prefix,
+            #     json=RozetDict.rozet_order, status=200
+            #     )
+            # self.make_response_tg()
+            pointer = self.order_c.load_orders_store("rozetka", "Nj2HNztLCMG1pBnr18GtDZ-SSfj4-j5B")
             print(pointer)
             assert pointer == True
 
     def make_response_tg(self):
-        host = "https://api.telegram.org/bot603175634:AAHNHBKy56g37S1WiS1KZuw_a-aZjahqD7o/sendMessage"
-        responses.add(
-        responses.POST, host,
-        json=TgLib.sendMessage, status=200
-        )
+        # host = "https://api.telegram.org/bot603175634:AAHNHBKy56g37S1WiS1KZuw_a-aZjahqD7o/sendMessage"
+        # responses.add(
+        # responses.POST, host,
+        # json=TgLib.sendMessage, status=200
+        # )
         return True
 

@@ -91,6 +91,12 @@ class EvoClient(object):
         url = '/api/v1/orders/{id}'
         method = 'GET'
         return self.make_request(method, url.format(id=order_id))
+    
+    def get_orders(self): # треба переробити на різні статуси
+        url = '/api/v1/orders/list?status=pending'
+        method = 'GET'
+        data = self.make_request(method, url)
+        return data.get("orders", [])
 
     def get_send_ttn(self, body):
         url = '/api/v1/delivery/save_declaration_id'

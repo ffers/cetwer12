@@ -22,13 +22,21 @@ class AddComment(Command):
             return chat_data
         return chat_data
     
+class SearchOrder(Command):
+    def execute(self, chat_data):
+        chat_data.cmd = "search_order_manager"
+        chat_data.text = self.text_parse.search_6_number(chat_data.text)
+        return chat_data
+
+    
 # 🔹 Клас, що виконує команду 
 class CommandHandler:
     @staticmethod
     def factory(chat_data):
         commands = {
             "new_orders": NewOrders,
-            "reply_to_message": AddComment
+            "reply_to_message": AddComment,
+            "search_order": SearchOrder
         } 
         if chat_data.cmd in commands:
             return commands[chat_data.cmd](

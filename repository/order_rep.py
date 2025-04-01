@@ -45,7 +45,8 @@ class OrderRep:
             if "duplicate key" in str(e.orig):
                 raise OrderAlreadyExistsError("Order already exists")
             print("add_order:", e)
-            return False
+        except Exception as e:
+            return str(e)
     
     def update_order(self, order_id, order_dto):
         order = self.load_item(order_id)

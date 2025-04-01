@@ -5,7 +5,7 @@
 
 from abc import ABC, abstractmethod
 
-from mapper import RozetkaMapper
+from mapper import RozetkaMapper, promMapper
 from a_service import ProductServ
 
 class Mapper(ABC):
@@ -23,7 +23,8 @@ class Rozetka(Mapper):
 
 class Prom(Mapper):
     def process(self):
-        pass
+        return promMapper(self.data_order, ProductServ)
+         
 
 
 class OrderMapStoreFactory:

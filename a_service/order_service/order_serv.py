@@ -1,6 +1,5 @@
 import random
 from flask import jsonify
-
 from utils import wrapper
 from utils.my_time_util import my_time
 
@@ -17,6 +16,9 @@ from ..telegram_handler.text_formater.text_order_manager import TextOrderManager
 from ..product_serv import ProductServ
 from ..telegram_service import TgServNew
  
+from copy import deepcopy
+
+
 class OrderServ:
     def __init__(self):
         self.order_rep = OrderRep()
@@ -30,6 +32,8 @@ class OrderServ:
         digits = [random.choice('0123456789') for _ in range(6)]
         unique_id = ''.join(digits)  # Генеруємо унікальний ID та беремо перші 6 символів
         order_code = f'{prefix}-{unique_id}'
+        if self.order_rep.load_for_code(order_code):
+            self.generate_order_code()
         return order_code
 
     def change_order(self, orders):
@@ -84,13 +88,12 @@ class OrderServ:
     def add_order3(self, dto: OrderDTO):
         dto = self.check_order_code(dto)
         resp = self.add_costumer(dto)
-        print("add_order_costumer:", resp)
+        # print("add_order_costumer:", resp)
         resp = self.add_recipient(resp.get("result"))
-        print("add_order_recipient:", resp)
+        # print("add_order_recipient:", resp)
         dto = resp.get("result")
-        dto.order_code = self.generate_order_code()
         resp = self.add_order4(resp.get("result"))
-        print("add_order_add_order:", resp)
+        # print("add_order_add_order:", resp)
         if resp:
             order = resp.get("result")
             products = dto.ordered_product
@@ -130,9 +133,9 @@ class OrderServ:
     
 
     
-    def load_orders_store(self, api_name, OrderCntrl, TelegramCntrl, EvoClient, RozetMain):
+    def load_orders_store(self, api_name, token, OrderCntrl, TelegramCntrl, EvoClient, RozetMain):
         resp = {}
-        order_api_obj = OrderApi(api_name, OrderCntrl, TelegramCntrl, EvoClient, RozetMain)
+        order_api_obj = OrderApi(api_name, token, OrderCntrl, TelegramCntrl, EvoClient, RozetMain)
         order_api_dto = order_api_obj.get_orders()
         print("load_orders_store:", order_api_dto)
         if order_api_dto:
@@ -153,6 +156,7 @@ class OrderServ:
         return self.order_rep.load_status_id(id)
       
     def check_order_code(self, order_dto):
+        print("check_order_code:", order_dto.order_code)
         if not order_dto.order_code:
             order_dto.order_code = self.generate_order_code("ASX")
         return order_dto
@@ -203,6 +207,30 @@ class OrderServ:
         if not resp:
             print("change_order: Невийшло")
         return True
+    
+    def update_ordered_product(self, order_id, products):
+        print("update_ordered_product:", products)
+        order = self.order_rep.update_ordered_product(order_id, products)
+        resp = True if order else False
+        return order
+    
+
+    def dublicate_order(self, order_id):
+        item = self.order_rep.load_item(order_id)
+        new_item = deepcopy(item)
+        new_item.source_order_id=1
+        new_item.ordered_status_id=10
+        new_item.description_delivery="Одяг Jemis"
+        new_item.order_code = self.generate_order_code()
+        ordered_product = list(item.ordered_product)
+        resp = self.add_order4(new_item)
+        print("dublicate_order:", resp)
+        if resp["add_order4"] == "ok":
+            order = resp["result"]
+            order = self.update_ordered_product(order.id, ordered_product)
+            return order
+        else:
+            return False
 
     def update_history(self, order_id, comment):
         current_time = next(my_time()).strftime("%d-%m-%Y %H:%M")
@@ -244,6 +272,9 @@ class OrderServ:
             'text': text
         }
         return item_data
+    
+    def search_order_6_number(self, data):
+        return self.ord_rep.search_for_all(data)
 
     def replace_phone(self, phone):
         return phone

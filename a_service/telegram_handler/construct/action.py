@@ -3,10 +3,12 @@ from .parsers.parse_worker import Parse
 from utils import my_time
 from datetime import datetime
 
+
 class Command:
-    def __init__(self, OrderCntrl, SourAnCntrl):
-        self.order_cntrl = OrderCntrl()
-        self.SourAnCntrl = SourAnCntrl()
+    def __init__(self, **deps):
+        self.order_cntrl = deps["OrderCntrl"]()
+        self.SourAnCntrl = deps["SourAnCntrl"]()
+        self.order_serv = deps["OrderServ"]()
         self.parse = Parse()     
 
     def execute(self, content):     
@@ -48,22 +50,33 @@ class UnknownCommandAction(Command):
     def execute(self, data_chat):
         return data_chat
     
+    '''
+    тількі ордеркод, якшо співпадає з 4 варіантів то шукаєм
+    унікальне замовленя
+    '''
+class SearchOrder(Command):
+    def execute(self, data_chat):
+        n = data_chat.text
+        result = self.order_serv.search_order_6_number(n)
+        data_chat.content = result  
+        return data_chat
 
 
 class Action:
     @staticmethod
-    def factory(data_chat, OrderCntrl, SourAnCntrl):
+    def factory(data_chat, **deps):
         commands = {
             "stock": Stock,
             "new_orders": NewOrders,
             "reply_manager": AddComment,
             "take": Take,
             "take_courier": TakeCourier,
-            "unknown_command": UnknownCommandAction
+            "unknown_command": UnknownCommandAction,
+            "search_order_manager": SearchOrder
         } 
         if data_chat.cmd in commands:
             print("Action Step: ", data_chat.cmd)
             return commands[data_chat.cmd](
-                OrderCntrl, SourAnCntrl
+                **deps
                 ).execute(data_chat)
         return data_chat

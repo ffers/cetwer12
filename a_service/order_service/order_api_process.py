@@ -11,27 +11,27 @@ from common_asx.utilits import Utils
 
 class FactoryApi:
     @staticmethod
-    def factory(api, EvoClient, RozetMain):
+    def factory(api, token, EvoClient, RozetMain):
         apis = {
                 "rozetka": RozetMain,
                 "prom": EvoClient
         }
         if api in apis:
-            return apis[api]()
+            return apis[api](token)
         else:
             raise ValueError(f"We dont have api: {api}")                
             
 
 class OrderApi:
-    def __init__(self, api, OrderCntrl, TG, EvoClient, RozetMain):
-        self.api = FactoryApi.factory(api, EvoClient, RozetMain)
+    def __init__(self, api, token, OrderCntrl, TG, EvoClient, RozetMain):
+        self.api = FactoryApi.factory(api, token, EvoClient, RozetMain)
         self.order_cntrl = OrderCntrl()
         self.tg = TG()
         self.util = Utils(EvoClient, RozetMain)
     
     def get_orders(self):
-        try:
-            list_order, list_standart_dto = self.api.get_orders()
+        # try:
+            list_order = self.api.get_orders()
             return list_order
             # if list_order:
             #     for order in list_order:
@@ -45,10 +45,10 @@ class OrderApi:
             #         print("Add to crm: ", resp)
             #     return True
             # return list_standart_dto
-        except Exception as e:
-            text = f"🔴 Помилка додавання замовлення в розетку {e}"
-            print(str(text))
-            return False
+        # except Exception as e:
+        #     text = f"🔴 Помилка додавання замовлення в розетку {e}"
+        #     print(str(text))
+        #     return False
         
     def add_order(self, dto):
         dto = self.add_costumer(dto)

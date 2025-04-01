@@ -1,10 +1,13 @@
+
+
+
 from zoneinfo import ZoneInfo
 from datetime import datetime, timedelta, timezone
 
 
 
-class WorkTimeCntrl:
 
+class WorkTimeCntrl:
     def my_time(self):
         tz = ZoneInfo("Europe/Kyiv")
         yield datetime.now(timezone.utc).astimezone(tz)
@@ -82,7 +85,7 @@ class WorkTimeCntrl:
 
     def all(self):
         current_time = next(self.my_time()) + timedelta(hours=1)
-        return "2021-04-25 17:47:10.560329", current_time
+        return "2021-04-25 13:47:10.560329", current_time
 
 
 

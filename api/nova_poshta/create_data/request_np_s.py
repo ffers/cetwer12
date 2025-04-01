@@ -215,7 +215,7 @@ class NpClient(object):
             "calledMethod": "save",
             "methodProperties": {
                 "FirstName": sun["FirstName"],
-                "MiddleName": sun["MiddleName"],
+                "MiddleName": sun.get("MiddleName", ""),
                 "LastName": sun["LastName"],
                 "Phone": sun["RecipientsPhone"],
                 "Email": "test@i.com",

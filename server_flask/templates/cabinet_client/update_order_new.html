@@ -225,23 +225,23 @@
 					  
 					  <div class="mb-3">
 						<footer><small class="text-muted">Прізвище:</small></footer>
-						<div class="editable" data-name="costumer_lastname">{{ order.costumer.last_name }}</div>
+						<div class="editable" data-name="costumer_lastname">{{ order.costumer.last_name or "Немає" }}</div>
 						<input type="text" class="form-control d-none" name="costumer_lastname" value="{{ order.costumer.last_name }}">
 						<input type="hidden" name="costumer_id" value="{{ order.costumer.id }}">
 					  </div>
 					  
 					  <div class="mb-3">
 						<footer><small class="text-muted">Імʼя:</small></footer>
-						<div class="editable" data-name="costumer_firstname">{{ order.costumer.first_name or "" }}</div>
+						<div class="editable" data-name="costumer_firstname">{{ order.costumer.first_name or "Немає" }}</div>
 						<input type="text" class="form-control d-none" name="costumer_firstname" value="{{ order.costumer.first_name }}">
-						<input type="hidden" name="costumer_firstname" value="{{ order.costumer.first_name }}">
+						<input type="hidden" name="costumer_firstname" value="{{ order.costumer.first_name or '' }}">
 					  </div>
 					  
 					  <div class="mb-3">
 						<footer><small class="text-muted">Побатькові:</small></footer>
-						<div class="editable" data-name="costumer_secondname">{{ order.costumer.second_name }}</div>
+						<div class="editable" data-name="costumer_secondname">{{ order.costumer.second_name or "Немає" }}</div>
 						<input type="text" class="form-control d-none" name="costumer_secondname" value="{{ order.costumer.second_name }}">
-						<input type="hidden" name="costumer_middlename" value="{{ order.costumer.second_name }}">
+						<input type="hidden" name="costumer_middlename" value="{{ order.costumer.second_name or '' }}">
 					  </div>
 					  
 					  <div class="mb-3">
@@ -249,8 +249,8 @@
 						<div class="editable" data-name="costumer_email"
 							style="min-height: 1.5rem; cursor: pointer;">
 							{{ order.costumer.email or "Немає"}}</div>
-						<input type="email" class="form-control d-none" name="costumer_email" value="{{ order.costumer.email  }}">
-						<input type="hidden" name="costumer_email" value="{{ order.costumer.email  }}">
+						<input type="email" class="form-control d-none" name="costumer_email" value="{{ order.costumer.email or '' }}">
+						<input type="hidden" name="costumer_email" value="{{ order.costumer.email or '' }}">
 					  </div>
 					  
 				</div>
@@ -360,25 +360,25 @@
 				  
 				  <div class="mb-3">
 					<footer><small class="text-muted">Прізвище:</small></footer>
-					<div class="editable" data-name="recipient_lastname">{{ order.recipient.last_name }}</div>
+					<div class="editable" data-name="recipient_lastname">{{ order.recipient.last_name or "Немає" }}</div>
 					<input type="text" class="form-control d-none"
-						   name="recipient_lastname" value="{{ order.recipient.last_name }}">
+						   name="recipient_lastname" value="{{ order.recipient.last_name or '' }}">
 					<!-- <input type="hidden" name="recipient_lastname" value="{{ order.recipient.last_name }}"> -->
 				  </div>
 				  
 				  <div class="mb-3">
 					<footer><small class="text-muted">Імʼя:</small></footer>
-					<div class="editable" data-name="recipient_firstname">{{ order.recipient.first_name }}</div>
+					<div class="editable" data-name="recipient_firstname">{{ order.recipient.first_name or "Немає" }}</div>
 					<input type="text" class="form-control d-none"
-						   name="recipient_firstname" value="{{ order.recipient.first_name }}">
+						   name="recipient_firstname" value="{{ order.recipient.first_name or '' }}">
 					<!-- <input type="hidden" name="recipient_firstname" value="{{ order.recipient.first_name }}"> -->
 				  </div>
 				  
 				  <div class="mb-3">
 					<footer><small class="text-muted">Побатькові:</small></footer>
-					<div class="editable" data-name="recipient_secondname">{{ order.recipient.second_name }}</div>
+					<div class="editable" data-name="recipient_secondname">{{ order.recipient.second_name or "Немає" }}</div>
 					<input type="text" class="form-control d-none"
-						   name="recipient_secondname" value="{{ order.recipient.second_name }}">
+						   name="recipient_secondname" value="{{ order.recipient.second_name or '' }}">
 					<!-- <input type="hidden" name="recipient_middlename" value="{{ order.recipient.second_name }}"> -->
 				  </div>
 				  
@@ -397,7 +397,7 @@
 								<input type="hidden" name="warehouse_option" value="{{ order.warehouse_option }}">
 								<input type="hidden" name="warehouse-text" value="{{ order.warehouse_text }}">
 								<input type="hidden" name="warehouse-id" value="{{ order.warehouse_ref }}">
-								<input type="hidden" name="warehouse-id" value="{{ order.ttn }}">
+								<!-- <input type="hidden" name="ttn" value="{{ order.ttn or '' }}"> -->
 						
 	
 							</div>
@@ -414,8 +414,8 @@
 						<div class="mb-3">
 						  <footer><small class="text-muted">ТТН:</small></footer>
 						  <div class="editable" 
-						  		data-name="ttn">{{ order.ttn }}</div>
-						  <input type="text" class="form-control d-none" name="ttn" value="{{ order.ttn }}">
+						  		data-name="ttn">{{ order.ttn or "Немає" }}</div>
+						  <input type="text" class="form-control d-none" name="ttn" value="{{ order.ttn or '' }}">
 						</div>
 					  
 					</div>
@@ -441,7 +441,7 @@
 				
 
 				  <div id="notesDisplay" class="editable">
-					{{ order.description or "Нема нотаток" }}
+					{{ order.description or "Немає нотаток" }}
 				  </div>
 				
 				  <!-- ✏️ Редагування -->

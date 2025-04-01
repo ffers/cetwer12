@@ -165,6 +165,19 @@ class TestClassDemoInstance:
             assert "np_delivery" ==  pointer.chat 
             assert "reply_to_message" == pointer.cmd
 
+    def test_search_6_numbers(self):
+        with flask_app.app_context():
+            codes = ["ASX-351213", "R-841603966", 
+                     "318724837", "P-337489755"]
+            data = LibTG.test_search_6_numbers
+            resp = []
+            for code in codes:
+                data["message"]["text"] = code
+                resp.append(self.await_button_tg(data))
+            assert resp == [True, True, True, False]
+
+                
+
 
 
     # def test_two(self):

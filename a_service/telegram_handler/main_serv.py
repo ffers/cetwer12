@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from .construct import Income, Action, ResponceFactory
+from .text_formater import TextOrderManager
 
 from settings import Settings
 
@@ -24,12 +25,16 @@ class ChatData:
     author: str = None
 
 class Worker: 
-    def __init__(self, data, OrderCntrl, SourAnCntrl, TelegramCntrl):
+    def __init__(self, data, **deps):
         self.data = data
-        self.OrderCntrl = OrderCntrl
-        self.SourAnCntrl = SourAnCntrl
-        self.TelegramCntrl = TelegramCntrl
+        self.OrderCntrl = deps["OrderCntrl"]
+        self.SourAnCntrl = deps["SourAnCntrl"]
+        self.TelegramCntrl = deps["TelegramCntrl"]
+        self.order_serv = deps["OrderServ"]
         self.settings = Settings()
+        deps["TextFormat"] = TextOrderManager
+        self.deps = deps
+
 
     def execute(self, pointer):
         return pointer 
@@ -52,12 +57,12 @@ class IncomeResponce(Worker):  # Группи должни вернуть ста
     
 class ActionResponce(Worker):  
     def execute(self, pointer):
-        return Action.factory(pointer, self.OrderCntrl, self.SourAnCntrl)  
+        return Action.factory(pointer, **self.deps)  
     
 class TGResponce(Worker):  
     def execute(self, pointer):
         resp = ResponceFactory.factory(pointer, 
-                    self.OrderCntrl, self.SourAnCntrl, self.TelegramCntrl)
+                    **self.deps)
         return pointer  
 
 class Builder:
@@ -68,32 +73,35 @@ class Builder:
         self.commands.append(command_class)
         return self
 
-    def build(self, data, OrderCntrl, SourAnCntrl, TelegramCntrl):
-        # try:   
+    def build(self, data, **deps):
+        try:   
             pointer = ChatData()
+            tg = deps["TelegramCntrl"]()
             for cmd_class in self.commands:
-                pointer = cmd_class(data, OrderCntrl, SourAnCntrl, TelegramCntrl).execute(pointer)
+                pointer = cmd_class(data, **deps).execute(pointer)
                 print("Працює: ", cmd_class.__name__)
                 if not pointer:
                     print("Невиконано!: ", cmd_class.__name__)
-                    TelegramCntrl().sendMessage(-421982888, "dev Невиконано!: ", cmd_class.__name__)
+                    tg.sendMessage(-421982888, "dev Невиконано!: ", cmd_class.__name__)
                     return pointer
                 if pointer.chat == "unknown_chat":
                     print("Невідомий чат")
                     return pointer
             return pointer
-        # except:
-        #     return "Не працює responce_serv"
+        except Exception as e:
+            return f"Не працює main_serv: {str(e)}"
     
 class ResponceDirector:
     def __init__(self):
         self.builder = Builder()
 
-    def construct(self, data, OrderCntrl, SourAnCntrl, TelegramCntrl):
+    def construct(self, 
+                  data, 
+                  **deps):
         return (
             self.builder
             .add_command(IncomeResponce)
             .add_command(ActionResponce)
             .add_command(TGResponce)
-            .build(data, OrderCntrl, SourAnCntrl, TelegramCntrl)
+            .build(data, **deps)
         )

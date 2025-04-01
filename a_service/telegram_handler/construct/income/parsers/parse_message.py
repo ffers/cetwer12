@@ -1,5 +1,6 @@
 from .parse_text import ParseText
 from flatten_dict import flatten
+import re
 
 class ParseMsg:
     def __init__(self, data, pointer):
@@ -64,6 +65,8 @@ class CommandText(ParseMsg):
         for key, item in self.data.items():
             if key in self.pointer:
                 return item
+        if re.search(r"\d{6,}", self.pointer):
+            return "search_order"
         if "#" in self.pointer:
             return "unknown_command"
         return "just_message"
