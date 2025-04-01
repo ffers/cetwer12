@@ -46,7 +46,7 @@
           <td>{{order.phone}}{% if order.ttn %};{{order.ttn}}{% else %}{% endif %}</td>
           <td>{{order.costumer.first_name}} {{order.recipient.last_name}}</td>
           <td>{{order.delivery_method.name}}</td>
-          <td>{{order.payment_method.name}}{% if order.payment_method.id == 5 %}:{{order.prompay_status.name}}{% endif %}</td>
+          <td>{{order.payment_method.name}}</td>
           <td>{{order.source_order.name}}</td>
           <td>{{order.order_code}}</td>
           <td><a href="/cabinet/orders/confirmed/{{order.id}}">{{order.ordered_status.name}}</a></td>

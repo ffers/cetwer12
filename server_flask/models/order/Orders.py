@@ -37,9 +37,9 @@ class Orders(db.Model):
     order_code = db.Column(db.String(50), unique=True)
     ordered_product = db.relationship('OrderedProduct', backref='orders', cascade='all, delete-orphan')
     delivery_order = db.relationship("DeliveryOrder", back_populates="orders", uselist=False, cascade="all, delete-orphan")
-    prompay_status = db.relationship("PrompayStatus", back_populates="orders")
-    prompay_status_id = db.Column(db.Integer, db.ForeignKey(
-        'prompay_status.id', name='fk_orders_prompay_status_id'))
+    payment_status = db.relationship("PaymentStatus", back_populates="orders")
+    payment_status_id = db.Column(db.Integer, db.ForeignKey(
+        'payment_status.id', name='fk_orders_payment_status_id'))
     ordered_status = db.relationship("OrderedStatus", back_populates="orders")
     ordered_status_id = db.Column(db.Integer, db.ForeignKey(
         'ordered_status.id', name='fk_orders_ordered_status_id'))

@@ -37,7 +37,7 @@ def promMapper(prom: dict, ProductServ) -> OrderDTO:
         send_time=None,
         order_id_sources=None,
         order_code=f"P-{prom.get('id')}",
-        prompay_status_id=add_prompay_status(prom),
+        payment_status_id=add_prompay_status(prom),
         ordered_status_id=10,
         warehouse_method_id=None,
         source_order_id=2,

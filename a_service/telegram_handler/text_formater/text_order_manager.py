@@ -80,7 +80,7 @@ class TextOrderManager:
             f"{self.tx_bl.recipient_phone}"
             f"{self.tx_bl.recipient_name}\n"
             f"{self.tx_bl.product_footer}"
-            f"🫴"
+            f"▪️▪️▪️"
         )
     
     def status_order(self, order: OrderDTO):
@@ -150,5 +150,19 @@ class TextOrderManager:
         for product in order.ordered_product:
             text += f" {product.products.product_name}\n"
         return text
+    
+    def payment_data_status(self, order):
+        if order["payment_option"]["id"] == 7547964:
+            payment_data = order["payment_data"]
+            status_pay = "Несплачено"
+            if payment_data:
+                status = payment_data.get("status")
+                if status == "paid":
+                    status_pay = "Замовлення сплачено"
+                elif status == "refunded":
+                    status_pay = "Повернуто!"
+                else:
+                    status_pay = "Несплачено"
+            return status_pay
     
         

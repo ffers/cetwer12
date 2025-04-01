@@ -1,5 +1,6 @@
 from api.nova_poshta.create_data import WarehouseRefCl, NpClient
 from server_flask.db import db
+import re
 
 war_cl = WarehouseRefCl()
 np_cl_api = NpClient()
@@ -25,6 +26,9 @@ class NpCntrl:
         print(f"runup {data}")
         pass
 
+    def strip_phone(self, phone):
+        return re.sub(r"\D", "", phone)
+
     def parse_data(self, order):
         print(f"data order {vars(order)}")
         self.data.clear()
@@ -35,7 +39,7 @@ class NpCntrl:
                 "CityRecipient": self.cityref_for_warehouseref(order.warehouse_ref),
                 "RecipientAddress": order.warehouse_ref,
                 "payment_option": order.payment_method_id,
-                "RecipientsPhone": order.phone,
+                "RecipientsPhone": self.strip_phone(order.phone),
                 "FirstName": order.client_firstname,
                 "LastName": order.client_lastname,
                 "MiddleName": order.client_surname,

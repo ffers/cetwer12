@@ -17,7 +17,7 @@ from .order.DeliveryMethod import DeliveryMethod
 from .order.SourceOrder import SourceOrder
 from .order.WarehouseMethod import WarehouseMethod
 from .order.OrderedStatus import OrderedStatus
-from .order.PrompayStatus import PrompayStatus
+from .order.PaymentStatus import PaymentStatus
 from .order.TelegramOrdered import TelegramOrdered
 from .order.Costumer import Costumer
 from .order.Recipient import Recipient

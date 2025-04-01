@@ -58,7 +58,7 @@ class OrderDTO(BaseModel):
     send_time: Optional[datetime]
     order_id_sources: Optional[str]
     order_code: str|None
-    prompay_status_id: Optional[int] = None
+    payment_status_id: Optional[int] = None
     ordered_status_id: Optional[int]
     warehouse_method_id: Optional[int]
     source_order_id: Optional[int]

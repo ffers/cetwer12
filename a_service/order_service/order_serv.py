@@ -81,7 +81,12 @@ class OrderServ:
             order_db = self.add_order2(order)
             if order_db:
                 text_order = TextOrderManager(order_db).builder()
-                telegram_cntrl.sendMessage(telegram_cntrl.chat_id_confirm, text_order)
+                keyboard_json = telegram_cntrl.keyboard_func()
+                telegram_cntrl.sendMessage(
+                                            telegram_cntrl.chat_id_confirm, 
+                                            text_order,
+                                            keyboard_json
+                                           )
         return True 
     
     @wrapper()
@@ -117,7 +122,9 @@ class OrderServ:
             order = self.order_rep.update_ordered_product(order.id, products)
             resp = True if order else False
             text_order = TextOrderManager(order).builder()
-            self.tg.sendMessage(self.tg.chat_id_confirm, text_order)
+            keyboard_json = self.tg.keyboard_func()
+            self.tg.sendMessage(self.tg.chat_id_confirm, 
+                                text_order, keyboard_json)
             return order
 
         return resp 

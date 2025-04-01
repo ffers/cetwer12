@@ -35,14 +35,14 @@ class UpdateToCrm():
         if flag == "canceled":
             order.ordered_status_id = 5
         elif flag == "paid":
-            order.prompay_status_id = 1
+            order.payment_status_id = 1
             order.ordered_status_id = 3
         elif flag == "unpaid":
-            order.prompay_status_id = 2
+            order.payment_status_id = 2
             order.ordered_status_id = 4
         elif flag == "refunded":
             order.ordered_status_id = 5
-            order.prompay_status_id = 3
+            order.payment_status_id = 3
 
 up_to_srm = UpdateToCrm()
 

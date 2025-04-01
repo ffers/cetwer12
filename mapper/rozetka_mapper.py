@@ -44,7 +44,7 @@ class RozetkaMapper():
             send_time=None,
             order_id_sources=None,
             order_code=f"R-{data.id}",
-            prompay_status_id=None,
+            payment_status_id=None,
             ordered_status_id=10,
             warehouse_method_id=self.warehouse_method(data.delivery.delivery_method_id),
             source_order_id=3,
