@@ -98,21 +98,50 @@ class EvoClient(object):
         data = self.make_request(method, url)
         return data.get("orders", [])
 
-    def get_send_ttn(self, body):
+    def get_send_ttn(self, ttn, order_id, delivery_type):
+        body = {
+            "order_id": order_id,
+            "declaration_id": ttn,
+            "delivery_type": delivery_type
+        }
         url = '/api/v1/delivery/save_declaration_id'
         method = 'POST'
         return self.make_request(method, url, body)
+    
+    def create_body_status(self, order_id, status_order):
+        dict_status_prom = None
+        print(status_order)
+        if 2 == status_order: # скасовано
+            dict_status_prom = {
+                "status": "canceled",
+                "ids": [order_id],
+                "cancellation_reason": "not_available",
+                "cancellation_text": "Не виходить дозвонитися"
+            }
+        if 1 == status_order: # прийнято
+            dict_status_prom = {
+                "status": "received",
+                "ids": [order_id]
+            }
+        if 3 == status_order: # підтверженно
+            dict_status_prom = {
+                "custom_status_id": 137639,
+                "ids": [order_id]
+            }
+        return dict_status_prom
 
-    def get_set_status(self, body):
+    def change_status(self, order_id, status):
+        body = self.create_body_status(order_id, status)
         url = '/api/v1/orders/set_status'
         method = 'POST'
         return self.make_request(method, url, body)
 
     def make_send_ttn(self, ttn, order_id, delivery_type=None):
-        if delivery_type:
-            dict_ttn_prom.update({"order_id": order_id, "declaration_id": ttn, "delivery_type": delivery_type})
-        else:
-            dict_ttn_prom.update({"order_id": order_id, "declaration_id": ttn})
+        body = {
+            "order_id": order_id,
+            "declaration_id": ttn,
+            "delivery_type": delivery_type
+        }
         print(dict_ttn_prom)
         global RESP
         RESP = self.get_send_ttn(dict_ttn_prom)

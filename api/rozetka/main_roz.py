@@ -45,24 +45,26 @@ class RozetMain():
         if "content" in resp:
             if "orders" in resp["content"]:
                 if resp["content"]["orders"]:
-                    # print("Є ордери")
                     orders = []
-                    order_standart = []
                     for order in resp["content"]["orders"]:
                         ob_order = OrderRozetkaDTO.model_validate(order)
                         orders.append(ob_order)
-                        # order_standart.append(self.mapper.order(ob_order))
-                    # print(order_standart.model_dump_json(indent=4), "order")
-                    # print(orders, "dict_order")
                     return orders                  
         return None
     
-    def change_status_order(self, order_id, status):
+    def mapper_status(self, status):
+        statuses = {
+            1: 26
+        }
+        if status in statuses:
+            return statuses[status]
+    
+    def change_status(self, order_id, status):
         prefix = f"orders/{order_id}"
         body = {
-            "status": status
+            "status": self.mapper_status(status)
         }
-        print(body, prefix)
+        print("change_status:", body, prefix)
         resp = self.make_request("PUT", prefix, body)
         return resp
     

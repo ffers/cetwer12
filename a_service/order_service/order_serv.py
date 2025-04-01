@@ -19,6 +19,23 @@ from ..telegram_service import TgServNew
 from copy import deepcopy
 
 
+#  id |        name        | description
+# ----+--------------------+-------------
+#   1 | Підтвердити        |
+#   2 | Підтвержено        |
+#   3 | Оплачено           |
+#   4 | Несплачено         |
+#   5 | Скасовано          |
+#   6 | Предзамовлення     |
+#   7 | Питання            |
+#   8 | Відправлено        |
+#   9 | Отримано           |
+#  10 | Нове               |
+#  11 | Очікує відправленя |
+#  12 | Виконано           |
+#  13 | Тест
+#  14 | Повернення
+
 class OrderServ:
     def __init__(self):
         self.order_rep = OrderRep()
@@ -135,17 +152,18 @@ class OrderServ:
     
     def load_orders_store(self, api_name, token, OrderCntrl, TelegramCntrl, EvoClient, RozetMain):
         resp = {}
-        order_api_obj = OrderApi(api_name, token, OrderCntrl, TelegramCntrl, EvoClient, RozetMain)
-        order_api_dto = order_api_obj.get_orders()
-        print("load_orders_store:", order_api_dto)
-        if order_api_dto:
-            for order in order_api_dto:
+        store = OrderApi(api_name, token, OrderCntrl, TelegramCntrl, EvoClient, RozetMain)
+        list_order = store.get_orders()
+        print("load_orders_store:", list_order)
+        if list_order:
+            for order in list_order:
                 mapper = self.map_ord.factory(api_name, order)
-                order_dto_standart = mapper.process()
-                resp.update(self.add_order3(order_dto_standart))
+                dto = mapper.process()
+                resp.update(self.add_order3(dto))
+                resp.update(store.change_status(dto.order_code, 1))
             return resp 
         else:
-            return {"success": "ok", "order": None}
+            return {"success": "ok", "order": "Store empty"}
 
     def load_status_id(self, id):
         print("load_status_id", id)

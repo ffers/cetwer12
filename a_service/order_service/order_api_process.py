@@ -1,5 +1,5 @@
 
-import sys
+import sys, re, os
 sys.path.append('../')
 from common_asx.utilits import Utils
 
@@ -73,7 +73,11 @@ class OrderApi:
         return dto
 
     def change_status(self, order_id, status):
-        return self.api.create_status_get(order_id, status)    
+        env = os.getenv("ENV")
+        if env != "dev":
+            order_id = re.sub(r"\D", "", order_id)
+            return self.api.change_status(order_id, status) 
+        return {"status": "dev"}   
 
 
     def get_order(self, order_id):
