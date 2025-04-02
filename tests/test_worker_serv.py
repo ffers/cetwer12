@@ -174,7 +174,7 @@ class TestClassDemoInstance:
             for code in codes:
                 data["message"]["text"] = code
                 resp.append(self.await_button_tg(data))
-            assert resp == [True, True, True, False]
+            assert resp == "ChatData(chat='manager', chat_nummer=-1001979021180, cmd='search_order_manager', text='P-337489755', reply='Don`t have respone.', content=None, resp=None, comment=None, author=None)"
 
                 
 

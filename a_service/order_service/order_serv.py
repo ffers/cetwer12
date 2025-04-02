@@ -304,7 +304,7 @@ class OrderServ:
         return item_data
     
     def search_order_6_number(self, data):
-        return self.ord_rep.search_for_all(data)
+        return self.order_rep.search_for_all(data)
 
     def replace_phone(self, phone):
         return phone

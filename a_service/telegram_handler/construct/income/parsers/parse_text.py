@@ -55,7 +55,7 @@ class ParseText:
         regex = re.compile(combined)
 
         matches = regex.findall(text)
-        return matches if matches else False
+        return matches[0] if matches else False
 
     
     

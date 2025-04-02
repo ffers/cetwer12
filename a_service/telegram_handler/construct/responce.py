@@ -2,6 +2,7 @@
 from utils import my_time
 from datetime import datetime
 from .parsers import ParseResponce
+from ..text_formater import TextOrderAllInfo
 
 
 class Command:
@@ -37,8 +38,9 @@ class UnknownCommandResponce(Command):
 
 class Search6NumbersResp(Command):
     def execute(self, data_chat):
-        data_chat = self.parser.search_6_numbers(data_chat)
-        self.sendMessage(data_chat)
+        for order in data_chat.content:
+            data_chat.text = TextOrderAllInfo(order).builder()
+            self.sendMessage(data_chat)
         return data_chat
 
 
@@ -51,7 +53,7 @@ class ResponceFactory:
             "stock": ResponceCommand,
             "take_courier": ResponceCommand,
             "unknown_command": UnknownCommandResponce,
-            "search_order_manager": "edit",
+            "search_order_manager": Search6NumbersResp,
             # "arrival": "ArrivalCommand,",
             # "comment":"comment"
         } 
