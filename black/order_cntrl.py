@@ -105,12 +105,12 @@ class OrderCntrl:
 
     def load_registred(self):
         item = self.ord_rep.load_registred()
-        print(item)
+ 
         return item
 
     def load_registred_roz(self):
         item = self.ord_rep.load_registred_roz()
-        print(item)
+
         return item
 
     def load_status_id(self, id):

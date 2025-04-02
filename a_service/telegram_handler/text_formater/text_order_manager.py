@@ -115,7 +115,9 @@ class TextOrderManager:
     def payment_method_sum(self, order):
         sum_before_goods = self.sum_before_goods(order)
         text = f"Спосіб оплати - {order.payment_method.name}, " 
+        text += f"{self.payment_status(order)} "
         text += f"{sum_before_goods}\n" 
+        print("payment_method_sum:", text)
         return text
     
     def sum_before_goods(self, order):
@@ -151,18 +153,19 @@ class TextOrderManager:
             text += f" {product.products.product_name}\n"
         return text
     
-    def payment_data_status(self, order):
-        if order["payment_option"]["id"] == 7547964:
-            payment_data = order["payment_data"]
-            status_pay = "Несплачено"
-            if payment_data:
-                status = payment_data.get("status")
-                if status == "paid":
-                    status_pay = "Замовлення сплачено"
-                elif status == "refunded":
-                    status_pay = "Повернуто!"
-                else:
-                    status_pay = "Несплачено"
-            return status_pay
+    def payment_status(self, order):
+        print("payment_status", order)
+        print("payment_status", order.payment_method_id)
+        if order.payment_method_id == 5:
+            s = order.payment_status_id
+            print("payment_status2", s)
+            statuses = {
+                1: "Сплачено",
+                2: "Несплачено",
+                3: "Повернуто"
+            }
+            if s in statuses:
+                return statuses[s]
+        return ""
     
         

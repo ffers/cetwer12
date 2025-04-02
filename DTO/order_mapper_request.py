@@ -18,14 +18,14 @@ class OrderFormMapper:
             phone=form.get('costumer_phone'),
             email=form.get('costumer_email'),
             ttn=form.get('ttn'),
-            ttn_ref=None,
+            ttn_ref=None, # розглядай видалення
             client_firstname=form.get('costumer_firstname'),
             client_lastname=form.get('costumer_lastname'),
             client_surname=form.get('costumer_middlename'),
             city_name=form.get('CityName'),
             city_ref=form.get('CityREF'),
-            region='', 
-            area=None,
+            region='',  # розглядай видалення
+            area=None, # розглядай видалення
             warehouse_option=form.get('warehouse_option'),  
             warehouse_text=unquote(form.get('warehouse-text')),
             warehouse_ref=form.get('warehouse-id'),
@@ -34,12 +34,12 @@ class OrderFormMapper:
             description=form.get('description'),
             description_delivery=form.get('description_delivery'),
             cpa_commission=None,
-            client_id=None,
+            client_id=None, # розглядай видалення
             send_time=None,
             delivery_option=None, # розглядай видалення
-            order_id_sources=None,
+            order_id_sources=None, # розглядай видалення
             order_code=form.get('order_code', None),
-            prompay_status_id=None, 
+            payment_status_id=form.get('payment_status'), 
             ordered_status_id=form.get('order_status_id'),  
             warehouse_method_id=None,
             source_order_id=int(form.get('source_order_id')),
@@ -81,6 +81,7 @@ class OrderFormMapper:
             "description": form.get('description'),
             "delivery_method_id": form.get('delivery_method'),
             "payment_method_id": form.get('payment_option'),
+            "payment_status_id": form.get('payment_status', None),
             "ordered_product": products,
             "costumer": costumer,
             "recipient": recipient

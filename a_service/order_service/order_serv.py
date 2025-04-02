@@ -173,10 +173,9 @@ class OrderServ:
             return {"success": "ok", "order": "Store empty"}
 
     def load_status_id(self, id):
-        print("load_status_id", id)
         if id == 10:
             result = StatusNewWithPaidPipline().process(self.order_rep)
-            print("load_status_id", result)
+           
             return result
         return self.order_rep.load_status_id(id)
       

@@ -28,7 +28,6 @@ class Handler:
         context = self.process(repo)
         list_order.extend(context)
         if self.next_handler:
-            print("handle", list_order)
             return self.next_handler.handle(repo, list_order)
         return list_order
 
@@ -38,19 +37,19 @@ class Handler:
 class New(Handler):
     def process(self, repo):
         resp = repo.load_status_id(10)
-        print(resp)
+
         return resp
         
 class Paid(Handler):
     def process(self, repo):
         resp = repo.load_status_id(3)
-        print(resp)
+
         return resp
 
 class Unpaid(Handler):
     def process(self, repo):
         resp = repo.load_status_id(4)
-        print(resp)
+      
         return resp
 
 class StatusNewWithPaidPipline:

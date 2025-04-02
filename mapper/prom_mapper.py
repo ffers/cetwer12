@@ -37,11 +37,11 @@ def promMapper(prom: dict, ProductServ) -> OrderDTO:
         send_time=None,
         order_id_sources=None,
         order_code=f"P-{prom.get('id')}",
-        payment_status_id=add_prompay_status(prom),
         ordered_status_id=10,
         warehouse_method_id=None,
         source_order_id=2,
         payment_method_id=add_payment_method_id(prom),
+        payment_status_id=add_prompay_status(prom),
         delivery_method_id=add_delivery_method(prom),
         author_id=55,
         recipient=_map_recipient(prom),
@@ -103,9 +103,11 @@ def add_prompay_status(order):
                     status_id = 3
                 else:
                     status_id = 2
+                print("add_prompay_status:", status_id)
                 return status_id
             else:
                 status_id = 2
+
         return status_id
 
 def add_delivery_method(order):
@@ -133,8 +135,12 @@ def add_payment_method_id(order):
             payment_method_id = 5
         return payment_method_id
 
-def _parse_price(p: str) -> float:
-    return float(p.replace(" грн", "").strip())
+def _parse_price(p):
+    s = p.replace(" грн", "").replace(" ", "").strip()
+    if "," in s and "." not in s:
+        s = s.replace(",", ".")
+    return float(s)
+
 
 
 def _get_delivery_name(prom: dict) -> str | None:

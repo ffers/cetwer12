@@ -30,7 +30,7 @@
   statusToggle.addEventListener("change", function () {
   const isPaid = this.checked;
   paymentStatus.textContent = isPaid ? "Оплачено" : "Не оплачено";
-  document.getElementById("paymentStatusInput").value = isPaid ? "1" : "0";
+  document.getElementById("paymentStatusInput").value = isPaid ? "1" : "2";
 
   statusEdit.style.display = "none";
   statusDisplay.style.display = "block";

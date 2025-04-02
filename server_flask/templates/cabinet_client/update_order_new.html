@@ -335,16 +335,16 @@
 						<footer><small class="text-muted">Статус оплати:</small></footer>
 						<div id="statusDisplay" style="cursor: pointer;">
 						  <div id="paymentStatus">
-							{% if order.prompay_status_id == 1 %}Оплачено{% else %}Не оплачено{% endif %}
+							{% if order.payment_status_id == 1 %}Оплачено{% else %}Не оплачено{% endif %}
 						  </div>
 						  <input type="hidden" name="payment_status" id="paymentStatusInput"
-								 value="{{ order.prompay_status_id }}">
+								 value="{{ order.payment_status_id }}">
 						</div>
 					  </div>
 					  <div id="statusEdit" style="display: none;" class="text-center mt-3">
 						<label>
 						  <input type="checkbox" id="statusToggle" class="form-check-input me-2"
-								 {% if order.prompay_status_id == 1 %}checked{% endif %}>
+								 {% if order.payment_status_id == 1 %}checked{% endif %}>
 						  Оплачено
 						</label>
 					  </div>

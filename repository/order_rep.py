@@ -36,6 +36,7 @@ class OrderRep:
                         order_code=item.order_code,
                         costumer_id=item.costumer_id,
                         recipient_id=item.recipient_id,
+                        payment_status_id=item.payment_status_id
                         )
             db.session.add(order)
             db.session.commit()
@@ -75,7 +76,7 @@ class OrderRep:
         order.send_time = order_dto.send_time
         order.order_id_sources = order_dto.order_id_sources
         order.order_code = order_dto.order_code
-        order.prompay_status_id = order_dto.prompay_status_id
+        order.payment_status_id = order_dto.payment_status_id
         order.ordered_status_id = order_dto.ordered_status_id
         order.warehouse_method_id = order_dto.warehouse_method_id
         order.source_order_id = order_dto.source_order_id
