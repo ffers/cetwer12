@@ -93,7 +93,7 @@ callback_query_id = None
 
 def send_request_status(invoice_ttn, invoice_order):
     delivery_type_roz = "rozetka_delivery"
-    resp = prom_cl.get_send_ttn(invoice_ttn, invoice_order, delivery_type_roz)
+    resp = prom_cl.send_ttn(invoice_ttn, invoice_order, delivery_type_roz)
     print("=======")
     print(resp)
     if "status" in resp:
