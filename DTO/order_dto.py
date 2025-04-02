@@ -42,7 +42,7 @@ class OrderDTO(BaseModel):
     client_lastname: Optional[str] = None
     client_surname: Optional[str] = None
     delivery_option: str|None
-    city_name: str
+    city_name: str|None
     city_ref: Optional[str]
     region: str|None
     area: Optional[str]

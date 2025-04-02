@@ -333,7 +333,7 @@ class OrderCntrl:
             resp = True, ""
             if order.source_order_id == 2:
                 resp_prom_ttn = prom_cntrl.send_ttn(order.order_code, order.ttn, "nova_poshta")
-                resp_prom_status = prom_cntrl.change_status(order.order_code, 137639)
+                resp_prom_status = prom_cntrl.change_status(order.order_code, 2)
         elif 'OptionsSeat is empty' in np_resp["errors"]:
             resp = "Поштомат зайнятий"
             tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm,

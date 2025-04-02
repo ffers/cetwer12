@@ -41,6 +41,7 @@ class EvoClient(object):
 
     def make_request(self, method, url, body=None):
         url = HOST + url
+        print("make_request:", body)
         headers = {'Authorization': 'Bearer {}'.format(self.token),
                    'Content-type': 'application/json'}
         if body:
@@ -64,6 +65,7 @@ class EvoClient(object):
             raise ValueError("Запит не вдалося виконати після {} спроб".format(max_retries))
 
         response_data = response.content
+        
         return json.loads(response_data)
 
     def get_order_list(self, value_url=None):
@@ -107,7 +109,7 @@ class EvoClient(object):
         data = self.make_request(method, url)
         return data.get("orders", [])
 
-    def get_send_ttn(self, ttn, order_id, delivery_type):
+    def send_ttn(self, order_id, ttn, delivery_type):
         body = {
             "order_id": order_id,
             "declaration_id": ttn,
@@ -115,12 +117,14 @@ class EvoClient(object):
         }
         url = '/api/v1/delivery/save_declaration_id'
         method = 'POST'
-        return self.make_request(method, url, body)
+        resp = self.make_request(method, url, body)
+        print("change_status:", resp)
+        return resp
     
     def create_body_status(self, order_id, status_order):
         dict_status_prom = None
         print(status_order)
-        if 2 == status_order: # скасовано
+        if 5 == status_order: # скасовано
             dict_status_prom = {
                 "status": "canceled",
                 "ids": [order_id],
@@ -132,7 +136,7 @@ class EvoClient(object):
                 "status": "received",
                 "ids": [order_id]
             }
-        if 3 == status_order: # підтверженно
+        if 2 == status_order: # підтверженно
             dict_status_prom = {
                 "custom_status_id": 137639,
                 "ids": [order_id]
@@ -143,7 +147,10 @@ class EvoClient(object):
         body = self.create_body_status(order_id, status)
         url = '/api/v1/orders/set_status'
         method = 'POST'
-        return self.make_request(method, url, body)
+        resp = self.make_request(method, url, body)
+        
+        return resp
+        
 
     def make_send_ttn(self, ttn, order_id, delivery_type=None):
         body = {

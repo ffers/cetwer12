@@ -70,7 +70,7 @@ class OrderFormMapper:
             "ttn": form.get('ttn'),
             "client_firstname": form.get('costumer_firstname'),
             "client_lastname": form.get('costumer_lastname'),
-            "client_surname": form.get('costumer_middlename'),
+            "client_surname": form.get('costumer_middlename', ""),
             "city_name": form.get('CityName'),
             "city_ref": form.get('CityREF'),
             "warehouse_option": form.get('warehouse_option'),
