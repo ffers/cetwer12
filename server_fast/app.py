@@ -1,14 +1,14 @@
 from typing import Annotated
 from server_flask.flask_app import flask_app
 from fastapi.middleware.wsgi import WSGIMiddleware
-import os
-
+from .security_middleware import BlockSuspiciousPathsMiddleware
 
 from fastapi import Depends, FastAPI
 from fastapi.security import OAuth2PasswordBearer
 
 from .dependencies import get_token_header
 import uvicorn, multiprocessing, logging
+import os
 
 from .routers import order, analitic
 from .routers import admin, button
@@ -26,6 +26,7 @@ from utils import OC_logger
 
 OC_log = OC_logger.oc_log("fast_api")
 app = FastAPI(responses={404: {"description": "Not found"}})
+app.add_middleware(BlockSuspiciousPathsMiddleware)
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 

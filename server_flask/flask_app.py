@@ -1,29 +1,41 @@
 # from server_fast.app import app
-from celery import Celery
+from .db import db
+
 import psycopg2, os
-from dotenv import load_dotenv
 from markupsafe import escape
-from flask import Flask, render_template, request, jsonify
+
+from flask import Flask, render_template, request, jsonify, abort
 from flask_login import current_user, LoginManager, login_required
 from flask_migrate import Migrate
 from flask_principal import identity_loaded, RoleNeed
 from flask_principal import Principal, Identity
 from server_flask.permission_registred import update_roles
-from .db import db
+from .security_middleware import security_blocker
+
 from .routes import Blog, Auth, Comment, User_post, Bot, \
     Order, Cabinet, Admin, Products, Analitic, \
     Arrival, JourChRout, ProductSource, SourceDifference, \
     ColorSource, Panel
+
+
+
+from celery import Celery
+from dotenv import load_dotenv
+
 from utils import OC_logger
-OC_log = OC_logger.oc_log("flas_app")
 
 load_dotenv()
+
+
+OC_log = OC_logger.oc_log("flas_app")
+
 try:
     flask_app = Flask(__name__)
 except Exception as e:
     # Запис повідомлення про помилку у журнал
     OC_log.exception("Помилка при створенні екземпляра додатку: %s", e)
 
+security_blocker(flask_app)
 principal = Principal(flask_app)
 migrate = Migrate(flask_app, db, directory='../common_asx/migrations')
 user_db = os.getenv('DB_USERNAME')
@@ -134,6 +146,21 @@ def handle_type_error(e):
     import traceback
     traceback.print_exc()
     return {"error": str(e)}, 500
+
+BLOCKED_PATHS = [
+    ".env", ".git", ".aws", ".docker", ".idea", "config", "backup",
+    ".env.local", ".env.dev", ".env.prod", ".env.test", ".env.stage",
+    ".env.backup", ".env.dist", ".env.ci", ".git/config", ".aws/credentials"
+]
+
+def security_blocker(app):
+    @app.before_request
+    def block_suspicious_paths():
+        path = request.path.lower()
+        for bad in BLOCKED_PATHS:
+            if bad in path:
+                abort(403)
+
 
 # @celery.task
 # def schedule_task():

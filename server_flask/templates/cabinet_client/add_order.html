@@ -119,7 +119,7 @@
 						</label>			
 				</div>
 
-				<div id="hiddenFieldPay" style="display:none;" class="col"><input type="number" style="text-align: center;" class="form-control" id="sum_before_goods" name="sum_before_goods" min="1" placeholder="Сумма" value="100"><br></div>                      
+				<div id="hiddenFieldPay" style="display:none;" class="col"><input type="number" style="text-align: center;" class="form-control" id="sum_before_goods" name="sum_before_goods" min="1" placeholder="Сумма" value=""><br></div>                      
 			</div>
 			<div id="ProductOldItem" class="grey-background">
 				<div class="row" id="product-container" style="width: 100%">
@@ -230,6 +230,7 @@
 <script src="{{url_for('static', filename='javascript/submitFormSelect2.js')}}"></script>
 <script src="{{url_for('static', filename='javascript/newCalculateTotal.js')}}"></script>
 <script src="{{url_for('static', filename='javascript/add-button-product.js')}}"></script>
+<script src="{{url_for('static', filename='javascript/update_order/delete_product.js')}}"></script>
 
 
 {% endblock %}		
