@@ -44,7 +44,7 @@ class TextOrderManager:
         1: "🔵",
         2: "🟣",
         3: "🟢",
-        1: "🔘",
+        1: "🟠",
         10: "⚪️"
         }
         if store_id in status_color:

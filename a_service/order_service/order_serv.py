@@ -206,7 +206,7 @@ class OrderServ:
         if order_db:
             if order_dto.ordered_product:
                 self.update_product3(order_dto, resp)
-                # self.make_send_to_confirmed_tg_times(order_dto)
+                self.make_send_to_confirmed_tg_times(order_db)
             return resp.update({"order_db": "ok"})
         resp.update({"order_db": "unsuccess"})
         return resp

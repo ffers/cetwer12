@@ -92,7 +92,7 @@ def Order():
 @login_required
 @author_permission.require(http_exception=403)
 def update(order_id): 
-    session.clear()
+    session.pop('order_dto', None)
     or_c = OrderCntrl()
     order = or_c.load_for_order_id(order_id) # завнатаженя ордера
     dto = OrderDTO.model_validate(order) # робимо ДТО
@@ -112,7 +112,7 @@ def update(order_id):
         order_dto = ord_mapp_sess.update_order_dto_from_session(saved, request.form)
         dto = OrderDTO(**order_dto)
         order = or_c.update_order3(order_id, dto)
-        session.clear()
+        session.pop('order_dto', None)
         flash(f'Замовлення оновлено', category='success')
         return redirect(f'/cabinet/orders/update/{order_id}')        
     else:     
