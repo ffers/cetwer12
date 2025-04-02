@@ -338,7 +338,7 @@
 							{% if order.payment_status_id == 1 %}Оплачено{% else %}Не оплачено{% endif %}
 						  </div>
 						  <input type="hidden" name="payment_status" id="paymentStatusInput"
-								 value="{{ order.payment_status_id }}">
+								 value="{{ order.payment_status_id or '2' }}">
 						</div>
 					  </div>
 					  <div id="statusEdit" style="display: none;" class="text-center mt-3">

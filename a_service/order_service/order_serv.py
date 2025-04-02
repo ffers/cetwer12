@@ -106,6 +106,14 @@ class OrderServ:
         order_db = self.order_rep.load_item(order_db.id)
         return order_db
     
+
+    def make_send_to_confirmed_tg_times(self, order):
+        text_order = TextOrderManager(order).builder()
+        keyboard_json = self.tg.keyboard_func()
+        self.tg.sendMessage(self.tg.chat_id_confirm, 
+                                text_order, keyboard_json)
+        return True
+    
     @wrapper()
     def add_order3(self, dto: OrderDTO):
         dto = self.check_order_code(dto)
@@ -121,10 +129,7 @@ class OrderServ:
             products = dto.ordered_product
             order = self.order_rep.update_ordered_product(order.id, products)
             resp = True if order else False
-            text_order = TextOrderManager(order).builder()
-            keyboard_json = self.tg.keyboard_func()
-            self.tg.sendMessage(self.tg.chat_id_confirm, 
-                                text_order, keyboard_json)
+            self.make_send_to_confirmed_tg_times(order)
             return order
 
         return resp 
@@ -201,6 +206,7 @@ class OrderServ:
         if order_db:
             if order_dto.ordered_product:
                 self.update_product3(order_dto, resp)
+                # self.make_send_to_confirmed_tg_times(order_dto)
             return resp.update({"order_db": "ok"})
         resp.update({"order_db": "unsuccess"})
         return resp

@@ -82,9 +82,10 @@ class OrderFormMapper:
             "delivery_method_id": form.get('delivery_method'),
             "payment_method_id": form.get('payment_option'),
             "payment_status_id": form.get('payment_status', None),
-            "ordered_product": products,
-            "costumer": costumer,
-            "recipient": recipient
+            "costumer": costumer.model_dump(),
+            "recipient": recipient.model_dump(),
+            "ordered_product": [p.model_dump() for p in products],
+            "ordered_status_id": 1
         })
 
         return order_data
