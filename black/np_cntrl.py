@@ -1,7 +1,7 @@
 from api.nova_poshta.create_data import WarehouseRefCl, NpClient
 from server_flask.db import db
 import re
-
+from utils import OC_logger
 war_cl = WarehouseRefCl()
 np_cl_api = NpClient()
 
@@ -10,12 +10,14 @@ class NpCntrl:
     def __init__(self):
         self.data = {}
         self.np_api = NpClient()
+        self.logger = OC_logger().oc_log("np_cntrl_times")
 
     def manager_data(self, order):
         self.runup_recepient(order)
         print(self.data)
         resp = np_cl_api.runup_doc(self.data)
         return resp
+
 
     def runup_recepient(self, order):
         data = self.parse_data(order)

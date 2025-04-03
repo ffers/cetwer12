@@ -155,12 +155,15 @@ def send_cab(id):
     if request.method == 'POST':
         return redirect('/cabinet/orders/filter/registered/10')
     else:
-        print(f"Працює {id}")
-        resp = ord_cntrl.confirmed_order(id)
-        if resp:
-            flash('Замовлення підтвержено', category='success')
-        else:
-            flash('Замовлення підтверджено але ттн не створено: ' + resp["delivery"], category='error')
+        try:
+            resp = ord_cntrl.confirmed_order(id)
+            if resp:
+                flash('Замовлення підтвержено', category='success')
+            else:
+                flash('Замовлення підтверджено але ттн не створено: ' + resp["delivery"], category='error')
+        except Exception as e:
+            flash(str(e), category='error')
+            return redirect(f'/cabinet/orders/update/{id}')
         return redirect(f'/cabinet/orders/update/{id}')
 
 

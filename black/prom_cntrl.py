@@ -19,12 +19,12 @@ class PromCntrl:
     
     def change_status(self, order_id, status):
         order_id = re.sub(r"\D", "", order_id)
-        env =os.getenv("ENV")
-        if env != "dev":
-            token = os.getenv("PROM_TOKEN")
-            evo_cl = EvoClient(token)
-            resp = evo_cl.change_status(order_id, status)
-            return resp
+        # env =os.getenv("ENV")
+        # if env != "dev":
+        token = os.getenv("PROM_TOKEN")
+        evo_cl = EvoClient(token)
+        resp = evo_cl.change_status(order_id, status)
+        return resp
         return {"success": "dev"}
 
     def get_order(self, order_id):

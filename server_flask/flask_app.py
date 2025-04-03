@@ -98,6 +98,8 @@ def log_request():
 
 @flask_app.after_request
 def log_response(response):
+    response.direct_passthrough = False
+
     log_data = {
         "status": response.status_code,
         "path": request.path,

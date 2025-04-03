@@ -322,6 +322,9 @@ class OrderCntrl:
 
     def del_method_np(self, order):
         resp = False
+        order.warehouse_ref = None
+        if not order.warehouse_ref:
+            raise ValueError('Треба оновити адресу')
         np_resp = np_cntrl.manager_data(order)  # обработка зкаказа из срм создание ттн, телеграм курьеру заказ, додавання в пром ттн
         if np_resp["success"] == True:
             doc_ttn = np_resp["data"][0]["IntDocNumber"]
@@ -340,7 +343,7 @@ class OrderCntrl:
         else:
             resp = np_resp
             tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm,
-                                 f"❗️❗️❗️ ТТН не створено - {resp[1]}")
+                                 f"❗️❗️❗️ ТТН не створено - {resp}")
         return np_resp
 
     def add_ttn_crm(self, order_id, ttn):

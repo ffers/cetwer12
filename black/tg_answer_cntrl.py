@@ -28,6 +28,7 @@ class TgAnswerCntrl:
         self.send_order = CrmToTelegram()
         self.add_order = PromToCrm()
         self.manager_ttn = ManagerTTN()
+        self.tg = TelegramController()
 
     def await_order(self, order, flag=None, id=None):
         print(f"ДИвимось флаг {flag}")
@@ -112,8 +113,11 @@ class TgAnswerCntrl:
         resp = None
         print(f"data_keyb {data_keyb}")
         if "1" == data_keyb:
-            resp = ord_cntrl.confirmed_order(order_id)
-            print(resp) 
+            try:
+                resp = ord_cntrl.confirmed_order(order_id)
+                print(resp) 
+            except Exception as e:
+                self.tg.sendMessage(self.tg.chat_id_confirm, str(e))
         if "2" == data_keyb:
             resp = ord_cntrl.question_order(order_id)
         return resp
