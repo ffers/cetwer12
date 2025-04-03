@@ -3,7 +3,7 @@
 from black.tg_answer_cntrl import OrderCntrl, SourAnCntrl, TelegramController, TgAnswerCntrl
 from .lib.lib_tg import LibTG
 from server_flask.flask_app import flask_app
-
+import pytest
 
 class TestClassDemoInstance:
     await_button_tg = TgAnswerCntrl().await_tg_button
@@ -35,11 +35,11 @@ class TestClassDemoInstance:
             print(pointer)
             assert  pointer.chat == "courier"
             assert  pointer.cmd == "stock"
-            assert  pointer.text == "Игорь\n35N10: 300\n45N10: 300\n"
+            assert  pointer.text == "Відсутній коментар це не рахується:\nBX1: помилка\nBX3: Нема такого товару\nBX4: Нема такого товару\n"
             assert  pointer.reply == "Don`t have respone."
-            assert  pointer.content == [{'article': '35N10', 'pack': 25, 'quantity': 300}, {'article': '45N10', 'pack': 25, 'quantity': 300}]
-            assert  pointer.resp == [{'article': '35N10', 'quantity': 300}, {'article': '45N10', 'quantity': 300}]
-            assert  pointer.comment == 'Игорь\n'
+            assert  pointer.content == [{'article': 'BX1', 'pack': 100, 'quantity': 100}, {'article': 'BX3', 'pack': 20, 'quantity': 20}, {'article': 'BX4', 'pack': 20, 'quantity': 20}]
+            assert  pointer.resp == [{'article': 'BX1', 'quantity': 'помилка'}, {'article': 'BX3', 'quantity': 'Нема такого товару'}, {'article': 'BX4', 'quantity': 'Нема такого товару'}]
+            assert  pointer.comment == 'Відсутній коментар це не рахується:\n'
 
     def test_take_courier(self):
         with flask_app.app_context():
@@ -174,7 +174,17 @@ class TestClassDemoInstance:
             for code in codes:
                 data["message"]["text"] = code
                 resp.append(self.await_button_tg(data))
-            assert resp == "ChatData(chat='manager', chat_nummer=-1001979021180, cmd='search_order_manager', text='P-337489755', reply='Don`t have respone.', content=None, resp=None, comment=None, author=None)"
+                print("Assert", resp)
+            assert len(resp) == 4  # 4 ChatData
+
+            assert resp[0].cmd == "search_order_manager"
+            assert "PROM Замовлення № ASX-351213" in resp[0].text
+
+            assert resp[1].content[0].id == 2500
+            assert "ROZETKA" in resp[1].text
+
+            assert resp[3].content == []  # останній — без замовлень
+            assert "Немає замовлень" in resp[3].text
 
                 
 

@@ -2,14 +2,18 @@ class ParseResponce:
     def __init__(self):
         pass
 
-    def text_report_add(self, pointer):  
-        pointer.text = pointer.comment 
-        for item in pointer.resp:
-            pointer.text += "{}: {}\n".format(
-                item["article"], 
-                item["quantity"]
-                )
-        return pointer 
+    def text_report_add(self, pointer):
+        try:  
+            pointer.text = pointer.comment 
+            for item in pointer.resp:
+                pointer.text += "{}: {}\n".format(
+                    item["article"], 
+                    item["quantity"]
+                    )
+            return pointer 
+        except Exception as e:
+            pointer.text = "От халепа незнаю що віповісти"
+            return pointer
     
     def text_unknown_command(self, pointer):
         pointer.text = "Невідома команда або не використовуйте: #"
