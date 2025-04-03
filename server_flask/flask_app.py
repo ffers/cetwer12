@@ -27,13 +27,15 @@ from utils import OC_logger
 load_dotenv()
 
 
-OC_log = OC_logger.oc_log("flas_app")
+logger = OC_logger.oc_log("flask_app")
+logger_access = OC_logger.oc_log("access_flask")
+
 
 try:
     flask_app = Flask(__name__)
 except Exception as e:
     # Запис повідомлення про помилку у журнал
-    OC_log.exception("Помилка при створенні екземпляра додатку: %s", e)
+    logger.exception("Помилка при створенні екземпляра додатку: %s", e)
 
 security_blocker(flask_app)
 principal = Principal(flask_app)
@@ -74,10 +76,7 @@ from .models import Users
 login_manager = LoginManager()
 login_manager.login_view = "auth.login"
 login_manager.init_app(flask_app)
-import logging
-logging.basicConfig()
-logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
-logging.getLogger('sqlalchemy.orm').setLevel(logging.INFO)
+
 
 def get_db_connection():
     conn = psycopg2.connect(host='localhost',
@@ -89,6 +88,14 @@ def get_db_connection():
 @login_manager.user_loader
 def load_user(id):
     return Users.query.get(int(id))
+
+@flask_app.before_request
+def log_request():
+    logger_access.info(
+        f"{request.remote_addr} {request.method} {request.path} "
+        f"params={dict(request.args)} agent={request.headers.get('User-Agent')}"
+    )
+
 
 @flask_app.route("/", methods=['POST', 'GET'])
 @login_required
