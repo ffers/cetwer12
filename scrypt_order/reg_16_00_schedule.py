@@ -87,6 +87,7 @@ class RegSchedulleSrv():
             self.sour.sort_analitic("month")
             self.sour.sort_analitic("week")
             self.sour.sort_analitic("day")
+            self.sour.sour_diff_all_source_sold("two_days") 
             print("Успіх")
             return True
         

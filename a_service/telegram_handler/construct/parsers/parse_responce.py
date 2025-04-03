@@ -1,10 +1,11 @@
+from utils import handle_error
+
 class ParseResponce:
     def __init__(self):
         pass
 
     def text_report_add(self, pointer):
         try:  
-            pointer.text = pointer.comment 
             for item in pointer.resp:
                 pointer.text += "{}: {}\n".format(
                     item["article"], 
@@ -12,6 +13,7 @@ class ParseResponce:
                     )
             return pointer 
         except Exception as e:
+            handle_error(e, "parse_responce text report")
             pointer.text = "От халепа незнаю що віповісти"
             return pointer
     

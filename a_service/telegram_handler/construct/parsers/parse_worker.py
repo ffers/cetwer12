@@ -1,6 +1,6 @@
 from utils import my_time
 from datetime import datetime
-
+from utils import handle_error
 
 class Parse:                                 
     def __init__(self): 
@@ -45,15 +45,16 @@ class Parse:
 
                     print("parse_stock:", data_chat)
                     if not data_chat.comment:
-                        raise ValueError("Відсутній коментар")
+                        raise ValueError("Некоректний шаблон")
                     print("dev_parse_color: ", data_chat.comment)
                     sour_cntrl.fixed_process(item_prod.id, quantity, data_chat.comment, next(my_time()))               
                 data_chat = self.parser_item(data_chat, item["article"], quantity)
             except Exception as e:
-                print(f"Помилка під час обробки '{item}': {e}")
-                data_chat.comment = "Відсутній коментар це не рахується:\n"
+                print(f"Помилка під час обробки '{item}': {e}")                
+                data_chat.text = f"{e}\n"
                 data_chat = self.parser_item(
-                    data_chat, item.get("article", "?"), "помилка"
+                    data_chat, item.get("article", "?"), "Нерахується"
                 )
+                break
                 
         return data_chat 

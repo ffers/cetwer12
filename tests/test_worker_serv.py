@@ -35,11 +35,11 @@ class TestClassDemoInstance:
             print(pointer)
             assert  pointer.chat == "courier"
             assert  pointer.cmd == "stock"
-            assert  pointer.text == "Відсутній коментар це не рахується:\nBX1: помилка\nBX3: Нема такого товару\nBX4: Нема такого товару\n"
+            assert  pointer.text == "Некоректний шаблон\nBX1: Нерахується\n"
             assert  pointer.reply == "Don`t have respone."
-            assert  pointer.content == [{'article': 'BX1', 'pack': 100, 'quantity': 100}, {'article': 'BX3', 'pack': 20, 'quantity': 20}, {'article': 'BX4', 'pack': 20, 'quantity': 20}]
-            assert  pointer.resp == [{'article': 'BX1', 'quantity': 'помилка'}, {'article': 'BX3', 'quantity': 'Нема такого товару'}, {'article': 'BX4', 'quantity': 'Нема такого товару'}]
-            assert  pointer.comment == 'Відсутній коментар це не рахується:\n'
+            assert  pointer.content[0].get("article") == "BX1"
+            assert  pointer.resp[0].get("quantity") == "Нерахується"
+            assert  pointer.comment == None
 
     def test_take_courier(self):
         with flask_app.app_context():

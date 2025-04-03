@@ -9,3 +9,4 @@ from .my_time_util import my_time
 from .stub import Stub
 from .ordered_product_session import OrderedProductSession  
 from .wrapper import wrapper
+from .errors import handle_error
