@@ -96,6 +96,18 @@ def log_request():
         f"params={dict(request.args)} agent={request.headers.get('User-Agent')}"
     )
 
+@flask_app.after_request
+def log_response(response):
+    log_data = {
+        "status": response.status_code,
+        "path": request.path,
+        "method": request.method,
+        "response": response.get_data(as_text=True)[:500]  # обрізано
+    }
+    logger.info(f"API response: {log_data}")
+    return response
+
+
 
 @flask_app.route("/", methods=['POST', 'GET'])
 @login_required

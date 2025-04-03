@@ -62,7 +62,22 @@ class TakeAuthor(ParseMsg):
     
 class CommandText(ParseMsg):
     def execute(self):
-        for key, item in self.data.items():
+        commands = {
+        "#взял": "take",
+        "#склад": "stock",
+        "#редактируєм": "edit",
+        "#прихід": "arrival",
+        "#коментар": "comment",
+        "#нові": "new_orders",
+        "/new_orders": "new_orders",
+        "unknown_command": "unknown_command",
+        "unknown_chat": "unknown_chat",
+        "callback_query.id": "callback_query",
+        "reply_to_message": "reply_to_message",
+        "just_message": "just_message"
+
+        }
+        for key, item in commands.items():
             if key in self.pointer:
                 return item
         if re.search(r"\d{6,}", self.pointer):

@@ -43,11 +43,14 @@ class TextOrderAllInfo:
     def status_color_take(self, order):
         store_id = order.ordered_status_id
         status_color = { 
-        1: "🔵",
-        2: "🟣",
-        3: "🟢",
-        1: "🟠",
-        10: "⚪️"
+        1:  "🟠",
+        2:  "🟢",
+        5:  "🔴",
+        6:  "🟣",
+        7:  "❓",
+        8:  "🔵",
+        10: "⚪️",
+        12: "✅",
         }
         if store_id in status_color:
             return status_color[store_id]

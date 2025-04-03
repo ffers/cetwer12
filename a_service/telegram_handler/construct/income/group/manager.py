@@ -27,16 +27,22 @@ class SearchOrder(Command):
         chat_data.cmd = "search_order_manager"
         chat_data.text = self.text_parse.search_6_number(chat_data.text)
         return chat_data
-
     
-# 🔹 Клас, що виконує команду 
+class CallBack(Command):
+    def execute(self, chat_data):
+        chat_data.cmd = "callback_manager"
+        chat_data.text = self.text_parse.search_6_number(chat_data.text)
+        return chat_data
+
+
 class CommandHandler:
     @staticmethod
     def factory(chat_data):
         commands = {
             "new_orders": NewOrders,
             "reply_to_message": AddComment,
-            "search_order": SearchOrder
+            "search_order": SearchOrder,
+            "callback_query": CallBack
         } 
         if chat_data.cmd in commands:
             return commands[chat_data.cmd](

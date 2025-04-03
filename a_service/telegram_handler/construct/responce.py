@@ -38,8 +38,12 @@ class UnknownCommandResponce(Command):
 
 class Search6NumbersResp(Command):
     def execute(self, data_chat):
-        for order in data_chat.content:
-            data_chat.text = TextOrderAllInfo(order).builder()
+        if data_chat.content:
+            for order in data_chat.content:
+                data_chat.text = TextOrderAllInfo(order).builder()
+                self.sendMessage(data_chat)
+        else:
+            data_chat.text = "Немає замовлень за цим кодом"
             self.sendMessage(data_chat)
         return data_chat
 

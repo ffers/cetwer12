@@ -49,6 +49,7 @@ class TextOrderCourier:
             f"{self.text_blocks.contact_name}"
             f"{self.text_blocks.payment_method_sum}"
             f"{self.text_blocks.product_block_footer}"
+            f"▪️▪️▪️"
         )
     
     def product_block_footer(self, order):
@@ -93,9 +94,8 @@ class TextOrderCourier:
             return "\nНотаток від клієнта нема\n"
         
     def product_block_header(self, order):
-        text = "           ***\n"
         for product in order.ordered_product:
-            text += f"{self.store_color} {product.products.article} - " 
+            text = f"{self.store_color} {product.products.article} - " 
             text += f"{product.quantity}шт - {product.price}\n"
         text += f"Сумма: {order.sum_price} грн\n"
         return text
