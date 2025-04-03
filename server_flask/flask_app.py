@@ -109,6 +109,43 @@ def log_response(response):
     logger.info(f"API response: {log_data}")
     return response
 
+@flask_app.before_request
+def detect_scanning():
+    path = request.path
+    agent = request.headers.get("User-Agent", "")
+    if is_suspicious_request(path, agent):
+        msg = f"`{request.remote_addr}` запитав `{path}`\n🕵 Agent: `{agent}`"
+        send_telegram_alert(msg)
+
+
+import os
+import requests
+
+SUSPICIOUS_PATHS = [
+    "/actuator", "/.vscode", "/debug", "/fgt_lang", "/phpinfo", "/ecp", "/remote"
+]
+
+SUSPICIOUS_AGENTS = [
+    "Go-http-client", "sqlmap", "acunetix", "crawler"
+]
+
+
+def send_telegram_alert(text):
+    token = os.getenv("TELEGRAM_BOT_TOKEN")
+    chat_id = os.getenv("CHAT_ID_INFO")
+    if not token or not chat_id:
+        return
+    requests.post(
+        f"https://api.telegram.org/bot{token}/sendMessage",
+        data={"chat_id": chat_id, "text": f"🚨 *Security Alert!*\n{text}", "parse_mode": "Markdown"}
+    )
+
+def is_suspicious_request(path, user_agent):
+    return (
+        any(p in path for p in SUSPICIOUS_PATHS) or
+        any(agent.lower() in user_agent.lower() for agent in SUSPICIOUS_AGENTS)
+    )
+
 
 
 @flask_app.route("/", methods=['POST', 'GET'])
