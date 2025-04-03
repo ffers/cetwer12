@@ -24,7 +24,7 @@ class NpCntrl:
         self.recipient_create(data)
         self.contact_recipient(data)
         print(f"runup {data}")
-        pass
+      
 
     def strip_phone(self, phone):
         return re.sub(r"\D", "", phone)
@@ -32,11 +32,12 @@ class NpCntrl:
     def parse_data(self, order):
         print(f"data order {vars(order)}")
         self.data.clear()
+        info_ref = self.cityref_for_warehouseref(order.warehouse_ref)
         self.data.update(
             {
                 "order_id": order.id,
                 "description": order.description,
-                "CityRecipient": self.cityref_for_warehouseref(order.warehouse_ref),
+                "CityRecipient": info_ref.get("CityRef"),
                 "RecipientAddress": order.warehouse_ref,
                 "payment_option": order.payment_method_id,
                 "RecipientsPhone": self.strip_phone(order.phone),
@@ -44,6 +45,7 @@ class NpCntrl:
                 "LastName": order.recipient.last_name,
                 "MiddleName": order.recipient.second_name,
                 "Email": "test@i.com",
+                "TypeOfWarehouse": info_ref.get("TypeOfWarehouse"),
                 "warehouse_method_id": order.warehouse_method_id,
                 "warehouse_option": order.warehouse_option,
                 "Cost": order.sum_price,
@@ -69,7 +71,8 @@ class NpCntrl:
 
     def option_set(self, data):
         print(f"проверяєм адрес {data}")
-        if 2 == data["warehouse_method_id"] or data["warehouse_option"] == "poshtomat":
+        poshtomat ="f9316480-5f2d-425d-bc2c-ac7cd29decf0"
+        if data.get("TypeOfWarehouse") == poshtomat:
             data.update(
                 {
                     "OptionsSeat": [
@@ -101,7 +104,7 @@ class NpCntrl:
         resp = self.np_api.get_s_war_ref(warehouse_ref)
         print("dev_cityref_for_warehouseref: ", resp)
         if resp["success"]:
-            return resp["data"][0]["CityRef"]
+            return resp["data"][0]
         resp_dict = {
             "success": True,
             "data": [

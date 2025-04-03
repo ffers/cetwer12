@@ -79,6 +79,7 @@ class WarehouseRefCl():
     def optionSeat(self, typeWareh):
         if typeWareh == "f9316480-5f2d-425d-bc2c-ac7cd29decf0":
              self.SUN.update(OptionsSeat)
+             
         return True
 
 

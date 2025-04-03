@@ -260,16 +260,16 @@ class OrderCntrl:
     def confirmed_order(self, order_id):
         print("first")
         order = self.ord_rep.load_item(order_id)
-        crm_status = self.ord_rep.change_status(order_id, 2)
-        bool_prom = self.definition_source(order, 3)
         update_analitic = prod_an_cntrl.product_in_order(order)
 
         delivery = self.check_del_method(order)
-        result = self.result(crm_status, bool_prom,
-                             update_analitic, delivery)
-        self.update_history(order_id, "Підтверджено")
-        resp_tg = tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, "{ordered_status} {order_code}".format(**crm_status))
-        return result
+        bool_prom = self.definition_source(order, 3)
+        if delivery.get("success"):
+            crm_status = self.ord_rep.change_status(order_id, 2)
+            self.update_history(order_id, "Підтверджено")
+            resp_tg = tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, "{ordered_status} {order_code}".format(**crm_status))
+            return True
+        return False
 
     def result(self, *args):
         result = {
@@ -330,19 +330,18 @@ class OrderCntrl:
             text_courier = TextFactory.factory("courier", order)
             tg_cntrl.sendMessage(tg_cntrl.chat_id_np, text_courier)
             del_ord_cntrl.update_item(np_resp, order.id)
-            resp = True, ""
             if order.source_order_id == 2:
                 resp_prom_ttn = prom_cntrl.send_ttn(order.order_code, order.ttn, "nova_poshta")
                 resp_prom_status = prom_cntrl.change_status(order.order_code, 2)
         elif 'OptionsSeat is empty' in np_resp["errors"]:
-            resp = "Поштомат зайнятий"
+            resp = np_resp
             tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm,
-                                 "❗️❗️❗️ ТТН не створено - поштомат зайнятий")
+                                 "❗️❗️❗️ ТТН не створено - не вказано обʼєм")
         else:
-            resp = False, np_resp["errors"]
+            resp = np_resp
             tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm,
                                  f"❗️❗️❗️ ТТН не створено - {resp[1]}")
-        return resp
+        return np_resp
 
     def add_ttn_crm(self, order_id, ttn):
         resp = self.ord_rep.add_ttn_crm(order_id, ttn)
@@ -351,15 +350,15 @@ class OrderCntrl:
     def del_method_roz(self, order, text_courier): 
         keyboard_rozet = tg_cntrl.keyboard_generate("Надіслати накладну", order.order_code)
         resp = tg_cntrl.sendMessage(tg_cntrl.chat_id_rozet, text_courier, keyboard_rozet)
-        return True
+        return {"success": True}
 
     def del_method_ukr(self, order , text_courier):
         resp = tg_cntrl.sendMessage(tg_cntrl.chat_id_ukr, text_courier)
-        return True
+        return {"success": True}
 
     def del_method_shop(self, order, text_courier):
         resp = tg_cntrl.sendMessage(tg_cntrl.chat_id_shop, text_courier)
-        return True
+        return {"success": True}
 
     def delete_order(self, id):
         print(f"delete order {id}")
