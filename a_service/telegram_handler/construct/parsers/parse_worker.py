@@ -37,11 +37,18 @@ class Parse:
     def parse_stock(self, data_chat, sour_cntrl):
         data_chat.resp = [] 
         for item in data_chat.content:
-            quantity = "Нема такого товару"
-            item_prod = sour_cntrl.load_article(item["article"])
-            if item_prod:
-                quantity = self.quantity_parse(item, data_chat)
-                print("dev_parse_color: ", data_chat.comment)
-                sour_cntrl.fixed_process(item_prod.id, quantity, data_chat.comment, next(my_time()))               
-            data_chat = self.parser_item(data_chat, item["article"], quantity)   
-        return data_chat
+            try:
+                quantity = "Нема такого товару"
+                item_prod = sour_cntrl.load_article(item["article"])
+                print("parse_stock:", item_prod)
+                if item_prod:
+                    quantity = self.quantity_parse(item, data_chat)
+                    print("dev_parse_color: ", data_chat.comment)
+                    sour_cntrl.fixed_process(item_prod.id, quantity, data_chat.comment, next(my_time()))               
+                data_chat = self.parser_item(data_chat, item["article"], quantity)
+            except Exception as e:
+                print(f"Помилка під час обробки '{item}': {e}")
+                data_chat = self.parser_item(
+                    data_chat, item.get("article", "?"), "помилка"
+                )
+        return data_chat 
