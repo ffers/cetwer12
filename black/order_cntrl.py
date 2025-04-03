@@ -322,7 +322,6 @@ class OrderCntrl:
 
     def del_method_np(self, order):
         resp = False
-        order.warehouse_ref = None
         if not order.warehouse_ref:
             raise ValueError('Треба оновити адресу')
         np_resp = np_cntrl.manager_data(order)  # обработка зкаказа из срм создание ттн, телеграм курьеру заказ, додавання в пром ттн
