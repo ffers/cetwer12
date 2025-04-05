@@ -23,7 +23,7 @@ class SourDiffAnServ():
     def update_sour_diff_table(self, data):
         line_id = []
         for row in data:
-            print(row, "row")
+            # print(row, "row")
             if row["stock"] == "None":
                 row["stock"] = 0
             line_id.append([int(row["id"]), int(row["stock"])])
@@ -53,7 +53,7 @@ class SourDiffAnServ():
                 if item.quantity_crm and item.quantity_stock:
                     source_difference = item.quantity_stock - item.quantity_crm
                     add_cache = self.cache_serv.set("source_difference", source_difference)
-                    print(self.cache_serv.get("source_difference"), "cache_serv")
+                    # print(self.cache_serv.get("source_difference"), "cache_serv")
                     update = self.sour_diff_an_rep.update_diff_sum(item.id, self.cache_serv.get("source_difference"))  
             return True
         return False
@@ -67,7 +67,7 @@ class SourDiffAnServ():
                     prod_comps = self.prod_rep.load_prod_relate_product_id_all(product.product_id)
                     for prod_comp in prod_comps:
                         if item == prod_comp:
-                            print(f"prod_comps {prod_comps}")
+                            # print(f"prod_comps {prod_comps}")
                             sale_quantity = prod_comp.quantity * product.quantity
                             return sale_quantity
                         
@@ -77,8 +77,8 @@ class SourDiffAnServ():
         prod_to_comps = {}
         for source in sources:
             prod_to_comps[source] = self.prod_rep.load_prod_relate_product_id_all(source.id) 
-            print(f"Проверка 1 {prod_to_comps}")
-            print(f"Проверка 2 {sources}")
+            # print(f"Проверка 1 {prod_to_comps}")
+            # print(f"Проверка 2 {sources}")
         # Підраховуємо кількість проданих компонентів
         sold_quantities = {item: 0 for item in sources}
         for order in orders:
@@ -86,10 +86,10 @@ class SourDiffAnServ():
                 for product in order.ordered_product:
                     
                     if product.product_id in prod_to_comps:
-                        print(f"Є продакт_айди {prod_to_comps} {product.product_id}")
+                        # print(f"Є продакт_айди {prod_to_comps} {product.product_id}")
                         for comp in prod_to_comps[product.product_id]:
                             if comp in sold_quantities:
-                                print(f"Є кількість {comp} {sold_quantities}")
+                                # print(f"Є кількість {comp} {sold_quantities}")
                                 sold_quantities[comp] += comp.quantity * product.quantity
         print( f"Кількість: {sold_quantities}")
         return sold_quantities
@@ -111,8 +111,8 @@ class SourDiffAnServ():
     def count_going(self, old_source, last_source):
         send = []
         if old_source and last_source:
-            print(old_source[0].quantity_crm, " old_source ")
-            print(last_source[0].quantity_crm, " last_source ")
+            # print(old_source[0].quantity_crm, " old_source ")
+            # print(last_source[0].quantity_crm, " last_source ")
             sum = old_source[0].quantity_crm - last_source[0].quantity_crm
 
             print(sum, "sum")
@@ -145,8 +145,8 @@ class SourDiffAnServ():
         count = 0; max_count = 10
         while count <= max_count:
             for line_old in source_list: # опять проходимся по строкам 
-                print(search_time, line_old.event_date, "line_old.event_date", 
-                      line.event_date, "event_date")
+                # print(search_time, line_old.event_date, "line_old.event_date", 
+                    #   line.event_date, "event_date")
                 # print(search_time, line_old.event_date)
                 if search_time == line_old.event_date: # если находим дату на день раньше
                     self.count_sold(line, line_old)
@@ -161,8 +161,8 @@ class SourDiffAnServ():
                     #проходим по списку если ненашли соотвующий день минусуем еще день
 
     def count_sold(self, line, line_old):
-        print(line.quantity_crm, line_old.quantity_crm, "count_sold")
+        print("count_sold:", line.quantity_crm, line_old.quantity_crm)
         quantity = line.quantity_crm - line_old.quantity_crm
-        print(quantity, "quantity")
+        # print(quantity, "quantity")
         self.sour_diff_an_rep.update_source_diff_line_sold(quantity, line.id)
                     

@@ -52,7 +52,7 @@ class SourDiffAnCntrl():
         event_date = next(self.work_time_cntrl.my_time()).strftime('%Y-%m-%d')
         # event_date = event_date - timedelta(days=1)
         # event_date = event_date.strftime('%Y-%m-%d')
-        start, stop = self.work_time_cntrl.load_work_time("all")
+        start, stop = self.work_time_cntrl.load_work_time("all") # що таке all
         orders = self.ord_rep.load_period(start, stop)
         sold_quantities = self.sour_diff_an_serv.source_diff_sold_optimized(orders, products)
         for item in products:

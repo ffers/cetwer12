@@ -60,12 +60,12 @@ class OC_logger:
             file_handler.setFormatter(formatter)
             logger.addHandler(file_handler)
 
-            if OC_logger._is_dev():
-                console_handler = logging.StreamHandler()
-                console_handler.setFormatter(OC_logger.ColorFormatter(
-                    "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
-                ))
-                logger.addHandler(console_handler)
+            # if OC_logger._is_dev():
+            #     console_handler = logging.StreamHandler()
+            #     console_handler.setFormatter(OC_logger.ColorFormatter(
+            #         "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+            #     ))
+            #     logger.addHandler(console_handler)
 
             error_handler = logging.FileHandler(error_path)
             error_handler.setLevel(logging.ERROR)

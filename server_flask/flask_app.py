@@ -114,7 +114,8 @@ def log_response(response):
         "status": response.status_code,
         "path": request.path,
         "method": request.method,
-        "response": response.get_data(as_text=True)[:500]  # обрізано
+        "response": response.get_data(as_text=False).decode("utf-8", errors="replace")[:500]
+    # обрізано
     }
     logger.info(f"API response: {log_data}")
     return response
