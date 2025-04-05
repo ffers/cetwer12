@@ -96,6 +96,16 @@ def log_request():
         f"params={dict(request.args)} agent={request.headers.get('User-Agent')}"
     )
 
+@flask_app.before_request
+def block_bots():
+    ua = request.headers.get("User-Agent", "").lower()
+    path = request.path.lower()
+    if (
+        "phpunit" in path or "think" in path or "zgrab" in ua or
+        "async" in ua or "wlwmanifest" in path or "ecp" in path
+    ):
+        return "⛔ Заборонено", 403
+
 @flask_app.after_request
 def log_response(response):
     response.direct_passthrough = False

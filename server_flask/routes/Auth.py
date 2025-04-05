@@ -6,7 +6,15 @@ from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_principal import identity_changed, AnonymousIdentity, Identity
 from server_flask.permission_registred import update_roles
+
+from utils import OC_logger
+logger = OC_logger.oc_log("flask_login")
+
+
 bp = Blueprint("auth", __name__, template_folder='templates')
+
+def login_fail(ip, user):
+    logger.warning(f"LOGIN FAILED from {ip} for user '{user}'")
 
 @bp.route("/login", methods=['GET', 'POST'])
 def login():
@@ -24,6 +32,8 @@ def login():
                 update_roles()
                 return redirect(url_for('index'))
             else:
+                ip = request.headers.get("X-Forwarded-For", request.remote_addr)
+                login_fail(ip, email)
                 flash('Password is incorrect.', category='error')
         else:
             flash('Email does not exist.', category='error')
