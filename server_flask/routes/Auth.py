@@ -32,10 +32,10 @@ def login():
                 update_roles()
                 return redirect(url_for('index'))
             else:
-                ip = request.headers.get("X-Forwarded-For", request.remote_addr)
-                login_fail(ip, email)
                 flash('Password is incorrect.', category='error')
         else:
+            ip = request.headers.get("X-Forwarded-For", request.remote_addr)
+            login_fail(ip, email)
             flash('Email does not exist.', category='error')
 
     return render_template("login.html", user=current_user)
