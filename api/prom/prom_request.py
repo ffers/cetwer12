@@ -5,6 +5,25 @@ from dotenv import load_dotenv
 from datetime import datetime
 import http.client
 
+'''
+Щоб скасувати замовлення через API Prom.ua, 
+необхідно передати параметр `cancellation_reason` 
+із одним із наступних значень:
+
+- `not_available`
+- `price_changed`
+- `buyers_request`
+- `not_enough_fields`
+- `duplicate`
+- `invalid_phone_number`
+- `less_than_minimal_price`
+- `another`
+
+Якщо обрано `price_changed`, `not_enough_fields` або `another`,
+ потрібно додатково передати параметр `cancellation_text`
+   з поясненням причини скасування. citeturn0search9 
+'''
+
 logging.basicConfig(filename='../common_asx/log_prom_api.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 georgia_timezone = pytz.timezone('Asia/Tbilisi')
 current_time_georgia = datetime.now(georgia_timezone)
@@ -130,6 +149,13 @@ class EvoClient(object):
                 "ids": [order_id],
                 "cancellation_reason": "not_available",
                 "cancellation_text": "Не виходить дозвонитися"
+            }
+        if 3 == status_order: # Дубль
+            dict_status_prom = {
+                "status": "canceled",
+                "ids": [order_id],
+                "cancellation_reason": "duplicate",
+                "cancellation_text": "Дубль замовлення"
             }
         if 1 == status_order: # прийнято
             dict_status_prom = {

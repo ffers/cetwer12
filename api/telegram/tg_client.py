@@ -77,7 +77,8 @@ class TgClient():
         if text2:
             keyboard = {"inline_keyboard":[[
                 {"text": text1, "callback_data": callback_data1},
-                {"text": text2, "callback_data": callback_data2}
+                {"text": text2, "callback_data": callback_data2},
+                {"text": "Дубль", "callback_data": 3}
                 ]]}
         else:
             keyboard = {"inline_keyboard":

@@ -85,6 +85,7 @@ class OrderApi:
         return order_dr
 
     def send_ttn(self, order_id, invoice_n, delivery):
+        order_id = re.sub(r"\D", "", order_id)
         dict_ = self.prom_serv.dict_invoice(order_id, invoice_n, delivery)
         resp = self.utils.change_ttn(dict_)
         return resp

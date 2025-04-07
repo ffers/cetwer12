@@ -35,6 +35,7 @@ from copy import deepcopy
 #  12 | Виконано           |
 #  13 | Тест
 #  14 | Повернення
+#  15 | Дубль              |
 
 class OrderServ:
     def __init__(self):

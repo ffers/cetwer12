@@ -9,7 +9,7 @@ from common_asx.utilits import Utils
 class PromCntrl:
     def send_ttn(self, order_id, invoice_n, delivery):
         order_id = re.sub(r"\D", "", order_id)
-        env =os.getenv("ENV")
+        env = os.getenv("ENV")
         if env != "dev":
             token = os.getenv("PROM_TOKEN")
             evo_cl = EvoClient(token)
@@ -19,7 +19,7 @@ class PromCntrl:
     
     def change_status(self, order_id, status):
         order_id = re.sub(r"\D", "", order_id)
-        # env =os.getenv("ENV")
+        env = os.getenv("ENV")
         # if env != "dev":
         token = os.getenv("PROM_TOKEN")
         evo_cl = EvoClient(token)

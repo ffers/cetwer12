@@ -91,9 +91,10 @@ callback_query_id = None
 #             tg_cntrl.sendMessage(chat_id_vp, f"Статус не змінено {order_id}")
 #         print(resp_api)
 
-def send_request_status(invoice_ttn, invoice_order):
+def send_request_status(invoice_ttn, order_id):
     delivery_type_roz = "rozetka_delivery"
-    resp = prom_cl.send_ttn(invoice_order, invoice_ttn, delivery_type_roz)
+    order_id = re.sub(r"\D", "", order_id)
+    resp = prom_cl.send_ttn(order_id, invoice_ttn, delivery_type_roz)
     print("=======")
     print(resp)
     if "status" in resp:

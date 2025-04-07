@@ -283,13 +283,22 @@ class OrderCntrl:
     def question_order(self, order_id):
         order = self.ord_rep.load_item(order_id)
         bool = self.change_status_item(order_id, 5)
-        bool_prom = self.definition_source(order, 2)
+        bool_prom = self.definition_source(order, 5)
+        return bool
+
+    def double_order(self, order_id):
+        order = self.ord_rep.load_item(order_id)
+        bool = self.change_status_item(order_id, 15)
+        bool_prom = self.definition_source(order, 3)
         return bool
 
     def definition_source(self, order, status):
+        
         bool_prom = True
         if order.source_order_id == 2:
             bool_prom = prom_cntrl.change_status(order.order_code, status)
+        print("definition_source:", order.source_order_id)
+        print("definition_source:", bool_prom)
         return bool_prom
 
     def return_order(self, order_id, status):

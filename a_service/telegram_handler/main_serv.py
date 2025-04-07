@@ -74,7 +74,7 @@ class Builder:
         return self
 
     def build(self, data, **deps):
-        # try:   
+        try:   
             pointer = ChatData()
             tg = deps["TelegramCntrl"]()
             for cmd_class in self.commands:
@@ -88,8 +88,8 @@ class Builder:
                     print("Невідомий чат")
                     return pointer
             return pointer
-        # except Exception as e:
-        #     return f"Не працює main_serv: {str(e)}"
+        except Exception as e:
+            return f"Не працює main_serv: {str(e)}"
     
 class ResponceDirector:
     def __init__(self):

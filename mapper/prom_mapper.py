@@ -10,6 +10,7 @@ import re
 
 def promMapper(prom: dict, ProductServ) -> OrderDTO:
     prod_serv = ProductServ()
+    payment_id = add_payment_method_id(prom)
     return OrderDTO(
         id=None,
         timestamp=prom.get("date_created"),
@@ -40,8 +41,8 @@ def promMapper(prom: dict, ProductServ) -> OrderDTO:
         ordered_status_id=10,
         warehouse_method_id=None,
         source_order_id=2,
-        payment_method_id=add_payment_method_id(prom),
-        payment_status_id=add_prompay_status(prom),
+        payment_method_id=payment_id,
+        payment_status_id=add_prompay_status(payment_id, prom),
         delivery_method_id=add_delivery_method(prom),
         author_id=55,
         recipient=_map_recipient(prom),
@@ -91,10 +92,8 @@ def _map_recipient(prom: dict) -> RecipientDto:
         email=prom.get("email")
     )
 
-def add_prompay_status(order):
-        status_id = None
-        payment_option = order["payment_option"]["id"]
-        if payment_option == 7547964:
+def add_prompay_status(payment_id, order):
+        if payment_id == 5:
             payment_data = order["payment_data"]
             if payment_data != None:
                 if "paid" == payment_data["status"]:
@@ -105,33 +104,28 @@ def add_prompay_status(order):
                     status_id = 2
                 print("add_prompay_status:", status_id)
                 return status_id
-            else:
-                status_id = 2
-
-        return status_id
+        return 2
 
 def add_delivery_method(order):
         mapping = {
-            13013934: 1,
-            15255183: 2,
-            13844336: 3,
-            14383961: 4,
-            13013935: 5,
+            "nova_poshta": 1,
+            "rozetka_delivery": 2,
+            "ukrposhta": 3,
+            "meest_express": 4,
+            "pickup": 5,
         }
-        return mapping.get(order["delivery_option"]["id"])
+        return mapping.get(order["delivery_provider_data"]["provider"])
 
 def add_payment_method_id(order):
         payment_method_id = None
-        payment_option = order["payment_option"]["id"]
-        if payment_option in (9289897, 8362873):
+        payment_option = order["payment_option"]["name"]
+        if payment_option == "Наложенный платеж":
             payment_method_id = 1
-        if payment_option in (9289898, 7111681):
+        if payment_option == "Оплата на счет":
             payment_method_id = 2
-        if payment_option == 7495540:
-            payment_method_id = 3
-        if payment_option == 8281881:
+        if payment_option == "Оплата картой Visa, Mastercard - WayForPay":
             payment_method_id = 4
-        if payment_option == 7547964:
+        if payment_option == "Пром-оплата":
             payment_method_id = 5
         return payment_method_id
 

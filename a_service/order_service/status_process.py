@@ -57,7 +57,8 @@ class StatusProcess:
             7: PassOrder, 8: PassOrder,
             9: PassOrder, 10: PassOrder, 
             11: PassOrder, 12: PassOrder,
-            13: PassOrder
+            13: PassOrder, 14: PassOrder,
+            15: PassOrder
         }
         
         if status in order_classes:

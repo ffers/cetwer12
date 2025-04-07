@@ -13,7 +13,7 @@ from .analitic_cntrl.sour_an_cntrl import SourAnCntrl
 from a_service import TgAnswerSerw, ResponceDirector
 from .telegram_cntrl.tg_cash_cntrl import TgCashCntrl
 from a_service.order_service import OrderServ
-
+from utils import OC_logger
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
@@ -29,9 +29,10 @@ class TgAnswerCntrl:
         self.add_order = PromToCrm()
         self.manager_ttn = ManagerTTN()
         self.tg = TelegramController()
+        self.log = OC_logger.oc_log("tg_answer_cntrl")
 
     def await_order(self, order, flag=None, id=None):
-        print(f"ДИвимось флаг {flag}")
+        # print(f"ДИвимось флаг {flag}")
         resp = None
         if flag == "prom_to_crm":
             data_for_tg = self.send_order.manger(order)
@@ -61,25 +62,30 @@ class TgAnswerCntrl:
         return resp
 
     def await_tg_button(self, data):
-        result = ResponceDirector().construct(data, OrderCntrl=OrderCntrl,
-                                               SourAnCntrl=SourAnCntrl, 
-                                               TelegramCntrl=TelegramController,
-                                               OrderServ=OrderServ
-                                               )
-        print(result, "tg_command_new")
-        if "message" in data: #працює з усіма відповдями
-            self.await_telegram(data)
-            # button_hand(data)
-        if "callback_query" in data:
-            self.await_button(data)
-        return result
+        try:
+                
+            result = ResponceDirector().construct(data, OrderCntrl=OrderCntrl,
+                                                SourAnCntrl=SourAnCntrl, 
+                                                TelegramCntrl=TelegramController,
+                                                OrderServ=OrderServ
+                                                )
+            print(result, "tg_command_new")
+            if "message" in data: #працює з усіма відповдями
+                self.await_telegram(data)
+                # button_hand(data)
+            if "callback_query" in data:
+                self.await_button(data)
+            return result
+        except Exception as e:
+            self.log.error(str(e))
+            return "Помилка tg answer"
 
     def await_telegram(self, data): #працює з чатами Склад, Каштан, Розетка
         chat_id = data["message"]["chat"]["id"]
         
         # return 200, "Ok"
         if int(ch_id_sk) == chat_id:
-            print("Отримали повідомлення з Робочого чату")
+            # print("Отримали повідомлення з Робочого чату")
             text_colour = self.bot_color.work_with_product(data)
             tg_cntrl.sendMessage(tg_cntrl.chat_id_sk, text_colour)
         if int(tg_cntrl.chat_id_cash) == chat_id:
@@ -102,16 +108,17 @@ class TgAnswerCntrl:
             # send_message_id, send_chat_id = self.serv.id_message(resp_tg)
             if "inline_keyboard" in key:
                 text_order, data_keyb, text_data_back = tg_serv.await_button_parse(data)
-                print(f"need {key}")
+                # print(f"need {key}")
                 order_id = tg_serv.search_order_number(text_order)
                 order_obj = ord_cntrl.load_for_order_code(order_id)
                 resp = self.defintion_status(data_keyb, order_obj.id)
                 # tg_cntrl.deleteMessage(tg_cntrl.chat_id_confirm, send_message_id)
+                # print("await_button:", resp)
                 return resp
 
     def defintion_status(self, data_keyb, order_id):
         resp = None
-        print(f"data_keyb {data_keyb}")
+        # print(f"data_keyb {data_keyb}")
         if "1" == data_keyb:
             try:
                 resp = ord_cntrl.confirmed_order(order_id)
@@ -120,6 +127,8 @@ class TgAnswerCntrl:
                 self.tg.sendMessage(self.tg.chat_id_confirm, str(e))
         if "2" == data_keyb:
             resp = ord_cntrl.question_order(order_id)
+        if "3" == data_keyb:
+            resp = ord_cntrl.double_order(order_id)
         return resp
 
 
