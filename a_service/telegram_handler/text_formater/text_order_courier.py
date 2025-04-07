@@ -94,8 +94,9 @@ class TextOrderCourier:
             return "\nНотаток від клієнта нема\n"
         
     def product_block_header(self, order):
+        text = ""
         for product in order.ordered_product:
-            text = f"{self.store_color} {product.products.article} - " 
+            text += f"{self.store_color} {product.products.article} - " 
             text += f"{product.quantity}шт - {product.price}\n"
         text += f"Сумма: {order.sum_price} грн\n"
         return text
