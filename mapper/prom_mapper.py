@@ -8,6 +8,8 @@ from a_service import ProductServ
 import re
 
 
+
+
 def promMapper(prom: dict, ProductServ) -> OrderDTO:
     prod_serv = ProductServ()
     payment_id = add_payment_method_id(prom)
@@ -129,11 +131,23 @@ def add_payment_method_id(order):
             payment_method_id = 5
         return payment_method_id
 
-def _parse_price(p):
-    s = p.replace(" грн", "").replace(" ", "").strip()
-    if "," in s and "." not in s:
-        s = s.replace(",", ".")
-    return float(s)
+def _parse_price(num_str_text):
+        try:
+            num_str = ''.join(re.findall(r'\b\d+[.,]?\d*\b', num_str_text))
+            # if '\xa0' in num_str:
+            #      num_str = num_str.replace('\xa0', '')
+            #      print("format_float:", num_str)
+            if "," in num_str:
+                num_str = num_str.replace(',', '.')     
+            num = float(num_str)
+            # Якщо число - ціле, додаємо ".00"
+            if num.is_integer(): 
+                num_dr = f"{int(num)}.00"
+                return float(num_dr)
+            else:
+                return float(num)
+        except ValueError:
+            return "Неправильний формат числа"
 
 
 
