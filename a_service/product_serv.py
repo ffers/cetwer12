@@ -6,6 +6,9 @@ class ProductServ:
     def __init__(self):
         self.prod_rep = ProductRep()
 
+    def add_product_v2(self, article, product_name):
+        return self.prod_rep.create_v2(article, product_name)
+
     def format_float(self, num):
         try:
             if isinstance(num, int):
@@ -51,8 +54,11 @@ class ProductServ:
         combined_list = list(zip_longest(article, quantity, product_id, fillvalue=None))
         return combined_list
     
-    def load_item_by_article(self, artcl):
-        return self.prod_rep.load_by_article(artcl)
+    def load_item_by_article(self, artcl, name):
+        product = self.prod_rep.load_by_article(artcl)
+        if not product:
+            self.add_product_v2(artcl, name)
+        return product
     
     def load_item_id(self, id):
         return self.prod_rep.load_product_item(id)
@@ -77,10 +83,6 @@ class ProductServ:
             req.form["quantity"]
         ]
         return data
-
-
-
-
 
 
 

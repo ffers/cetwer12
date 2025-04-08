@@ -84,7 +84,7 @@ class TgServ():
         data_keyb = data['callback_query']['data']
         text_data_back = data["callback_query"]["message"]["reply_markup"]\
             ["inline_keyboard"][0][0]["text"]
-        return text_order, data_keyb, text_data_back
+        return text_order, data_keyb, text_data_back 
 
     def replace_text_ttn(self, data, ttn_number):
         text = data["message"]["reply_to_message"]["text"]

@@ -387,8 +387,8 @@ class OrderCntrl:
 
     def change_status_item(self, id, status):
         resp = self.ord_rep.change_status(id, status)
-        StatusProcess.update_order(id, int(status), TelegramController, TgServ, OrderRep)
-        return resp# resp.update( {"message_id": resp_tg["result"]["message_id"]})
+        StatusProcess.factory(id, int(status), TgServ, OrderRep)
+        return resp   # resp.update( {"message_id": resp_tg["result"]["message_id"]})
  
     def change_status_roz(self):
         orders = self.ord_rep.load_registred_roz()

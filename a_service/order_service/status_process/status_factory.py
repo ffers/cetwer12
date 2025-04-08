@@ -1,12 +1,14 @@
-from datetime import datetime
 
+
+
+from datetime import datetime
+from .statuses import *
 
 class Order:
-    def __init__(self, order_id, status, tg_cntrl, tg_serv, ord_rep):
+    def __init__(self, order_id, status, tg_serv, ord_rep):
         self.order_id = order_id
         self.status = 10
         self.created_at = datetime.now()
-        self.tg_cntrl = tg_cntrl()
         self.tg_serv = tg_serv()
         self.ord_rep = ord_rep()
         
@@ -14,11 +16,6 @@ class Order:
 
     def process(self):
         raise NotImplementedError("Subclasses must implement process()")
-
-# Класи для кожного статусу
-class ConfirmedOrder(Order):
-    def process(self): # треба виконати шагі підвердження та додати підпис
-        pass
 
 class PaidOrder(Order):
     def process(self):
@@ -36,7 +33,7 @@ class PreOrder(Order):
     def process(self):
         order = self.ord_rep.load_item(self.order_id)
         data_tg_dict = self.tg_serv.create_text_order(order)
-        keyboard_json = self.tg_cntrl.keyboard_func()
+        keyboard_json = self.tg_serv.keyboard_func()
         print("PreOrder")
         self.tg_cntrl.sendMessage(self.tg_cntrl.chat_id_shop, data_tg_dict, keyboard_json)
         return f"📦 Order create and send to shop group"
@@ -48,8 +45,8 @@ class PassOrder(Order):
 # Фабричний метод для створення замовлення за статусом
 class StatusProcess:
     @staticmethod
-    def update_order(order_id: int, status: int, tg_cntrl, tg_serv, ord_rep):
-        print(order_id, status, "pre_order")
+    def factory(order_id: int, status: int, tg_serv, ord_rep):
+        print("StatusProcess factory ", order_id, status)
         order_classes = {
             1: PassOrder, 2: ConfirmedOrder, 
             3: PassOrder, 4: PassOrder,
@@ -63,7 +60,7 @@ class StatusProcess:
         
         if status in order_classes:
             print("search dict")
-            return order_classes[status](order_id, status, tg_cntrl, tg_serv, ord_rep).process()
+            return order_classes[status](order_id, status, tg_serv, ord_rep).process()
         
         raise ValueError(f"Unknown order status: {status}")
 

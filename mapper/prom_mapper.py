@@ -61,7 +61,7 @@ def add_phone(order):
 def _map_products(prom: dict, prod_serv: ProductServ) -> list[ProductDto]:
     products = []
     for p in prom.get("products", []):
-        prod = prod_serv.load_item_by_article(p["sku"])
+        prod = prod_serv.load_item_by_article(p["sku"], p["name"])
         products.append(ProductDto(
             quantity=int(p["quantity"]),
             price=_parse_price(p["price"]),

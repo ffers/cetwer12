@@ -21,6 +21,21 @@ class ProductRep():
             return True
         except:
             return False
+    
+    def create_v2(self, article, product_name):
+        try:
+            product = Products(
+                        article=article,
+                        product_name=product_name
+                    )
+            db.session.add(product)
+            db.session.commit()
+            add_analitic = ProductAnalitic(product_id=product.id)
+            db.session.add(add_analitic)
+            db.session.commit()
+            return product
+        except Exception as e:
+            return str(e)
         
     def add_product_relate(self, data_list):
         try:

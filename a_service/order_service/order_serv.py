@@ -37,6 +37,10 @@ from copy import deepcopy
 #  14 | Повернення
 #  15 | Дубль              |
 
+'''
+Пошук клієнта по телефону якщл такий є зробити відмітку скільки раз замовляв
+'''
+
 class OrderServ:
     def __init__(self):
         self.order_rep = OrderRep()
@@ -127,13 +131,15 @@ class OrderServ:
         # print("add_order_add_order:", resp)
         if resp:
             order = resp.get("result")
-            products = dto.ordered_product
-            order = self.order_rep.update_ordered_product(order.id, products)
+            order = self.add_product(order.id, dto.ordered_product)
             resp = True if order else False
             self.make_send_to_confirmed_tg_times(order)
             return order
-
         return resp 
+    
+    def add_product(self, order_id, products):
+        order = self.order_rep.update_ordered_product(order_id, products)
+        return order
     
     @wrapper()
     def add_order4(self, order_dto):
