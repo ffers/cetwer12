@@ -148,7 +148,7 @@ class EvoClient(object):
                 "status": "canceled",
                 "ids": [order_id],
                 "cancellation_reason": "not_available",
-                "cancellation_text": "Не виходить дозвонитися"
+                "cancellation_text": "Скасовано"
             }
         if 3 == status_order: # Дубль
             dict_status_prom = {

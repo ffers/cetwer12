@@ -263,7 +263,7 @@ class OrderCntrl:
         update_analitic = prod_an_cntrl.product_in_order(order)
 
         delivery = self.check_del_method(order)
-        bool_prom = self.definition_source(order, 3)
+        bool_prom = self.definition_source(order, 2)
         if delivery.get("success"):
             crm_status = self.ord_rep.change_status(order_id, 2)
             self.update_history(order_id, "Підтверджено")
@@ -304,7 +304,7 @@ class OrderCntrl:
     def return_order(self, order_id, status):
         order = self.ord_rep.load_item(order_id)
         bool = self.ord_rep.change_status(order_id, status)
-        bool_prom = prom_cntrl.change_status(order.order_code, 2)
+        bool_prom = prom_cntrl.change_status(order.order_code, 5)
         # update_analitic = prod_an_cntrl.product_in_order(order)
         resp_sour_bool = self.sour.return_prod(order)
         # resp = self.check_del_method(order)
@@ -343,7 +343,6 @@ class OrderCntrl:
             del_ord_cntrl.update_item(np_resp, order.id)
             if order.source_order_id == 2:
                 resp_prom_ttn = prom_cntrl.send_ttn(order.order_code, order.ttn, "nova_poshta")
-                resp_prom_status = prom_cntrl.change_status(order.order_code, 2)
         elif 'OptionsSeat is empty' in np_resp["errors"]:
             resp = np_resp
             tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm,
