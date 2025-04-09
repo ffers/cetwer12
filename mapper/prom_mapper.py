@@ -168,7 +168,10 @@ def _get_ttn(prom: dict) -> str | None:
 
 
 def _get_ttn_ref(prom: dict) -> str | None:
-    return prom.get("delivery_provider_data", {}).get("recipient_warehouse_id")
+    ref = prom.get("delivery_provider_data", {}).get("recipient_warehouse_id")
+    if not ref:
+         raise ValueError("Адресси нема чекаем")
+    return ref
 
 
 def _get_city_name(prom: dict) -> str:

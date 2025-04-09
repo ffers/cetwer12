@@ -168,7 +168,7 @@ class OrderServ:
         return product_db
     
 
-    
+    @wrapper()
     def load_orders_store(self, api_name, token, OrderCntrl, TelegramCntrl, EvoClient, RozetMain):
         resp = {}
         store = OrderApi(api_name, token, OrderCntrl, TelegramCntrl, EvoClient, RozetMain)
