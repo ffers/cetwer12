@@ -100,12 +100,10 @@ def send_request_status(invoice_ttn, order_id):
     if "status" in resp:
         if "error" in resp["status"]:
             error = resp["message"]
-            print("Помилка")
-            tg_cntrl.answerCallbackQuery(callback_query_id, f"{error}")
-            tg_cntrl.sendMessage(chat_id_rozet, f"Помилка: {error} {invoice_order}")
+            print("Помилка")  
+            tg_cntrl.sendMessage(chat_id_rozet, f"Помилка: {error} {order_id}")
         else:
-            tg_cntrl.answerCallbackQuery(callback_query_id, f"Передано {invoice_order}")
-            tg_cntrl.sendMessage(chat_id_rozet, f"Подвязано: {invoice_order}")
+            tg_cntrl.sendMessage(chat_id_rozet, "✅")
             return True
     else: 
         tg_cntrl.sendMessage(chat_id_rozet, f"Помилка {resp} {invoice_order}")

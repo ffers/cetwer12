@@ -35,10 +35,10 @@ class TestClassDemoInstance:
             print(pointer)
             assert  pointer.chat == "courier"
             assert  pointer.cmd == "stock"
-            assert  pointer.text == "Некоректний шаблон\nBX1: Нерахується\n"
+            assert  pointer.text == '‼️ Некоректний (комент)\nBX1: Нерахується\nBX3: 20\nBX4: 20\n'
             assert  pointer.reply == "Don`t have respone."
             assert  pointer.content[0].get("article") == "BX1"
-            assert  pointer.resp[0].get("quantity") == "Нерахується"
+            assert  pointer.resp == []
             assert  pointer.comment == None
 
     def test_take_courier(self):
@@ -49,8 +49,8 @@ class TestClassDemoInstance:
             assert  pointer.cmd == "take_courier"
             assert  pointer.text == "Ярик отдал на покрас\n45W1: -50\n"
             assert  pointer.reply == "Don`t have respone."
-            assert  pointer.content == [{'article': '45W1', 'pack': 1, 'quantity': 50}]
-            assert  pointer.resp == [{'article': '45W1', 'quantity': -50}]
+            assert  pointer.content == [{'article': '45W1', 'pack': 1, 'quantity': -50, 'crm': True}]
+            assert  pointer.resp == []
             assert  pointer.comment == 'Ярик отдал на покрас\n'
 
     def test_add_color_35_45(self):
@@ -61,8 +61,8 @@ class TestClassDemoInstance:
             assert  pointer.cmd == "stock"
             assert  pointer.text == "Додано Ярік\n35N: 48\n45N: 48\n"
             assert  pointer.reply == "Don`t have respone."
-            assert  pointer.content == [{'article': '35N', 'data': {28: 12, 29: 12, 30: 12, 31: 12}}, {'article': '45N', 'data': {28: 12, 29: 12, 30: 12, 31: 12}}]
-            assert  pointer.resp == [{'article': '35N', 'quantity': 48}, {'article': '45N', 'quantity': 48}]
+            assert  pointer.content == [{'article': '35N', 'data': {28: 12, 29: 12, 30: 12, 31: 12}, 'quantity': 48, 'crm': True}, {'article': '45N', 'data': {28: 12, 29: 12, 30: 12, 31: 12}, 'quantity': 48, 'crm': True}]
+            assert  pointer.resp == []
             assert  pointer.comment == "Додано Ярік\n"
 
     def test_add_color_35(self):
@@ -73,8 +73,8 @@ class TestClassDemoInstance:
             assert  pointer.cmd == "stock"
             assert  pointer.text == "Додано Ярік\n35N: 48\n"
             assert  pointer.reply == "Don`t have respone."
-            assert  pointer.content == [{'article': '35N', 'data': {28: 12, 29: 12, 30: 12, 31: 12}}]
-            assert  pointer.resp == [{'article': '35N', 'quantity': 48}]
+            assert  pointer.content == [{'article': '35N', 'data': {28: 12, 29: 12, 30: 12, 31: 12}, 'quantity': 48, 'crm': True}]
+            assert  pointer.resp == []
             assert  pointer.comment == "Додано Ярік\n" 
 
     def test_add_color_45(self):
@@ -85,8 +85,8 @@ class TestClassDemoInstance:
             assert  pointer.cmd == "stock"
             assert  pointer.text == "Додано Ярік\n45N: 48\n"
             assert  pointer.reply == "Don`t have respone."
-            assert  pointer.content == [{'article': '45N', 'data': {28: 12, 29: 12, 30: 12, 31: 12}}]
-            assert  pointer.resp == [{'article': '45N', 'quantity': 48}]
+            assert  pointer.content == [{'article': '45N', 'data': {28: 12, 29: 12, 30: 12, 31: 12}, 'quantity': 48, 'crm': True}]
+            assert  pointer.resp == []
             assert  pointer.comment == "Додано Ярік\n" 
 
     def test_take_color_35_45(self):

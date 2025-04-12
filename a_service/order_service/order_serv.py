@@ -256,18 +256,31 @@ class OrderServ:
         item = self.order_rep.load_item(order_id)
         new_item = deepcopy(item)
         new_item.source_order_id=1
-        new_item.ordered_status_id=10
+        new_item.ordered_status_id=10 
         new_item.description_delivery="Одяг Jemis"
+        new_item.history = f"Дубль замовлення {item.order_code}\n"
         new_item.order_code = self.generate_order_code()
         ordered_product = list(item.ordered_product)
         resp = self.add_order4(new_item)
         print("dublicate_order:", resp)
         if resp["add_order4"] == "ok":
             order = resp["result"]
+            resp = self.make_double_history_voor_new_oreder(item, order)
+            resp = self.make_double_history_voor_old_oreder(item, order)
             order = self.update_ordered_product(order.id, ordered_product)
             return order
         else:
             return False
+        
+    def make_double_history_voor_new_oreder(self, item, order):
+        comment = f"Дубль замовлення {item.order_code}\n"
+        resp = self.update_history(order.id, comment)
+        return resp
+    
+    def make_double_history_voor_old_oreder(self, item, order):
+        comment = f"Зроблено Дубль {order.order_code}\n"
+        resp = self.update_history(item.id, comment)
+        return resp
 
     def update_history(self, order_id, comment):
         current_time = next(my_time()).strftime("%d-%m-%Y %H:%M")

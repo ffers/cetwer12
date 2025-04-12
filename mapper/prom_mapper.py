@@ -74,12 +74,12 @@ def _map_products(prom: dict, prod_serv: ProductServ) -> list[ProductDto]:
 
 
 def _map_costumer(prom: dict) -> CostumerDto:
-    client = prom.get("client", {})
+    c = prom.get("client", {})
     return CostumerDto(
-        first_name=prom.get("client_first_name", ""),
-        last_name=prom.get("client_last_name", ""),
-        second_name=_safe(client.get("second_name")),
-        phone=prom["phone"],
+        first_name=c.get("first_name", ""),
+        last_name=c.get("last_name", ""),
+        second_name=_safe(c.get("second_name")),
+        phone=c["phone"],
         email=prom.get("email")
     )
 
@@ -87,11 +87,11 @@ def _map_costumer(prom: dict) -> CostumerDto:
 def _map_recipient(prom: dict) -> RecipientDto:
     r = prom.get("delivery_recipient", {})
     return RecipientDto(
-        first_name=prom.get("client_first_name", ""),
-        last_name=prom.get("client_last_name", ""),
+        first_name=r.get("first_name", ""),
+        last_name=r.get("last_name", ""),
         second_name=_safe(r.get("second_name")),
-        phone=prom["phone"],
-        email=prom.get("email")
+        phone=r["phone"],
+        email=None
     )
 
 def add_prompay_status(payment_id, order):

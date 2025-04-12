@@ -60,7 +60,31 @@ class TextColorParser():
         for item in data:
              count += item.quantity
         return count
-        
+    
+    def all_color(self, items):     
+        sum = 0
+        for a,b in items.items():                      
+            sum += b 
+        return sum
+    
+    def cnt_append(self, cht_dt, arcl, color):
+        qnt = self.all_color(color)
+        cht_dt.content.append({
+                "article": arcl, 
+                "data": color,
+                "quantity": qnt
+        })
+        return cht_dt
+    
+    def two_color(self, chat_data, text):
+        clean_35, clean_45 = self.crete_two(text)
+        print("Ось вийшло два розміри")
+        print(clean_35) 
+        print(clean_45)
+        chat_data = self.cnt_append(chat_data, '35N', clean_35)
+        chat_data = self.cnt_append(chat_data, '45N', clean_45)
+        return chat_data
+    
     def manager_bot(self, chat_data):
         text = chat_data.text
         chat_data.content = []
@@ -70,20 +94,15 @@ class TextColorParser():
             chat_data.comment = "Додано Ярік\n"
             try:
                 if "35:" in text and "45:" in text:
-                    size = self.count_size(text)
-                    clean_35, clean_45 = self.crete_two(text)
-                    print("Ось вийшло два розміри")
-                    print(clean_35) 
-                    print(clean_45)
-                    chat_data.content.append({"article": "35N", "data":clean_35})
-                    chat_data.content.append({"article": "45N", "data":clean_45})
+                    chat_data = self.two_color(chat_data, text)
                 else:
                     print(data)
                     size = self.count_size(text)
                     print(f"ОСЬ ВИЙШЛО {data, size}")
-                    chat_data.content.append({"article": size, "data":data})
+                    chat_data = self.cnt_append(chat_data, size, data)
                 return chat_data
-            except:
+            except Exception as e:
+                print(e)
                 return "Неправильно сформульоване повідомлення"
         return "Неправильно сформульоване повідомлення"
 

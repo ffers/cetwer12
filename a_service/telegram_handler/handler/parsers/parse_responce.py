@@ -5,6 +5,7 @@ class ParseResponce:
         pass
 
     def text_report_add(self, pointer):
+        pointer.text = ""
         try:  
             for item in pointer.resp:
                 pointer.text += "{}: {}\n".format(

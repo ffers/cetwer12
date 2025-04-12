@@ -20,12 +20,12 @@ class Parse:
             return order_cntrl.update_history(order.id, comment)
         return False
     
-    def quantity_parse(self, item, data_chat):
-        if "data" in item:
-            return self.all_color(item["data"])
-        if data_chat.cmd == "take_courier": 
-            return -item["quantity"]
-        return item["quantity"]
+    # def quantity_parse(self, item, data_chat):
+    #     if "data" in item:
+    #         return self.all_color(item["data"])
+        # if data_chat.cmd == "take_courier": 
+        #     return -item["quantity"]
+        # return item["quantity"]
     
     def parser_item(self, data_chat, article, quantity):
         data_chat.resp.append({
@@ -41,8 +41,7 @@ class Parse:
                 quantity = "Нема такого товару"
                 item_prod = sour_cntrl.load_article(item["article"])
                 if item_prod:
-                    quantity = self.quantity_parse(item, data_chat)
-
+                    quantity = item["quantity"]
                     print("parse_stock:", data_chat)
                     if not data_chat.comment:
                         raise ValueError("Некоректний шаблон")

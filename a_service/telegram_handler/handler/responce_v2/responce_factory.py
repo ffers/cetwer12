@@ -1,8 +1,9 @@
 
+
 from utils import my_time
 from datetime import datetime
-from .parsers import ParseResponce
-from ..text_formater import TextOrderAllInfo
+from ..parsers import ParseResponce
+
 
 
 class Command:

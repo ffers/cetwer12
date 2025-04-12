@@ -28,12 +28,19 @@ class ParseText:
         return chat_data
     
     def parse_colon_true(self, chat_data, match):
+        quantity = self.quantity_parse(chat_data, match)
         chat_data.content.append({
                     "article": match.group(1),   # Артикул (45N10)
                     "pack": int(match.group(2)),  # Кількість (20)
-                    "quantity": int(match.group(3))  # Загальна сума (240)
+                    "quantity": quantity  # Загальна сума (240)
                 })
         return chat_data
+    
+    def quantity_parse(self, chat_data, match):
+        quantity = int(match.group(3))
+        if chat_data.cmd == "take": 
+            return -quantity
+        return quantity
     
     
     

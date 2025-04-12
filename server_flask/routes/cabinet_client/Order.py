@@ -332,7 +332,7 @@ def delete(id):
 @author_permission.require(http_exception=403)
 def dublicate(id):
     order = OrderServ().dublicate_order(id)
-    if якorder:
+    if order:
         flash('Замовлення дубльоване', category='success')
         return redirect(f'/cabinet/orders/update/{order.id}')
     else:
