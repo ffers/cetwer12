@@ -89,8 +89,8 @@ class RozetkaMapper():
         }
         return mapping.get(d)  
 
-    def load_product_by_article(self, artcl):
-        product = self.product_serv.load_item_by_article(artcl)
+    def load_product(self, artcl, name):
+        product = self.product_serv.load_item_by_article(artcl, name)
         return product.id         
             
     def product(self, data):
@@ -98,12 +98,14 @@ class RozetkaMapper():
 
         for item in data:
             print("product", item)
+            artcl = item.item.article
+            name = item.item.name_ua
             dto = ProductDto(
                 id=None,
                 quantity=item.quantity,
                 price=item.price,
                 order_id=None,
-                product_id=self.load_product_by_article(item.item.article),
+                product_id=self.load_product(artcl, name),
             )
             result.append(dto)
 

@@ -293,7 +293,6 @@ class OrderCntrl:
         return bool
 
     def definition_source(self, order, status):
-        
         bool_prom = True
         if order.source_order_id == 2:
             bool_prom = prom_cntrl.change_status(order.order_code, status)

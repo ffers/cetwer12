@@ -46,9 +46,8 @@ def source_difference_product(id):
         return render_template("cabinet_client/analitic/source_difference.html", product=product, user=current_user)
     else:
         flash('Товар не знайдено', category='error')
-        product = source_diff_cntrl.load_source_difference()
-        print(f"Перевірка {product}")
-        return render_template("cabinet_client/analitic/source_difference.html", product=product, user=current_user)
+
+        return redirect("/cabinet/source/all")
          
           
 @bp.route('/cabinet/source_difference/update_day', methods=['POST','GET'])

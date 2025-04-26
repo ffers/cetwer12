@@ -30,9 +30,6 @@ class ProductRep():
                     )
             db.session.add(product)
             db.session.commit()
-            add_analitic = ProductAnalitic(product_id=product.id)
-            db.session.add(add_analitic)
-            db.session.commit()
             return product
         except Exception as e:
             return str(e)
@@ -50,6 +47,17 @@ class ProductRep():
             db.session.commit()
             db.session.close()
             return True
+        except:
+            return False
+        
+    def update_v2(self, id, *args):
+        try:
+            product = Products.query.get_or_404(id)
+            print(id, args)
+            product.article = args[0]
+            product.product_name = args[1]
+            db.session.commit()
+            return product
         except:
             return False
  

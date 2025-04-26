@@ -14,10 +14,10 @@ class OrderFormMapper:
         sum_before_goods=self._sum_before_goods(form)
 
         order = OrderDTO(
-            timestamp=datetime.now(),
-            phone=form.get('costumer_phone'),
-            email=form.get('costumer_email'),
-            ttn=form.get('ttn'),
+            timestamp=datetime.now(), 
+            phone=form.get('costumer_phone'), # розглядай видалення
+            email=form.get('costumer_email'), # розглядай видалення
+            ttn=form.get('ttn'), # розглядай видалення
             ttn_ref=None, # розглядай видалення
             client_firstname=form.get('costumer_firstname'),
             client_lastname=form.get('costumer_lastname'),
@@ -27,7 +27,7 @@ class OrderFormMapper:
             region='',  # розглядай видалення
             area=None, # розглядай видалення
             warehouse_option=form.get('warehouse_option'),  
-            warehouse_text=unquote(form.get('warehouse-text')),
+            warehouse_text=self._warehouse_text(form),
             warehouse_ref=form.get('warehouse-id'),
             sum_price=float(form.get('total-all', 0)),
             sum_before_goods=sum_before_goods,
@@ -136,3 +136,9 @@ class OrderFormMapper:
             phone=form.get('recipient_phone'),
             email=None,
         )
+    
+    def _warehouse_text(self, form):
+        wt = unquote(form.get('warehouse-text'))
+        ct = form.get('CityName')
+        return wt + ct
+ 

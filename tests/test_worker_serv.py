@@ -1,11 +1,11 @@
 
 
 from black.tg_answer_cntrl import OrderCntrl, SourAnCntrl, TelegramController, TgAnswerCntrl
-from .lib.lib_tg import LibTG
+from .lib.tg_lib import LibTG
 from server_flask.flask_app import flask_app
 import pytest
 
-class TestClassDemoInstance:
+class TestWorker:
     await_button_tg = TgAnswerCntrl().await_tg_button
     
     def test_just_message(self):

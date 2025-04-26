@@ -1,13 +1,45 @@
 from decimal import Decimal
 from itertools import zip_longest
-from repository import ProductRep
+from repository import ProductRep, ProductAnaliticRep
+
+'''
+продукт сервіс 
+нужно иметь виду аналитику каждое действие должно бить с ней связано 
+думаю нужно виполнять здесь все необходимое чтоби вернуть готовий продукт
+тоесть ордер создает заказ потом просит продукт 
+аналитика добавляється к продукту при создании продукта
+аналитика проводится отдельним путем но изменения которие происходят должни идти 
+через продакт аналитику
+когда виполняється ордер процесс какой либо затрагиваеться аналитика в том числе
+пока что аналитика происходит чудообразом но надо будет переформатировать
+мои модули слишком взаимо связани зотя в моем случає нужно 
+писать микросервиси
+пока что кажеться обработка ордеров самий тяжелий процесс
+также аналитика
+и все таки при создании товара может необходимо передать в аналитику о новом товаре
+но кто должен ето делать
+координатор процеесов заказа или склад
+думаю склад должен делать свою аналитику а ордер свою
+'''
 
 class ProductServ:
     def __init__(self):
         self.prod_rep = ProductRep()
+        self.prod_an_rep = ProductAnaliticRep()
 
     def add_product_v2(self, article, product_name):
-        return self.prod_rep.create_v2(article, product_name)
+        product =  self.prod_rep.create_v2(article, product_name)
+        if product:
+            self.add_product_anltc(product.id)
+        return product
+    
+    def update_v2(self, id, *args):
+        print("update_v2", args)
+        product =  self.prod_rep.update_v2(id, *args)
+        return product
+    
+    def add_product_anltc(self, product_id):
+        return self.prod_an_rep.add_product_analitic(product_id)
 
     def format_float(self, num):
         try:
@@ -57,7 +89,7 @@ class ProductServ:
     def load_item_by_article(self, artcl, name):
         product = self.prod_rep.load_by_article(artcl)
         if not product:
-            self.add_product_v2(artcl, name)
+            product = self.add_product_v2(artcl, name)
         return product
     
     def load_item_id(self, id):

@@ -1,8 +1,33 @@
 from server_flask.db import db
 from server_flask.models import ProductSource
+from utils import OC_logger
+from sqlalchemy.exc import IntegrityError
+from psycopg2.errors import UniqueViolation
+
+class SourceRep:
+    def __init__(self):
+        self.logger = OC_logger.oc_log("source")
+
+    def create_v2(self, data):
+        try:
+            item = ProductSource(
+                article=data[0],
+                name=data[1],
+                price=data[2],
+                quantity=data[3],
+                money=data[4]
+            )
+            db.session.add(item)
+            db.session.commit()
+            return item
+        except IntegrityError as e:
+            assert isinstance(e.orig, UniqueViolation)
+            raise ValueError('Артікул вже використовується')
+        except Exception as e:
+            self.logger.error("Помилка при створенні джерела", exc_info=True)
+            raise ValueError('Джерело не створено!') 
 
 
-class SourAnRep:
     def load_all(self):
         try:
             items = ProductSource.query.order_by(ProductSource.timestamp).all()
@@ -96,7 +121,4 @@ class SourAnRep:
             return True
         except Exception as e:
             return False, e
-        
     
-
-sour_an_rep = SourAnRep()

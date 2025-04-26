@@ -2,6 +2,8 @@ import time
 import tracemalloc
 from utils.oc_logger import OC_logger
 
+from exceptions import OrderAlreadyExistsError
+
 def wrapper(name=None):
     def decorator(func):
         def wrapper(*args, **kwargs):
@@ -27,6 +29,13 @@ def wrapper(name=None):
                     "result": result,
                     "duration": duration,
                     "memory_kb": round(peak / 1024)
+                }
+            
+            except OrderAlreadyExistsError as e:
+                logger.exception(f"✖ {func_name}() failed: {e}")
+                return {
+                    func_name: "fail",
+                    "error": str(e)
                 }
 
             except Exception as e:

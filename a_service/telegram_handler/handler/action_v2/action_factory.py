@@ -61,7 +61,7 @@ class Action:
             "take": Take,
             "take_courier": TakeCourier,
             "unknown_command": UnknownCommandAction,
-            "search_order_manager": SearchOrder
+            "search_order_manager": SearchOrder,
         } 
         if data_chat.cmd in commands:
             print("Action Step: ", data_chat.cmd)

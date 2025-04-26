@@ -39,7 +39,7 @@ class OC_logger:
             return f"{color}{message}{self.RESET}"
 
     @staticmethod
-    def oc_log(name_log: str) -> logging.Logger:
+    def oc_log(name_log: str="app_asx") -> logging.Logger:
         file_path = f"log/{name_log}.log"
         error_path = "log/error.log"
 

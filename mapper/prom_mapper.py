@@ -179,7 +179,11 @@ def _get_city_name(prom: dict) -> str:
 
 
 def _get_cpa(prom: dict) -> str | None:
-    return prom.get("cpa_commission", {}).get("amount")
+    sum = 0
+    for p in prom.get("products", []):
+        sum += prom.get("cpa_commission", {}).get("amount")  
+    return sum
+
 
 
 def _safe(value: str | None) -> str | None:

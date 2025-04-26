@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import os, logging, re
 import html
 from datetime import datetime
-from .telegram_handler.text_formater.text_order_courier import TextOrderCourier
+from mapper import TextOrderCourier
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)

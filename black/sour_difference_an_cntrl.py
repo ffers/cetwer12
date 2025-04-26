@@ -8,6 +8,8 @@ from datetime import timedelta
 
 
 
+
+
 class SourDiffAnCntrl():
     def __init__(self) -> None:
         self.sour_diff_an_rep = SourDiffAnRep()
@@ -47,15 +49,15 @@ class SourDiffAnCntrl():
         return source
     
     
-    def add_quantity_crm_today(self, products):
+    def add_quantity_crm_today(self, sources):
         print("Працюєм")
         event_date = next(self.work_time_cntrl.my_time()).strftime('%Y-%m-%d')
         # event_date = event_date - timedelta(days=1)
         # event_date = event_date.strftime('%Y-%m-%d')
         start, stop = self.work_time_cntrl.load_work_time("all") # що таке all
         orders = self.ord_rep.load_period(start, stop)
-        sold_quantities = self.sour_diff_an_serv.source_diff_sold_optimized(orders, products)
-        for item in products:
+        sold_quantities = self.sour_diff_an_serv.source_diff_sold_optimized(orders, sources)
+        for item in sources:
             data = self.sour_diff_an_serv.add_quantity_crm(item, event_date)
             update = self.sour_diff_an_rep.add_quantity_crm(data)
         return update

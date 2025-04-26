@@ -198,7 +198,7 @@
 								  onclick="addProduct()"
 								  style="cursor: pointer; color: #9f70ec;">Додати товар</span> /
 								<span style="cursor: pointer; color: #9f70ec;" data-bs-toggle="modal" 
-								data-bs-target="#myModal">Створити товар</span>
+								data-bs-target="#createProduct">Створити товар</span>
 							  </div>
 							  
 							</div>
@@ -475,59 +475,55 @@
 				  <div class="row" >
 					<div class=" center">
 						<button 
-							style="color: #626870;
-									background: #ffffffaa;
-									border-radius: 14px;
-									box-shadow: 4px 4px 12px #00000010;
-									width: 30%;
-									"
-							class="btn" 
+						
+							class="button button--primary button--large"
 							onclick="submitForm()" 
 							type="submit">Оновити Замовлення</button> </br>	
 					</div>
 					<br>
-					<!-- <div class="row">
-						<div class="center">
-							<button onclick="refreshWithVersion()" style="width: 30%; margin-top: 20px;">Оновити стилі</button>
-						</div>
-							<script>
-							function refreshWithVersion() {
-							const url = new URL(window.location.href);
-							url.searchParams.set('v', Date.now());
-							window.location.href = url.href;
-							}
-							</script> -->
-						
-					<!-- </div>
-					<button onclick="fullHardReload()" style="width: 30%; margin-top: 20px;">Оновити все</button>
-
-<script>
-function fullHardReload() {
-  location.reload(true); // ⚠️ застаріло, але працює в деяких браузерах
-}
-</script>-->
 					
+					
+					
+					
+					
+					
+				</div>
+			</div> 
 			
-			  
-			  
 			
-		  
+			
+			
+			
+			
+		</form>
+		<div class="row">
+		   <div class="center">
+			   <button onclick="refreshWithVersion()" style="width: 30%; margin-top: 20px;">Оновити стилі</button>
+		   </div>
+			   <script>
+			   function refreshWithVersion() {
+			   const url = new URL(window.location.href);
+			   url.searchParams.set('v', Date.now());
+			   window.location.href = url.href;
+			   }
+			   </script> 
+		   
+		</div>
+	   <button onclick="fullHardReload()" style="width: 30%; margin-top: 20px;">Оновити все</button>
+	
+	<script>
+	function fullHardReload() {
+	location.reload(true); // ⚠️ застаріло, але працює в деяких браузерах
+	}
+	</script>
 	</div>
-</div> 
-
-		  
-		  
-		  
-		  
-		
-	</form>
-</div>
 	<input type="hidden" 
 		name="selectedItems" 
 		id="selectedItems" 
 		value="{{order.id}}">
 
-	<!-- My Modal Add product -->
+{% include 'cabinet_client/Products/create_product_modal.html' %}
+	<!-- My Modal Add product
 <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content ">
@@ -548,13 +544,10 @@ function fullHardReload() {
 								rows="1" cols="50" placeholder="* Назва"></textarea><br></div>
 						</div>
 						<div class="row">
-							<div class="col-sm "><input type="number" style="text-align: center;" 
-								class="form-control" id="price_prod" name="price" 
-								min="1" placeholder="Ціна" required><br></div>
 						<div class="modal-footer" style="text-align: center;">
 							<div class="col-sm ">
 								<button id="submitBtn" class="btn     my-sm-0" 
-										onclick="sendDataToServerW()" type="button">
+										onclick="create_product()" type="button">
 										Додати Товар
 								</button>
 							</div>
@@ -565,7 +558,7 @@ function fullHardReload() {
 			</div>	
 	</div>
 	</div>
-</div>
+</div> -->
 
 	<script>
 		document.getElementById('changeStatusSee').style.display = 'block';
@@ -585,7 +578,7 @@ function fullHardReload() {
 	<script src="{{url_for('static', filename='javascript/update_order/update_enter.js')}}"></script>
 	<script src="{{url_for('static', filename='javascript/update_order/changeAddress.js')}}"></script>
 
-	<script src="{{url_for('static', filename='javascript/sendDataToServerFile.js')}}"></script>
+	
     <script src="{{url_for('static', filename='javascript/add-select2.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/hiddenElement.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/submitFormUpdateOrd.js')}}"></script>

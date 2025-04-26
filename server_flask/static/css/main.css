@@ -1,7 +1,11 @@
 
+@import 'components/button_confirm.css';
+@import 'components/text_button.css';
+@import 'individ.css';
+
 
 .content {
-    margin: 0 auto;
+    margin: 0 auto 200px;
     width: 97%;
 }
 
@@ -79,22 +83,6 @@ tr {
 .row {
     margin-bottom: 1rem !important;
 }
-
-
-.text-button {
-    padding: 0;
-    background: none; /* Задаємо прозорий фон */
-    border: none; /* Відключаємо границю */
-    color: #6ab8f8; /* Задаємо колір тексту */
-    text-decoration: underline; /* Підкреслюємо текст */
-    cursor: pointer; /* Змінюємо вид курсору при наведенні */
-    text-align: center;
-    }
-
-.text-button:focus, .text-button:active {
-    outline: none; /* Приховати обведення (окантовку) також для станів :focus та :active */
-    color: #007bff;
-    }
 
 
     
@@ -191,7 +179,9 @@ tr {
 @media screen and (max-width: 928px) {
     .content {
         width: 97%; /* Занимает всю доступную ширину экрана */
+        gap: 10px;
     }
+
     .button-col-sm {
         margin: auto;
         width: 40%; 
@@ -210,4 +200,5 @@ tr {
         text-align: center;
         /* margin-bottom: 20px; */
     }
+
 }

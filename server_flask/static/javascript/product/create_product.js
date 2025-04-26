@@ -1,18 +1,12 @@
 // import { infoModalfunc } from './modal-window.js';
 
-function sendDataToServerW() {
+function create_product() {
     var product_name = document.getElementById('product_name').value;
-    var description = "None"
-    var price = document.getElementById('price_prod').value;
-    var quantity = 0
     var article = document.getElementById('article').value;
     
 
     var formData = new FormData();
     formData.append('product_name', product_name);
-    formData.append('description', description);
-    formData.append('price', price);
-    formData.append('quantity', quantity);
     formData.append('article', article);
     formData.append('modal', 'modal');
 

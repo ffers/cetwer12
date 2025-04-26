@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from .handler import Income, Action, ResponceFactory
-from .text_formater import TextOrderManager
+from mapper import TextOrderManager
 
 from settings import Settings
 

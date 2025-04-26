@@ -1,0 +1,79 @@
+{% extends 'cabinet_client/product_v2/layout/base.html' %}
+
+{% block title %}Прихід Товару{% endblock %}
+
+{% block head %}
+<!-- Підключення стилів Flatpickr -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/update_order.css') }}">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<head>
+    <title>Додати джерело</title>
+  </head>
+{% endblock %}
+
+{% block body %}
+	<div class="content">
+        <div class="row">   
+		<h1 style="text-align: center;">
+            Додати Джерело
+        </h1>
+			<form action="{{ url_for('ProductSource.add') }}" method="post">
+
+                       <div class="row">
+                            <!-- Товар та кількість -->
+                            <div class="col-sm">
+                                <input 
+                                placeholder="Артікул" 
+                                class="form-control" 
+                                style="text-align: center;" 
+                                id="article" 
+                                name="article"                    
+                                > 
+                                <br>
+                            </div>
+                            <div class="col-sm ">
+                                <input 
+                                placeholder="Назва" 
+                                class="form-control  " 
+                                style="text-align: center;" 
+                                id="name" 
+                                name="name"
+                                > 
+                                <br>
+                            </div>
+                            <div class="col-sm" >
+                                <input style="text-align: 
+                                center;" class=" price form-control" 
+                                id="price" name="price" 
+                                min="1" placeholder="Ціна вхідна" 
+                                required><br>
+                            </div>	
+                       </div>
+               
+
+            <!-- <div class="row">
+                <div class="col-sm"></div> -->
+                <!-- <div class="col-sm"><input type="button" class="text-button"  value="Додати Компонент" id="addButton"></div> -->
+				<!-- <div class="col-sm"><input type="button" class="text-button"  value="Створити товар" data-bs-toggle="modal" data-bs-target="#myModal" ></div> -->
+                <!-- <div class="col-sm"><a href="get_product/send_with_prom_test">Підвердити</a></div> -->
+            <!-- </div><br> -->
+            <div class="center">
+			    <button class="button button--primary button--large" type="submit">Додати</button>
+            </div>
+		</form>
+
+
+    </div>
+                               
+
+	</div>
+
+	<script type="module" src="{{url_for('static', filename='javascript/calculate.js')}}"></script>
+    <script src="{{url_for('static', filename='javascript/add-select2.js')}}"></script>
+    <script src="{{url_for('static', filename='javascript/hiddenElement.js')}}"></script>
+    <script src="{{url_for('static', filename='javascript/submitFormSelect2.js')}}"></script>
+    <script type="module" src="{{url_for('static', filename='javascript/add_product_arrival.js')}}"></script>
+    <script src="{{url_for('static', filename='javascript/modal-window.js')}}"></script>
+{% endblock %}

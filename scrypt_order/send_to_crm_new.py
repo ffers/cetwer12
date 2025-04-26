@@ -16,9 +16,24 @@ class SendToCrmNew:
         resp = self.milky_way("GET", url)
 
 
-    def get_orders(self, api_name, token):
-        url = f"v2/order/get_orders?api_name={api_name}&store_token={token}"
+    def get_orders(self, api_name, token, name):
+        url = f"v2/order/get_orders?"
+        url += f"api_name={api_name}"
+        url += f"&store_token={token}"
+        url += f"&store_name={name}"
         resp = self.milky_way("GET", url)
+
+        ''' Короткий вариант
+        стор нейм как определить
+        подписать стор 
+        и использовать етот нейм в тексте
+        '''
+        '''
+        таблица сторов
+        добавить стор нейм, апі_токен, обрати маркет
+        при завантаженні по токену знайти ці данні 
+        та завантажити и прописати все необхідне
+        '''
 
 
     def get_check(self):

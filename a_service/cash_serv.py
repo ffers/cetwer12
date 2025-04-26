@@ -103,18 +103,4 @@ class CacheService:
 
 
 
-# # Використання
-# cache = CacheService()
-# cache.set('key1', 'value1')
-#
-# # В іншій частині програми
-# cache = CacheService()
-# print(cache.get('key1'))  # Виведе: value1
-#
-#
-# # Використання
 
-# revenue = 1000  # Виручка
-# cost_price = 600  # Вартість закупки
-# profit = cache.calculate_profit(revenue, cost_price)
-# print("Прибуток:", profit)

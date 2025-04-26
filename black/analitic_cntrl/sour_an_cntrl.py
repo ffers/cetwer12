@@ -4,21 +4,46 @@ from ..jour_ch_cntrl import jour_ch_cntrl as journal
 from .analitic_table_cntrl import an_cntrl
 from repository import ord_rep
 from datetime import datetime
-from repository import sour_an_rep as rep
+
 from ..telegram_controller import tg_cntrl
 from ..work_time_cntrl import WorkTimeCntrl
-from repository import SourAnRep
+from repository import SourceRep
 from a_service import CacheService
 from ..sour_difference_an_cntrl import SourDiffAnCntrl
 from utils import my_time_v2
 
+'''
+Аналитика працює як окремий сервіс
+якій кілька раз на день оновлює
+свої данні
+але данні по кількості інших параметрів таких як кількість 
+джерел 
+'''
+
+'''
+я завантажую спочатку за петіод ордери
+потім починаю одразу рахувати и заносити це в кеш
+мабуть потім записую в базу
+короче діч як я думаю
+оокей я хотів би додати вичет поо грошам на баланс але потім 
+воно все перепише треюба подумати
+'''
+
+'''
+по приходу та ухооду окрема графа тбто якщо прихд має бути флаг
+а якшо уход інший флаг
+варианта два 
+или в момент прихода вичетать 
+или в момент общего подсчета
+'''
+
 class SourAnCntrl:
     def __init__(self):
         self.w_time_cntrl = WorkTimeCntrl()
+        self.rep = SourceRep()
         self.sour_an_serv = SourAnServ(prod_cntrl,
                                        journal, an_cntrl,
-                                       rep, ord_rep, self.w_time_cntrl)
-        self.rep = SourAnRep()
+                                       self.rep, ord_rep, self.w_time_cntrl)
         self.cash = CacheService()
         self.sour_an_diff_cntrl = SourDiffAnCntrl()
 
@@ -27,7 +52,7 @@ class SourAnCntrl:
 
     def add(self, request):
         args = self.sour_an_serv.add_source(request)
-        resp = rep.add_product_source(args)
+        resp = self.rep.add_product_source(args)
         return resp
     
     def add_quantity_crm_today(self):
@@ -56,19 +81,19 @@ class SourAnCntrl:
 
     def update(self, id, req):
         data = self.sour_an_serv.add_source(req)
-        resp = rep.update_source(id, data)
+        resp = self.rep.update_source(id, data)
         return resp
 
     def load_all(self):
-        data = rep.load_all()
+        data = self.rep.load_all()
         return data
 
     def load_item(self, product_id):
-        resp = rep.load_item(product_id)
+        resp = self.rep.load_item(product_id)
         return resp
 
     def load_article(self, article):
-        item = rep.load_article(article)
+        item = self.rep.load_article(article)
         return item
 
     def get_search(self, req):
@@ -76,11 +101,11 @@ class SourAnCntrl:
         return result
 
     def update_prod_sour_quan(self, id, quantity):
-        resp = rep.update_quantity(id, quantity)
+        resp = self.rep.update_quantity(id, quantity)
         return resp
 
     def delete(self, id):
-        bool = rep.delete_(id)
+        bool = self.rep.delete_(id)
         return bool
 
     def confirmed(self, order):
@@ -140,10 +165,10 @@ class SourAnCntrl:
     def stock_journal(self, prod_sourc_id, quantity, description, event_date=None):
         resp = False
         new_quantity = 0
-        prod_source = rep.load_item(prod_sourc_id)
+        prod_source = self.rep.load_item(prod_sourc_id)
         if prod_source:
             new_quantity = self.sour_an_serv.new_qauntity(prod_source, quantity)
-            resp = rep.update_quantity(prod_source.id, new_quantity)
+            resp = self.rep.update_quantity(prod_source.id, new_quantity)
             list_val = self.sour_an_serv.journal_func(prod_source, quantity, description, event_date)
             print(f"list_val {list_val}")
             resp = journal.add_(list_val)
@@ -166,7 +191,7 @@ class SourAnCntrl:
     def work_analitic(self, period):
         if period == "all":
             stock = self.cash.stock_func(self.load_all())
-            income = self.cash.income_func(rep.load_article("income"))
+            income = self.cash.income_func(self.rep.load_article("income"))
             balance = self.cash.balance_func(self.rep.load_article("balance"))
             wait = self.cash.wait_func()
             inwork = self.cash.inwork_func()

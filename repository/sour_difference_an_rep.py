@@ -12,7 +12,7 @@ class SourDiffAnRep():
         pass
 
     def add_source_difference(self, body):
-        # try:
+        try:
             add = SourceDifference(event_date=body[0], 
                                    source_id=body[1],
                                    quantity_crm=body[2],
@@ -21,12 +21,12 @@ class SourDiffAnRep():
                                    )
             db.session.add(add)
             db.session.commit() 
-        #     return True
-        # except:
-        #     return False  
+            return add
+        except:
+            return False  
 
     def add_quantity_crm(self, body):
-        # try:
+        try:
             add = SourceDifference(
                 event_date=body[0], 
                 source_id=body[1],
@@ -34,9 +34,9 @@ class SourDiffAnRep():
                                    )
             db.session.add(add)
             db.session.commit() 
-        #     return True
-        # except:
-        #     return False
+            return add
+        except:
+            return False
 
     def add_diff_comment(self, id, comment: str):
         try:

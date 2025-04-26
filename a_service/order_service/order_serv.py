@@ -12,7 +12,7 @@ from .status_new_with_payment import StatusNewWithPaidPipline
 from .order_map_store_factory import OrderMapStoreFactory 
 from .order_api_process import OrderApi
 
-from ..telegram_handler.text_formater.text_order_manager import TextOrderManager  
+from mapper import TextOrderManager 
 from ..product_serv import ProductServ
 from ..telegram_service import TgServNew
  
@@ -128,6 +128,8 @@ class OrderServ:
         # print("add_order_recipient:", resp)
         dto = resp.get("result")
         resp = self.add_order4(resp.get("result"))
+        if not resp.get("result"):
+            raise OrderAlreadyExistsError("Замовлення вже існує")
         # print("add_order_add_order:", resp)
         if resp:
             order = resp.get("result")

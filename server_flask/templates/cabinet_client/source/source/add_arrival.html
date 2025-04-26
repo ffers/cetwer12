@@ -1,4 +1,4 @@
-{% extends 'cabinet_client/Products/layout/base.html' %}
+{% extends 'cabinet_client/product_v2/layout/base.html' %}
 
 
 {% block title %}Прихід Товару{% endblock %}
@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/update_order.css') }}">
 
 {% endblock %}
 
@@ -18,16 +19,18 @@
 		</h1>
 		
 			<form 
-                action="{{ url_for('Arrival.add_arrival') }}" 
+                action="{{ url_for('ProductSource.add_arrival') }}" 
                 method="post"
                 style="margin-bottom: 200px;"
             >
                 <div id="product-container">
                     <div class="row">   
-                        <div class="col-sm col-lg-2">                
-                            <input class="form-control"
-                                type="text" id="event_date" name="event_date"/>                       
-                            </div>                    
+                        <div style="width: 30%;" class="individ">    
+                            <div class="center">            
+                                <input class="form-control"
+                                    type="text" id="event_date" name="event_date"/>    
+                                </div>                    
+                            </div>                   
                         <script>
                             flatpickr('#event_date', {
                             dateFormat: 'd-m-Y', // Формат дати
@@ -38,7 +41,7 @@
                       </div></br>
                     <div class="row">
                         <!-- Товар та кількість -->
-                        <div class="col-sm" >
+                        <div class="col-sm individ" >
                             <input 
                                 style="text-align: center;" 
                                 class="form-control" 
@@ -50,14 +53,14 @@
                                 required>
                         </div>
                 					
-                        <div class="col-sm">
+                        <div class="col-sm individ">
                             <select  
                                 class="form-control select-source" 
                                 name="article" 
                                 required>
                             </select> 
                         </div>
-                        <div class="col-sm col-lg-2">
+                        <div class="col-sm col-lg-2 individ">
                             <input 
                             style="text-align: center;" 
                             class=" quantity form-control" 
@@ -72,21 +75,21 @@
 
             <div class="row">
                 
-                <div class="col-sm"><input type="button" class="text-button"  value="Додати товар" id="addButton"></div>
                 <div class="col-sm"></div>
+                <div class="col-sm" style="text-align: center;">
+                    <input type="button" class="text-button"  value="Додати товар" id="addButton">
+                </div>
 				<!-- <div class="col-sm"><input type="button" class="text-button"  value="Створити товар" data-bs-toggle="modal" data-bs-target="#myModal" ></div> -->
                 <!-- <div class="col-sm"><a href="get_product/send_with_prom_test">Підвердити</a></div> -->
             </div></br>
             <div class="row" >
-                <div class="col-sm"></div>
                 <div class="col-sm">
-                    <button 
-                    class="btn 
-                        btn-outline-success 
-                        my-2 my-sm-0" 
-                    type="submit">
-                        Поставити на прихід
-                    </button></div>
+                    <div class="center">
+                        <button class="button button--primary button--large">
+                            Поставити на прихід
+                        </button>
+                    <div>
+                </div>
             </div>
 		</form>
 

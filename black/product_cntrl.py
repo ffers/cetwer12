@@ -1,13 +1,12 @@
 from repository import ProductRep
 from a_service import ProductServ
 from black import ProductAnaliticControl
-from repository import SourAnRep
+
 
 
 
 class ProductCntrl:
     def __init__(self):
-        self.source = SourAnRep()
         self.an = ProductAnaliticControl()
         self.p_rep = ProductRep()
         self.p_serv = ProductServ()

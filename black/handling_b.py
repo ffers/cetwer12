@@ -103,7 +103,7 @@ def send_request_status(invoice_ttn, order_id):
             print("Помилка")  
             tg_cntrl.sendMessage(chat_id_rozet, f"Помилка: {error} {order_id}")
         else:
-            tg_cntrl.sendMessage(chat_id_rozet, "✅")
+            tg_cntrl.sendMessage(chat_id_rozet, "Підвязано ✅")
             return True
     else: 
         tg_cntrl.sendMessage(chat_id_rozet, f"Помилка {resp} {invoice_order}")

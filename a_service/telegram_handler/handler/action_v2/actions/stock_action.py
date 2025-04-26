@@ -52,11 +52,30 @@ class StockAction(Command):
                 data_chat.comment,
                 my_time_v2()
             )   
+            self.balance(sour_cntrl, 50, item_prod)
             item.update({"crm": resp})     
         else:
             item['quantity'] = "‼️ Такого товару нема"
             
         return data_chat
+    
+    def balance(self, sour_cntrl, quantity, source):
+        try:
+            if '-' in str(quantity):
+                raise ValueError('це вичет все гуд')
+            source_bal = sour_cntrl.load_article("balance")
+            pay = quantity * source.price
+            sour_cntrl.fixed_process(
+                source_bal.id, 
+                -pay, 
+                'автоматичне списання',
+                my_time_v2()
+            )   
+            self.logger.info(f'Вичетаня балансу SUCCESS')
+            return True
+        except Exception as e:
+            self.logger.error(f'Вичетаня балансу не працює', exc_info=True)
+            return False
     
  
     

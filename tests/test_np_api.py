@@ -1,5 +1,5 @@
 from black.tg_answer_cntrl import OrderCntrl
-from .lib.lib_tg import LibTG
+from .lib.tg_lib import LibTG
 from server_flask.flask_app import flask_app
 
 

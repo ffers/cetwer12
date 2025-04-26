@@ -3,6 +3,7 @@ from flask_principal import Permission, RoleNeed
 from flask_login import login_required, current_user
 from server_flask.models import  Users
 from black import ProductCntrl, ArrivelCntrl
+from a_service import ProductServ
 from decimal import Decimal
 
 arriv_cntrl = ArrivelCntrl()
@@ -35,7 +36,7 @@ def Product():
     else:
         tasks_products = prod_cntrl.load_product_all()
         tasks_users = Users.query.order_by(Users.timestamp).all()
-        return render_template('cabinet_client/Products/products.html',
+        return render_template('cabinet_client/product_v2/products.html',
                                user=current_user, tasks_users=tasks_users, tasks_products=tasks_products)
         
 @bp.route('/cabinet/orders/get_product/changerelated', methods=['POST', 'GET'])
@@ -50,29 +51,14 @@ def Change():
 @manager_permission.require(http_exception=403)
 def add_product():
     if request.method == 'POST':
-        article = request.form['article']
-        product_name = request.form['product_name']
-        description = request.form['description']
-        input_value = request.form['quantity']
-        if input_value:
-            quantity = int(input_value)
-        else:
-            quantity = None
-        price_ch = request.form['price']
-        print(price_ch)
-        price = format_float(price_ch)
-        print(price, product_name)
-        resp_bool = prod_cntrl.add_product(description, article, product_name, price, quantity)
-        if resp_bool == True:
+        pr = ProductServ()
+        resp = pr.add_product_v2(request.form['article'], request.form['product_name'])
+        if resp:
             print("Product added successfully")
             if "modal" in request.form:
                 responce_data = {'status': 'success', 'message': 'Product added successfully'}
-                print(responce_data)
-                flash('Продукт створено!', category='success')
                 return jsonify(responce_data)
             else:
-                print(request.form)
-                print("НЕВИЙШЛО!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
                 return redirect(url_for('Products.Product'))
         else:
             print("!!! Product don`t added! Unsuccessfully")
@@ -92,19 +78,20 @@ def call_product():
 def update(id):
     product = prod_cntrl.load_product_item(id)
     if request.method == 'POST':
-        resp = prod_cntrl.update_product(request, id)
-        if resp == True:
+        pr = ProductServ()
+        resp = pr.update_v2(
+            id,
+            request.form['article'], 
+            request.form['product_name']
+            )
+        if resp:
             flash('Продукт оновлено!', category='success')
             # return redirect(url_for('Products.Product'))
-            return render_template(
-                'cabinet_client/Products/update_product.html',
-                user=current_user, product=product)
-
+            return redirect(f'/cabinet/products/update/{id}')
         else:
-            flash('Не вийшло!', category='warning')
-            return redirect(url_for('Products.Product'))
+            flash('Не вийшло!', category='error')
+            return redirect(f'/cabinet/products/update/{id}') 
     else:
-        product = prod_cntrl.load_product_item(id)
         print(f"Перевірка {product}")
         return render_template(
             'cabinet_client/Products/update_product.html',

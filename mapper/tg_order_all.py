@@ -159,7 +159,6 @@ class TextOrderAllInfo:
     
     def address_line(self, order):
         city_name = "Адреса Доставки:\n"
-        city_name += f"{order.city_name}, " if order.city_name else ""
         return f"{city_name}{order.warehouse_text}\n"
     
     

@@ -84,8 +84,7 @@ class TextOrderCourier:
         return text
     
     def address_line(self, order):
-        city_name = "" if order.city_name else "" # times change
-        return f"\n{city_name}{order.warehouse_text}\n"
+        return f"\n{order.warehouse_text}\n"
     
     def client_comment(self, order):
         if order.description:

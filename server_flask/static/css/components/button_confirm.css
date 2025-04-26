@@ -1,0 +1,46 @@
+/* Базові стилі для кнопки */
+.button {
+    padding: 6px 42px;
+    border: 2px solid transparent;
+    border-radius: 50px;  /* Округлені кути */
+    background-color: #ffffffaa; /* Основний колір кнопки */
+    color: #626870;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease; /* Плавні переходи */
+    outline: none;
+    box-shadow: 4px 4px 12px #00000010;
+}
+
+/* Модифікатор для первинної кнопки */
+.button--primary {
+    background-color: #ffffffaa;/* #626870; */
+    /* border-color: #ffffffaa; */
+}
+
+/* Модифікатор для великої кнопки */
+.button--large {
+    font-size: 16px;
+    padding: 6px 42px;
+}
+
+/* Модифікатор для кнопки при наведенні */
+.button:hover {
+    background-color: rgba(255, 254, 254, 0.667);
+    /* border-color: rgba(232, 232, 232, 0.667); */
+    transform: scale(1.05); /* Збільшення кнопки при наведенні */
+    box-shadow: 10px 10px 24px #f0eded24;
+}
+
+/* Модифікатор для кнопки при фокусі */
+.button:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.6); /* Тінь при фокусі */
+}
+
+/* Модифікатор для кнопки при натисканні */
+.button:active {
+    background-color: #004085;
+    border-color: #004085;
+    transform: scale(0.98); /* Зменшення кнопки при натисканні */
+}

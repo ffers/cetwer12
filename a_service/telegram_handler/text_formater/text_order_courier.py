@@ -89,7 +89,8 @@ class TextOrderCourier:
     
     def client_comment(self, order):
         if order.description:
-            return f"\n{self.store_color} Нотатка:\n" + order.description
+            description = order.description + "\n"
+            return f"\n{self.store_color} Нотатка:\n" + description
         else:
             return "\nНотаток від клієнта нема\n"
         
