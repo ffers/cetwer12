@@ -38,7 +38,7 @@ class PromToCrm():
 
 
     def parse_order(self, order):
-        prompay_status_id = self.add_prompay_status(order)
+        payment_status_id = self.add_prompay_status(order)
         payment_method_id = self.add_payment_method_id(order)
         # try:
         dict_parse = {
@@ -54,8 +54,8 @@ class PromToCrm():
             "WarehouseRef": None,
             "payment_method_id": payment_method_id,
             "sum_before_goods": self.add_sum_before_goods(order, payment_method_id),
-            "prompay_status_id": prompay_status_id,
-            "ordered_status_id": self.add_order_status(prompay_status_id),
+            "prompay_status_id": payment_status_id,
+            "ordered_status_id": self.add_order_status(payment_status_id),
             "full_price": self.format_float(order["full_price"]),
         }
         dict_parse.update(self.add_address_dict_np(order, dict_parse))

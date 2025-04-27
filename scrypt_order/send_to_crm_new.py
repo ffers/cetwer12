@@ -16,11 +16,11 @@ class SendToCrmNew:
         resp = self.milky_way("GET", url)
 
 
-    def get_orders(self, api_name, token, name):
+    def get_orders(self, api_name, token):
         url = f"v2/order/get_orders?"
         url += f"api_name={api_name}"
         url += f"&store_token={token}"
-        url += f"&store_name={name}"
+        # url += f"&store_name={name}"
         resp = self.milky_way("GET", url)
 
         ''' Короткий вариант

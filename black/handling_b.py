@@ -118,6 +118,12 @@ def replace_text_ttn(text, ttn_number):
     new_text = text.replace(";ТТН немає", f";{ttn_number}")
     return new_text
 
+'''
+поперше треба додати в обробку додавати інші группи
+по друге трееба шукати цифри по кількості
+доодати перевірку на вихідний store
+'''
+
 def search_invoice_ttn(data):
     print("Шукаю розетку ттн")
     invoice_pattern = r'(PRM-\d+|RMP-\d+)'

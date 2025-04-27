@@ -181,8 +181,22 @@ def _get_city_name(prom: dict) -> str:
 def _get_cpa(prom: dict) -> str | None:
     sum = 0
     for p in prom.get("products", []):
-        sum += prom.get("cpa_commission", {}).get("amount")  
-    return sum
+        cpa = prom.get("cpa_commission", {}).get("amount")  
+        cpa = format_float(cpa)
+        sum += cpa
+    return str(sum)
+
+def format_float(num_str):  
+    try:  
+        num = float(num_str)   
+        # Якщо число - ціле, додаємо ".00"
+        if num.is_integer():
+            num_dr = f"{int(num)}.00"
+            return float(num_dr)
+        else:
+            return float(num)
+    except ValueError:
+        return "Неправильний формат числа"
 
 
 
