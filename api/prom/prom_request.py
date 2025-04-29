@@ -111,7 +111,8 @@ class EvoClient(object):
     def get_order_id(self, order_id):
         url = '/api/v1/orders/{id}'
         method = 'GET'
-        return self.make_request(method, url.format(id=order_id))
+        resp = self.make_request(method, url.format(id=order_id))
+        return resp.get("order", None)
     
     def get_orders(self):
         orders = []

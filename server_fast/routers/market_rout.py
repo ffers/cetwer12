@@ -61,7 +61,7 @@ async def get_status_unpay(api_name: str,
             return {"message": "all order paid"}
         except Exception as e:
             logger.error(f'Error get status pay: {e}')
-            return {"error": f"Error get status unpaid"}
+            return {"error": f"Error get status unpaid {e}"}
     
 
 

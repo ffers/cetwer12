@@ -7,52 +7,60 @@ from DTO.order_dto import \
 from a_service import ProductServ
 import re
 
+from utils import OC_logger
 
+logger = OC_logger.oc_log('prom_mapper')
 
+class PromMapperException(Exception):
+     pass
 
 def promMapper(prom: dict, ProductServ) -> OrderDTO:
-    prod_serv = ProductServ()
-    payment_id = add_payment_method_id(prom)
-    return OrderDTO(
-        id=None,
-        timestamp=prom.get("date_created"),
-        phone=add_phone(prom),
-        email=prom.get("email"),
-        ttn=None,
-        ttn_ref=None,
-        client_firstname=prom.get("client_first_name"),
-        client_lastname=prom.get("client_last_name"),
-        client_surname=_safe(prom.get("client_second_name")),
-        delivery_option=_get_delivery_name(prom),
-        city_name=_get_city_name(prom),
-        city_ref=None,
-        region=None,
-        area=None,
-        warehouse_option=None,
-        warehouse_text=prom.get("delivery_address"),
-        warehouse_ref=_get_ttn_ref(prom),
-        sum_price=_parse_price(prom["full_price"]),
-        sum_before_goods=None,
-        description=prom.get("client_notes", None),
-        description_delivery=None,
-        cpa_commission=_get_cpa(prom),
-        client_id=prom.get("client_id"),
-        send_time=None,
-        order_id_sources=None,
-        order_code=f"P-{prom.get('id')}",
-        ordered_status_id=10,
-        warehouse_method_id=None,
-        source_order_id=2,
-        payment_method_id=payment_id,
-        payment_status_id=add_prompay_status(payment_id, prom),
-        delivery_method_id=add_delivery_method(prom),
-        author_id=55,
-        recipient=_map_recipient(prom),
-        recipient_id=None,
-        costumer=_map_costumer(prom),
-        costumer_id=None,
-        ordered_product=_map_products(prom, prod_serv)
-    )
+    try:
+        prod_serv = ProductServ()
+        payment_id = add_payment_method_id(prom)
+        return OrderDTO(
+            id=None,
+            timestamp=prom.get("date_created"),
+            phone=add_phone(prom),
+            email=prom.get("email"),
+            ttn=None,
+            ttn_ref=None,
+            client_firstname=prom.get("client_first_name"),
+            client_lastname=prom.get("client_last_name"),
+            client_surname=_safe(prom.get("client_second_name")),
+            delivery_option=_get_delivery_name(prom),
+            city_name=_get_city_name(prom),
+            city_ref=None,
+            region=None,
+            area=None,
+            warehouse_option=None,
+            warehouse_text=prom.get("delivery_address"),
+            warehouse_ref=_get_ttn_ref(prom),
+            sum_price=_parse_price(prom["full_price"]),
+            sum_before_goods=None,
+            description=prom.get("client_notes", None),
+            description_delivery=None,
+            cpa_commission=_get_cpa(prom),
+            client_id=prom.get("client_id"),
+            send_time=None,
+            order_id_sources=None,
+            order_code=f"P-{prom.get('id')}",
+            ordered_status_id=10,
+            warehouse_method_id=None,
+            source_order_id=2,
+            payment_method_id=payment_id,
+            payment_status_id=add_prompay_status(payment_id, prom),
+            delivery_method_id=add_delivery_method(prom),
+            author_id=55,
+            recipient=_map_recipient(prom),
+            recipient_id=None,
+            costumer=_map_costumer(prom),
+            costumer_id=None,
+            ordered_product=_map_products(prom, prod_serv)
+        )
+    except Exception as e:
+         logger.error(f'{e}')
+         raise PromMapperException(f'Помилка обробкі ордера')
 
 def add_phone(order):
         draft_phone = order['phone']

@@ -61,14 +61,19 @@ class GetOrderStore(Handler):
     def execute(self, order):
         self.logger.info(f'Перевіряємо замовлення: {order.order_code}')
         order_store = self.store.get_order(order.order_code)
+        self.logger.info(f'Ордер тестові данні: {order_store}')
+        return self.order_mapper(order_store, order)
+
+    def order_mapper(self, order_store, order):
         order_store = promMapper(order_store, ProductServ)
         if not order_store:
             self.logger.error(f'Такого ордера нема: {order.order_code}')
-            raise OrderNotFoundException(f'Order not found: {order.order_code}')
+            raise OrderNotFoundException(f'Order not found in store: {order.order_code}')
         elif order_store.payment_status_id == 1:
             self.logger.info(f'Цей ордер оплачено: {order.order_code}')
             return True
         else:
+            self.logger.info(f'Цей ордер ще не оплачено: {order.order_code}')
             raise OrderNotPaidException(f'Order not paid: {order.order_code}')
         
         
