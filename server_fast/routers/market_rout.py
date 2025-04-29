@@ -9,6 +9,7 @@ from server_flask.flask_app import flask_app, jsonify
 from utils import OC_logger
 
 from ..dependencies import get_token_header 
+from exceptions.order_exception import AllOrderPayException
 
 
 
@@ -43,8 +44,8 @@ async def get_orders(api_name: str,
             logger.error(f'Error get orders: {e}')
             return {"message": "Get orders Error"}
     
-@router.get("/get_status_pay")
-async def get_status_pay(api_name: str,
+@router.get("/get_status_unpay")
+async def get_status_unpay(api_name: str,
                      store_token: str | None = Query(None)
                      ):
     logger = OC_logger.oc_log('status_unpay')
@@ -55,9 +56,12 @@ async def get_status_pay(api_name: str,
             if result:
                 return {"message": "Order get successfuly"}
             return {"message": "All the orders have alredy been download"}
+        except AllOrderPayException as e:
+            logger.info(f'{e}')
+            return {"message": "all order paid"}
         except Exception as e:
             logger.error(f'Error get status pay: {e}')
-            return {"message": "Error get status pay"}
+            return {"error": f"Error get status unpaid"}
     
 
 

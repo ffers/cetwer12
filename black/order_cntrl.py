@@ -78,11 +78,8 @@ class OrderCntrl:
         self.order_serv = OrderServ()
         self.evo = EvoClient
 
-    def status_payment_search_times(self, api_name, store_token):
-        return self.order_serv.status_payment_search_times(
-            api_name, store_token, EvoClient, RozetMain
-            )
     
+
     def load_orders_store(self, api_name, token):
         return self.order_serv.load_orders_store(self, api_name, token, EvoClient, RozetMain)
         

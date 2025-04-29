@@ -196,7 +196,7 @@ class OrderServ:
             return {"success": "ok", "order": "Store empty"}
         
 
-    def status_payment_search_times(self, api_name, token, EvoClient, RozetMain): # треба буде виправити 
+    def get_status_unpay(self, api_name, token, EvoClient, RozetMain): # треба буде виправити 
         orders = self.order_rep.load_unpaid_prom_orders()
         if not orders:
             self.logger.info(f'Несплачені ордери відсутні.')
