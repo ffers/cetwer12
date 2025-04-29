@@ -6,7 +6,7 @@ from repository import OrderRep
 from mapper import promMapper
 from a_service.product_serv import ProductServ
 from a_service.telegram_service import TgServNew
-
+from exceptions.order_exception import *
 '''
 status оплати за яким принципом відслідковувати
 Замовленя нове, або редагування 
@@ -23,16 +23,11 @@ status оплати за яким принципом відслідковува�
 якщо замовленя віда треба це знати, 
 ввикористовувати окреему таблицю для позначення
 звідки ордер
+ордер має источник 
+прописувати ордеру з якого конкретно стора 
 '''
 
-class OrderNotFoundException(Exception):
-    pass
 
-class OrderNotPaidException(Exception):
-    pass
-
-class OrderNotUpdateStatusException(Exception):
-    pass
 
 class TGsendMessageException(Exception):
     pass
@@ -51,7 +46,7 @@ class Handler:
         self.repo = Repo()
         self.store = OrderApi(api_name, token, EvoClient, RozetMain)
         self.tg = TgServNew
-        self.logger = OC_logger.oc_log('order_service.unpay')
+        self.logger = OC_logger.oc_log('order_serv')
         
 
     def execute(self, data):
@@ -61,7 +56,6 @@ class GetOrderStore(Handler):
     def execute(self, order):
         self.logger.info(f'Перевіряємо замовлення: {order.order_code}')
         order_store = self.store.get_order(order.order_code)
-        self.logger.info(f'Ордер тестові данні: {order_store}')
         return self.order_mapper(order_store, order)
 
     def order_mapper(self, order_store, order):

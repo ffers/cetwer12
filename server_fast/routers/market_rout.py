@@ -9,9 +9,9 @@ from server_flask.flask_app import flask_app, jsonify
 from utils import OC_logger
 
 from ..dependencies import get_token_header 
-from exceptions.order_exception import AllOrderPayException
+from exceptions.order_exception import *
 
-
+logger = OC_logger.oc_log('market_rout')
 
 router = APIRouter(
     tags=["order"],
@@ -30,7 +30,6 @@ router = APIRouter(
 @router.get("/get_orders")
 async def get_orders(api_name: str,
                      store_token: str | None = Query(None)):
-    logger = OC_logger.oc_log('get_orders')
     with flask_app.app_context():
         try:
             order_cntrl = OrderServ()
@@ -48,7 +47,6 @@ async def get_orders(api_name: str,
 async def get_status_unpay(api_name: str,
                      store_token: str | None = Query(None)
                      ):
-    logger = OC_logger.oc_log('status_unpay')
     with flask_app.app_context():
         try:
             order_cntrl = OrderServ()
@@ -57,11 +55,12 @@ async def get_status_unpay(api_name: str,
                 return {"message": "Order get successfuly"}
             return {"message": "All the orders have alredy been download"}
         except AllOrderPayException as e:
-            logger.info(f'{e}')
             return {"message": "all order paid"}
+        except OrderNotPaidException as e:
+            return {"info": f"Error get status unpaid"}
         except Exception as e:
-            logger.error(f'Error get status pay: {e}')
-            return {"error": f"Error get status unpaid {e}"}
+            logger.error(f'Unhandled error: {e}')
+            return {"error": f"Error get status unpaid"}
     
 
 

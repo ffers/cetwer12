@@ -40,11 +40,11 @@ class OC_logger:
 
     @staticmethod
     def oc_log(name_log: str="app_asx") -> logging.Logger:
-        file_path = f"log/{name_log}.log"
+        file_path = f"log/logs.log"
         error_path = "log/error.log"
 
-        if file_path in OC_logger._loggers:
-            return OC_logger._loggers[file_path]
+        if name_log in OC_logger._loggers:
+            return OC_logger._loggers[name_log]
 
         Path("log").mkdir(exist_ok=True)
 

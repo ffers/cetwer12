@@ -91,10 +91,11 @@ def load_user(id):
 
 @flask_app.before_request
 def log_request():
-    logger_access.info(
-        f"{request.remote_addr} {request.method} {request.path} "
-        f"params={dict(request.args)} agent={request.headers.get('User-Agent')}"
-    )
+    pass
+    # logger_access.info(
+    #     f"{request.remote_addr} {request.method} {request.path} "
+    #     f"params={dict(request.args)} agent={request.headers.get('User-Agent')}"
+    # )
 
 @flask_app.before_request
 def block_bots():
@@ -106,19 +107,19 @@ def block_bots():
     ):
         return "⛔ Заборонено", 403
 
-@flask_app.after_request
-def log_response(response):
-    response.direct_passthrough = False
+# @flask_app.after_request
+# def log_response(response):
+#     response.direct_passthrough = False
 
-    log_data = {
-        "status": response.status_code,
-        "path": request.path,
-        "method": request.method,
-        "response": response.get_data(as_text=False).decode("utf-8", errors="replace")[:500]
-    # обрізано
-    }
-    logger.info(f"API response: {log_data}")
-    return response
+#     log_data = {
+#         "status": response.status_code,
+#         "path": request.path,
+#         "method": request.method,
+#         "response": response.get_data(as_text=False).decode("utf-8", errors="replace")[:500]
+#     # обрізано
+#     }
+#     logger.info(f"API response: {log_data}")
+#     return response
 
 @flask_app.before_request
 def detect_scanning():
