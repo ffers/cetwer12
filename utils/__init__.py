@@ -10,3 +10,4 @@ from .stub import Stub
 from .ordered_product_session import OrderedProductSession  
 from .wrapper import wrapper
 from .errors import handle_error
+from .work_time_cntrl_copy import WorkTimeCntrl

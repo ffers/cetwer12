@@ -2,11 +2,14 @@
 from fastapi import APIRouter, Depends, \
     HTTPException, Query
 
-from black.order_cntrl import OrderCntrl
+from a_service.order_service import OrderServ
+from api import EvoClient, RozetMain
 from server_flask.flask_app import flask_app, jsonify
 
+from utils import OC_logger
 
 from ..dependencies import get_token_header 
+
 
 
 router = APIRouter(
@@ -26,13 +29,37 @@ router = APIRouter(
 @router.get("/get_orders")
 async def get_orders(api_name: str,
                      store_token: str | None = Query(None)):
+    logger = OC_logger.oc_log('get_orders')
     with flask_app.app_context():
-        order_cntrl = OrderCntrl()
-        result = order_cntrl.load_orders_store(api_name, store_token) 
-        print("Get orders: ", result)
-        if result:
-            return {"message": "Order get successfuly"}
-        return {"message": "All the orders have alredy been download"}
+        try:
+            order_cntrl = OrderServ()
+            result = order_cntrl.load_orders_store(api_name, store_token, EvoClient, RozetMain) 
+            print("Get orders: ", result)
+            if result:
+                logger.info(f'Загружено ордер')
+                return {"message": "Order get successfuly"}
+            return {"message": "All the orders have alredy been download"}
+        except Exception as e:
+            logger.error(f'Error get orders: {e}')
+            return {"message": "Get orders Error"}
+    
+@router.get("/get_status_pay")
+async def get_status_pay(api_name: str,
+                     store_token: str | None = Query(None)
+                     ):
+    logger = OC_logger.oc_log('status_unpay')
+    with flask_app.app_context():
+        try:
+            order_cntrl = OrderServ()
+            result = order_cntrl.get_status_unpay(api_name, store_token, EvoClient, RozetMain) 
+            if result:
+                return {"message": "Order get successfuly"}
+            return {"message": "All the orders have alredy been download"}
+        except Exception as e:
+            logger.error(f'Error get status pay: {e}')
+            return {"message": "Error get status pay"}
+    
+
 
 
 # @router.get("/")

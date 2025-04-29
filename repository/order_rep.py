@@ -6,8 +6,11 @@ from datetime import datetime, timedelta
 from sqlalchemy.exc import IntegrityError
 from .exception_serv import OrderAlreadyExistsError
 
+from utils import OC_logger
 
 class OrderRep:
+    def __init__(self):
+        self.logger = OC_logger.oc_log('order_rep')
 
     def my_time(self):
         yield (datetime.utcnow())
@@ -88,6 +91,19 @@ class OrderRep:
         db.session.commit()
         db.session.refresh(order)
         return order
+    
+    def update_payment_status(self, order_id, status_id):
+        order = self.load_item(order_id)
+        try:
+            order.payment_status_id = status_id
+            db.session.commit()
+            self.logger.info(f'Status payment change succes - id: {order_id}, status: {status_id}')
+            return True
+        except Exception as e:
+            db.session.rollback()
+            self.logger.error(f'Error: {e}')
+            raise ValueError('Помилка при оновленні статусу оплати в реп')
+        
 
     def update_ordered_product(self, order_id, products_dto):
         try:
@@ -174,8 +190,12 @@ class OrderRep:
 
 
     def load_item(self, order_id):
-        item = Orders.query.get_or_404(int(order_id))
-        return item
+        try:
+            item = Orders.query.get_or_404(int(order_id))
+            return item
+        except Exception as e:
+            self.logger.error(f'Невдалося завантажити ордер id: {order_id}')
+            raise ValueError('Нема такого замовлення')
 
     def load_item_all(self):
         item = Orders.query.all()
@@ -231,7 +251,11 @@ class OrderRep:
 
     def load_all_for_searh_data(self, search_param, search_value):
         if search_value is not None:
-            items = Orders.query.filter_by(**{search_param: search_value}).order_by(desc(Orders.timestamp)).all()
+            items = Orders.query.filter_by(
+                **{search_param: search_value}
+                ).order_by(
+                    desc(Orders.timestamp)
+                    ).all()
         else:
             items = Orders.query.order_by(desc(Orders.timestamp)).all()
         return items
@@ -256,6 +280,15 @@ class OrderRep:
             Orders.delivery_method_id == 2
                                    ).all()
         return item
+    
+    def load_unpaid_prom_orders(self):
+            items = Orders.query.filter(
+                Orders.ordered_status_id.in_([1, 10]),
+                Orders.payment_method_id == 5,
+                Orders.payment_status_id == 2
+            ).all()
+            return items
+
 
     def add_ttn_crm(self, id, ttn):
         try:

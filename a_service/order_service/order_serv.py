@@ -1,16 +1,17 @@
 import random
 from flask import jsonify
-from utils import wrapper
+from utils import wrapper, OC_logger
 from utils.my_time_util import my_time
 
 from DTO import OrderDTO
-from exceptions import OrderAlreadyExistsError
+from exceptions.order_exception import *
 from repository import OrderRep, RecipientRep, CostumerRep
 
 from .client_serv import OrderProcessingPipeline
 from .status_new_with_payment import StatusNewWithPaidPipline
 from .order_map_store_factory import OrderMapStoreFactory 
 from .order_api_process import OrderApi
+from .handlers.unpay import Unpay
 
 from mapper import TextOrderManager 
 from ..product_serv import ProductServ
@@ -40,6 +41,12 @@ from copy import deepcopy
 '''
 Пошук клієнта по телефону якщл такий є зробити відмітку скільки раз замовляв
 '''
+'''
+ # по суті сюде треба передати при створені репозиторій 
+ та інші залежності
+'''
+
+
 
 class OrderServ:
     def __init__(self):  
@@ -49,6 +56,8 @@ class OrderServ:
         self.prod_serv = ProductServ()
         self.map_ord = OrderMapStoreFactory
         self.tg = TgServNew()
+        self.unpay = Unpay()
+        self.logger = OC_logger.oc_log('order_serv')
 
     def generate_order_code(self, prefix='ASX'):
         digits = [random.choice('0123456789') for _ in range(6)]
@@ -171,9 +180,9 @@ class OrderServ:
     
 
     @wrapper()
-    def load_orders_store(self, api_name, token, OrderCntrl, TelegramCntrl, EvoClient, RozetMain):
+    def load_orders_store(self, api_name, token, EvoClient, RozetMain):
         resp = {}
-        store = OrderApi(api_name, token, OrderCntrl, TelegramCntrl, EvoClient, RozetMain)
+        store = OrderApi(api_name, token, EvoClient, RozetMain)
         list_order = store.get_orders()
         print("load_orders_store:", list_order)
         if list_order:
@@ -185,6 +194,30 @@ class OrderServ:
             return resp 
         else:
             return {"success": "ok", "order": "Store empty"}
+        
+
+    def status_payment_search_times(self, api_name, token, EvoClient, RozetMain): # треба буде виправити 
+        orders = self.order_rep.load_unpaid_prom_orders()
+        if not orders:
+            self.logger.info(f'Несплачені ордери відсутні.')
+            raise AllOrderPayException('Несплачені ордери відсутні.')
+        unpay_build =  Unpay()
+        for order in orders:
+            success = unpay_build.build(
+                order, 
+                api_name, token,
+                EvoClient, RozetMain, OrderRep,
+                TgServNew()
+                )
+            if not success:
+                self.logger.error(f'Не вдалося оновити ордер {order.order_code}')
+                raise ValueError(f'Не вдалося оновити ордер {order.order_code}')
+            self.logger.info(f'Статус оплати змінено: {order.order_code}')
+        return True
+        
+            
+
+
 
     def load_status_id(self, id):
         if id == 10:

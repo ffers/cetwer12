@@ -1,6 +1,7 @@
 import os, requests, json, sys, re
 from dotenv import load_dotenv
 from intarfaces.send_message_int import MessagingInterface
+
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
 

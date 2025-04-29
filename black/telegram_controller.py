@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from api import tg_api
+from api.telegram import TgClient
 from utils import  OC_logger
 
 
@@ -23,48 +23,49 @@ class TelegramController():
         self.chat_id_courier = os.getenv("CH_ID_CORECTOR")
         self.env = os.getenv("ENV")
         self.logger = OC_logger.oc_log("TelegramController")
+        self.tg_api = TgClient()
 
 
     def sendPhoto(self, id_photo):
         chat_list = [self.chat_id_rozet, self.chat_id_np]
         resp = None
         for chat in chat_list:
-            resp = tg_api.sendPhoto(chat, id_photo)
+            resp = self.tg_api.sendPhoto(chat, id_photo)
             print(resp)
         return resp
 
     def sendMessage(self, chat_id, text, keyboard_json=None):
         if self.env == "dev":
-            return tg_api.send_message_f("-421982888", text, keyboard_json)
-        resp = tg_api.send_message_f(chat_id, text, keyboard_json)
+            return self.tg_api.send_message_f("-421982888", text, keyboard_json)
+        resp = self.tg_api.send_message_f(chat_id, text, keyboard_json)
         return resp
 
     def answerCallbackQuery(self, callback_query_id: str, text: str) -> bool:
-        resp = tg_api.answerCallbackQuery(callback_query_id, text)
+        resp = self.tg_api.answerCallbackQuery(callback_query_id, text)
         return resp
 
     def forceReply(self, chat_id, callback_query_id=None, text=None):
-        resp = tg_api.forceReply(chat_id, callback_query_id, text)
+        resp = self.tg_api.forceReply(chat_id, callback_query_id, text)
         return resp
 
     def editMessageText(self, chat_id, message_id, text):
-        resp = tg_api.editMessageText(chat_id, message_id, text)
+        resp = self.tg_api.editMessageText(chat_id, message_id, text)
         return resp
 
     def deleteMessage(self, chat_id, message_id):
-        resp = tg_api.deleteMessage(chat_id, message_id)
+        resp = self.tg_api.deleteMessage(chat_id, message_id)
         return resp
 
     def keyboard_func(self):
-        resp = tg_api.keyboard_func()
+        resp = self.tg_api.keyboard_func()
         return resp
 
     def keyboard_generate(self,  text1, callback_data1, text2=None, callback_data2=None):
-        resp = tg_api.keyboard_generate(text1, callback_data1, text2, callback_data2)
+        resp = self.tg_api.keyboard_generate(text1, callback_data1, text2, callback_data2)
         return resp
 
     def loadPhoto(self, chat_id):
-        return tg_api.loadPhoto(chat_id)
+        return self.tg_api.loadPhoto(chat_id)
     
     def black_pic(self):
         id_photo = 'AgACAgIAAxkBAAIMl2YWFuaONHD9_7SWvzDiiK8vmNQSAAK31jEbGsoISBKbThvzHGUpAQADAgADbQADNAQ'

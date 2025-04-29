@@ -76,6 +76,15 @@ class OrderCntrl:
         self.ord_rep = OrderRep()
         self.status_procces = StatusProcess
         self.order_serv = OrderServ()
+        self.evo = EvoClient
+
+    def status_payment_search_times(self, api_name, store_token):
+        return self.order_serv.status_payment_search_times(
+            api_name, store_token, EvoClient, RozetMain
+            )
+    
+    def load_orders_store(self, api_name, token):
+        return self.order_serv.load_orders_store(self, api_name, token, EvoClient, RozetMain)
         
     def update_history(self, order_id, comment):
         resp = self.order_serv.update_history(order_id, comment)
@@ -127,13 +136,13 @@ class OrderCntrl:
         order = self.ord_rep.load_for_order_code(order_code)
         return order
 
-    def load_orders_store(self, api_name, token):
-        return self.order_serv.load_orders_store(api_name,
-                                                token,
-                                                OrderCntrl, 
-                                                TelegramController, 
-                                                EvoClient,
-                                                RozetMain)
+    # def load_orders_store(self, api_name, token):
+    #     return self.order_serv.load_orders_store(api_name,
+    #                                             token,
+    #                                             OrderCntrl, 
+    #                                             TelegramController, 
+    #                                             EvoClient,
+    #                                             RozetMain)
 
     def update_client_info(self):
         return self.order_serv.update_client_info()

@@ -15,9 +15,12 @@
 #  12 | Виконано           |
 #  13 | Тест
 #  14 | Повернення
+#  15 | Редагування
 
 
-
+'''
+Дуже потужно працюʼє цепочка обовʼязків
+'''
 
 class Handler:
     def __init__(self, next_handler=None):
@@ -36,27 +39,31 @@ class Handler:
 
 class New(Handler):
     def process(self, repo):
-        resp = repo.load_status_id(10)
-
-        return resp
+        orders = repo.load_status_id(10)
+        return orders
         
 class Paid(Handler):
     def process(self, repo):
-        resp = repo.load_status_id(3)
-
-        return resp
+        orders = repo.load_status_id(3)
+        return orders
 
 class Unpaid(Handler):
     def process(self, repo):
-        resp = repo.load_status_id(4)
-      
-        return resp
+        orders = repo.load_status_id(4)
+        return orders
+
+class Editing(Handler):
+    def process(self, repo):
+        orders = repo.load_status_id(1)
+        return orders
 
 class StatusNewWithPaidPipline:
     def __init__(self):
         self.pipeline = New(
                 Paid(
-                    Unpaid()
+                    Unpaid(
+                        Editing()
+                    )
                 )
         )
 
