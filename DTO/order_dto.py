@@ -69,6 +69,7 @@ class OrderDTO(BaseModel):
     recipient_id: int | None
     costumer: CostumerDto
     costumer_id: int | None
+    store_id: int | None
     ordered_product: List[ProductDto]
     model_config = {
         "from_attributes": True

@@ -12,6 +12,7 @@ from .status_new_with_payment import StatusNewWithPaidPipline
 from .order_map_store_factory import OrderMapStoreFactory 
 from .order_api_process import OrderApi
 from .handlers.unpay import Unpay
+from .handlers.store_load_order import load_orders_store
 
 from mapper import TextOrderManager 
 from ..product_serv import ProductServ
@@ -49,7 +50,7 @@ from copy import deepcopy
 
 
 class OrderServ:
-    def __init__(self):  
+    def __init__(self, store_repo=None):  
         self.order_rep = OrderRep()
         self.costum_rep = CostumerRep()
         self.recip_rep = RecipientRep()
@@ -58,6 +59,7 @@ class OrderServ:
         self.tg = TgServNew()
         self.unpay = Unpay()
         self.logger = OC_logger.oc_log('order_serv')
+        self.store_repo = store_repo
 
     def generate_order_code(self, prefix='ASX'):
         digits = [random.choice('0123456789') for _ in range(6)]
@@ -87,8 +89,6 @@ class OrderServ:
         # except:
         #     print("create_client:", resp)
         #     return False
-
-
 
     def observer_order(self, orders, telegram_cntrl):
         for order in orders:
@@ -195,17 +195,31 @@ class OrderServ:
         else:
             return {"success": "ok", "order": "Store empty"}
         
+    def load_orders_store_v2(self, api_token, token, EvoClient, RozetMain):
 
-    def get_status_unpay(self, api_name, token, EvoClient, RozetMain): # треба буде виправити 
-        orders = self.order_rep.load_unpaid_prom_orders()
+        return load_orders_store(
+            api_token, 
+            token, 
+            EvoClient, 
+            RozetMain, 
+            OrderApi, 
+            self.map_ord.factory, 
+            self.add_order3,
+            self.store_repo
+            )
+        
+
+    def get_status_unpay(self, item_token, token, EvoClient, RozetMain): # треба буде виправити 
+        store_data = self.store_repo.get_token(item_token)
+        orders = self.order_rep.load_unpaid_prom_orders(store_data.id)
         if not orders:
             self.logger.info(f'Несплачені ордери відсутні.')
             raise AllOrderPayException('Несплачені ордери відсутні.')
         unpay_build =  Unpay()
         for order in orders:
-            success = unpay_build.build(
+            success = unpay_build.build( 
                 order, 
-                api_name, token,
+                store_data, token,
                 EvoClient, RozetMain, OrderRep,
                 TgServNew()
                 )

@@ -152,7 +152,7 @@ class TextOrderAllInfo:
     
     
     def order_number_description(self, order):
-        text = f"{self.store_color} {order.source_order.name} "
+        text = f"{self.store_color} {order.store.name} "
         text += f"Замовлення № {order.order_code}\n"
         return text
 

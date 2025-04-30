@@ -36,7 +36,7 @@ class TGsendMessageException(Exception):
 class Handler:
     def __init__(
             self, 
-            api_name, 
+            store_data, 
             token, 
             EvoClient, 
             RozetMain, 
@@ -44,9 +44,10 @@ class Handler:
             TgServNew: TgServNew
             ):
         self.repo = Repo()
-        self.store = OrderApi(api_name, token, EvoClient, RozetMain)
+        self.store = OrderApi(store_data.api, token, EvoClient, RozetMain)
         self.tg = TgServNew
         self.logger = OC_logger.oc_log('order_serv')
+        self.store_id = store_data.id
         
 
     def execute(self, data):
@@ -59,7 +60,7 @@ class GetOrderStore(Handler):
         return self.order_mapper(order_store, order)
 
     def order_mapper(self, order_store, order):
-        order_store = promMapper(order_store, ProductServ)
+        order_store = promMapper(order_store, ProductServ, self.store_id)
         if not order_store:
             self.logger.error(f'Такого ордера нема: {order.order_code}')
             raise OrderNotFoundException(f'Order not found in store: {order.order_code}')
@@ -99,8 +100,8 @@ class Unpay:
         self.commands.append(command_class)
         return self
 
-    def build(self, order, api_name, token, EvoClient, RozetMain, Repo, TGServ):  
+    def build(self, order, store_data, token, EvoClient, RozetMain, Repo, TGServ):  
             for cmd_class in self.commands:
                 print("Працює: ", cmd_class.__name__)
-                pointer = cmd_class(api_name, token, EvoClient, RozetMain, Repo, TGServ).execute(order)
+                pointer = cmd_class(store_data, token, EvoClient, RozetMain, Repo, TGServ).execute(order)
             return pointer

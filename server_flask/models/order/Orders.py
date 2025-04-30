@@ -49,6 +49,9 @@ class Orders(db.Model):
     source_order = db.relationship("SourceOrder", back_populates="orders")
     source_order_id = db.Column(db.Integer, db.ForeignKey(
         'source_order.id', name='fk_orders_source_order_id'))
+    store = db.relationship("Store", back_populates="orders")
+    store_id = db.Column(db.Integer, db.ForeignKey(
+        'store.id', name='fk_order_store_id'))
     payment_method = db.relationship("PaymentMethod", back_populates="orders")
     payment_method_id = db.Column(db.Integer, db.ForeignKey(
         'payment_method.id', name='fk_orders_payment_method_id'))

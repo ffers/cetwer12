@@ -34,7 +34,7 @@
     <table class="table table-hover table-striped " >
       <thead>
         <tr >
-          <th scope="col">ID</th>
+          <th scope="col"></th>
           <th scope="col"><input class="form-check-input item_check" type="checkbox" id="flexCheckDefault"></th>
           <th scope="col">Артикул</th>
           <th scope="col">Сумма</th>
@@ -65,13 +65,13 @@
           <td >{% for product in order.ordered_product %}
             {{product.products.article}}-{{product.quantity}}шт. <br>{% endfor %}</td>
           <td>{{order.sum_price}}</td>
-          <td>{% if order.description %}{{order.description|wordwrap(15)}}{% else %}Нотаток нема{% endif %}</td>
+          <td>{{order.description or ''}}</td>
           <!-- <td>{% if order.city_name %}{{order.city_name}},{% endif %} {{order.warehouse_text}}</td> -->
           <td>{{order.delivery_method.name}}</td>
           <td>{{order.phone}}{% if order.ttn %};{{order.ttn}}{% else %}{% endif %}</td>
           <td>{{order.client_lastname}} {{order.client_firstname}}</td>
           <td>{{order.delivery_order.number_registr}}</td>
-          <td>{{order.payment_method.name}}</td>
+          <td>{{order.payment_method.name}} - {{order.payment_status.name}}</td>
           <td>{{order.source_order.name}}</td>
           <td>{{order.order_code}}</td>
           <td><a href="orders/confirmed/{{order.id}}">{{order.ordered_status.name}}</a></td>

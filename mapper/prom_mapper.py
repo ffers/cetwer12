@@ -14,7 +14,7 @@ logger = OC_logger.oc_log('prom_mapper')
 class PromMapperException(Exception):
      pass
 
-def promMapper(prom: dict, ProductServ) -> OrderDTO:
+def promMapper(prom: dict, ProductServ, store_id) -> OrderDTO:
     try:
         prod_serv = ProductServ()
         payment_id = add_payment_method_id(prom)
@@ -56,9 +56,11 @@ def promMapper(prom: dict, ProductServ) -> OrderDTO:
             recipient_id=None,
             costumer=_map_costumer(prom),
             costumer_id=None,
+            store_id=None,
             ordered_product=_map_products(prom, prod_serv)
         )
     except Exception as e:
+         print(f"data = {prom}, type = {type(prom)}")
          logger.error(f'{e}')
          raise PromMapperException(f'Помилка обробкі ордера')
 
@@ -87,7 +89,7 @@ def _map_costumer(prom: dict) -> CostumerDto:
         first_name=c.get("first_name", ""),
         last_name=c.get("last_name", ""),
         second_name=_safe(c.get("second_name")),
-        phone=c["phone"],
+        phone=c.get('phone', ''),
         email=prom.get("email")
     )
 
@@ -98,7 +100,7 @@ def _map_recipient(prom: dict) -> RecipientDto:
         first_name=r.get("first_name", ""),
         last_name=r.get("last_name", ""),
         second_name=_safe(r.get("second_name")),
-        phone=r["phone"],
+        phone=r.get('phone', ''),
         email=None
     )
 

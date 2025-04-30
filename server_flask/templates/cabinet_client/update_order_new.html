@@ -73,6 +73,14 @@
 					{{order.ordered_status.name}}
 				</button></a>
 			</div> 
+			<div class="button-pult"><a href="#">
+				<button type="button" class="col-sm btn     my-sm-0"
+						style="color: #626870;">
+					<!-- Реєстр -->
+					{{order.delivery_order.number_registr or 'Не в реєстрі'}}
+				</button></a>
+			</div> 
+			
 			<!-- <div class="button-pult"><a href="#">
 				<button type="button" class="col-sm btn     my-sm-0"
 					style="color: #626870;">
@@ -114,9 +122,16 @@
 			style="margin-bottom: 200px;"
 		>
 
+
 		<div class="row"> 
 			<div class="col-sm">
-				<h3 style="text-align: center;" >Замовлення № <span 
+				<h3 style="text-align: center;" 
+					>Замовлення<footer><small class="text-muted">Джерело:</small></footer><div 
+					class="editable" 
+					data-id="1">{{ order.store.name or 'Необрано'}}</div>
+					<select class="d-none select2" data-id="1" name="store_id"></select>
+					
+					№ <span 
 					class="textToCopy" 
 					data-text="{{order.order_code}}">{{order.order_code}} 
 						<i class="fa-regular fa-copy"></i>
@@ -566,6 +581,8 @@
 		document.getElementById('del_reg').style.display = 'block';
 	
 	</script>
+
+	<script src="{{url_for('static', filename='javascript/update_order/store-select.js')}}"></script>
 	<script src="{{url_for('static', filename='javascript/update_order/add-button-product.js')}}"></script>
 	<script src="{{url_for('static', filename='javascript/update_order/newCalculateTotal.js')}}"></script>
 	<script src="{{url_for('static', filename='javascript/update_order/noties.js')}}"></script>

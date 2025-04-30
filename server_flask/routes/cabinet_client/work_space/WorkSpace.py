@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request, redirect
 from flask_login import login_required, current_user
-from flask_principal import Permission, RoleNeed
 from a_service import WorkSpaceServ
 
+from flask_principal import Permission, RoleNeed
 admin = RoleNeed('admin')
 admin_permission = Permission(admin)
 bp = Blueprint('Panel', __name__, template_folder='templates')

@@ -81,7 +81,7 @@ class OrderCntrl:
     
 
     def load_orders_store(self, api_name, token):
-        return self.order_serv.load_orders_store(self, api_name, token, EvoClient, RozetMain)
+        return self.order_serv.load_orders_store_v2(self, api_name, token, EvoClient, RozetMain)
         
     def update_history(self, order_id, comment):
         resp = self.order_serv.update_history(order_id, comment)

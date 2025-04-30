@@ -127,7 +127,9 @@ class EvoClient(object):
         url = f'/api/v1/orders/list?status={status}'
         method = 'GET'
         data = self.make_request(method, url)
+        print('load_orders', data)
         return data.get("orders", [])
+        
 
     def send_ttn(self, order_id, ttn, delivery_type):
         body = {

@@ -85,7 +85,7 @@ class SourceServ:
         self.commands = [
             CreateHandler,
             AddDiffHandler 
-            ]
+            ] 
 
     def add_command(self, command_class):
         self.commands.append(command_class)

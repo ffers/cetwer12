@@ -8,6 +8,10 @@
     margin: 0 auto 200px;
     width: 97%;
 }
+.d-none {
+    display: none !important;
+  }
+  
 
 body {
             font-family: Arial, sans-serif;

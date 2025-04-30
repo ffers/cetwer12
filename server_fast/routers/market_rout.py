@@ -1,10 +1,11 @@
 
 from fastapi import APIRouter, Depends, \
     HTTPException, Query
+from server_flask.flask_app import flask_app, jsonify
 
 from a_service.order_service import OrderServ
 from api import EvoClient, RozetMain
-from server_flask.flask_app import flask_app, jsonify
+from repository.store_sqlalchemy import StoreRepositorySQLAlchemy
 
 from utils import OC_logger
 
@@ -32,8 +33,8 @@ async def get_orders(api_name: str,
                      store_token: str | None = Query(None)):
     with flask_app.app_context():
         try:
-            order_cntrl = OrderServ()
-            result = order_cntrl.load_orders_store(api_name, store_token, EvoClient, RozetMain) 
+            order_cntrl = OrderServ(StoreRepositorySQLAlchemy())
+            result = order_cntrl.load_orders_store_v2(api_name, store_token, EvoClient, RozetMain) 
             print("Get orders: ", result)
             if result:
                 logger.info(f'Загружено ордер')
@@ -49,7 +50,7 @@ async def get_status_unpay(api_name: str,
                      ):
     with flask_app.app_context():
         try:
-            order_cntrl = OrderServ()
+            order_cntrl = OrderServ(StoreRepositorySQLAlchemy())
             result = order_cntrl.get_status_unpay(api_name, store_token, EvoClient, RozetMain) 
             if result:
                 return {"message": "Order get successfuly"}

@@ -79,7 +79,7 @@ class TextOrderCourier:
         return f"\n{order.phone};{ttn}\n"
     
     def order_number_description(self, order):
-        text = f"\n{self.store_color} {order.source_order.name} "
+        text = f"\n{self.store_color} {order.store.name} "
         text += f"Замовлення № {order.order_code}\n"
         return text
     

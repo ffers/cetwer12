@@ -50,6 +50,7 @@ class OrderFormMapper:
             recipient_id=form.get('recipient_id', None),
             costumer=costumer,
             costumer_id=form.get('costumer_id', None),
+            store_id=form.get('store_id', None),
             ordered_product=products
         )
 
@@ -63,6 +64,7 @@ class OrderFormMapper:
         order_data = session_data
         products = self._parse_products(form)
         sum_before_goods=self._sum_before_goods(form)
+        store_id = order_data.get('store_id')
 
         order_data.update({
             "phone": form.get('costumer_phone'),
@@ -85,6 +87,7 @@ class OrderFormMapper:
             "costumer": costumer.model_dump(),
             "recipient": recipient.model_dump(),
             "ordered_product": [p.model_dump() for p in products],
+            "store_id": form.get('store_id', store_id),
             "ordered_status_id": 1
         })
 

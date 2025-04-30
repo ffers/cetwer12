@@ -39,7 +39,8 @@ class OrderRep:
                         order_code=item.order_code,
                         costumer_id=item.costumer_id,
                         recipient_id=item.recipient_id,
-                        payment_status_id=item.payment_status_id
+                        payment_status_id=item.payment_status_id,
+                        store_id=item.store_id
                         )
             db.session.add(order)
             db.session.commit()
@@ -88,6 +89,7 @@ class OrderRep:
         order.author_id = order_dto.author_id
         order.recipient_id = order_dto.recipient_id
         order.costumer_id = order_dto.costumer_id
+        order.store_id = order_dto.store_id
         db.session.commit()
         db.session.refresh(order)
         return order
@@ -281,9 +283,10 @@ class OrderRep:
                                    ).all()
         return item
     
-    def load_unpaid_prom_orders(self):
+    def load_unpaid_prom_orders(self, store_id):
             items = Orders.query.filter(
                 Orders.ordered_status_id.in_([1, 10]),
+                Orders.store_id == store_id,
                 Orders.payment_method_id == 5,
                 Orders.payment_status_id == 2
             ).all()

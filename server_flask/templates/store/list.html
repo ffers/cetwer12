@@ -1,0 +1,36 @@
+
+{% extends 'layout/base.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+
+<!doctype html>
+<title>Store</title>
+<h1>Store List</h1>
+
+<div class="center">
+        <a href="{{ url_for('store.create') }}">Create New</a>
+        <ul>
+                {% if items %}
+            {% for item in items %}
+                <li>
+                    <strong>{{ item.id }}.</strong> —
+                    <strong>{{ item.name }}</strong> —
+                    
+                    {{ item.api or 'No api' }} —
+                    {{ item.token or 'No token'}} - 
+                <a href="{{ url_for('store.edit', item_id=item.id) }}">Edit</a>
+
+                
+                
+                </li>
+            {% endfor %}
+            {% else %}
+            'Not found'
+            {% endif %}
+        </ul>
+</div>
+
+{% endblock %}

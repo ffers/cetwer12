@@ -3,7 +3,6 @@
 {% block body %}
 
 	<div class="content">
-		<h1 style="text-align: center; color: #7d7f85;">Додайте Замовлення</h1>
 		<!-- <button type="button" class="btn btn-info" id="liveToastBtn">Show first toast</button>
 		<button type="button" class="btn btn-info" id="trigerToastLite">Show live toast</button> -->
 		
@@ -16,6 +15,16 @@
 		method="post"
 		style="margin-bottom: 200px;"
 		>
+		<h1 style="text-align: center; color: #7d7f85;">Додайте Замовлення</h1>
+		<div class="center">
+			<small class="text-muted">Джерело:</small></footer>
+			<div 
+				class="editable" 
+				data-id="1">{{ 'Необрано' }}
+			</div>
+			<select class="d-none select2" data-id="1" name="store_id"></select>
+		</div>
+		<br>
 		<input type="hidden" name="source_order_id" value="1">
 		<input type="hidden" name="order_status_id" value="10">
 		<input type="hidden" name="author_id" value="{{ user.id }}">
@@ -187,7 +196,7 @@
 
 
 </div>
-
+<script src="{{url_for('static', filename='javascript/update_order/store-select.js')}}"></script>
 <script src="{{url_for('static', filename='javascript/changeProductOldItem.js')}}"></script>
 <script src="{{url_for('static', filename='javascript/product/create_product.js')}}"></script>
 <script src="{{url_for('static', filename='javascript/add-select2.js')}}"></script>

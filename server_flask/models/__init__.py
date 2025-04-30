@@ -21,6 +21,7 @@ from .order.PaymentStatus import PaymentStatus
 from .order.TelegramOrdered import TelegramOrdered
 from .order.Costumer import Costumer
 from .order.Recipient import Recipient
+from .order.store_model import Store
 
 from .order.telegram_address_order.ConfirmedAddressTg import ConfirmedAddressTg
 from .order.telegram_address_order.NpAddressTg import NpAddressTg

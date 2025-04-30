@@ -14,7 +14,7 @@ class RozetkaMapper():
     def __init__(self, product_serv: ProductServ):
         self.product_serv = product_serv()  
  
-    def order(self, data: OrderRozetkaDTO) -> OrderDTO:
+    def order(self, data: OrderRozetkaDTO, store_id) -> OrderDTO:
         warehouse_text=(
             # f"{data.delivery.city.title} -" 
             f"{data.delivery.place_number} "
@@ -57,6 +57,7 @@ class RozetkaMapper():
             recipient_id=None,
             costumer=self.costumer(data),
             costumer_id=None,
+            store_id=store_id,
             client_firstname=data.user_title.first_name,
             client_lastname=data.user_title.last_name,
             client_surname=data.user_title.second_name
