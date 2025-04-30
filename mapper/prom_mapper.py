@@ -56,7 +56,7 @@ def promMapper(prom: dict, ProductServ, store_id) -> OrderDTO:
             recipient_id=None,
             costumer=_map_costumer(prom),
             costumer_id=None,
-            store_id=None,
+            store_id=store_id,
             ordered_product=_map_products(prom, prod_serv)
         )
     except Exception as e:
