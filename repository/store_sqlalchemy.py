@@ -1,9 +1,13 @@
-from server_flask.db import db
+
+
 from server_flask.models import Store as SQLItem
 from domain.models.store_dto import StoreDTO
 from domain.repositories.store_repo import ItemRepository
 
 class StoreRepositorySQLAlchemy(ItemRepository):
+    def __init__(self, session=None):
+        self.session = session
+
     def get_all(self):
         stores = SQLItem.query.all()
 
@@ -45,21 +49,21 @@ class StoreRepositorySQLAlchemy(ItemRepository):
             )
 
     def add(self, item: StoreDTO):
-        item = SQLItem(
+        sql_item = SQLItem(
             name=item.name, 
             api=item.api,
             token=item.token)
-        db.session.add(item)
-        db.session.commit()
+        self.session.add(sql_item)
+        self.session.commit()
 
     def update(self, item: StoreDTO):
         i = SQLItem.query.get_or_404(item.id)
         i.name = item.name
         i.api = item.api
         i.token = item.token
-        db.session.commit()
+        self.session.commit()
 
     def delete(self, item_id):
         i = SQLItem.query.get_or_404(item_id)
-        db.session.delete(i)
-        db.session.commit()
+        self.session.delete(i)
+        self.session.commit()

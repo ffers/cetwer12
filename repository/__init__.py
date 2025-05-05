@@ -14,4 +14,5 @@ from .receipt_rep import ReceiptRep, ShiftRep
 from .work_space_rep import WorkSpaceRep
 from .recipient_rep import RecipientRep
 from .costumer_rep import CostumerRep
+from .store_sqlalchemy import StoreRepositorySQLAlchemy
 

@@ -1,12 +1,13 @@
 
 
-from black.tg_answer_cntrl import OrderCntrl, SourAnCntrl, TelegramController, TgAnswerCntrl
+from black.tg_answer_cntrl import SourAnCntrl, TelegramController, TgAnswerCntrl
+from black import OrderCntrl
 from .lib.tg_lib import LibTG
 from server_flask.flask_app import flask_app
 import pytest
 
 class TestWorker:
-    await_button_tg = TgAnswerCntrl().await_tg_button
+    await_button_tg = TgAnswerCntrl(OrderCntrl()).await_tg_button
     
     def test_just_message(self):
         pointer = self.await_button_tg(LibTG.just_message)
@@ -29,9 +30,9 @@ class TestWorker:
         assert  pointer.resp == []
         assert  pointer.comment == None
 
-    def test_stock_courier(self):
+    def test_stock_courier_coment(self):
         with flask_app.app_context():
-            pointer = self.await_button_tg(LibTG.message_stock_courier)
+            pointer = self.await_button_tg(LibTG.message_stock_courier_coment)
             print(pointer)
             assert  pointer.chat == "courier"
             assert  pointer.cmd == "stock"
@@ -42,16 +43,27 @@ class TestWorker:
             assert  pointer.comment == None
 
     def test_take_courier(self):
+            with flask_app.app_context():
+                pointer = self.await_button_tg(LibTG.message_take_courier)
+                print(pointer)
+                assert  pointer.chat == "courier"
+                assert  pointer.cmd == "take_courier"
+                assert  pointer.text == "Ярик отдал на покрас\n45W1: -50\n"
+                assert  pointer.reply == "Don`t have respone."
+                assert  pointer.content == [{'article': '45W1', 'pack': 1, 'quantity': -50, 'crm': True}]
+                assert  pointer.resp == []
+                assert  pointer.comment == 'Ярик отдал на покрас\n'
+       
+
+    def test_arrival_courier(self):
         with flask_app.app_context():
-            pointer = self.await_button_tg(LibTG.message_take_courier)
+            pointer = self.await_button_tg(LibTG.message_stock_courier)
             print(pointer)
             assert  pointer.chat == "courier"
-            assert  pointer.cmd == "take_courier"
-            assert  pointer.text == "Ярик отдал на покрас\n45W1: -50\n"
-            assert  pointer.reply == "Don`t have respone."
-            assert  pointer.content == [{'article': '45W1', 'pack': 1, 'quantity': -50, 'crm': True}]
-            assert  pointer.resp == []
-            assert  pointer.comment == 'Ярик отдал на покрас\n'
+            assert  pointer.cmd == "stock"
+            assert  pointer.content[0].get("article") == "BX1"
+            assert pointer.comment == 'коробки\n'
+            
 
     def test_add_color_35_45(self):
         with flask_app.app_context():
@@ -167,7 +179,7 @@ class TestWorker:
 
     def test_search_6_numbers(self):
         with flask_app.app_context():
-            codes = ["ASX-351213", "R-841603966", 
+            codes = ["ASX-820635", "R-841603966", 
                      "318724837", "P-337489755"]
             data = LibTG.test_search_6_numbers
             resp = []
@@ -175,13 +187,17 @@ class TestWorker:
                 data["message"]["text"] = code
                 resp.append(self.await_button_tg(data))
                 print("Assert", resp)
+            print("Assert2", resp[0].text)
             assert len(resp) == 4  # 4 ChatData
 
             assert resp[0].cmd == "search_order_manager"
-            assert "PROM Замовлення № ASX-351213" in resp[0].text
+            assert "Замовлення № ASX-820635" in resp[0].text
 
             assert resp[1].content[0].id == 2500
-            assert "ROZETKA" in resp[1].text
+            assert "Замовлення № R-841603966" in resp[1].text
+            
+            assert resp[2].content[0].id == 2409
+            assert "Замовлення № 318724837" in resp[2].text
 
             assert resp[3].content == []  # останній — без замовлень
             assert "Немає замовлень" in resp[3].text

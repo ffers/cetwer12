@@ -108,7 +108,7 @@ class EvoClient(object):
             return None
   
 
-    def get_order_id(self, order_id):
+    def get_order(self, order_id):
         url = '/api/v1/orders/{id}'
         method = 'GET'
         resp = self.make_request(method, url.format(id=order_id))
@@ -118,9 +118,9 @@ class EvoClient(object):
         orders = []
         statuses = ("pending", "paid")
         for status in statuses:
-            orders.extend(self.load_orders(status))
+            orders.extend(self.load_orders(status)) 
         return orders
-
+  
 
     
     def load_orders(self, status): # треба переробити на різні статуси

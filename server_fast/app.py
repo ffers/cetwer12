@@ -10,7 +10,7 @@ from .dependencies import get_token_header
 import uvicorn, multiprocessing, logging
 import os
 
-from .routers import order, analitic
+from .routers import market, analitic
 from .routers import admin, button
 from .routers import check
  
@@ -31,7 +31,7 @@ app.add_middleware(BlockSuspiciousPathsMiddleware)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 app.include_router(
-    order,
+    market,
     prefix="/v2/order",
     tags=["order"], 
         )

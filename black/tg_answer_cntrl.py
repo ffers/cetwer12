@@ -8,22 +8,23 @@ from .add_order_to_crm import PromToCrm
 from .handling_b import search_reply_message
 from a_service.update_to_crm import up_to_srm
 from .telegram_controller import tg_cntrl, TelegramController
-from .order_cntrl import ord_cntrl, OrderCntrl
+
 from .analitic_cntrl.sour_an_cntrl import SourAnCntrl
 from a_service import TgAnswerSerw, ResponceDirector
 from .telegram_cntrl.tg_cash_cntrl import TgCashCntrl
 from a_service.order_service import OrderServ
 from utils import OC_logger
+from exceptions.order_exception import OrderNotFoundException
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
 ch_id_sk = os.getenv("CH_ID_SK")
 
 class TgAnswerCntrl:
-    def __init__(self):
+    def __init__(self, order_cntrl):
+        self.ord_cntrl = order_cntrl
         self.arrival = TgCashCntrl()
         self.serv = TgAnswerSerw()
-        self.order_cntrl = OrderCntrl()
         self.bot_color = BotProductSrv()
         self.send_order = CrmToTelegram()
         self.add_order = PromToCrm()
@@ -31,17 +32,17 @@ class TgAnswerCntrl:
         self.tg = TelegramController()
         self.log = OC_logger.oc_log("tg_answer_cntrl")
 
-    def await_order(self, order, flag=None, id=None):
-        # print(f"ДИвимось флаг {flag}")
-        resp = None
-        if flag == "prom_to_crm":
-            data_for_tg = self.send_order.manger(order)
-            resp = self.add_order.add_order(order, data_for_tg)
-        if flag == "update_to_crm":
-            resp = up_to_srm.manager(order)
-        else:
-            tg_serv.see_flag(order, flag)
-        return resp
+    # def await_order(self, order, flag=None, id=None):
+    #     # print(f"ДИвимось флаг {flag}")
+    #     resp = None
+    #     if flag == "prom_to_crm":
+    #         data_for_tg = self.send_order.manger(order)
+    #         resp = self.add_order.add_order(order, data_for_tg)
+    #     if flag == "update_to_crm":
+    #         resp = up_to_srm.manager(order)
+    #     else:
+    #         tg_serv.see_flag(order, flag)
+    #     return resp
 
     def await_interface(self, order_id):
         ttn_data = self.manager_ttn.create_ttn(order_id)
@@ -64,7 +65,7 @@ class TgAnswerCntrl:
     def await_tg_button(self, data):
         # try:
                 
-            result = ResponceDirector().construct(data, OrderCntrl=OrderCntrl,
+            result = ResponceDirector().construct(data, OrderCntrl=self.ord_cntrl,
                                                 SourAnCntrl=SourAnCntrl, 
                                                 TelegramCntrl=TelegramController,
                                                 OrderServ=OrderServ
@@ -110,7 +111,10 @@ class TgAnswerCntrl:
                 text_order, data_keyb, text_data_back = tg_serv.await_button_parse(data)
                 # print(f"need {key}")
                 order_id = tg_serv.search_order_number(text_order)
-                order_obj = ord_cntrl.load_for_order_code(order_id)
+                print('await:', order_id)
+                order_obj = self.ord_cntrl.load_for_order_code(order_id)
+                if not order_obj:
+                    raise OrderNotFoundException("await_button не знайшов ордер")
                 resp = self.defintion_status(data_keyb, order_obj.id)
                 # tg_cntrl.deleteMessage(tg_cntrl.chat_id_confirm, send_message_id)
                 # print("await_button:", resp)
@@ -121,19 +125,17 @@ class TgAnswerCntrl:
         # print(f"data_keyb {data_keyb}")
         if "1" == data_keyb:
             try:
-                resp = ord_cntrl.confirmed_order(order_id)
+                resp = self.ord_cntrl.confirmed_order(order_id)
                 print(resp) 
             except Exception as e:
                 self.tg.sendMessage(self.tg.chat_id_confirm, str(e))
         if "2" == data_keyb:
-            resp = ord_cntrl.question_order(order_id)
+            resp = self.ord_cntrl.question_order(order_id)
         if "3" == data_keyb:
-            resp = ord_cntrl.double_order(order_id)
+            resp = self.ord_cntrl.double_order(order_id)
         return resp
 
 
-
-tg_answ_cntrl = TgAnswerCntrl()
 
 
 

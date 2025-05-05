@@ -6,7 +6,6 @@ from flask_login import login_required, current_user
 from flask_principal import Permission, RoleNeed
 from flask_paginate import Pagination
 from server_flask.db import db
-from black import tg_answ_cntrl
 from helperkit.filekit import FileKit
 from itertools import zip_longest
 import logging, requests, json 
@@ -294,19 +293,19 @@ def get_prom_to_crm():
     else:
         return jsonify({'result': 'forbiden'}), 401
 
-@bp.route('/cabinet/orders/get_product/update_with_prom', methods=['POST'])
-def get_update_order():
-    token = request.headers.get("Authorization")
-    json_data = request.json
-    print("Отримали запит від scrypt")
-    if verify_token(token):
-        if json_data:
-            resp = tg_answ_cntrl.await_order(json_data, "update_to_crm")
-            return jsonify({'results': 'success', 'order_id': resp})
-        else:
-            return jsonify({'results': "Don`t have body"})
-    else:
-        return jsonify({'result': 'forbiden'}), 401
+# @bp.route('/cabinet/orders/get_product/update_with_prom', methods=['POST'])
+# def get_update_order():
+#     token = request.headers.get("Authorization")
+#     json_data = request.json
+#     print("Отримали запит від scrypt")
+#     if verify_token(token):
+#         if json_data:
+#             resp = tg_answ_cntrl.await_order(json_data, "update_to_crm")
+#             return jsonify({'results': 'success', 'order_id': resp})
+#         else:
+#             return jsonify({'results': "Don`t have body"})
+#     else:
+#         return jsonify({'result': 'forbiden'}), 401
 
 def verify_token(token):
     valid_token = os.getenv("SEND_TO_CRM_TOKEN")

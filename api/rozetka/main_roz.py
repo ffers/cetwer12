@@ -77,10 +77,10 @@ class RozetMain():
         # resp = utils_dev_change.change_status(body, prefix)
         return resp
     
-    def get_order_id(self): #черновик
+    def get_order(self, id): #черновик
         prefix = "orders/search?expand="
         prefix += "delivery,purchases,payment,status_payment"
-        prefix += f"&page=1&sort=-id&type=2&id=841603966"
+        prefix += f"&page=1&sort=-id&type=2&id={id}"
     
     def search_data(self, types):
         prefix = "orders/search-data"

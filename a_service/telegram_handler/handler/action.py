@@ -6,7 +6,7 @@ from .action_v2.actions.stock_action import StockAction
 
 class Command:
     def __init__(self, **deps):
-        self.order_cntrl = deps["OrderCntrl"]()
+        self.order_cntrl = deps["OrderCntrl"]
         self.SourAnCntrl = deps["SourAnCntrl"]()
         self.order_serv = deps["OrderServ"]()
         self.parse = Parse()     

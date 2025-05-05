@@ -19,4 +19,6 @@ from .telegram_handler.main_serv import ResponceDirector
 from .work_space_serv import WorkSpaceServ
 from .telegram_service import TgServNew 
 from .source_serv import SourceServ
-
+from .evo_service.evo_service import EvoService
+from .rozetka_serv import RozetkaServ 
+from .telegram_service import TgServNew

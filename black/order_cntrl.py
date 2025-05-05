@@ -6,7 +6,7 @@ from a_service.delivery import NpServ
 from a_service import DeliveryOrderServ, StatusProcess
 from dotenv import load_dotenv
 from api.nova_poshta.create_data import NpClient
-from .telegram_controller import tg_cntrl, TelegramController
+
 from .np_cntrl import NpCntrl
 from .product_analitic_cntrl import ProductAnaliticControl
 from .delivery_order_cntrl import DeliveryOrderCntrl
@@ -19,7 +19,9 @@ from .analitic_cntrl.sour_an_cntrl import SourAnCntrl
 from .telegram_cntrl.tg_cash_cntrl import TgCashCntrl
 from .product_cntrl import ProductCntrl
 from utils import my_time
-from api import EvoClient, RozetMain
+
+from server_flask.db import db
+
 
 # order1 = StatusProcess.update_order(2487, 6, TelegramController)
 
@@ -63,7 +65,7 @@ prod_an_cntrl = ProductAnaliticControl()
 np_cntrl = NpCntrl()
 del_ord_serv = DeliveryOrderServ()
 del_ord_cntrl = DeliveryOrderCntrl()
-util_cntrl = Utils(EvoClient, RozetMain)
+
 
 
 class OrderCntrl: 
@@ -71,17 +73,14 @@ class OrderCntrl:
         self.OC_log = OC_logger.oc_log("reg_16_00")
         self.sour = SourAnCntrl()
         self.quan_stok = TgCashCntrl()
-        self.tg_cntrl = TelegramController()
+        self.tg_cntrl = None
         self.np_client = NpClient()
         self.ord_rep = OrderRep()
         self.status_procces = StatusProcess
         self.order_serv = OrderServ()
-        self.evo = EvoClient
 
     
 
-    def load_orders_store(self, api_name, token):
-        return self.order_serv.load_orders_store_v2(self, api_name, token, EvoClient, RozetMain)
         
     def update_history(self, order_id, comment):
         resp = self.order_serv.update_history(order_id, comment)
@@ -130,8 +129,11 @@ class OrderCntrl:
         return order.id 
 
     def load_for_order_code(self, order_code):
-        order = self.ord_rep.load_for_order_code(order_code)
-        return order
+        from a_service.order_service.order_serv import OrderServ
+        from repository.order_rep import OrderRep
+        loader = OrderServ()
+        return loader.repo_loader_factory('order_code', order_code, OrderRep(db.session))
+        
 
     # def load_orders_store(self, api_name, token):
     #     return self.order_serv.load_orders_store(api_name,

@@ -1,3 +1,5 @@
+
+
 from abc import ABC, abstractmethod
 from domain.models.store_dto import StoreDTO
 

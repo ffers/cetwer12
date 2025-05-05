@@ -55,7 +55,7 @@ class TextOrderAllInfo:
         if store_id in status_color:
             return status_color[store_id]
         else:
-            "⬜️"
+            return "⬜️"
     
     def builder(self):
         self.tx_bl.status_order = self.status_order(self.order)
@@ -152,7 +152,9 @@ class TextOrderAllInfo:
     
     
     def order_number_description(self, order):
-        text = f"{self.store_color} {order.store.name} "
+        text = f"{self.store_color} "
+        if order.store:
+             text += f"{order.store.name} "
         text += f"Замовлення № {order.order_code}\n"
         return text
 

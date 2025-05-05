@@ -26,7 +26,7 @@ class TextOrderCourier:
         if store_id in marketplace_color:
             return marketplace_color[store_id]
         else:
-            "⬜️"
+            return "⬜️"
     
     def builder(self, order):
         self.text_blocks.product_block_header = self.product_block_header(order)
@@ -79,7 +79,9 @@ class TextOrderCourier:
         return f"\n{order.phone};{ttn}\n"
     
     def order_number_description(self, order):
-        text = f"\n{self.store_color} {order.store.name} "
+        text = f"{self.store_color} "
+        if order.store:
+            text += f"{order.store.name} "
         text += f"Замовлення № {order.order_code}\n"
         return text
     

@@ -11,15 +11,19 @@ from .client_serv import OrderProcessingPipeline
 from .status_new_with_payment import StatusNewWithPaidPipline
 from .order_map_store_factory import OrderMapStoreFactory 
 from .order_api_process import OrderApi
-from .handlers.unpay import Unpay
+
 from .handlers.store_load_order import load_orders_store
+from .handlers.unpaid_handlers import UnpayLoadOrderHandler, \
+ValidateUnpayOrderHandler, OrderProcessor, UnpayLoadOrderProcessor
+from .handlers.base import UnpayContext
+from .handlers import RepoLoader
 
 from mapper import TextOrderManager 
 from ..product_serv import ProductServ
 from ..telegram_service import TgServNew
  
 from copy import deepcopy
-
+ 
 
 #  id |        name        | description
 # ----+--------------------+-------------
@@ -50,16 +54,23 @@ from copy import deepcopy
 
 
 class OrderServ:
-    def __init__(self, store_repo=None):  
-        self.order_rep = OrderRep()
+    def __init__(self, 
+                 evo_serv=None, 
+                 roz_serv=None, 
+                 tg_serv=None,
+                 order_repo=None,
+                 store_repo=None,
+                 ):  
+        self.order_rep =  OrderRep()
         self.costum_rep = CostumerRep()
         self.recip_rep = RecipientRep()
         self.prod_serv = ProductServ()
         self.map_ord = OrderMapStoreFactory
         self.tg = TgServNew()
-        self.unpay = Unpay()
+        self.unpay = ValidateUnpayOrderHandler(None)
         self.logger = OC_logger.oc_log('order_serv')
         self.store_repo = store_repo
+        self.repo_loader = RepoLoader
 
     def generate_order_code(self, prefix='ASX'):
         digits = [random.choice('0123456789') for _ in range(6)]
@@ -209,13 +220,14 @@ class OrderServ:
             )
         
 
-    def get_status_unpay(self, item_token, token, EvoClient, RozetMain): # треба буде виправити 
-        store_data = self.store_repo.get_token(item_token)
+
+    def get_status_unpay(self, source_token, token, EvoClient, RozetMain): # треба буде виправити 
+        store_data = self.store_repo.get_token(source_token)
         orders = self.order_rep.load_unpaid_prom_orders(store_data.id)
         if not orders:
             self.logger.info(f'Несплачені ордери відсутні.')
             raise AllOrderPayException('Несплачені ордери відсутні.')
-        unpay_build =  Unpay()
+        unpay_build =  ValidateUnpayOrderHandler()
         for order in orders:
             success = unpay_build.build( 
                 order, 
@@ -228,6 +240,28 @@ class OrderServ:
                 raise ValueError(f'Не вдалося оновити ордер {order.order_code}')
             self.logger.info(f'Статус оплати змінено: {order.order_code}')
         return True
+    
+    '''
+    тут працюєм
+    !!!!!
+
+ 
+
+    
+    '''
+    
+    def get_status_unpay_v2(self, ctx: UnpayContext):
+        UnpayLoadOrderHandler(ctx).handle()
+        proccesor = OrderProcessor(ValidateUnpayOrderHandler(ctx))
+        return proccesor.handle_all(ctx.state.orders)
+    
+    def get_status_unpay_v3(self, ctx: UnpayContext):
+        return UnpayLoadOrderProcessor(
+
+        )
+
+
+
         
             
 
@@ -373,7 +407,9 @@ class OrderServ:
         return item_data
     
     def search_order_6_number(self, data):
-        return self.order_rep.search_for_all(data)
+        resp = self.order_rep.search_for_all(data)
+        print('search_order_6_number:', f'd{resp}d')
+        return resp
 
     def replace_phone(self, phone):
         return phone
@@ -383,3 +419,7 @@ class OrderServ:
         status = data["status"]
         return orders, status
     
+    def repo_loader_factory(self, cmd, data, repo):
+        return self.repo_loader.factory(cmd, data, repo)
+
+

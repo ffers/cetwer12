@@ -1,4 +1,4 @@
-from .telegram_controller import TelegramController
+
 from .product_analitic_cntrl import ProductAnaliticControl
 from .product_cntrl import ProductCntrl
 from .arrivel_cntrl import ArrivelCntrl
@@ -7,7 +7,6 @@ from .manager_ttn import ManagerTTN
 from .delivery_order_cntrl import DeliveryOrderCntrl
 from .np_cntrl import NpCntrl
 from .order_cntrl import ord_cntrl
-from .tg_answer_cntrl import tg_answ_cntrl
 from .telegram_controller import tg_cntrl
 from .add_order_to_crm import pr_to_crm_cntr
 from .prom_cntrl import prom_cntrl

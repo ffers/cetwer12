@@ -1,12 +1,12 @@
 import os, requests, json, sys, re
 from dotenv import load_dotenv
-from intarfaces.send_message_int import MessagingInterface
+
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
 
 class TgClient():
-    def __init__(self):
+    def __init__(self, token=None):
         self.text1 = "Прийнято"
         self.text2 = "Скасувати"
         self.token = os.getenv("TELEGRAM_BOT_TOKEN")
@@ -14,7 +14,7 @@ class TgClient():
     def send_message_f(self, chat_id, text, keyboard_json):
         escape_text = self.escape_text(text)
         method = "sendMessage"
-        token = os.getenv("TELEGRAM_BOT_TOKEN")
+        token = os.getenv("TELEGRAM_BOT_TOKEN") 
         url = f"https://api.telegram.org/bot{token}/{method}"
         if keyboard_json:
             data = {"chat_id": chat_id, "text": escape_text, 'parse_mode': 'MarkdownV2', "reply_markup":keyboard_json}

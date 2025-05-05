@@ -7,7 +7,7 @@ import os
 
 
 class TgServNew:
-    def __init__(self):
+    def __init__(self, tg_cl=None):
         self.client = TgClient()
         self.env = os.getenv("ENV")
         self.logger = OC_logger.oc_log("telegram_serv_new")

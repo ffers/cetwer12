@@ -9,7 +9,8 @@ from .exception_serv import OrderAlreadyExistsError
 from utils import OC_logger
 
 class OrderRep:
-    def __init__(self):
+    def __init__(self, session=None):
+        self.session = session
         self.logger = OC_logger.oc_log('order_rep')
 
     def my_time(self):

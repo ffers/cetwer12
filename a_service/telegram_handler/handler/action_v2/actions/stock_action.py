@@ -52,7 +52,7 @@ class StockAction(Command):
                 data_chat.comment,
                 my_time_v2()
             )   
-            self.balance(sour_cntrl, 50, item_prod)
+            self.balance(sour_cntrl, quantity, item_prod)
             item.update({"crm": resp})     
         else:
             item['quantity'] = "‼️ Такого товару нема"

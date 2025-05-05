@@ -3,6 +3,7 @@
 from utils import my_time
 from datetime import datetime
 from ..parsers import ParseResponce
+from mapper import TextOrderAllInfo
 
 
 

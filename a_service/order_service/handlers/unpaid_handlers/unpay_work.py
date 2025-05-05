@@ -1,12 +1,14 @@
 
 
 from utils import OC_logger
-from ..order_api_process import OrderApi
+from ...order_api_process import OrderApi
 from repository import OrderRep
 from mapper import promMapper
 from a_service.product_serv import ProductServ
 from a_service.telegram_service import TgServNew
+from ..base import Handler, UnpayContext
 from exceptions.order_exception import *
+
 '''
 status оплати за яким принципом відслідковувати
 Замовленя нове, або редагування 
@@ -32,35 +34,27 @@ status оплати за яким принципом відслідковува�
 class TGsendMessageException(Exception):
     pass
 
-
-class Handler:
-    def __init__(
-            self, 
-            store_data, 
-            token, 
-            EvoClient, 
-            RozetMain, 
-            Repo: OrderRep,
-            TgServNew: TgServNew
-            ):
-        self.repo = Repo()
-        self.store = OrderApi(store_data.api, token, EvoClient, RozetMain)
-        self.tg = TgServNew
-        self.logger = OC_logger.oc_log('order_serv')
-        self.store_id = store_data.id
-        
-
-    def execute(self, data):
-        pass
+class GetApi(Handler):
+    def execute(self, order):
+        api = self.ctx.state.store.api
+        apis = {
+                "rozetka": self.ctx.roz_serv,
+                "prom": self.ctx.evo_serv
+        }
+        if api in apis:
+            self.ctx.state.store_api = apis[api]
+        else:
+            raise ValueError(f"We dont have api: {api}")  
 
 class GetOrderStore(Handler):
     def execute(self, order):
         self.logger.info(f'Перевіряємо замовлення: {order.order_code}')
-        order_store = self.store.get_order(order.order_code)
+        order_store = self.ctx.state.store_api.get_order(order.order_code)
         return self.order_mapper(order_store, order)
 
     def order_mapper(self, order_store, order):
-        order_store = promMapper(order_store, ProductServ, self.store_id)
+        store_id = self.ctx.state.store.id
+        order_store = promMapper(order_store, ProductServ, store_id)
         if not order_store:
             self.logger.error(f'Такого ордера нема: {order.order_code}')
             raise OrderNotFoundException(f'Order not found in store: {order.order_code}')
@@ -74,7 +68,7 @@ class GetOrderStore(Handler):
         
 class ChangeOrder(Handler):
     def execute(self, order):
-        resp = self.repo.update_payment_status(order.id, 1)
+        resp = self.ctx.order_repo.update_payment_status(order.id, 1)
         if not resp:
             self.logger.error(f'Помилка зміни статусу: {order.order_code}')
             raise OrderNotUpdateStatusException(f'Помилка зміни статусу {order.order_code}') # щось інше треба відповісти
@@ -82,26 +76,43 @@ class ChangeOrder(Handler):
 
 class SendManager(Handler):
     def execute(self, order):
-        resp = self.tg.sendMessage(self.tg.chat_id_confirm, f'Оплачeно замовлення {order.order_code}')
+        resp = self.ctx.tg_serv.sendMessage(self.ctx.tg_serv.chat_id_confirm, f'Оплачeно замовлення {order.order_code}')
         if not resp:
             self.logger.error(f'Помилка відправкі менеджеру: {order.order_code}')
             raise TGsendMessageException(f'Помилка відправкі менеджеру {order.order_code}')
         return True
         
-class Unpay:
-    def __init__(self):
+class ValidateUnpayOrderHandler:
+    def __init__(self, ctx):
+        self.ctx = ctx
         self.commands = [
+            GetApi,
             GetOrderStore,
             ChangeOrder,
-            SendManager 
-            ]
+            SendManager
+        ]
 
-    def add_command(self, command_class):
-        self.commands.append(command_class)
-        return self
+    def handle(self, order):
+        for cmd_class in self.commands:
+            print("Працює:", cmd_class.__name__)
+            cmd_class(self.ctx).execute(order)
+        return True
 
-    def build(self, order, store_data, token, EvoClient, RozetMain, Repo, TGServ):  
-            for cmd_class in self.commands:
-                print("Працює: ", cmd_class.__name__)
-                pointer = cmd_class(store_data, token, EvoClient, RozetMain, Repo, TGServ).execute(order)
-            return pointer
+
+class OrderProcessor:
+    def __init__(self, handler: ValidateUnpayOrderHandler):
+        self.handler = handler
+        self.logger = OC_logger.oc_log('unpay_work.order_prrocessor')
+
+    def handle_all(self, orders):
+        results = []
+        for order in orders:
+            try:
+                result = self.handler.handle(order)
+                results.append(result)
+            except Exception as e:
+                self.logger.error(f'❌ Order {order.order_code}: {e}')
+                raise
+        return results
+
+    
