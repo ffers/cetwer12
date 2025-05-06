@@ -1,5 +1,5 @@
 from utils import BearRequest, OC_logger
-from black import TelegramController
+from a_service import TgServNew
 import os, json
 
 
@@ -79,7 +79,7 @@ class SendToCrmNew:
         return self.send_request(method, url, header)
 
     def send_request(self, method, url, header):
-        self.tg = TelegramController()
+        self.tg = TgServNew()
         try:
             resp = self.bear.request_go(method, url, header)
             if 'error' in resp:

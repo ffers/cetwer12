@@ -285,7 +285,7 @@
 					<div class="mb-3">
 						<footer><small class="text-muted">Спосіб оплати:</small></footer>
 						<div id="paymentDisplay" style="cursor: pointer;">
-						  <div id="paymentText">{{ order.payment_method.name or 'Немає'}} -</div>
+						  <div id="paymentText">{{ order.payment_method.name or 'Немає'}}</div>
 						  <input type="hidden" name="payment_method" id="paymentMethodInput"
 								 value="{{ order.payment_method_id }}">
 						</div>
