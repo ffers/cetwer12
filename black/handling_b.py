@@ -2,14 +2,14 @@ import os, json, re
 from dotenv import load_dotenv
 from api.prom import EvoClient
 
-from .telegram_controller import tg_cntrl
+from a_service import TgServNew
 from .order_cntrl import ord_cntrl
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
 TOKEN_PROM = os.getenv("PROM_TOKEN")
 prom_cl = EvoClient(TOKEN_PROM)
-
+tg_cntrl = TgServNew()
 
 
 

@@ -2,7 +2,7 @@ import os, json, requests, logging, pytz, sys
 from os.path import join, dirname
 from dotenv import load_dotenv
 from .keyboard_tg import TgKeyboard
-from .current_changes_order import Changes
+from .del_current_changes_order import Changes
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
@@ -29,7 +29,7 @@ dict_status_prom = {
         "status": "received",
         "ids": [ 259039935 ]
         }
-
+ 
 def load_processed_orders():
     try:
         with open(file_get_ord, "r") as file:

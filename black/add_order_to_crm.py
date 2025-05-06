@@ -4,7 +4,6 @@ from server_flask.db import db
 from server_flask.models import Orders, OrderedProduct, Products, TelegramOrdered, ConfirmedAddressTg, \
             Recipient, Costumer
 from flask import current_app
-from .telegram_controller import tg_cntrl
 from dotenv import load_dotenv
 from utils import OC_logger
 

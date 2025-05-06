@@ -74,7 +74,7 @@ class Changes:
                             else:
                                 self.writeOrderUnpay(unpay_order_file, order, processed_orders)
 
-    def search_pay(self):
+    def search_pay(self): 
         self.search_unpay()
         print("Дивимось чи змінився статус оплати")
         data_unpay = fl_cl.load_file_json(unpay_order_file)

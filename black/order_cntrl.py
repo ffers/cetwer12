@@ -12,6 +12,8 @@ from .product_analitic_cntrl import ProductAnaliticControl
 from .delivery_order_cntrl import DeliveryOrderCntrl
 from .add_order_to_crm import pr_to_crm_cntr
 from a_service import tg_serv, TgServ, TextFactory
+from a_service import TgServNew
+
 from .prom_cntrl import prom_cntrl
 from utils import OC_logger
 from datetime import datetime
@@ -73,7 +75,7 @@ class OrderCntrl:
         self.OC_log = OC_logger.oc_log("reg_16_00")
         self.sour = SourAnCntrl()
         self.quan_stok = TgCashCntrl()
-        self.tg_cntrl = None
+        self.tg_cntrl = TgServNew()
         self.np_client = NpClient()
         self.ord_rep = OrderRep()
         self.status_procces = StatusProcess
@@ -172,7 +174,7 @@ class OrderCntrl:
         except:
             info = f"Замовленя можливо не додано в CRM {order_code}"
             self.OC_log.info(info)
-            tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, info)
+            self.tg_cntrl.sendMessage(self.tg_cntrl.chat_id_confirm, info)
 
     # 
     # Для РОЗЕТКІ =======================
@@ -217,11 +219,11 @@ class OrderCntrl:
             delivery_provider_data = order["delivery_provider_data"]
             try:
                 self.OC_log.info(f"Обробка стандартна, ордер:{order_id}\n Інформація по адресі {delivery_provider_data} ")
-                tg_cntrl.send_message_f(chat_id_helper,
+                self.tg_cntrl.send_message_f(chat_id_helper,
                                      f"Обробка стандартна, ордер:{order_id}\n Інформація по адресі {delivery_provider_data} ")
                 self.update_address(order)
             except:
-                tg_cntrl.send_message_f(chat_id_helper,
+                self.tg_cntrl.send_message_f(chat_id_helper,
                                 f"️❗️❗️❗️ Повторно адреси нема в № {order_id} ")
                 self.OC_log.info(
                     f"Обробка ордера: {order_id}\n "
@@ -252,9 +254,9 @@ class OrderCntrl:
     def send_order_tg(self, order_id, text="🟠 Редагування"):
         order = self.ord_rep.load_item(order_id)
         data_tg_dict = tg_serv.create_text_order(order)
-        keyboard_json = tg_cntrl.keyboard_func()
+        keyboard_json = self.tg_cntrl.keyboard_func()
         add_text = f"{text}\n{data_tg_dict}"
-        resp = tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, add_text, keyboard_json)
+        resp = self.tg_cntrl.sendMessage(self.tg_cntrl.chat_id_confirm, add_text, keyboard_json)
         return True 
 
 
@@ -275,7 +277,7 @@ class OrderCntrl:
         if delivery.get("success"):
             crm_status = self.ord_rep.change_status(order_id, 2)
             self.update_history(order_id, "Підтверджено")
-            resp_tg = tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm, "{ordered_status} {order_code}".format(**crm_status))
+            resp_tg = self.tg_cntrl.sendMessage(self.tg_cntrl.chat_id_confirm, "{ordered_status} {order_code}".format(**crm_status))
             return True
         return False
 
@@ -346,17 +348,17 @@ class OrderCntrl:
             resp_ttn = self.add_ttn_crm(order.id, doc_ttn)
             order = self.ord_rep.load_item(order.id)
             text_courier = TextFactory.factory("courier", order)
-            tg_cntrl.sendMessage(tg_cntrl.chat_id_np, text_courier)
+            self.tg_cntrl.sendMessage(self.tg_cntrl.chat_id_np, text_courier)
             del_ord_cntrl.update_item(np_resp, order.id)
             if order.source_order_id == 2:
                 resp_prom_ttn = prom_cntrl.send_ttn(order.order_code, order.ttn, "nova_poshta")
         elif 'OptionsSeat is empty' in np_resp["errors"]:
             resp = np_resp
-            tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm,
+            self.tg_cntrl.sendMessage(self.tg_cntrl.chat_id_confirm,
                                  "❗️❗️❗️ ТТН не створено - не вказано обʼєм")
         else:
             resp = np_resp
-            tg_cntrl.sendMessage(tg_cntrl.chat_id_confirm,
+            self.tg_cntrl.sendMessage(self.tg_cntrl.chat_id_confirm,
                                  f"❗️❗️❗️ ТТН не створено - {resp}")
         return np_resp
 
@@ -365,16 +367,16 @@ class OrderCntrl:
         return resp
 
     def del_method_roz(self, order, text_courier): 
-        keyboard_rozet = tg_cntrl.keyboard_generate("Надіслати накладну", order.order_code)
-        resp = tg_cntrl.sendMessage(tg_cntrl.chat_id_rozet, text_courier, keyboard_rozet)
+        keyboard_rozet = self.tg_cntrl.keyboard_generate("Надіслати накладну", order.order_code)
+        resp = self.tg_cntrl.sendMessage(self.tg_cntrl.chat_id_rozet, text_courier, keyboard_rozet)
         return {"success": True}
 
     def del_method_ukr(self, order , text_courier):
-        resp = tg_cntrl.sendMessage(tg_cntrl.chat_id_ukr, text_courier)
+        resp = self.tg_cntrl.sendMessage(self.tg_cntrl.chat_id_ukr, text_courier)
         return {"success": True}
 
     def del_method_shop(self, order, text_courier):
-        resp = tg_cntrl.sendMessage(tg_cntrl.chat_id_shop, text_courier)
+        resp = self.tg_cntrl.sendMessage(self.tg_cntrl.chat_id_shop, text_courier)
         return {"success": True}
 
     def delete_order(self, id):
@@ -408,7 +410,7 @@ class OrderCntrl:
         orders = self.ord_rep.load_item_all()
         resp_sour = None
         if not resp_sour:
-            tg_cntrl.sendMessage(tg_cntrl.chat_id_info, "Немає такого компоненту ")
+            self.tg_cntrl.sendMessage(self.tg_cntrl.chat_id_info, "Немає такого компоненту ")
         return resp_sour
     
     def order_api_factory(self, get_type):
