@@ -18,6 +18,8 @@ def promMapper(prom: dict, ProductServ, store_id) -> OrderDTO:
     try:
         prod_serv = ProductServ()
         payment_id = add_payment_method_id(prom)
+        ref = _get_ttn_ref(prom)
+        warehouse_text = _get_warehouse_text(prom, ref)
         return OrderDTO(
             id=None,
             timestamp=prom.get("date_created"),
@@ -34,8 +36,8 @@ def promMapper(prom: dict, ProductServ, store_id) -> OrderDTO:
             region=None,
             area=None,
             warehouse_option=None,
-            warehouse_text=prom.get("delivery_address"),
-            warehouse_ref=_get_ttn_ref(prom),
+            warehouse_text=warehouse_text,
+            warehouse_ref=ref,
             sum_price=_parse_price(prom["full_price"]),
             sum_before_goods=None,
             description=prom.get("client_notes", None),
@@ -103,6 +105,12 @@ def _map_recipient(prom: dict) -> RecipientDto:
         phone=r.get('phone', ''),
         email=None
     )
+
+def _get_warehouse_text(prom: dict, ref: str):
+    text = prom.get("delivery_address")
+    if ref == 'street':
+         text = '📦 Курьєрська доставка: ' + text
+    return text
 
 def add_prompay_status(payment_id, order):
         if payment_id == 5:
@@ -178,10 +186,15 @@ def _get_ttn(prom: dict) -> str | None:
 
 
 def _get_ttn_ref(prom: dict) -> str | None:
-    ref = prom.get("delivery_provider_data", {}).get("recipient_warehouse_id")
-    if not ref:
-         raise ValueError("Адресси нема чекаем")
-    return ref
+    del_data = prom.get("delivery_provider_data", {})
+    ref = del_data.get("recipient_warehouse_id")
+    if ref:
+        return ref
+    street = del_data.get('recipient_address').get('city_id')
+    if street:
+         return 'street'
+    raise ValueError("Адресси нема чекаем")
+    
 
 
 def _get_city_name(prom: dict) -> str:
