@@ -94,8 +94,10 @@ class TgClient():
         url = f"https://api.telegram.org/bot{self.token}/{method}"
         data = {"chat_id": chat_id, "photo": photo}
         resp_json = requests.post(url, data=data).content
-        if json.loads(resp_json)["ok"]:
-            return json.loads(resp_json)
+        print('sendPhoto:', resp_json)
+        resp = json.loads(resp_json)
+        if resp.get('success') == 'ok':
+            return resp
         else:
             load = self.loadPhoto(chat_id)
             return load

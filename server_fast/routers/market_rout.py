@@ -92,7 +92,7 @@ async def get_status_unpay(source_token: str,
 
                 )
             ctx.state.token = source_token
-            result = order_serv.get_status_unpay_v2(ctx) 
+            result = order_serv.get_status_unpay_v3(ctx) 
             if result:
                 return {"message": "Order get successfuly"}
             return {"message": "All the orders have alredy been download"}

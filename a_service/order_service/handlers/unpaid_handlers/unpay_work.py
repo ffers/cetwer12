@@ -106,6 +106,7 @@ class OrderProcessor:
 
     def handle_all(self, orders):
         results = []
+        
         for order in orders:
             try:
                 result = self.handler.handle(order)

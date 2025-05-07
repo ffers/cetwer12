@@ -2,6 +2,8 @@ from repository import DeliveryOrderRep, OrderRep
 from a_service import DeliveryOrderServ
 from api import NpClient
 
+from utils import OC_logger
+
 del_ord_serv = DeliveryOrderServ()
 del_ord_rep = DeliveryOrderRep()
 np_cl_api = NpClient()
@@ -9,6 +11,8 @@ ord_rep = OrderRep()
 
 
 class DeliveryOrderCntrl:
+    def __init__(self):
+        self.logger = OC_logger.oc_log('black.deliv_order_cntrl')
     def add_registr(self, data):
         try:
             order_id_list = del_ord_serv.load_dict_order(data) # чистий ліст order_id з отриманного словаря
@@ -18,14 +22,16 @@ class DeliveryOrderCntrl:
             resp = np_cl_api.insertDocumentsReg(list_ttn) # запит в нп на ствоерня реєстру
             print(resp)
             dict_reg = {"number_registr": "Не вийшло створити перевірте підтвердженя НП"}
-            if resp["success"]:
+            if resp.get('success'):
                 dict_reg = del_ord_serv.create_dict_reg(resp) # створення словаря на додавання в базу
                 print(f"dict_reg {dict_reg}")
                 bool = del_ord_rep.update_registr(order_id_list, dict_reg) #додано реф та номер реєстру в базу
                 ord_rep.change_status_list(order_id_list, 11) #змінюємо статус на "очікує відправленя"
-            return dict_reg
-        except:
-            return False
+            raise ValueError('Відповідь НП: реєстр не створено')
+        except Exception as e:
+            print(f'DeliveryOrderCntrl: проблема')
+            self.logger.error(f'DeliveryOrderCntrl: {e}')
+            return {"number_registr": "Не вийшло створити перевірте підтвердженя НП"}
 
     def delete_ttn_in_reg(self, data):
         order_id_list = del_ord_serv.load_dict_order(data) # чистий ліст order_id з отриманного словаря

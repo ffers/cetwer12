@@ -66,10 +66,15 @@ class UnpayLoadOrderHandler:
     
 class UnpayLoadOrderProcessor:
     def __init__(
-            self, ctx
+            self, ctx: UnpayContext
     ):
         self.ctx = ctx
+        self.oloh = UnpayLoadOrderHandler(ctx)
+        self.op = OrderProcessor(ValidateUnpayOrderHandler(ctx))
 
     def process(self):
         self.oloh.handle()
-        self.op.handle_all()
+        resp = self.op.handle_all(self.ctx.state.orders)
+        return resp
+
+
