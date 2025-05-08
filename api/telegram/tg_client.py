@@ -10,6 +10,7 @@ class TgClient():
         self.text1 = "Прийнято"
         self.text2 = "Скасувати"
         self.token = os.getenv("TELEGRAM_BOT_TOKEN")
+        self.env = os.getenv('ENV')
 
     def send_message_f(self, chat_id, text, keyboard_json):
         escape_text = self.escape_text(text)
@@ -96,7 +97,7 @@ class TgClient():
         resp_json = requests.post(url, data=data).content
         print('sendPhoto:', resp_json)
         resp = json.loads(resp_json)
-        if resp.get('success') == 'ok':
+        if resp.get('ok'):
             return resp
         else:
             load = self.loadPhoto(chat_id)
@@ -105,10 +106,12 @@ class TgClient():
 
 
     def loadPhoto(self, chat_id):
-        file = r"/home/ff/python_program/dev_asx/asx/server_flask/static/images/OS.png"
+        path = '/home/fferses/asx/server_flask/static/images/black_box.jpg'
+        if self.env == 'dev':
+            path = r"/Users/test/Documents/dev_asx/asx/server_flask/static/images/black_box.jpg"
 
         files = {
-            'photo': open(file, 'rb')
+            'photo': open(path, 'rb')
         }
         print(files)
         message = ('https://api.telegram.org/bot' + self.token + '/sendPhoto?chat_id='

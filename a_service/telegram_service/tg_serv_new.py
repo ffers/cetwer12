@@ -21,6 +21,17 @@ class TgServNew:
         self.chat_id_cash = os.getenv("CH_ID_CASH")
         self.chat_id_shop = os.getenv("CH_ID_SHOP")
         self.chat_id_courier = os.getenv("CH_ID_CORECTOR")
+        if self.env == 'dev':
+            self.chat_id_info = os.getenv("CHAT_ID_INFO")
+            self.chat_id_np = os.getenv("CHAT_ID_INFO")
+            self.chat_id_ukr = os.getenv("CHAT_ID_INFO")
+            self.chat_id_rozet = os.getenv("CHAT_ID_INFO")
+            self.chat_id_vp = os.getenv("CHAT_ID_INFO")
+            self.chat_id_sk = os.getenv("CHAT_ID_INFO")
+            self.chat_id_confirm = os.getenv("CHAT_ID_INFO")
+            self.chat_id_cash = os.getenv("CHAT_ID_INFO")
+            self.chat_id_shop = os.getenv("CHAT_ID_INFO")
+            self.chat_id_courier = os.getenv("CHAT_ID_INFO")
 
 
     @wrapper()

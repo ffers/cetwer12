@@ -19,19 +19,21 @@ class RegSchedulleSrv():
         self.sour_diff_cntrl = SourDiffAnCntrl()
         self.send_req = SendRequest()
 
+    def close_group(self):
+        return self.sendTgBlackPic()
+
     def reg_17_00(self):
-            # try: # реквест визиває апі а потім апі визиває функціі
-                black_pic = self.sendTgBlackPic()
-                dict_order = self.createReg()
-                self.OC_log.info(dict_order)
-                self.sendTg(dict_order)
-                self.OC_log.info("Виконую завдання")
-                return True
-            # except Exception as e:
-            #     info = f"Невийшло створити реєстр {e}"
-            #     self.OC_log.info(info)
-            #     self.tg_serv.sendMessage(self.tg_serv.chat_id_info, info)
-            #     return False
+        try: 
+            self.OC_log.info("Виконую завдання")
+            dict_order = self.createReg()
+            self.OC_log.info(dict_order)
+            self.sendTg(dict_order)
+            return True
+        except Exception as e:
+            info = f"Невийшло створити реєстр {e}"
+            self.OC_log.info(info)
+            self.tg_serv.sendMessage(self.tg_serv.chat_id_info, info)
+            return False
 
     def createReg(self):
         load_orders = self.ord.load_confirmed_order()
@@ -44,8 +46,6 @@ class RegSchedulleSrv():
     def sendTgBlackPic(self):
         id_photo = 'AgACAgIAAxkBAAIMl2YWFuaONHD9_7SWvzDiiK8vmNQSAAK31jEbGsoISBKbThvzHGUpAQADAgADbQADNAQ'
         resp_photo = self.tg_serv.sendPhoto(id_photo)
-        if not resp_photo:
-            self.OC_log.info("Телеграм не дал ответа Photo")
         self.OC_log.info(resp_photo)
         return True
 

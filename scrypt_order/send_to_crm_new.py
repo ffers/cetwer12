@@ -12,7 +12,7 @@ class SendToCrmNew:
 
     def get_count_sold(self):
         url = "v2/analitic/count_sold"
-        resp = self.milky_way("GET", url)
+        resp = self.make_request("GET", url)
 
 
     def get_orders(self, api_name, token):
@@ -20,7 +20,7 @@ class SendToCrmNew:
         url += f"api_name={api_name}"
         url += f"&store_token={token}"
         # url += f"&store_name={name}"
-        resp = self.milky_way("GET", url)
+        resp = self.make_request("GET", url)
 
         ''' Короткий вариант
         стор нейм как определить
@@ -40,36 +40,40 @@ class SendToCrmNew:
             url += f"source_token={api_name}"
             url += f"&store_token={token}"
             # url += f"&store_name={name}"
-            resp = self.milky_way("GET", url)
+            resp = self.make_request("GET", url)
         except Exception as e:
             self.logger.error(f'{e}')
 
     def get_check(self):
         url = "v2/check/check_sign"
-        resp = self.milky_way("GET", url)
+        resp = self.make_request("GET", url)
 
 
     def start_16_58(self):
         url = "v2/analitic/start_16_58"
-        resp = self.milky_way("GET", url)
+        resp = self.make_request("GET", url)
+
+    def close_group(self):
+        url = "v2/analitic/close_group"
+        resp = self.make_request("GET", url)
 
 
     def start_17_00(self):
         url = "v2/analitic/start_17_00"
-        resp = self.milky_way("GET", url)
+        resp = self.make_request("GET", url)
 
 
     def start_20_00(self):
         url = "v2/analitic/start_20_00"
-        resp = self.milky_way("GET", url)
+        resp = self.make_request("GET", url)
 
 
     def start_20_01(self):
         url = "v2/analitic/start_20_01"
-        resp = self.milky_way("GET", url) 
+        resp = self.make_request("GET", url) 
 
         
-    def milky_way(self, method, prefix):
+    def make_request(self, method, prefix):
         url = os.getenv("HOSTCRM") + prefix
         token = os.getenv("SEND_TO_CRM_TOKEN")
         header = {

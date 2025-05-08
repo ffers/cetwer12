@@ -11,6 +11,8 @@ from server_flask.flask_app import flask_app, jsonify
 from black import SourAnCntrl, SourDiffAnCntrl
 from scrypt_order import RegSchedulleSrv
 
+from utils import OC_logger
+
 from ..dependencies import get_token_header 
 
 router = APIRouter(
@@ -19,14 +21,21 @@ router = APIRouter(
     responses={403: {"description": "Not Authificated"}},
 )
 
-async def process_market_sign(method_name: str):
-    api = RegSchedulleSrv()
+logger = OC_logger.oc_log('fast.analitic_rout')
+
+async def process_market_sign(func_name: str):
     with flask_app.app_context():
-        method = getattr(api, method_name)  # Динамічний виклик методу
-        resp = method()
-        print(f"Відповідь сервера: {resp}")
-    
-    return JSONResponse(status_code=200, content={"message": "SUCCESS" if resp else "FALSE"})
+        reg_serv = RegSchedulleSrv()
+        resp = None
+        try:
+            func = getattr(reg_serv, func_name) 
+            resp = func()
+            logger.info(f'Відповідь {func_name}: {resp}')
+            print(f"Відповідь сервера: {resp}")
+            return JSONResponse(status_code=200, content={"message": "SUCCESS" if resp else "FALSE"})
+        except Exception as e:
+            logger.error(f'{e}')
+            return jsonify({'error':  f'{func_name}: False'})
 
 @router.get("/count_sold")
 async def market_sign():   
@@ -41,6 +50,10 @@ async def market_sign():
 @router.get("/start_16_58")
 async def market_sign():   
     return await process_market_sign("reg_16_58")
+
+@router.get("/close_group")
+async def market_sign():   
+    return await process_market_sign("close_group")
     
 @router.get("/start_17_00")
 async def market_sign():   
