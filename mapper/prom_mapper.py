@@ -87,22 +87,25 @@ def _map_products(prom: dict, prod_serv: ProductServ) -> list[ProductDto]:
 
 def _map_costumer(prom: dict) -> CostumerDto:
     c = prom.get("client", {})
+    phone = c.get('phone', '').replace('+', '')
     return CostumerDto(
         first_name=c.get("first_name", ""),
         last_name=c.get("last_name", ""),
         second_name=_safe(c.get("second_name")),
-        phone=c.get('phone', ''),
+        phone=phone,
         email=prom.get("email")
     )
 
 
+
 def _map_recipient(prom: dict) -> RecipientDto:
     r = prom.get("delivery_recipient", {})
+    phone = r.get('phone', '').replace('+', '')
     return RecipientDto(
         first_name=r.get("first_name", ""),
         last_name=r.get("last_name", ""),
         second_name=_safe(r.get("second_name")),
-        phone=r.get('phone', ''),
+        phone=phone,
         email=None
     )
 

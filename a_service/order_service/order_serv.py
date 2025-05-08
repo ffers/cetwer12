@@ -169,10 +169,20 @@ class OrderServ:
 
 
     @wrapper()
-    def add_costumer(self, dto):
-        costumer = self.costum_rep.create(dto.costumer)
+    def add_costumer(self, dto: OrderDTO):
+        costumer = self.costum_rep.read_by_phone(dto.costumer.phone)
+        if not costumer: 
+            costumer = self.costum_rep.create(dto.costumer)
         dto.costumer_id = costumer.id
         return dto
+
+    def costumer_check(self, dto: OrderDTO):
+        c_dto = dto.costumer
+        c = self.costum_rep.read_by_phone(c_dto.phone)
+        if c.first_name != c_dto.first_name or c.last_name != c_dto.last_name:
+            pass
+
+
     
     @wrapper()
     def add_recipient(self, dto):

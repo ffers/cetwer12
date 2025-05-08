@@ -103,6 +103,7 @@ class TextOrderManager:
         
     def costumer_name(self, order):
         text = "Покупець:\n"
+        text += f'Замовлень: {len(order.costumer.orders)}\n'
         text += f"{order.costumer.last_name} {order.costumer.first_name}\n"
         return text
     

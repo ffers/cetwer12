@@ -22,6 +22,10 @@ class CostumerRep:
     
     def read_item(self, item_id):
         return Costumer.query.get_or_404(item_id)
+    
+    def read_by_phone(self, phone):
+        phone = phone.replace('+', '')
+        return Costumer.query.filter_by(phone=phone).first()
 
     def update(self, item_id, item_new):
         item = self.read_item(item_id)

@@ -17,6 +17,7 @@ from api import RozetMain, EvoClient
 from repository.store_sqlalchemy import StoreRepositorySQLAlchemy
 
 
+
 class TestOrderServ: # пооки іде все через кнтрл
     order_c = OrderServ(store_repo=StoreRepositorySQLAlchemy(db.session))
     prom_token = os.getenv('PROM_TOKEN')
@@ -33,12 +34,13 @@ class TestOrderServ: # пооки іде все через кнтрл
     def test_get_order_rozet(self):
         with flask_app.app_context():
             host = "https://api-seller.rozetka.com.ua/"
-            prefix = "orders/search?expand="
-            prefix += "delivery,purchases,payment,status_payment"
-            prefix += f"&status={self.status_dev()}"
+            prefix = "orders/search" 
+            # query = "expand="
+            # query += "delivery,purchases,payment,status_payment"
+            # query += f"&status={self.status_dev()}"
             responses.add(
                 responses.GET, host+prefix,
-                json=RozetDict.rozet_order, status=200
+                json=RozetDict.rozet_order, status=200,
                 )
             self.make_response_tg()
             resp = self.order_c.load_orders_store_v2(
