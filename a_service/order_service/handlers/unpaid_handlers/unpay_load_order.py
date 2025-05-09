@@ -23,9 +23,10 @@ class LoadStore(Handler):
 class LoadUnpaid(Handler):
     def execute(self):
         store_id = self.ctx.state.store.id
+        self.logger.debug(f'store_id: {store_id}')
         orders = self.ctx.order_repo.load_unpaid_prom_orders(store_id)
         if not orders:
-            raise AllOrderPayException('Замовлення не знайдено')
+            raise AllOrderPayException('Несплачені замовлення не знайдено')
         self.ctx.state.orders = orders
     
 
@@ -41,14 +42,8 @@ class UnpayLoad:
 
     def build(self, context):  
             for cmd_class in self.commands:
-                try:
-                    print("Працює: ", cmd_class.__name__)
-                    cmd_class(context).execute()
-                except Exception as e:
-                    self.logger.error(
-                        f'Unhandled error: {cmd_class.__name__}: {e}'
-                        )
-                    raise
+                self.logger.debug(f"Працює: {cmd_class.__name__}")
+                cmd_class(context).execute()
             return context
     
 

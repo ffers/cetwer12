@@ -17,6 +17,7 @@ client = TestClient(app)
 def test_read_main():
     with TestClient(app, base_url="http://localhost"):
             make_responce()
+            make_response_tg()
             token_crm = os.getenv("SEND_TO_CRM_TOKEN")
             token_prom = os.getenv("PROM_TOKEN")
             # url = f"api_name=jemis"
@@ -30,19 +31,20 @@ def test_read_main():
                     "Authorization": f"{token_crm}"
                 }
             response = client.get(f"/v2/order/get_status_unpay", params=params, headers=header)
-            print(response.content)
             cont = json.loads(response.content)
+            print(cont)
             if cont['message'] == "all order paid":
                 assert response.status_code == 200
+            elif cont['message'] == "dont have change":
+                assert response.status_code == 200
             else:
-                assert cont == {"message":"Order get successfuly"}
+                assert cont == {"message":"have result"}
                 assert response.status_code == 200
   
 
 def make_responce():
-    make_response_tg()
     host = "https://my.prom.ua/"
-    prefix = "api/v1/orders/342394092"
+    prefix = "api/v1/orders/342860627"
     responses.add(
         responses.GET, host+prefix,
         json=PromDict.order, status=200

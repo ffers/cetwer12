@@ -94,12 +94,15 @@ async def get_status_unpay(source_token: str,
             ctx.state.token = source_token
             result = order_serv.get_status_unpay_v3(ctx) 
             if result:
-                return {"message": "Order get successfuly"}
-            return {"message": "All the orders have alredy been download"}
+                logger.info(f'find prompay in order: {result}')
+                return {"message": f"have result"}
+            return {"message": "dont have change"}
         except AllOrderPayException as e:
+            logger.debug('all order paid')
             return {"message": "all order paid"}
         except OrderNotPaidException as e:
-            return {"info": f"Error get status unpaid"}
+            logger.debug('order unpaid')
+            return {"message": f"Order unpaid"}
         except Exception as e:
             logger.error(f'Unhandled error: {e}')
             return {"error": f"Error unhandled for get status unpaid"}

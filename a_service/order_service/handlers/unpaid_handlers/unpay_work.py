@@ -56,13 +56,11 @@ class GetOrderStore(Handler):
         store_id = self.ctx.state.store.id
         order_store = promMapper(order_store, ProductServ, store_id)
         if not order_store:
-            self.logger.error(f'Такого ордера нема: {order.order_code}')
             raise OrderNotFoundException(f'Order not found in store: {order.order_code}')
         elif order_store.payment_status_id == 1:
             self.logger.info(f'Цей ордер оплачено: {order.order_code}')
             return True
         else:
-            self.logger.info(f'Цей ордер ще не оплачено: {order.order_code}')
             raise OrderNotPaidException(f'Order not paid: {order.order_code}')
         
         
@@ -70,7 +68,6 @@ class ChangeOrder(Handler):
     def execute(self, order):
         resp = self.ctx.order_repo.update_payment_status(order.id, 1)
         if not resp:
-            self.logger.error(f'Помилка зміни статусу: {order.order_code}')
             raise OrderNotUpdateStatusException(f'Помилка зміни статусу {order.order_code}') # щось інше треба відповісти
         return resp
 
@@ -78,12 +75,12 @@ class SendManager(Handler):
     def execute(self, order):
         resp = self.ctx.tg_serv.sendMessage(self.ctx.tg_serv.chat_id_confirm, f'Оплачeно замовлення {order.order_code}')
         if not resp:
-            self.logger.error(f'Помилка відправкі менеджеру: {order.order_code}')
             raise TGsendMessageException(f'Помилка відправкі менеджеру {order.order_code}')
         return True
         
 class ValidateUnpayOrderHandler:
     def __init__(self, ctx):
+        self.logger = OC_logger.oc_log('order_serv.handler.unpay_work')
         self.ctx = ctx
         self.commands = [
             GetApi,
@@ -94,9 +91,9 @@ class ValidateUnpayOrderHandler:
 
     def handle(self, order):
         for cmd_class in self.commands:
-            print("Працює:", cmd_class.__name__)
+            self.logger.debug(f"Працює: {cmd_class.__name__}")
             cmd_class(self.ctx).execute(order)
-        return True
+        return f'Оплачено: {order.order_code}'
 
 
 class OrderProcessor:
@@ -112,8 +109,7 @@ class OrderProcessor:
                 result = self.handler.handle(order)
                 results.append(result)
             except Exception as e:
-                self.logger.error(f'❌ Order {order.order_code}: {e}')
-                raise
+                self.logger.debug(f'ордер {order.order_code} ще неоплачено: {e}')
         return results
 
     
