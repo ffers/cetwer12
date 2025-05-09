@@ -11,3 +11,7 @@ class TestRozet:
             order = self.order_cntrl.load_for_order_id(2476)
             resp = self.order_cntrl.del_method_np(order) 
             assert (True, '') == resp
+
+
+    def test_create_registr(self):
+        resp_np = {'ref_registr': '7be90718-2cf3-11f0-a1d5-48df37b921da', 'number_registr': '105-64378242'}

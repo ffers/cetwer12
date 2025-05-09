@@ -27,6 +27,7 @@ class DeliveryOrderCntrl:
                 print(f"dict_reg {dict_reg}")
                 bool = del_ord_rep.update_registr(order_id_list, dict_reg) #додано реф та номер реєстру в базу
                 ord_rep.change_status_list(order_id_list, 11) #змінюємо статус на "очікує відправленя"
+                return dict_reg
             raise ValueError('Відповідь НП: реєстр не створено')
         except Exception as e:
             print(f'DeliveryOrderCntrl: проблема')
