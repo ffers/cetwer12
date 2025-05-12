@@ -3,14 +3,17 @@ from a_service import SourAnServ
 from ..jour_ch_cntrl import jour_ch_cntrl as journal
 from .analitic_table_cntrl import an_cntrl
 from repository import ord_rep
-from datetime import datetime
+from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 
 from ..telegram_controller import tg_cntrl
-from ..work_time_cntrl import WorkTimeCntrl
+from utils import WorkTimeCntrl
 from repository import SourceRep
 from a_service import CacheService
 from ..sour_difference_an_cntrl import SourDiffAnCntrl
 from utils import my_time_v2
+
+from utils import OC_logger
 
 '''
 Аналитика працює як окремий сервіс
@@ -69,9 +72,14 @@ class SourAnCntrl:
                                        self.rep, ord_rep, self.w_time_cntrl)
         self.cash = CacheService()
         self.sour_an_diff_cntrl = SourDiffAnCntrl()
+        self.logger = OC_logger.oc_log('sour_an_cntrl.analitic')
 
-    def my_time(self):
-        yield (datetime.now()) 
+    def time_period_utc(self, period):
+        start_time, stop_time = self.w_time_cntrl.load_work_time(period)
+        start_utc = start_time.replace(tzinfo=timezone.utc)
+        end_utc = stop_time.replace(tzinfo=timezone.utc)
+        return start_utc, end_utc
+
 
     def add(self, request):
         args = self.sour_an_serv.add_source(request)
@@ -257,21 +265,25 @@ class SourAnCntrl:
         resp = False, "Не спрацювало"
         print(period)
         self.sort_send_time()
-        start_time, stop_time = self.w_time_cntrl.load_work_time(period)
+        start_time, stop_time = self.time_period_utc(period)
         print(start_time, ' ', stop_time)
+        self.logger.debug(f"period: {start_time, stop_time}")
+        print(f"period: {start_time, stop_time}")
         orders = ord_rep.load_period(start_time, stop_time)
         print(orders)
         item = an_cntrl.load_period_sec(period, start_time, stop_time)
         if item:
-            # item = item
             print(f"update {item}")
             resp = self.update_analitic(orders, item, period)
             return resp
         print("add")
         data = self.first_an(orders, period)
         resp_first = an_cntrl.add_first(data)
-        print(resp_first)
+        self.logger.debug(f"resp_first: {resp_first}")
+        self.logger.debug(f'item: {period, start_time, stop_time}')
+        print(f"period: {period, start_time, stop_time}")
         item = an_cntrl.load_period_sec(period, start_time, stop_time)
+        self.logger.debug(f'item: {item}')
         resp = self.update_analitic(orders, item, period)
         return resp
     

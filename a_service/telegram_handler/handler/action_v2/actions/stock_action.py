@@ -2,6 +2,9 @@
 from utils import my_time_v2
 from ..base import Command
 
+class ThisSubtrection(Exception):
+    pass
+
 
 class StockAction(Command):
     def execute(self, data_chat): 
@@ -62,7 +65,7 @@ class StockAction(Command):
     def balance(self, sour_cntrl, quantity, source):
         try:
             if '-' in str(quantity):
-                raise ValueError('це вичет все гуд')
+                raise ThisSubtrection('це вичет все гуд')
             source_bal = sour_cntrl.load_article("balance")
             pay = quantity * source.price
             sour_cntrl.fixed_process(
@@ -73,9 +76,9 @@ class StockAction(Command):
             )   
             self.logger.info(f'Вичетаня балансу SUCCESS')
             return True
+        except ThisSubtrection: return True
         except Exception as e:
-            self.logger.error(f'Вичетаня балансу не працює', exc_info=True)
-            return False
+            self.logger.error(f'Вичетаня балансу не працює {e}', exc_info=True)
     
  
     

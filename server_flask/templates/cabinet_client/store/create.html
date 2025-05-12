@@ -1,0 +1,44 @@
+
+
+
+{% extends 'layout/base.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<!doctype html>
+<title>Create Store</title>
+<h1>Create Store</h1>
+<div class="content">
+  <div class="row">
+    <form method="post">
+      <label>Назва магазину:</label>
+      <input type="text" name="name" required><br>
+
+      <label>Оберіть платформу звідки завантажувати замовленя:</label>
+      <input type="text" name="api"><br>
+
+      <label>Токен якій створюється під цю комбінацію автоматично:</label>
+      <input type="text" name="token"><br>
+
+      <label>Token для обраної Платформи</label>
+      <input type="text" name="token1"><br>
+
+      <label>Token Telegram Bot:</label>
+      <input type="text" name="token1"><br>
+
+      <label>Token NovaPoshta:</label>
+      <input type="text" name="token1"><br>
+
+      <label>Token RZ-delivery:</label>
+      <input type="text" name="token1"><br>
+
+      <button type="submit">Create</button>
+    </form>
+  </div>
+
+<a href="{{ url_for('store.index') }}">Back to list</a>
+</div>
+
+{% endblock %}

@@ -12,7 +12,7 @@ class BearRequest:
         time.sleep(1)
         max_retries = 5  # Максимальна кількість спроб
         retries = 0
-        timeout = 10
+        timeout = 20
         while retries < max_retries:
             try:
                 response = requests.request(method, url, data=body, headers=headers, timeout=timeout)

@@ -1,15 +1,20 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify, g
+from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify, g, \
+    session
 from flask_login import login_required, current_user
 from flask_principal import Permission, RoleNeed
 from black import ProductAnaliticControl
 from black import AnCntrl
 from black import SourAnCntrl
 from black import SourDiffAnCntrl
+import traceback
+from utils import OC_logger
 
 def get_instance(class_name, class_type):
     if not hasattr(g, class_name):
         setattr(g, class_name, class_type())
     return getattr(g, class_name)
+
+logger = OC_logger.oc_log('analitic_rout')
 
 
 author_permission = Permission(RoleNeed('manager'))
@@ -32,10 +37,10 @@ def analitic_test():
 @login_required
 @admin_permission.require(http_exception=403)
 def analitic():
+    print(session)
     if request.method == 'GET':
         an_cntrl = AnCntrl()
         items = an_cntrl.load_all()
-        print("Починаєм аналітику!")
         return render_template('cabinet_client/analitic/analitic.html',
                                user=current_user, items=items)
 
@@ -64,11 +69,19 @@ def update_all():
 @login_required
 @admin_permission.require(http_exception=403)
 def update_day():
-    sour_an_cntrl = get_instance('sour_an_cntrl', SourAnCntrl)
-    product = sour_an_cntrl.sort_analitic("day")
-    print(f"Перевірка {product}")
-    flash('Аналітику оновлено DAY', category='success')
-    return redirect('/cabinet/analitic/all')
+    try:
+        sour_an_cntrl = get_instance('sour_an_cntrl', SourAnCntrl)
+        product = sour_an_cntrl.sort_analitic("day")
+        print(f"Перевірка {product}")
+        flash('Аналітику оновлено DAY', category='success')
+        session.update({'test': 'test'})
+        print(session)
+        return redirect('/cabinet/analitic/all')
+    except Exception as e:
+        print('Помилка')
+        logger.exception(f'update_day:')
+        flash('Аналітику неоновлено', category='error')
+        return redirect('/cabinet/analitic/all')
 
 @bp.route('/cabinet/analitic/update_week', methods=['GET'])
 @login_required

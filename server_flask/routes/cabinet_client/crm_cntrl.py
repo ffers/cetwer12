@@ -1,23 +1,25 @@
-from repository.store_sqlalchemy import StoreRepositorySQLAlchemy
-from a_service.store_service import StoreService
+from repository.crm_sqlalchemy import CrmRepositorySQLAlchemy
+from a_service.crm_service import CrmService
 
-from server_flask.db import db
 from flask import Blueprint, render_template, request, redirect, url_for, \
     jsonify
+from server_flask.db import db
 from flask_login import login_required, current_user
 
 from flask_principal import Permission, RoleNeed
+
 admin = RoleNeed('admin')
 admin_permission = Permission(admin)
 
 author = RoleNeed('manager')
 author_permission = Permission(author)
 
-bp = Blueprint('store', __name__)
-repo = StoreRepositorySQLAlchemy(db.session)
-service = StoreService(repo)
+bp = Blueprint('crm', __name__)
 
-temp = 'cabinet_client/store/'
+repo = CrmRepositorySQLAlchemy(db.session)
+service = CrmService(repo)
+
+temp = 'cabinet_client/crm/'
 
 @login_required
 @admin_permission.require(http_exception=403)
@@ -32,11 +34,10 @@ def index():
 def create():
     if request.method == 'POST':
         service.create_item(
-            request.form['name'], 
-            request.form['api'],
-            request.form['token'] 
+            request.form['name'],
+            current_user.id
             )
-        return redirect(url_for('store.index'))
+        return redirect(url_for('crm.index'))
     return render_template(f'{temp}create.html', user=current_user) 
 
 @login_required
@@ -47,11 +48,9 @@ def edit(item_id):
     if request.method == 'POST':
         service.update_item(
             item.id, 
-            request.form['name'], 
-            request.form['api'],
-            request.form['token'] 
+            request.form['name']
             )
-        return redirect(url_for('store.index'))
+        return redirect(url_for('crm.index'))
     return render_template(f'{temp}edit.html', item=item, user=current_user)
 
 @login_required
@@ -59,7 +58,7 @@ def edit(item_id):
 @bp.route('/delete/<int:item_id>', methods=['POST'])
 def delete(item_id):
     service.delete_item(item_id)
-    return redirect(url_for('store.index'))
+    return redirect(url_for('crm.index'))
 
 
 @bp.route('/list_select', methods=['POST', 'GET'])

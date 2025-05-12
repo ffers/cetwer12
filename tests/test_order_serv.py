@@ -82,7 +82,7 @@ class TestOrderServ: # пооки іде все через кнтрл
 
     # @responses.activate
     # def test_get_unpay(self):
-    #     try:
+    #     try:П
     #         with flask_app.app_context():
     #             self.make_response_tg()
     #             host = "https://my.prom.ua/"

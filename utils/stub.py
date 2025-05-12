@@ -9,4 +9,10 @@ class Stub:
             return 26
         else:
             return 1
+        
+
+def DEBUG():
+    if os.getenv("ENV") == "dev":
+        return True
+     
 

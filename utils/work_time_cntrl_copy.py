@@ -3,6 +3,7 @@
 
 from zoneinfo import ZoneInfo
 from datetime import datetime, timedelta, timezone
+from utils.stub import DEBUG
 
 
 
@@ -10,6 +11,8 @@ from datetime import datetime, timedelta, timezone
 class WorkTimeCntrl:
     def my_time(self):
         tz = ZoneInfo("Europe/Kyiv")
+        if DEBUG():
+            tz = ZoneInfo("Europe/Berlin")
         yield datetime.now(timezone.utc).astimezone(tz)
 
     def load_work_time(self, period, quantity=None):
@@ -85,7 +88,7 @@ class WorkTimeCntrl:
 
     def all(self):
         current_time = next(self.my_time()) + timedelta(hours=1)
-        return "2021-04-25 13:47:10.560329", current_time
+        return datetime.fromisoformat("2021-04-25 13:47:10.560329"), current_time
 
 
 

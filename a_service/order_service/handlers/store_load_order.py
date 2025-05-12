@@ -32,5 +32,4 @@ def load_orders_store(
             resp.update(add_order3(dto))
             resp.update(store.change_status(dto.order_code, 1))
         return resp 
-    else:
-        return {"success": "ok", "order": "Store empty"}
+    return False

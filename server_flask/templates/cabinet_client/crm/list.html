@@ -1,0 +1,47 @@
+
+{% extends 'layout/base.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+
+<!doctype html>
+<title>Crm</title>
+<h1>Crm List</h1>
+<div class="content">
+    <div class="center">
+            <a href="{{ url_for('crm.create') }}">Create New</a>
+            <ul>
+                    {% if items %}
+                {% for item in items %}
+                    <li>
+                        <strong>{{ item.id }}.</strong> —
+                        <strong>{{ item.name }}</strong> —
+                        
+
+                    <a href="{{ url_for('crm.edit', item_id=item.id) }}">Edit</a>
+
+                    
+                    
+                    </li>
+                {% endfor %}
+                {% else %}
+                'Not found'
+                {% endif %}
+            </ul>
+    </div>
+    <div class="row">
+        <div class="col-sm ">
+            <a href="/cabinet/store/">
+              <button id="submitBtn" class="btn btn-outline-info my-2 my-sm-0" 
+                  type="button">
+                  Store
+              </button>
+              </a>
+          </div>
+    </div>
+</div>
+
+
+{% endblock %}

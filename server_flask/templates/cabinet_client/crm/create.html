@@ -15,15 +15,9 @@
   <label>Name:</label>
   <input type="text" name="name" required><br>
 
-  <label>Api:</label>
-  <input type="text" name="api"><br>
-
-  <label>Token:</label>
-  <input type="text" name="token"><br>
-
   <button type="submit">Create</button>
 </form>
 
-<a href="{{ url_for('store.index') }}">Back to list</a>
+<a href="{{ url_for('crm.index') }}">Back to list</a>
 
 {% endblock %}

@@ -67,3 +67,17 @@ def work_space_choice():
             items=items,  
             user=current_user
             )
+    
+@bp.route('/create', methods=['POST', 'GET'])
+@login_required
+@admin_permission.require(http_exception=403)
+def create_crm():
+    if request.method == 'POST':
+        return redirect('/orders')
+    else:
+        items = WorkSpaceServ().load_sources_order()
+        return render_template(
+            'cabinet_client/create.html', 
+            items=items,  
+            user=current_user
+            )

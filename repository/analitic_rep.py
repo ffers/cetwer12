@@ -2,9 +2,11 @@ from server_flask.models import Analitic
 from sqlalchemy import func
 from server_flask.db import db
 from datetime import datetime, timedelta
-
+from utils import OC_logger
 
 class AnaliticRep():
+    def __init__(self):
+        self.logger = OC_logger.oc_log('analitic_rep')
 
     def my_time(self):
         yield (datetime.utcnow())
@@ -47,11 +49,14 @@ class AnaliticRep():
         return item
 
     def load_period_sec(self, period, start, stop):
+        st = start  
+        fin = stop
         item = Analitic.query.filter(
-            Analitic.timestamp >= start,
-            Analitic.timestamp <= stop,
+            Analitic.timestamp >= st,
+            Analitic.timestamp <= fin,
             Analitic.period == period
             ).first()
+        print(f'аналітік_реп;', st, fin)
         return item
 
     def add_first(self, args):
@@ -71,9 +76,10 @@ class AnaliticRep():
             )
             db.session.add(item)
             db.session.commit()
-            return True, None
+            return True
         except Exception as e:
-            return False, str(e)
+            self.logger.error(f'add_first: {e}')
+            return False
 
 
     def update_(self, id, args):

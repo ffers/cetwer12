@@ -54,7 +54,7 @@ async def get_orders(api_name: str,
                 ) 
             print("Get orders: ", result)
             if result:
-                logger.info(f'Загружено ордер')
+                logger.info(f'Загружено ордер: {result}')
                 return {"message": "Order get successfuly"}
             return {"message": "All the orders have alredy been download"}
         except Exception as e:

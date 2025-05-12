@@ -15,3 +15,4 @@ from .cabinet_client.Source_Difference import bp as SourceDifference
 from .cabinet_client.ColorSourceRout import bp as ColorSource
 from .cabinet_client.work_space.WorkSpace import bp as Panel
 from .cabinet_client.store_controller import bp as Store
+from .cabinet_client.crm_cntrl import bp as Crm
