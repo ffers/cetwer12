@@ -74,6 +74,9 @@ class SourAnCntrl:
         self.sour_an_diff_cntrl = SourDiffAnCntrl()
         self.logger = OC_logger.oc_log('sour_an_cntrl.analitic')
 
+    def my_time(self):
+        yield datetime.now(timezone.utc)
+
     def time_period_utc(self, period):
         start_time, stop_time = self.w_time_cntrl.load_work_time(period)
         start_utc = start_time.replace(tzinfo=timezone.utc)
