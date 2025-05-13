@@ -7,15 +7,15 @@ $(document).ready(function () {
           return 'Ничего не знайдено';}, 
         searching: function () { return 'Пошук...'; }},
       ajax: {
-          url: '/cabinet/workspace/store/list_select',
+          url: '/cabinet/store/list_select',
           dataType: 'json',
           delay: 250,
           processResults: function (data) {
               return {
-                  results: data.results.map(function (city) {
+                  results: data.results.map(function (item) {
                       return {
-                          id: city.id,
-                          text: city.name
+                          id: item.id,
+                          text: item.name
                       };
                   })
               };

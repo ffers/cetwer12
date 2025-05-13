@@ -15,7 +15,7 @@ from .security_middleware import security_blocker
 from .routes import Blog, Auth, Comment, User_post, Bot, \
     Order, Cabinet, Admin, Products, Analitic, \
     Arrival, JourChRout, ProductSource, SourceDifference, \
-    ColorSource, Panel, Store, Crm
+    ColorSource, Panel, Store, Crm, PayMethod
 
 
 
@@ -72,6 +72,7 @@ flask_app.register_blueprint(SourceDifference)
 flask_app.register_blueprint(ColorSource, url_prefix='/cabinet/source')
 flask_app.register_blueprint(Panel, url_prefix='/cabinet/workspace')
 flask_app.register_blueprint(Store, url_prefix='/cabinet/store')
+flask_app.register_blueprint(PayMethod, url_prefix='/cabinet/pay_method')
 flask_app.register_blueprint(Crm, url_prefix='/crm')
 
 from .models import Users

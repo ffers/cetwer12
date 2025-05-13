@@ -16,3 +16,4 @@ from .cabinet_client.ColorSourceRout import bp as ColorSource
 from .cabinet_client.work_space.WorkSpace import bp as Panel
 from .cabinet_client.store_controller import bp as Store
 from .cabinet_client.crm_cntrl import bp as Crm
+from .cabinet_client.payment_method_cntrl import bp as PayMethod

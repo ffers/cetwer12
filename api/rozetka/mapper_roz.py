@@ -96,7 +96,7 @@ class MapperRoz():
             13013935: 5, 
             43660: 1
         }
-        return mapping.get(order)
+        return mapping.get(order, 6)
     
     def payment_method(self, order):
         mapping = {
@@ -107,6 +107,6 @@ class MapperRoz():
             11111111: 5,
             4524: 6,
         }
-        return mapping.get(order)
+        return mapping.get(order, 8)
 
        

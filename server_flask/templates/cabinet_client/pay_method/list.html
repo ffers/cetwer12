@@ -13,6 +13,7 @@
   <div class="col-sm">
     <div class="button-pult">
     <button id="saveBtn" type="button" class="btn btn-outline-info my-2 my-sm-0">Зберегти редагування таблиці</button>
+    <a href="{{ url_for('pay_method.create') }}">Create New</a>
     </div>
       </div>
  <!-- <div id="arrival-list">
@@ -30,7 +31,7 @@
           {% for item in items %}
            <tr data-id="{{item.id}}">
             <td style="text-align: center;"> 
-              <a href=#>
+              <a href="/cabinet/pay_method/edit/{{item.id}}">
                 <button type="button" class="btn btn-info">
                   <i class="fa-solid fa-pen"></i>
                 </button>
