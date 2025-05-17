@@ -129,9 +129,7 @@ class OrderRep:
             db.session.rollback()
             print("update_ordered_product error:", e)
             return False
-    
-    def load_ordered_product(self, item_id):
-        return OrderedProduct.query.get_or_404(int(item_id)) 
+
     
 
     def update_history(self, order_id, new_comment):
@@ -217,6 +215,9 @@ class OrderRep:
             Orders.ordered_status_id == 8
         ).all()
         return items
+    
+    def load_ordered_product(self, item_id):
+        return OrderedProduct.query.get_or_404(int(item_id)) 
 
     def load_item_days(self):
         current_time = next(self.my_time())
@@ -293,6 +294,12 @@ class OrderRep:
             ).all()
             return items
 
+    def load_send(self):
+            items = Orders.query.filter(
+                Orders.ordered_status_id == 2,
+                Orders.send_time == None
+            ).all()
+            return items
 
     def add_ttn_crm(self, id, ttn):
         try:

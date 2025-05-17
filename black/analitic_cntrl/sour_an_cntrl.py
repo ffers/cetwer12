@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
 
 from ..telegram_controller import tg_cntrl
-from utils import WorkTimeCntrl
+from black.work_time_cntrl import WorkTimeCntrl
 from repository import SourceRep
 from a_service import CacheService
 from ..sour_difference_an_cntrl import SourDiffAnCntrl
@@ -26,7 +26,7 @@ from utils import OC_logger
 потім починаю одразу рахувати и заносити це в кеш
 мабуть потім записую в базу
 
-я відалкуюсь від загального підрахунку 
+я відталкуюсь від загального підрахунку 
 как будто что тоо может измениться месяц назад
 я думаю ничего не изменится существенного
 по крайней мере можно внести правки в отдельние заметки
@@ -37,6 +37,14 @@ from utils import OC_logger
 если нет прошлого года то по и тд мес нед день ордер
 пересчет ордеров можно делать за последние 2 месяца
 после 1 числа будут изменения за пршлий месяц  
+как делать изменения по дням неделям или месяцам 
+добавить кол-во возвратов возврати можно считать за етот день
+кажеться что можно считать день - сгоднешнее положение вещей
+но когда ми считали раньше ми считали что получилось но ето 
+потомучто сложно считать каждий день но в самом начале я считал и ето круто
+week = дни за неделю
+month = тижни сумма днів 
+рік = місяці
 
 '''
 '''
@@ -65,11 +73,11 @@ from utils import OC_logger
 
 class SourAnCntrl:
     def __init__(self):
-        self.w_time_cntrl = WorkTimeCntrl()
+        self.w_time = WorkTimeCntrl()
         self.rep = SourceRep()
         self.sour_an_serv = SourAnServ(prod_cntrl,
                                        journal, an_cntrl,
-                                       self.rep, ord_rep, self.w_time_cntrl)
+                                       self.rep, ord_rep, self.w_time)
         self.cash = CacheService()
         self.sour_an_diff_cntrl = SourDiffAnCntrl()
         self.logger = OC_logger.oc_log('sour_an_cntrl.analitic')
@@ -78,7 +86,7 @@ class SourAnCntrl:
         yield datetime.now(timezone.utc)
 
     def time_period_utc(self, period):
-        start_time, stop_time = self.w_time_cntrl.load_work_time(period)
+        start_time, stop_time = self.w_time.load_work_time(period)
         start_utc = start_time.replace(tzinfo=timezone.utc)
         end_utc = stop_time.replace(tzinfo=timezone.utc)
         return start_utc, end_utc
@@ -266,15 +274,20 @@ class SourAnCntrl:
 
     def sort_analitic(self, period):
         resp = False, "Не спрацювало"
-        print(period)
+        print("period:", period)
         self.sort_send_time()
-        start_time, stop_time = self.time_period_utc(period)
+        start_time, stop_time = self.w_time.load_work_time(period)
         print(start_time, ' ', stop_time)
         self.logger.debug(f"period: {start_time, stop_time}")
         print(f"period: {start_time, stop_time}")
+        'остановился здесь'
+        # остановился здесь 
         orders = ord_rep.load_period(start_time, stop_time)
         print(orders)
-        item = an_cntrl.load_period_sec(period, start_time, stop_time)
+        item = an_cntrl.load_period_sec(period, start_time, stop_time) 
+        # переіод нужен если ми считаем все 
+        # получить все = считаем день берем все и добавляєм вчерашний день 
+        # но что то меняється за два месяца... будем считать на сегодняшний день и прогноз
         if item:
             print(f"update {item}")
             resp = self.update_analitic(orders, item, period)

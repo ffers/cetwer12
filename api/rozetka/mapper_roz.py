@@ -59,7 +59,7 @@ class MapperRoz():
         first_name=data.user_title.first_name,
         last_name=data.user_title.last_name,
         second_name=data.user_title.second_name,
-        phone=data.recipient_phone,
+        phone=data.user_phone,
         )
     
     def recipient(self, data):
@@ -67,7 +67,7 @@ class MapperRoz():
         first_name=data.recipient_title.first_name,
         last_name=data.recipient_title.last_name,
         second_name=data.recipient_title.second_name,
-        phone=data.user_phone
+        phone=data.recipient_phone
         )
     
     def warehouse_method(self, d):
@@ -96,7 +96,7 @@ class MapperRoz():
             13013935: 5, 
             43660: 1
         }
-        return mapping.get(order, 6)
+        return mapping.get(order)
     
     def payment_method(self, order):
         mapping = {
@@ -107,6 +107,6 @@ class MapperRoz():
             11111111: 5,
             4524: 6,
         }
-        return mapping.get(order, 8)
+        return mapping.get(order, 7)
 
        

@@ -9,11 +9,26 @@ from utils.stub import DEBUG
 
 
 class WorkTimeCntrl:
+    def __init__(self, shifttime=17, zone="Europe/Kyiv"):
+        self.close_shift_utc = datetime.fromisoformat('2022-01-01T08:00').replace(tzinfo=ZoneInfo("Europe/Kyiv"))
+        self.shifttime = shifttime
+        self.zone = zone
+    
+    def start_utc_by_zone(self):
+        current_time = next(self.my_time()).astimezone(ZoneInfo(self.zone))
+        print('current_time:', current_time)
+        start_time = current_time - timedelta(hours=self.shifttime)
+        zone_tz = start_time.replace(hour=self.shifttime, 
+                    minute=0, second=0, microsecond=0,
+                    tzinfo=ZoneInfo(self.zone)
+        )
+        utc_clean = zone_tz.astimezone(timezone.utc)
+        print('utc_clean:', utc_clean)
+        return utc_clean
+
+
     def my_time(self):
-        tz = ZoneInfo("Europe/Kyiv")
-        if DEBUG():
-            tz = ZoneInfo("Europe/Berlin")
-        yield datetime.now(timezone.utc).astimezone(tz)
+        yield datetime.now(timezone.utc)
 
     def load_work_time(self, period, quantity=None):
         start_time, stop_time = None, None
@@ -34,35 +49,23 @@ class WorkTimeCntrl:
         return start_time, stop_time
 
     def day(self):
-        current_time = next(self.my_time())
-        start_time = current_time - timedelta(hours=17)
-        start_time = start_time.replace(hour=17, minute=0, second=0,
-                                        microsecond=0)
+        start_time = self.start_utc_by_zone()
         stop_time = start_time + timedelta(days=1)
         return start_time, stop_time
     
     def days(self, quantity):
-        current_time = next(self.my_time()) - timedelta(days=quantity)
-        start_time = current_time - timedelta(hours=17)
-        start_time = start_time.replace(hour=17, minute=0, second=0,
-                                        microsecond=0)
+        start_time = self.start_utc_by_zone()
         stop_time = start_time + timedelta(days=quantity)
         return start_time, stop_time
     
     def two_day(self):
-        current_time = next(self.my_time())
-        start_time = current_time - timedelta(hours=17)
-        start_time = start_time.replace(hour=17, minute=0, second=0,
-                                        microsecond=0)
+        start_time = self.start_utc_by_zone()
         start_time = start_time - timedelta(days=2) 
         stop_time = start_time + timedelta(days=2)
         return start_time, stop_time
 
     def week(self):
-        current_time = next(self.my_time())
-        start_time = current_time - timedelta(hours=17)
-        start_time = start_time.replace(hour=17, minute=0, second=0,
-                                        microsecond=0)
+        start_time = self.start_utc_by_zone()
         current_week_day = start_time.weekday()
         # Визначаємо перший день поточного тижня (понеділок)
         first_day_of_week = start_time - timedelta(days=current_week_day)
@@ -70,26 +73,20 @@ class WorkTimeCntrl:
         return first_day_of_week, last_day_of_week
 
     def month(self):
-        current_time = next(self.my_time())
-        start_time = current_time - timedelta(hours=17)
-        start_time = start_time.replace(day=1, hour=17, minute=0, second=0,
-                                        microsecond=0)
+        start_time = self.start_utc_by_zone()
         next_month = start_time.replace(day=28) + timedelta(days=4)
         stop_time = next_month - timedelta(days=next_month.day)
         return start_time, stop_time
 
     def year(self):
         current_time = next(self.my_time())
-        start_time = current_time - timedelta(hours=17)
-        start_time = start_time.replace(month=1, day=1, hour=17, minute=0, second=0,
-                                        microsecond=0)
+        start_time = self.start_utc_by_zone()
         stop_time = datetime(current_time.year, 12, 31)
         return start_time, stop_time
 
     def all(self):
-        current_time = next(self.my_time()) + timedelta(hours=1)
-        return datetime.fromisoformat("2021-04-25 13:47:10.560329"), current_time
-
+        current_time = next(self.my_time()) + timedelta(hours=17)
+        return "2021-04-25 17:47:10.560329", current_time
 
 
 
