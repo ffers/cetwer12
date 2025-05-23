@@ -1,6 +1,6 @@
 from utils import DEBUG
 from dataclasses import asdict
-
+import os
 
 from ..base import Handler
 from .handlers.body import Body
@@ -77,7 +77,7 @@ class AnaliticDay(Handler):
         count = self.count(order, an_row)
         print('sum_row:', count)
         resp = self.ctx.an_rep.update_v3(count)
-        update_order = self.update_order(order)
+        if os.getenv('ENV') != 'dev': self.update_order(order)
         return resp
 
         

@@ -13,14 +13,14 @@
 <h1>Edit Item</h1>
 <div class="center">
   <form method="post">
-  <label>Name:</label>
-  <input type="number" name="balance" value="{{ item.balance | replace('.', ',') }}" required><br>
+  <label>Balance:</label>
+  <input type="number" name="balance" value="{{ '%.2f'|format(item.balance) }}" step="0.01" required><br>
   <label>Wait:</label>
-  <input type="number" name="wait" value="{{ item.wait | replace('.', ',')}}" required><br>
+  <input type="number" name="wait" value="{{ '%.2f'|format(item.wait) }}" step="0.01" required><br>
   <label>Stock:</label>
-  <input type="number" name="stock" value="{{ item.stock | replace(',', '.') }}" required><br>
+  <input type="number" name="stock" value="{{ '%.2f'|format(item.stock) }}" step="0.01" required><br>
   <label>В роботі:</label>
-  <input type="number" name="inwork" value="{{ item.inwork | replace(',', '.') }}"  required><br>
+  <input type="number" name="inwork" value="{{ '%.2f'|format(item.inwork) }}" step="0.01" required><br>
   
   <button type="submit">Update</button>
 </form>

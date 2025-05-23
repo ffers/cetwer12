@@ -207,7 +207,9 @@ def _get_city_name(prom: dict) -> str:
 def _get_cpa(prom: dict) -> str | None:
     sum = 0
     for p in prom.get("products", []):
+        logger.info(f'_get_cpa: {p}')
         cpa = p.get("cpa_commission", {}).get("amount")  
+        logger.info(f'_get_cpa: {cpa}')
         cpa = format_float(cpa)
         sum += cpa
     return str(sum)
