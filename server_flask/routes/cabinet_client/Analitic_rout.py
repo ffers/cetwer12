@@ -129,7 +129,7 @@ def source_difference_month(id):
     list_obj = prod_an_cntrl.load_source_difference_id_period(id, 'month')
     return render_template("cabinet_client/analitic/source_difference.html", product=list_obj, user=current_user)
 
-@bp.route("/cabinet/analitic/test", methods=['POST', 'GET'])
+@bp.route("/cabinet/analitic/day", methods=['POST', 'GET'])
 @login_required
 @admin_permission.require(http_exception=403)
 def analitic_test_day():
