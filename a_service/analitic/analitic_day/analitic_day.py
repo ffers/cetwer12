@@ -10,8 +10,10 @@ from decimal import Decimal
 
 class OrderHaveSendTime(Exception):
     pass
+
 class StockOrderHaventComps(Exception):
     pass
+
 
 
     pass
@@ -40,6 +42,10 @@ class CheckConfirmedOrder(Handler):
             except OrderHaveSendTime:
                 logger.error(
                    f"order without with send_time: {order.id}") 
+                pass
+            except StockOrderHaventComps:
+                logger.error(
+                   f"order dont have comps: {order.id}") 
                 pass
             except Exception as e:
                 self.ctx.logger.error(
