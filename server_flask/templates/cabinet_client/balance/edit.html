@@ -14,13 +14,13 @@
 <div class="center">
   <form method="post">
   <label>Name:</label>
-  <input type="number" name="balance" value="{{ item.balance }}" required><br>
-  <label>Name:</label>
-  <input type="number" name="wait" value="{{ item.wait }}" required><br>
-  <label>Name:</label>
-  <input type="number" name="stock" value="{{ item.stock }}" required><br>
-  <label>Name:</label>
-  <input type="number" name="inwork" value="{{ item.inwork }}" required><br>
+  <input type="number" name="balance" value="{{ item.balance | replace('.', ',') }}" required><br>
+  <label>Wait:</label>
+  <input type="number" name="wait" value="{{ item.wait | replace('.', ',')}}" required><br>
+  <label>Stock:</label>
+  <input type="number" name="stock" value="{{ item.stock | replace(',', '.') }}" required><br>
+  <label>В роботі:</label>
+  <input type="number" name="inwork" value="{{ item.inwork | replace(',', '.') }}"  required><br>
   
   <button type="submit">Update</button>
 </form>

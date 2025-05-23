@@ -28,7 +28,7 @@ class RegSchedulleSrv():
         try: 
             self.OC_log.info("Виконую завдання")
             dict_order = self.createReg()
-            self.OC_log.info(dict_order)
+            self.OC_log.info(f'reg_17_00: {dict_order}')
             self.sendTg(dict_order)
             return True
         except Exception as e:
@@ -43,6 +43,7 @@ class RegSchedulleSrv():
         list_dict = self.create_list_dict(load_orders)
         print(list_dict)
         dict_order = del_ord_cntrl.add_registr(list_dict)
+        self.OC_log.info(f'createReg: {dict_order}')
         return dict_order
 
     def sendTgBlackPic(self):
@@ -52,11 +53,11 @@ class RegSchedulleSrv():
         return True
 
     def sendTg(self, dict_order):
-        if 'number_register' in dict_order:
-            resp_message = self.tg_serv.sendMessage(self.tg_serv.chat_id_np, dict_order["number_registr"])
-            if not resp_message:
-                self.OC_log.info("Телеграм не дал ответа Месседж")
-            return True
+        num_reg = dict_order.get('number_registr', "Подивіться реєєстр в срм")
+        self.OC_log.info(f'num_reg: {dict_order}')
+        resp_message = self.tg_serv.sendMessage(self.tg_serv.chat_id_np, num_reg)
+        self.OC_log.info(f'resp_message: {resp_message}')
+        return True
 
 
     def create_list_dict(self, orders):
