@@ -72,7 +72,7 @@ del_ord_cntrl = DeliveryOrderCntrl()
 
 class OrderCntrl: 
     def __init__(self) -> None:
-        self.OC_log = OC_logger.oc_log("reg_16_00")
+        self.OC_log = OC_logger.oc_log("order_cntrl")
         self.sour = SourAnCntrl()
         self.quan_stok = TgCashCntrl()
         self.tg_cntrl = TgServNew()
@@ -268,18 +268,22 @@ class OrderCntrl:
         return result
 
     def confirmed_order(self, order_id):
-        print("first")
-        order = self.ord_rep.load_item(order_id)
-        update_analitic = prod_an_cntrl.product_in_order(order)
+        try:
+            print("first")
+            order = self.ord_rep.load_item(order_id)
+            update_analitic = prod_an_cntrl.product_in_order(order)
 
-        delivery = self.check_del_method(order)
-        bool_prom = self.definition_source(order, 2)
-        if delivery.get("success"):
-            crm_status = self.ord_rep.change_status(order_id, 2)
-            self.update_history(order_id, "Підтверджено")
-            resp_tg = self.tg_cntrl.sendMessage(self.tg_cntrl.chat_id_confirm, "{ordered_status} {order_code}".format(**crm_status))
-            return True
-        return False
+            delivery = self.check_del_method(order)
+            bool_prom = self.definition_source(order, 2)
+            if delivery.get("success"):
+                crm_status = self.ord_rep.change_status(order_id, 2)
+                self.update_history(order_id, "Підтверджено")
+                resp_tg = self.tg_cntrl.sendMessage(self.tg_cntrl.chat_id_confirm, "{ordered_status} {order_code}".format(**crm_status))
+                return True
+            return False
+        except Exception as e:
+            self.OC_log.error(f'confirm_ order: {e}')
+            return False
 
     def result(self, *args):
         result = {

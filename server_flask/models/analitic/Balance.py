@@ -1,11 +1,15 @@
-from server_flask.db import db
+from server_flask.db import BaseModel
 from datetime import datetime
+from sqlalchemy import Column, Integer, DateTime, Numeric, \
+    ForeignKey
 
-class Balance(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-    balance = db.Column(db.Numeric(precision=10, scale=2))
-    income = db.Column(db.Numeric(precision=10, scale=2))
-    balance_fact = db.Column(db.Numeric(precision=10, scale=2))
-    income_fact = db.Column(db.Numeric(precision=10, scale=2))
+class Balance(BaseModel):
+    id = Column(Integer, primary_key=True)
+    timestamp = Column(DateTime, default=datetime.utcnow)
+    balance = Column(Numeric(precision=10, scale=2))
+    wait = Column(Numeric(precision=10, scale=2))
+    stock = Column(Numeric(precision=10, scale=2))
+    inwork = Column(Numeric(precision=10, scale=2))
+    project_id = Column(Integer, ForeignKey(
+        'project.id', name='fk_orders_crm_id'), unique=True)
 

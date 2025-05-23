@@ -1,9 +1,16 @@
+
+
+
+
 from server_flask.db import db
-from datetime import datetime
+from datetime import datetime, timezone
 
 class Analitic(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    timestamp = db.Column(
+            db.DateTime, 
+            default=datetime.now(timezone.utc)
+            )
     period = db.Column(db.String(50))
     torg = db.Column(db.Numeric(precision=10, scale=2))
     body = db.Column(db.Numeric(precision=10, scale=2))

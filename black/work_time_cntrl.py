@@ -1,6 +1,6 @@
 from zoneinfo import ZoneInfo
 from datetime import datetime, timedelta, timezone
-
+from utils import DEBUG
 
 
 class WorkTimeCntrl:
@@ -13,14 +13,14 @@ class WorkTimeCntrl:
     
     def start_utc_by_zone(self):
         current_time = next(self.my_time()).astimezone(ZoneInfo(self.zone))
-        print('current_time:', current_time)
+        if DEBUG>5: print('current_time:', current_time)
         start_time = current_time - timedelta(hours=self.shifttime)
         zone_tz = start_time.replace(hour=self.shifttime, 
                     minute=0, second=0, microsecond=0,
                     tzinfo=ZoneInfo(self.zone)
         )
         utc_clean = zone_tz.astimezone(timezone.utc)
-        print('utc_clean:', utc_clean)
+        if DEBUG>5: print('utc_clean:', utc_clean)
         return utc_clean
 
 

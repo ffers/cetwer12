@@ -11,8 +11,8 @@ class Stub:
             return 1
         
 
-def DEBUG():
-    if os.getenv("ENV") == "dev":
-        return True
+d = os.getenv('DEBUG')
+DEBUG = int(d) if d else 0
+
      
 

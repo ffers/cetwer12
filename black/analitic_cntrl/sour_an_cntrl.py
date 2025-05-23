@@ -204,6 +204,13 @@ class SourAnCntrl:
         self.sort_analitic("day")
         return True
 
+
+    '''
+    stock_journal
+    Ета функция очень важная она добавляєт и вичетает
+    из исходника и записивает в журнал
+    ее надо перенести в source_serv и переименовать 
+    '''
     def stock_journal(self, prod_sourc_id, quantity, description, event_date=None):
         resp = False
         new_quantity = 0

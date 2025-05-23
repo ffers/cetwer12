@@ -2,12 +2,22 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
     session
 from flask_login import login_required, current_user
 from flask_principal import Permission, RoleNeed
+from server_flask.db import db
 from black import ProductAnaliticControl
 from black import AnCntrl
 from black import SourAnCntrl
 from black import SourDiffAnCntrl
 import traceback
-from utils import OC_logger
+from utils import OC_logger, WorkTimeCntrl
+from asx.a_service.analitic.analitic_day.analitic_day import CountAnaliticV2 
+from a_service.analitic.base import ContextDepend
+
+from domain.models.analitic_dto import AnaliticDto
+
+from repository import OrderRep, AnaliticRep, ProductRep, \
+    SourceRep, BalanceRepositorySQLAlchemy
+
+from a_service.sour_an_serv import SourAnServ
 
 def get_instance(class_name, class_type):
     if not hasattr(g, class_name):
@@ -25,7 +35,7 @@ bp = Blueprint('Analitic', __name__, template_folder='templates')
 @bp.route("/cabinet/analitic", methods=['POST', 'GET'])
 @login_required
 @admin_permission.require(http_exception=403)
-def analitic_test():
+def analitic_test_something():
     if request.method == 'GET':
         prod_an_cntrl = get_instance('prod_an_cntrl', ProductAnaliticControl)
         all_product_analitic = prod_an_cntrl.all_product_analitic()
@@ -37,19 +47,18 @@ def analitic_test():
 @login_required
 @admin_permission.require(http_exception=403)
 def analitic():
-    print(session)
     if request.method == 'GET':
         an_cntrl = AnCntrl()
         items = an_cntrl.load_all()
         return render_template('cabinet_client/analitic/analitic.html',
                                user=current_user, items=items)
 
-@bp.route('/cabinet/analitic/delete/<int:id>', methods=['GET'])
+@bp.route('/cabinet/analitic/delete/<int:id>', methods=['POST'])
 @login_required
 @admin_permission.require(http_exception=403)
 def delete_product(id):
-    prod_an_cntrl = get_instance('prod_an_cntrl', ProductAnaliticControl)
-    product = prod_an_cntrl.analitic_delete(id)
+    prod_an_cntrl = AnaliticRep()
+    product = prod_an_cntrl.delete_(id)
     print(f"Перевірка {product}")
     flash('Аналітику видалено', category='success')
     return redirect('/cabinet/analitic/all')
@@ -74,8 +83,6 @@ def update_day():
         product = sour_an_cntrl.sort_analitic("day")
         print(f"Перевірка {product}")
         flash('Аналітику оновлено DAY', category='success')
-        session.update({'test': 'test'})
-        print(session)
         return redirect('/cabinet/analitic/all')
     except Exception as e:
         print('Помилка')
@@ -121,4 +128,42 @@ def source_difference_month(id):
     prod_an_cntrl = get_instance('prod_an_cntrl', ProductAnaliticControl)
     list_obj = prod_an_cntrl.load_source_difference_id_period(id, 'month')
     return render_template("cabinet_client/analitic/source_difference.html", product=list_obj, user=current_user)
+
+@bp.route("/cabinet/analitic/test", methods=['POST', 'GET'])
+@login_required
+@admin_permission.require(http_exception=403)
+def analitic_test_day():
+    try:
+        ctx = ContextDepend(
+            w_time=WorkTimeCntrl(),
+            ord_rep=OrderRep(),
+            an_cntrl=AnCntrl(),
+            an_rep=AnaliticRep(),
+            logger=OC_logger.oc_log('analitic_handler'),
+            prod_rep=ProductRep(),
+            source_rep=SourceRep(),
+            state=AnaliticDto,
+            balance_rep=BalanceRepositorySQLAlchemy(db.session),
+            source_an_cntrl=SourAnCntrl()
+        )
+        resp = CountAnaliticV2(
+                ctx
+            ).day()
+        print(f'{resp =}')
+        return 'Success Analitic' 
+    except Exception as e:
+        logger.error(f'analitic_day_rout: {e}')
+        return 'Exception'
    
+
+@bp.route('/analitic/edit/<int:id>', methods=['GET'])
+@login_required
+@admin_permission.require(http_exception=403)
+def update_item(id):
+    print(f"Перевірка ")
+    rep = AnaliticRep()
+    item = rep.load(id)
+    flash('Редагування', category='success')
+    
+    return render_template('cabinet_client/analitic/edit.html',
+                               user=current_user, item=item)

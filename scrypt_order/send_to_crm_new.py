@@ -72,6 +72,11 @@ class SendToCrmNew:
         url = "v2/analitic/start_20_01"
         resp = self.make_request("GET", url) 
 
+    
+    def update_analitic(self):
+        url = "v2/analitic/update_analitic"
+        return self.make_request("GET", url) 
+
         
     def make_request(self, method, prefix):
         url = os.getenv("HOSTCRM") + prefix

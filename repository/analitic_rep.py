@@ -4,6 +4,17 @@ from server_flask.db import db
 from datetime import datetime, timedelta
 from utils import OC_logger
 
+from domain.models.analitic_dto import AnaliticDto
+
+class UpdateProblemRepo(Exception):
+    pass
+
+class LoadPeriodTime(Exception):
+    pass
+
+class AnaliticNotUnique(Exception):
+    pass
+
 class AnaliticRep():
     def __init__(self):
         self.logger = OC_logger.oc_log('analitic_rep')
@@ -28,6 +39,21 @@ class AnaliticRep():
                 period=period
                 ).all()
         return items
+    
+    def load(self, id):
+        try:
+            i = Analitic.query.get(id)
+            return AnaliticDto(
+                id=i.id, torg=i.torg, body=i.body, 
+                worker=i.worker, prom=i.prom, rozet=i.rozet,
+                google=i.google_shop, insta=i.insta, 
+                profit=i.profit, salary=i.salary, 
+                inwork=i.inwork, stock=i.stock, 
+                period=i.period, orders=i.orders
+                )
+        except Exception as e:
+            self.logger.info(f'repo load: {e}')
+            return None
 
     def load_article(self, article):
         item = Analitic.query.filter_by(
@@ -58,6 +84,8 @@ class AnaliticRep():
             ).first()
         print(f'аналітік_реп;', st, fin)
         return item
+    
+            
 
     def add_first(self, args):
         try:
@@ -80,8 +108,116 @@ class AnaliticRep():
         except Exception as e:
             self.logger.error(f'add_first: {e}')
             return False
+        
+    def check_period(self, period, time):
+        existing = Analitic.query.filter_by(
+            period="day",
+            timestamp=time
+        ).first()
+
+        if existing:
+            raise AnaliticNotUnique("Вже є запис на цей день")
 
 
+    def add_row(self, period, time):
+        try:
+            self.check_period(period, time)
+            i = Analitic(
+                timestamp=time,
+                torg=0,
+                body=0,
+                worker=0,
+                prom=0,
+                rozet=0,
+                google_shop=0,
+                insta=0,
+                profit=0,
+                period=period,
+                orders=0,
+                salary=0,
+                balance=0,
+                wait=0,
+                stock=0,
+                inwork=0,
+                income=0
+            )
+            db.session.add(i)
+            db.session.commit()
+            db.session.refresh(i)
+            return AnaliticDto(
+                id=i.id, 
+                torg=i.torg, 
+                body=i.body, worker=i.worker, prom=i.prom, rozet=i.rozet,
+                google=i.google_shop, insta=i.insta, profit=i.profit, salary=i.salary, 
+                period=i.period, orders=i.orders, inwork=i.inwork,
+                stock=i.stock 
+                )
+        except Exception as e:
+            self.logger.error(f'make_row: {e}')
+            raise
+
+    def load_period_time_v2(self, period, start, stop):
+        try:
+            i = Analitic.query.filter(
+                Analitic.timestamp >= start,
+                Analitic.timestamp <= stop,
+                Analitic.period == period
+                ).first()
+            
+            return AnaliticDto(
+                id=i.id, torg=i.torg, body=i.body, 
+                worker=i.worker, prom=i.prom, rozet=i.rozet,
+                google=i.google_shop, insta=i.insta, 
+                profit=i.profit, salary=i.salary, 
+                inwork=i.inwork, stock=i.stock, 
+                period=i.period, orders=i.orders
+                )
+        except Exception as e:
+            self.logger.info(f'load_period_time_v2: {e}')
+            return None
+        
+    def update_v2(self, x: AnaliticDto):
+        try:
+            i = Analitic.query.get_or_404(x.id)
+            i.torg = x.torg
+            i.body = x.body
+            i.worker = x.worker
+            i.prom = x.prom
+            i.rozet = x.rozet
+            i.google_shop = x.google
+            i.insta = x.insta
+            i.profit = x.profit
+            i.period = x.period
+            i.orders = x.orders
+            i.salary = x.salary
+            i.inwork = x.inwork
+            i.stock = x.stock
+            i.balance = x.balance
+            db.session.commit()
+            db.session.refresh(i)
+            return i
+        except Exception as e:
+            db.session.rollback()
+            self.logger.error(f'update_v2: {e}')
+            raise UpdateProblemRepo(f'update_v2')
+        
+    def update_v3(self, x: AnaliticDto):
+        try:
+            i = Analitic.query.get_or_404(x.id)
+            dto_data = vars(x)
+
+            for field in i.__table__.columns.keys():
+                if field in dto_data and field != "id":
+                    setattr(i, field, dto_data[field])
+
+            db.session.commit()
+            db.session.refresh(i)
+            return i
+        except Exception as e:
+            db.session.rollback()
+            self.logger.error(f'update_v2: {e}')
+            raise UpdateProblemRepo(f'update_v3')
+        
     def update_(self, id, args):
         try:
             product = Analitic.query.get_or_404(id)
@@ -99,6 +235,9 @@ class AnaliticRep():
             return True, None
         except Exception as e:
             return False, str(e)
+        
+    
+        
 
     def update_work(self, id, args):
         try:

@@ -97,4 +97,16 @@ class SourceServ:
                 pointer = cmd_class(Diff).execute(pointer)
             return pointer
     
+    # def stock_journal(self, prod_sourc_id, quantity, description, event_date=None):
+    #     resp = False
+    #     new_quantity = 0
+    #     prod_source = self.rep.load_item(prod_sourc_id)
+    #     if prod_source:
+    #         new_quantity = prod_source.quantity - quantity
+    #         resp = self.rep.update_quantity(prod_source.id, new_quantity)
+    #         list_val = self.sour_an_serv.journal_func(prod_source, quantity, description, event_date)
+    #         print(f"list_val {list_val}")
+    #         resp = journal.add_(list_val)
+    #     return resp, new_quantity
+    
 

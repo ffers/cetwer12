@@ -1,0 +1,151 @@
+{% extends 'layout/base.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+
+          
+               
+                      <title>Оновлення аналітики</title>
+                      <style>
+                        * {
+                          box-sizing: border-box;
+                        }
+                        body {
+                          margin: 0;
+                          font-family: 'Segoe UI', sans-serif;
+                          background-color: #f2f5f9;
+                          padding: 40px;
+                        }
+                        .container {
+                          max-width: 1200px;
+                          margin: auto;
+                          background: white;
+                          padding: 30px 40px;
+                          border-radius: 16px;
+                          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+                        }
+                        h2 {
+                          text-align: center;
+                          margin-bottom: 30px;
+                          font-weight: 500;
+                          color: #333;
+                        }
+                        form {
+                          display: grid;
+                          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                          gap: 20px 40px;
+                        }
+                        label {
+                          font-size: 14px;
+                          font-weight: 600;
+                          color: #555;
+                          margin-bottom: 6px;
+                          display: block;
+                        }
+                        input[type="number"],
+                        input[type="text"] {
+                          width: 100%;
+                          padding: 10px 12px;
+                          border: 1px solid #ddd;
+                          border-radius: 12px;
+                          background: #fafafa;
+                          font-size: 15px;
+                          transition: border-color 0.2s;
+                        }
+                        input:focus {
+                          border-color: #4a90e2;
+                          outline: none;
+                        }
+                        .full-width {
+                          grid-column: 1 / -1;
+                        }
+                        button {
+                          grid-column: 1 / -1;
+                          padding: 14px;
+                          font-size: 16px;
+                          background-color: #4a90e2;
+                          color: white;
+                          border: none;
+                          border-radius: 12px;
+                          cursor: pointer;
+                          transition: background 0.3s;
+                        }
+                        button:hover {
+                          background-color: #3277c8;
+                        }
+                      </style>
+                    </head>
+                    <body>
+                    
+                    <h2>Оновлення аналітики</h2>
+                    
+                    <title>Edit Item</title>
+
+                      <form action="{{ url_for('Analitic.delete_product', id=item.id) }}"
+                        method="post" style="display:inline;">
+                    <button type="submit">Delete</button>
+
+                    <form method="post">
+                      <label>Період:</label>
+                      <input type="text" name="period" value="{{ item.period }}" required>
+                    
+                      <label>Торг:</label>
+                      <input type="number" step="0.01" name="torg" value="{{ item.torg }}" required>
+                    
+                      <label>Тіло:</label>
+                      <input type="number" step="0.01" name="body" value="{{ item.body }}" required>
+                    
+                      <label>Робочі:</label>
+                      <input type="number" step="0.01" name="worker" value="{{ item.worker }}" required>
+                    
+                      <label>Пром:</label>
+                      <input type="number" step="0.01" name="prom" value="{{ item.prom }}" required>
+                    
+                      <label>Rozetka:</label>
+                      <input type="number" step="0.01" name="rozet" value="{{ item.rozet }}" required>
+                    
+                      <label>Google Shop:</label>
+                      <input type="number" step="0.01" name="google" value="{{ item.google }}" required>
+                    
+                      <label>Instagram:</label>
+                      <input type="number" step="0.01" name="insta" value="{{ item.insta }}" required>
+                    
+                      <label>Дохід:</label>
+                      <input type="number" step="0.01" name="profit" value="{{ item.profit }}" required>
+                    
+                      <label>Зарплата:</label>
+                      <input type="number" step="0.01" name="salary" value="{{ item.salary }}" required>
+                    
+                      <label>В роботі:</label>
+                      <input type="number" step="0.01" name="inwork" value="{{ item.inwork }}" required>
+                    
+                      <label>Склад:</label>
+                      <input type="number" step="0.01" name="stock" value="{{ item.stock }}" required>
+                    
+                      <label>Баланс:</label>
+                      <input type="number" step="0.01" name="balance" value="{{ item.balance }}" required>
+                    
+                      <label>Очікуємо:</label>
+                      <input type="number" step="0.01" name="wait" value="{{ item.wait }}" required>
+                    
+                      <label>Загальний дохід:</label>
+                      <input type="number" step="0.01" name="income" value="{{ item.income }}" required>
+                    
+                      <label>Кількість замовлень:</label>
+                      <input type="number" name="orders" value="{{ item.orders }}" required>
+                    
+                      <button type="submit">Оновити аналітику</button>
+                    </form>
+                    
+                    </body>
+                   
+                    
+
+
+<br>
+<a href="{{ url_for('Analitic.analitic') }}">Back to list</a>
+</div>
+
+{% endblock %}

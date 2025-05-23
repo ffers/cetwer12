@@ -34,7 +34,7 @@ async def process_market_sign(func_name: str):
             print(f"Відповідь сервера: {resp}")
             return JSONResponse(status_code=200, content={"message": "SUCCESS" if resp else "FALSE"})
         except Exception as e:
-            logger.error(f'{e}')
+            logger.exception(f'{e}')
             return jsonify({'error':  f'{func_name}: False'})
 
 @router.get("/count_sold")
@@ -66,6 +66,10 @@ async def market_sign():
 @router.get("/start_20_01")
 async def market_sign():   
     return await process_market_sign("reg_20_01")
+
+@router.get("/update_analitic")
+async def market_sign():   
+    return await process_market_sign("update_analitic")
     
 
 

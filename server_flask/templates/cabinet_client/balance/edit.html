@@ -1,0 +1,33 @@
+{% extends 'layout/base.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<title>Edit Item</title>
+
+<form action="{{ url_for('balance.delete', item_id=item.id) }}"
+                        method="post" style="display:inline;">
+                    <button type="submit">Delete</button>
+</form>     
+<h1>Edit Item</h1>
+<div class="center">
+  <form method="post">
+  <label>Name:</label>
+  <input type="number" name="balance" value="{{ item.balance }}" required><br>
+  <label>Name:</label>
+  <input type="number" name="wait" value="{{ item.wait }}" required><br>
+  <label>Name:</label>
+  <input type="number" name="stock" value="{{ item.stock }}" required><br>
+  <label>Name:</label>
+  <input type="number" name="inwork" value="{{ item.inwork }}" required><br>
+  
+  <button type="submit">Update</button>
+</form>
+
+
+<br>
+<a href="{{ url_for('balance.index') }}">Back to list</a>
+</div>
+
+{% endblock %}

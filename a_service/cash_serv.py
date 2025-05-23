@@ -95,7 +95,6 @@ class CacheService:
         self.set("salary", salary)
         return salary
 
-
     def qauntity_source(self, prod_source, sale_quantity):
         new_quantity = prod_source.quantity + sale_quantity
         self.set("quantity_source", new_quantity)

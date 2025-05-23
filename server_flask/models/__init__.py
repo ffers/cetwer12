@@ -43,5 +43,6 @@ from .user.Project import Project
 from .Receipts.Receipt import Receipt
 from .Receipts.Shift import Shift
 from .Receipts.Cash import Cash
+from .analitic.Balance import Balance
 
  

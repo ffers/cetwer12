@@ -295,10 +295,12 @@ class OrderRep:
             return items
 
     def load_send(self):
+            
             items = Orders.query.filter(
-                Orders.ordered_status_id == 2,
+                Orders.ordered_status_id == 8,
                 Orders.send_time == None
             ).all()
+            print('load_send_rep:', items)
             return items
 
     def add_ttn_crm(self, id, ttn):
