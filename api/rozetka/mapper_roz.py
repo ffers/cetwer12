@@ -1,10 +1,11 @@
 from pydantic import BaseModel
 from DTO.order_dto import OrderDTO, ProductDto, CostumerDto, RecipientDto
 from .dto_roz import OrderRoz
+from utils import OC_logger
 
 class MapperRoz():
     def __init__(self):
-        pass   
+        self.logger = OC_logger.oc_log('api.mapper_roz')   
  
     def order(self, data: OrderRoz) -> OrderDTO:
         warehouse_text=(
@@ -38,10 +39,9 @@ class MapperRoz():
             order_code=f"R-{data.id}",
             payment_status_id=None,
             ordered_status_id=10,
-            warehouse_method_id=self.warehouse_method(data.delivery.delivery_method_id),
+            warehouse_method_id=self.warehouse_method(data.delivery.delivery_service_id),
             source_order_id=3,
             payment_method_id=self.payment_method(data.payment.payment_method_id),
-            payment_method_name=data.payment.payment_method_name,
             delivery_method_id=self.delivery_method(data.delivery.delivery_service_id),
             author_id=55,
             ordered_product=self.product(data.purchases),
@@ -87,8 +87,10 @@ class MapperRoz():
                 product_id=None,
                 ) for product in data]
     
-    def delivery_method(self, order):
-        mapping = {
+    
+    def delivery_method(self, delivery):
+        del_id = delivery.delivery_service_id
+        avalaible = {
             5: 1,
             1: 2,
             2024: 3,
@@ -96,9 +98,16 @@ class MapperRoz():
             13013935: 5, 
             43660: 1
         }
-        return mapping.get(order)
+        return avalaible.get(del_id, self.new_delivery(delivery))
     
-    def payment_method(self, order):
+    def new_delivery(self, delivery):       
+        name=delivery.delivery_service_name
+        ind=delivery.delivery_service_id
+        self.logger.error(f'new_delivery: name-{name}, id-{ind}')
+        return 6
+
+    def payment_method(self, payment):
+        pay_id = payment.payment_method_id
         mapping = {
             1: 1,
             6211: 2,
@@ -107,6 +116,13 @@ class MapperRoz():
             11111111: 5,
             4524: 6,
         }
-        return mapping.get(order, 7)
+        return mapping.get(pay_id, self.new_payment(payment))
+    
+    def new_payment(self, payment):
+        name=payment.payment_method_name
+        ind=payment.payment_method_id
+        self.logger.error(f'new_payment: name-{name}, id-{ind}')
+        return 7
+
 
        

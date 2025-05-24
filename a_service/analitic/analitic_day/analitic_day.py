@@ -3,7 +3,7 @@ from dataclasses import asdict
 import os
 
 from ..base import Handler
-from .handlers.body import Body
+from .handlers import Count
 from domain.models.analitic_dto import AnaliticDto
 from domain.models import BalanceDTO
 from decimal import Decimal
@@ -12,10 +12,6 @@ class OrderHaveSendTime(Exception):
     pass
 
 class StockOrderHaventComps(Exception):
-    pass
-
-
-
     pass
 
 class CountAnaliticV2(Handler):
@@ -27,6 +23,7 @@ class CountAnaliticV2(Handler):
         # item = an_cntrl.load_period_sec(period, start_time, stop_time)
         # якщо є треба додати до цього новий підрахунок якщо він є /
         # якщо нема рахувати з нуля
+        if DEBUG>4: print('day:', start_time, stop_time)
         self.ctx.logger.debug(f"period: {start_time, stop_time}")
         resp =CheckConfirmedOrder(self.ctx).process()
 
@@ -40,14 +37,17 @@ class CheckConfirmedOrder(Handler):
             try:
                 self.check(order)
             except OrderHaveSendTime:
+                if DEBUG>4: print('process:', OrderHaveSendTime)
                 logger.error(
                    f"order without with send_time: {order.id}") 
                 pass
             except StockOrderHaventComps:
+                if DEBUG>4: print('process:', StockOrderHaventComps)
                 logger.error(
                    f"order dont have comps: {order.id}") 
                 pass
             except Exception as e:
+                if DEBUG>4: print('process:', e)
                 self.ctx.logger.error(
                    f"CheckConfirmedOrder: {e}") 
                 raise
@@ -72,7 +72,7 @@ class AnaliticDay(Handler):
         start_time, stop_time = self.ctx.w_time.day()
         an_row = self.return_row(start_time, stop_time)
         print('time:', start_time, stop_time)
-        if DEBUG>5: print('an_row:', an_row)
+        if DEBUG>4: print('an_row:', an_row)
         
         count = self.count(order, an_row)
         print('sum_row:', count)
@@ -84,6 +84,7 @@ class AnaliticDay(Handler):
     def return_row(self, start_time, stop_time):
         row = self.ctx.an_rep.load_period_time_v2('day', start_time, stop_time)
         if not row:
+            if DEBUG>4: print('Створюємо новий день', start_time)
             row = self.ctx.an_rep.add_row('day', start_time) 
         return row
     
@@ -101,7 +102,7 @@ class AnaliticDay(Handler):
             x.torg += torg
             x.body += count.body_v2(order)
             x.worker += 27
-            x.profit += x.torg - x.body
+            x.profit = x.torg - x.body
             x.prom += count.cpa_com_f(order)
             x.rozet += count.rozet_f(order)
             x.period = 'day'
@@ -109,7 +110,7 @@ class AnaliticDay(Handler):
             x.balance = balance.process()
             x.wait = wait.wait(torg)
             x.inwork = inwork.process()
-            print(f"новий кеш: {x}")
+            if DEBUG>4: print(f"новий кеш: {x}")
             return x
         except Exception as e:
             self.ctx.logger.exception(f'count: {e}')
@@ -150,42 +151,7 @@ class AnaliticDay(Handler):
 
         
 
-class Count(Handler):
-    def torg(self, product):
-        torg = 0
-        if product.quantity and product.price:
-            torg = product.quantity * product.price
-        return torg
 
-    def torg_func(self, order):
-        torg = 0
-        for product in order.ordered_product:
-            torg += self.torg(product)
-        return torg
-    
-    def body_v2(self, order):
-        count = Body(self.ctx)
-        return count.process(order)
-    
-    def cpa_com_f(self, order):
-        cpa_commission = 0
-        if DEBUG > 4: print('cpa_com_f:', order.cpa_commission)
-        if order.cpa_commission:
-            cpa_commission += self.format_float(order.cpa_commission)
-        return cpa_commission
-    
-    def rozet_f(self, order):
-        rozet = 0
-        if order.delivery_method_id == 2:
-            print(order.delivery_method.name)
-            rozet += 30
-        return rozet
-    
-    def salary(self, x: AnaliticDto):
-        return x.profit - x.worker - x.prom - x.rozet - x.google - x.insta
-
-    def inwork(self, x: AnaliticDto):
-        return x.stock + x.inwork + x.balance
     
 class Wait(Handler):
     def wait(self, torg):
@@ -224,7 +190,7 @@ class Stock(Handler):
         items = self.ctx.source_rep.load_all()
         for item in items:
             money += item.money
-        print('stock:', money)
+        if DEBUG>4: print('stock:', money)
         return money
     
     def update(self, money):

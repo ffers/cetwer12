@@ -7,6 +7,9 @@ from black import ProductAnaliticControl
 from black import AnCntrl
 from black import SourAnCntrl
 from black import SourDiffAnCntrl
+from black.analitic_cntrl.controller import Controller
+import asyncio
+
 import traceback
 from utils import OC_logger, WorkTimeCntrl
 from asx.a_service.analitic.analitic_day.analitic_day import CountAnaliticV2 
@@ -68,9 +71,8 @@ def delete_product(id):
 @login_required
 @admin_permission.require(http_exception=403)
 def update_all():
-    sour_an_cntrl = get_instance('sour_an_cntrl', SourAnCntrl)
-    product = sour_an_cntrl.update_all_analitic()
-    print(f"Перевірка {product}")
+    cntrl = Controller()
+    asyncio.run(cntrl.all())
     flash('Аналітику оновлено ALL', category='success')
     return redirect('/cabinet/analitic/all')
 
@@ -79,9 +81,8 @@ def update_all():
 @admin_permission.require(http_exception=403)
 def update_day():
     try:
-        sour_an_cntrl = get_instance('sour_an_cntrl', SourAnCntrl)
-        product = sour_an_cntrl.sort_analitic("day")
-        print(f"Перевірка {product}")
+        cntrl = Controller()
+        asyncio.run(cntrl.day())
         flash('Аналітику оновлено DAY', category='success')
         return redirect('/cabinet/analitic/all')
     except Exception as e:
@@ -94,9 +95,8 @@ def update_day():
 @login_required
 @admin_permission.require(http_exception=403)
 def update_week():
-    sour_an_cntrl = get_instance('sour_an_cntrl', SourAnCntrl)
-    product = sour_an_cntrl.sort_analitic("week")
-    print(f"Перевірка {product}")
+    cntrl = Controller()
+    asyncio.run(cntrl.period('week', 'day'))
     flash('Аналітику оновлено week', category='success')
     return redirect('/cabinet/analitic/all')
 
@@ -104,9 +104,8 @@ def update_week():
 @login_required
 @admin_permission.require(http_exception=403)
 def update_month():
-    sour_an_cntrl = get_instance('sour_an_cntrl', SourAnCntrl)
-    product = sour_an_cntrl.sort_analitic("month")
-    print(f"Перевірка {product}")
+    cntrl = Controller()
+    asyncio.run(cntrl.period('month', 'week'))
     flash('Аналітику оновлено month', category='success')
     return redirect('/cabinet/analitic/all')
  
@@ -114,9 +113,8 @@ def update_month():
 @login_required
 @admin_permission.require(http_exception=403)
 def update_year():
-    sour_an_cntrl = get_instance('sour_an_cntrl', SourAnCntrl)
-    product = sour_an_cntrl.sort_analitic("year")
-    print(f"Перевірка {product}")
+    cntrl = Controller()
+    asyncio.run(cntrl.period('year', 'month'))
     flash('Аналітику року оновлено', category='success')
     return redirect('/cabinet/analitic/all')
  
@@ -134,22 +132,24 @@ def source_difference_month(id):
 @admin_permission.require(http_exception=403)
 def analitic_test_day():
     try:
-        ctx = ContextDepend(
-            w_time=WorkTimeCntrl(),
-            ord_rep=OrderRep(),
-            an_cntrl=AnCntrl(),
-            an_rep=AnaliticRep(),
-            logger=OC_logger.oc_log('analitic_handler'),
-            prod_rep=ProductRep(),
-            source_rep=SourceRep(),
-            state=AnaliticDto,
-            balance_rep=BalanceRepositorySQLAlchemy(db.session),
-            source_an_cntrl=SourAnCntrl()
-        )
-        resp = CountAnaliticV2(
-                ctx
-            ).day()
-        print(f'{resp =}')
+        # ctx = ContextDepend(
+        #     w_time=WorkTimeCntrl(),
+        #     ord_rep=OrderRep(),
+        #     an_cntrl=AnCntrl(),
+        #     an_rep=AnaliticRep(),
+        #     logger=OC_logger.oc_log('analitic_handler'),
+        #     prod_rep=ProductRep(),
+        #     source_rep=SourceRep(),
+        #     state=AnaliticDto,
+        #     balance_rep=BalanceRepositorySQLAlchemy(db.session),
+        #     source_an_cntrl=SourAnCntrl()
+        # )
+        # resp = CountAnaliticV2(
+        #         ctx
+        #     ).day()
+        # print(f'{resp =}')
+        cntrl = Controller()
+        asyncio.run(cntrl.day())
         return 'Success Analitic' 
     except Exception as e:
         logger.error(f'analitic_day_rout: {e}')

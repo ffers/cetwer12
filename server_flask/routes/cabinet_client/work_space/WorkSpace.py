@@ -19,15 +19,7 @@ def payment_method():
         items = WorkSpaceServ().load_payment_methods()
         return render_template('cabinet_client/work_space/payment_method.html', items=items,  user=current_user)
     
-@bp.route('/delivery_method', methods=['POST', 'GET'])
-@login_required
-@admin_permission.require(http_exception=403)
-def delivery_method():
-    if request.method == 'POST':
-        return redirect('/orders')
-    else:
-        items = WorkSpaceServ().load_delivery_methods()
-        return render_template('cabinet_client/work_space/delivery_method.html', items=items,  user=current_user)
+
 
 @bp.route('/order_status', methods=['POST', 'GET'])
 @login_required

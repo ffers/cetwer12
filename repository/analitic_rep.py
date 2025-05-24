@@ -2,7 +2,7 @@ from server_flask.models import Analitic
 from sqlalchemy import func
 from server_flask.db import db
 from datetime import datetime, timedelta
-from utils import OC_logger
+from utils import OC_logger, DEBUG
 
 from domain.models.analitic_dto import AnaliticDto
 
@@ -21,6 +21,75 @@ class AnaliticRep():
 
     def my_time(self):
         yield (datetime.utcnow())
+
+    def check_period(self, period, time):
+        existing = Analitic.query.filter_by(
+            period=period,
+            timestamp=time
+        ).first()
+
+        if existing:
+            raise AnaliticNotUnique(f"Вже є запис на цей період - {period}")
+
+    def add_row(self, period, time):
+        try:
+            self.check_period(period, time)
+            i = Analitic(
+                timestamp=time,
+                torg=0,
+                body=0,
+                worker=0,
+                prom=0,
+                rozet=0,
+                google_shop=0,
+                insta=0,
+                profit=0,
+                period=period,
+                orders=0,
+                salary=0,
+                balance=0,
+                wait=0,
+                stock=0,
+                inwork=0,
+                income=0
+            )
+            db.session.add(i)
+            db.session.commit()
+            db.session.refresh(i)
+            return AnaliticDto(
+                id=i.id, 
+                torg=i.torg, 
+                body=i.body, worker=i.worker, prom=i.prom, rozet=i.rozet,
+                google=i.google_shop, insta=i.insta, profit=i.profit, salary=i.salary, 
+                period=i.period, orders=i.orders, inwork=i.inwork,
+                stock=i.stock 
+                )
+        except Exception as e:
+            self.logger.error(f'make_row: {e}')
+            raise
+
+    def add_first(self, args):
+        try:
+            print(args)
+            item = Analitic(
+                torg=args[0],
+                body=args[1],
+                worker=args[2],
+                prom=args[3],
+                rozet=args[4],
+                google_shop=args[5],
+                insta=args[6],
+                profit=args[7],
+                period=args[8],
+                orders=args[9]
+            )
+            db.session.add(item)
+            db.session.commit()
+            return True
+        except Exception as e:
+            self.logger.error(f'add_first: {e}')
+            return False
+
 
     def load_all(self):
         items = Analitic.query.order_by(
@@ -84,77 +153,6 @@ class AnaliticRep():
             ).first()
         print(f'аналітік_реп;', st, fin)
         return item
-    
-            
-
-    def add_first(self, args):
-        try:
-            print(args)
-            item = Analitic(
-                torg=args[0],
-                body=args[1],
-                worker=args[2],
-                prom=args[3],
-                rozet=args[4],
-                google_shop=args[5],
-                insta=args[6],
-                profit=args[7],
-                period=args[8],
-                orders=args[9]
-            )
-            db.session.add(item)
-            db.session.commit()
-            return True
-        except Exception as e:
-            self.logger.error(f'add_first: {e}')
-            return False
-        
-    def check_period(self, period, time):
-        existing = Analitic.query.filter_by(
-            period="day",
-            timestamp=time
-        ).first()
-
-        if existing:
-            raise AnaliticNotUnique("Вже є запис на цей день")
-
-
-    def add_row(self, period, time):
-        try:
-            self.check_period(period, time)
-            i = Analitic(
-                timestamp=time,
-                torg=0,
-                body=0,
-                worker=0,
-                prom=0,
-                rozet=0,
-                google_shop=0,
-                insta=0,
-                profit=0,
-                period=period,
-                orders=0,
-                salary=0,
-                balance=0,
-                wait=0,
-                stock=0,
-                inwork=0,
-                income=0
-            )
-            db.session.add(i)
-            db.session.commit()
-            db.session.refresh(i)
-            return AnaliticDto(
-                id=i.id, 
-                torg=i.torg, 
-                body=i.body, worker=i.worker, prom=i.prom, rozet=i.rozet,
-                google=i.google_shop, insta=i.insta, profit=i.profit, salary=i.salary, 
-                period=i.period, orders=i.orders, inwork=i.inwork,
-                stock=i.stock 
-                )
-        except Exception as e:
-            self.logger.error(f'make_row: {e}')
-            raise
 
     def load_period_time_v2(self, period, start, stop):
         try:
@@ -173,7 +171,30 @@ class AnaliticRep():
                 period=i.period, orders=i.orders
                 )
         except Exception as e:
-            self.logger.info(f'load_period_time_v2: {e}')
+            self.logger.exception(f'load_period_time_v2: {e}')
+            return None
+        
+    def load_period_all(self, period, start, stop):
+        try:
+            items = Analitic.query.filter(
+                Analitic.timestamp >= start,
+                Analitic.timestamp <= stop,
+                Analitic.period == period
+                ).all()
+            result = []
+            for i in items:
+                result.append(AnaliticDto(
+                    id=i.id, torg=i.torg, body=i.body, 
+                    worker=i.worker, prom=i.prom, rozet=i.rozet,
+                    google=i.google_shop, insta=i.insta, 
+                    profit=i.profit, salary=i.salary, 
+                    inwork=i.inwork, stock=i.stock, 
+                    period=i.period, orders=i.orders
+                    ))
+            return result
+        except Exception as e:
+            if DEBUG>4: print('load_period_all:', e)
+            self.logger.exception(f'load_period_all: {e}')
             return None
         
     def update_v2(self, x: AnaliticDto):

@@ -38,8 +38,8 @@ class RozetkaMapper():
             sum_price=data.amount,
             sum_before_goods=None,
             description=data.comment,
-            description_delivery=f"Замовлення Rozetka Jerni {data.id}",
-            cpa_commission=None,
+            description_delivery=f"Замовлення Rozetka Vida {data.id}",
+            cpa_commission=self.get_cpa(data.purchases),
             client_id=None,
             send_time=None,
             order_id_sources=None,
@@ -92,7 +92,13 @@ class RozetkaMapper():
 
     def load_product(self, artcl, name):
         product = self.product_serv.load_item_by_article(artcl, name)
-        return product.id         
+        return product.id      
+
+    def get_cpa(self, data):
+        result = 0
+        for p in data:
+            result += p.item.commission_sum
+        return result
             
     def product(self, data):
         result = []

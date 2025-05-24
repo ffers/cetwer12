@@ -7,8 +7,6 @@ from asx.black.analitic_cntrl.sour_an_cntrl import SourAnCntrl
 from black.telegram_cntrl.tg_cash_cntrl import TgCashCntrl
 from black import SourDiffAnCntrl
 
-from black.analitic_cntrl.update import Update
-
 from utils import SendRequest
 import time
 
@@ -100,9 +98,6 @@ class RegSchedulleSrv():
         data = None
         url = "http://localhost:8000/v2/orders/16_58"
         self.send_req.send_http_json(data, url)
-
-    def update_analitic(self):
-        return Update().cntrl()
 
 
 

@@ -31,6 +31,7 @@ class OrderRep:
                         warehouse_option=item.warehouse_option,
                         delivery_option=item.delivery_option,
                         payment_method_id=item.payment_method_id,
+                        cpa_commission=item.cpa_commission,
                         sum_price=item.sum_price,
                         sum_before_goods=item.sum_before_goods,
                         delivery_method_id=item.delivery_method_id,

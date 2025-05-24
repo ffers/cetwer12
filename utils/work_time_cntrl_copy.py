@@ -73,19 +73,20 @@ class WorkTimeCntrl:
         return first_day_of_week, last_day_of_week
 
     def month(self):
-        start_time = self.start_utc_by_zone()
-        next_month = start_time.replace(day=28) + timedelta(days=4)
+        current_time = self.start_utc_by_zone()
+        start_time = current_time.replace(day=1)
+        next_month = current_time.replace(day=28) + timedelta(days=4)
         stop_time = next_month - timedelta(days=next_month.day)
         return start_time, stop_time
 
     def year(self):
-        current_time = next(self.my_time())
-        start_time = self.start_utc_by_zone()
+        current_time = self.start_utc_by_zone()
+        start_time = datetime(current_time.year, 1, 1)
         stop_time = datetime(current_time.year, 12, 31)
         return start_time, stop_time
 
     def all(self):
-        current_time = next(self.my_time()) + timedelta(hours=17)
+        current_time = self.start_utc_by_zone()
         return "2021-04-25 17:47:10.560329", current_time
 
 

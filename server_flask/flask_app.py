@@ -16,7 +16,7 @@ from .routes import Blog, Auth, Comment, User_post, Bot, \
     Order, Cabinet, Admin, Products, Analitic, \
     Arrival, JourChRout, ProductSource, SourceDifference, \
     ColorSource, Panel, Store, Crm, PayMethod, \
-    Balance
+    Balance, Delivery
 
 
 
@@ -76,6 +76,7 @@ flask_app.register_blueprint(Store, url_prefix='/cabinet/store')
 flask_app.register_blueprint(PayMethod, url_prefix='/cabinet/pay_method')
 flask_app.register_blueprint(Crm, url_prefix='/crm')
 flask_app.register_blueprint(Balance, url_prefix='/balance')
+flask_app.register_blueprint(Delivery, url_prefix='/delivery')
 
 from .models import Users
 login_manager = LoginManager()
