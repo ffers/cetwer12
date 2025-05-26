@@ -2,8 +2,8 @@ from utils import DEBUG
 from dataclasses import asdict
 import os
 
-from ..base import Handler
-from .handlers import Count
+from ...base import Handler
+from . import Count
 from domain.models.analitic_dto import AnaliticDto
 from domain.models import BalanceDTO
 from decimal import Decimal
@@ -18,16 +18,11 @@ class CountAnaliticV2(Handler):
     def day(self): 
         #self.sort_send_time() # проверка на компонеенти и добавление времени отправки (в чем нет нееобхожимости когда будет закгрузка по статусу) /
         # также отметка времени отправки
-        start_time, stop_time = self.ctx.w_time.day()
         # перевіряєм чи за цеей період данні в аналітиці
         # item = an_cntrl.load_period_sec(period, start_time, stop_time)
         # якщо є треба додати до цього новий підрахунок якщо він є /
         # якщо нема рахувати з нуля
-        if DEBUG>4: print('day:', start_time, stop_time)
-        self.ctx.logger.debug(f"period: {start_time, stop_time}")
         resp =CheckConfirmedOrder(self.ctx).process()
-
-'остановился на загрузке ордеров и решение как сортировать их'
 
 class CheckConfirmedOrder(Handler):
     def process(self):
@@ -58,10 +53,6 @@ class CheckConfirmedOrder(Handler):
             raise OrderHaveSendTime('Цей ордер вже має час відправки')
         else:
             return AnaliticDay(self.ctx).process(order)
- 
-
-    def fixed_journal_and_stock(self):
-        pass
 
 'Аналітика на день'
 class AnaliticDay(Handler):
@@ -115,28 +106,6 @@ class AnaliticDay(Handler):
         except Exception as e:
             self.ctx.logger.exception(f'count: {e}')
             raise
-    
-    # def sum_row(self, x: "AnaliticDto", y: "AnaliticDto") -> "AnaliticDto":
-    #     try:
-    #         print('sum_row', x.salary, y.salary)
-    #         return AnaliticDto(
-    #             id=x.id,
-    #             torg=x.torg + y.torg,
-    #             body=x.body + y.body,
-    #             workers=x.workers + y.workers,
-    #             prom=x.prom + y.prom,
-    #             rozet=x.rozet + y.rozet,
-    #             google=x.google + y.google,
-    #             insta=x.insta + y.insta,
-    #             profit=x.profit + y.profit,
-    #             orders=x.orders + y.orders,
-    #             period=x.period,
-    #             salary=x.salary + y.salary,
-                
-    #         )
-    #     except Exception as e:
-    #         if DEBUG > 2: self.ctx.logger.exception(f'count: {e}')
-    #         raise
 
     def add_to_all(self, all, new_day):
         return all + new_day
@@ -149,10 +118,6 @@ class AnaliticDay(Handler):
             self.ctx.logger.error(f'update_order {order.id} cant update: {e}')
             raise 
 
-        
-
-
-    
 class Wait(Handler):
     def wait(self, torg):
         balance = self.ctx.balance_rep.get(2)

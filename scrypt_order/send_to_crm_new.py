@@ -76,6 +76,10 @@ class SendToCrmNew:
     def update_analitic(self):
         url = "v2/analitic/update_analitic"
         return self.make_request("GET", url) 
+    
+    def report(self):
+        url = "v2/analitic/report"
+        return self.make_request("GET", url) 
 
         
     def make_request(self, method, prefix):

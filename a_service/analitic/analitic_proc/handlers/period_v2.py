@@ -4,7 +4,7 @@
 
 import os
 from utils import DEBUG
-from ..base import Handler
+from ...base import Handler
 
 from domain.models import AnaliticDto
 

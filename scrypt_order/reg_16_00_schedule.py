@@ -65,20 +65,20 @@ class RegSchedulleSrv():
         return list_dict
 
     def reg_20_00(self): 
-            self.ord.change_status_roz()
-            self.sour.add_quantity_crm_today()
-            time.sleep(1)
-            self.sour.sort_analitic("all")
-            self.sour.sort_analitic("year")
-            self.sour.sort_analitic("month")
-            self.sour.sort_analitic("week")
-            self.sour.sort_analitic("day")
-            self.quan_stok.quan_f("#quan 35N, 45N, 35W1, 45W1, 35N10, 40N10, 45N10, BX1, BX2, BX3, BX4, BX5, 35N11, 40N11, 45N11, 35W, 45W, 35W13, 45W13") 
-            # запустить програму скидивания наличия
-            print("Успіх")
-            # изменить статус розетки
-            # провести аналитику
-            return True
+        self.ord.change_status_roz()
+        self.sour.add_quantity_crm_today()
+        time.sleep(1)
+        self.sour.sort_analitic("all")
+        self.sour.sort_analitic("year")
+        self.sour.sort_analitic("month")
+        self.sour.sort_analitic("week")
+        self.sour.sort_analitic("day")
+        self.quan_stok.quan_f("#quan 35N, 45N, 35W1, 45W1, 35N10, 40N10, 45N10, BX1, BX2, BX3, BX4, BX5, 35N11, 40N11, 45N11, 35W, 45W, 35W13, 45W13") 
+        # запустить програму скидивания наличия
+        print("Успіх")
+        # изменить статус розетки
+        # провести аналитику
+        return True
         
     def reg_20_01(self):
             return self.sour.sour_diff_all_source_sold("two_days") 

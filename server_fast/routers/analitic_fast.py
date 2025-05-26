@@ -74,6 +74,12 @@ async def market_sign():
         cntrl = Controller()
         return await cntrl.all() 
     
+@router.get("/report")
+async def market_sign():
+    with flask_app.app_context():
+        cntrl = Controller()
+        return await cntrl.report() 
+    
 
 
 

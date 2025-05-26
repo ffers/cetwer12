@@ -3,7 +3,8 @@ from dataclasses import dataclass
 from utils import WorkTimeCntrl, OC_logger
 from repository import OrderRep, AnaliticRep, ProductRep, SourceRep, \
     BalanceRepositorySQLAlchemy
-from black import AnCntrl
+from black import AnCntrl, SourAnCntrl, OrderCntrl
+from black.telegram_cntrl.tg_cash_cntrl import TgCashCntrl
 from decimal import Decimal
 from domain.models.analitic_dto import AnaliticDto
 
@@ -19,7 +20,9 @@ class ContextDepend:
                  source_rep: SourceRep,
                  state: AnaliticDto,
                  balance_rep: BalanceRepositorySQLAlchemy,
-                 source_an_cntrl # нужен для обработки склада пока нет собственой функции
+                 source_an_cntrl: SourAnCntrl, # нужен для обработки склада пока нет собственой функции
+                 tg_cash: TgCashCntrl,
+                 ord_cntrl: OrderCntrl
                  ):
         self.w_time = w_time
         self.ord_rep = ord_rep
@@ -31,6 +34,9 @@ class ContextDepend:
         self.state = state
         self.balance_rep = balance_rep
         self.source_an_cntrl = source_an_cntrl
+        self.tg_cash = tg_cash
+        self.ord_cntrl = ord_cntrl
+
 
 class Handler:
     def __init__(self, ctx: ContextDepend):

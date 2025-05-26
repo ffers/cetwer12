@@ -24,8 +24,8 @@ class SourDiffAnCntrl():
             )
 
     def load_source_difference(self):
-        product = self.sour_diff_an_rep.load_source_difference() 
-        return product
+        item = self.sour_diff_an_rep.load_source_difference() 
+        return item
      
     def load_source_difference_id_period(self, id, period, days):
         start_time, stop_time = self.work_time_cntrl.load_work_time(period, days)

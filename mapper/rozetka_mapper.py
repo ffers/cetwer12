@@ -1,4 +1,10 @@
+
+
+import os
+
 from pydantic import BaseModel
+
+from utils import OC_logger
 
 from DTO.order_dto import \
     OrderDTO, ProductDto, \
@@ -13,6 +19,7 @@ from a_service import ProductServ
 class RozetkaMapper():
     def __init__(self, product_serv: ProductServ):
         self.product_serv = product_serv()  
+        self.logger = OC_logger.oc_log('rozetka_mapper')
  
     def order(self, data: OrderRozetkaDTO, store_id) -> OrderDTO:
         warehouse_text=(
@@ -48,9 +55,8 @@ class RozetkaMapper():
             ordered_status_id=10,
             warehouse_method_id=self.warehouse_method(data.delivery.delivery_method_id),
             source_order_id=3,
-            payment_method_id=self.payment_method(data.payment.payment_method_id),
-            payment_method_name=data.payment.payment_method_name,
-            delivery_method_id=self.delivery_method(data.delivery.delivery_service_id),
+            payment_method_id=self.payment_method(data.payment),
+            delivery_method_id=self.delivery_method(data.delivery),
             author_id=55,
             ordered_product=self.product(data.purchases),
             recipient=self.recipient(data),
@@ -98,7 +104,7 @@ class RozetkaMapper():
         result = 0
         for p in data:
             result += p.item.commission_sum
-        return result
+        return str(result)
             
     def product(self, data):
         result = []
@@ -119,8 +125,9 @@ class RozetkaMapper():
         return result
 
     
-    def delivery_method(self, order):
-        mapping = {
+    def delivery_method(self, delivery):
+        del_id = delivery.delivery_service_id
+        avalaible = {
             5: 1,
             1: 2,
             2024: 3,
@@ -128,9 +135,18 @@ class RozetkaMapper():
             13013935: 5, 
             43660: 1
         }
-        return mapping.get(order)
+        return avalaible[del_id] if del_id in avalaible else self.new_delivery(delivery)
+
     
-    def payment_method(self, order):
+    
+    def new_delivery(self, delivery):       
+        name=delivery.delivery_service_name
+        ind=delivery.delivery_service_id
+        self.logger.error(f'new_delivery: name-{name}, id-{ind}')
+        return 6
+
+    def payment_method(self, payment):
+        pay_id = payment.payment_method_id
         mapping = {
             1: 1,
             6211: 2,
@@ -139,6 +155,15 @@ class RozetkaMapper():
             11111111: 5,
             4524: 6,
         }
-        return mapping.get(order)
+        return mapping[pay_id] if pay_id in mapping else self.new_payment(payment)
+
+    
+    def new_payment(self, payment):
+        name=payment.payment_method_name
+        ind=payment.payment_method_id
+        self.logger.error(f'new_payment: name-{name}, id-{ind}')
+        if os.getenv('ENV') != 'dev': return 7 
+        else: return 8
+         
 
        

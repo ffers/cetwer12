@@ -8,7 +8,7 @@ from ..base import Handler
 
 from domain.models import AnaliticDto
 
-class Period(Handler):
+class Periodtodel(Handler):
     def process(self, day, period_flag):
         try:
             # periods = ['week', 'month', 'year', 'all']

@@ -12,7 +12,7 @@ import asyncio
 
 import traceback
 from utils import OC_logger, WorkTimeCntrl
-from asx.a_service.analitic.analitic_day.analitic_day import CountAnaliticV2 
+from a_service.analitic.analitic_proc.handlers.analitic_day import CountAnaliticV2 
 from a_service.analitic.base import ContextDepend
 
 from domain.models.analitic_dto import AnaliticDto

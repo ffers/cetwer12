@@ -5,10 +5,14 @@ from server_flask.db import db
 from black import ProductAnaliticControl
 from black import AnCntrl
 from black import SourAnCntrl
-from black import SourDiffAnCntrl
-from utils import OC_logger, WorkTimeCntrl
-from a_service.analitic.analitic_day.analitic_day import CountAnaliticV2 
-from a_service.analitic.analitic_day.period_v2 import PeriodV2
+from black import SourDiffAnCntrl, OrderCntrl
+from utils import OC_logger, WorkTimeCntrl, DEBUG
+
+from a_service.analitic.analitic_proc.handlers.analitic_day import CountAnaliticV2 
+from a_service.analitic.analitic_proc.handlers.period_v2 import PeriodV2 
+from a_service.analitic.reports.report import Report
+
+from black.telegram_cntrl.tg_cash_cntrl import TgCashCntrl
 
 from a_service.analitic.base import ContextDepend
 
@@ -29,7 +33,9 @@ class Controller:
             source_rep=SourceRep(),
             state=AnaliticDto,
             balance_rep=BalanceRepositorySQLAlchemy(db.session),
-            source_an_cntrl=SourAnCntrl()
+            source_an_cntrl=SourAnCntrl(),
+            tg_cash=TgCashCntrl(),
+            ord_cntrl=OrderCntrl()
         )
         self.log = OC_logger.oc_log('analitic.controller')
 
@@ -88,3 +94,13 @@ class Controller:
         except Exception as e:
             self.log.exception(f'period -  {e}')
             return False
+        
+    async def report(self):
+        try:
+            report = Report(self.ctx)
+            return report.send_report()
+        except Exception as e:
+            if DEBUG >= 5: print(f'report - {e}')
+            self.log.exception(f'report -  {e}')
+            return False
+            

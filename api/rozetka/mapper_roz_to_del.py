@@ -3,7 +3,7 @@ from DTO.order_dto import OrderDTO, ProductDto, CostumerDto, RecipientDto
 from .dto_roz import OrderRoz
 from utils import OC_logger
 
-class MapperRoz():
+class MapperRozTOdEl():
     def __init__(self):
         self.logger = OC_logger.oc_log('api.mapper_roz')   
  
