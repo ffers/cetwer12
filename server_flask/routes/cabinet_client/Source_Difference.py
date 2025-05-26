@@ -39,16 +39,18 @@ def source_difference():
 @login_required
 @admin_permission.require(http_exception=403)   
 def source_difference_product(id):
-    source_diff_cntrl = get_instance('sour_diff_an_cntrl', SourDiffAnCntrl)   
- 
-    product = source_diff_cntrl.load_source_difference_id_period(id, "days", 30)
-    if product:
-        return render_template("cabinet_client/analitic/source_difference.html", product=product, user=current_user)
-    else:
-        flash('Товар не знайдено', category='error')
-
+    try:
+        s = SourDiffAnCntrl()
+        product = s.load_source_difference_id_period(id, "days", 80)
+        if product:
+            return render_template("cabinet_client/analitic/source_difference.html", product=product, user=current_user)
+        else:
+            flash('Товар не знайдено', category='error')
+            return redirect("/cabinet/source/all")
+    except Exception as e:
+        print(e)
+        flash('Помилка! Але ми вже працюємо над нею!', category='error')
         return redirect("/cabinet/source/all")
-         
           
 @bp.route('/cabinet/source_difference/update_day', methods=['POST','GET'])
 @login_required

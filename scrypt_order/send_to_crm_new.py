@@ -80,6 +80,10 @@ class SendToCrmNew:
     def report(self):
         url = "v2/analitic/report"
         return self.make_request("GET", url) 
+    
+    def diff_count_sold(self):
+        url = "v2/analitic/diff_count_sold"
+        return self.make_request("GET", url) 
 
         
     def make_request(self, method, prefix):

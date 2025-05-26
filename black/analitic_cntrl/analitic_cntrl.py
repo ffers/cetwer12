@@ -10,7 +10,7 @@ from utils import OC_logger, WorkTimeCntrl, DEBUG
 
 from a_service.analitic.analitic_proc.handlers.analitic_day import CountAnaliticV2 
 from a_service.analitic.analitic_proc.handlers.period_v2 import PeriodV2 
-from a_service.analitic.reports.report import Report
+from asx.a_service.analitic.reports.report_serv import ReportServ
 
 from black.telegram_cntrl.tg_cash_cntrl import TgCashCntrl
 
@@ -21,7 +21,7 @@ from domain.models.analitic_dto import AnaliticDto
 from repository import OrderRep, AnaliticRep, ProductRep, \
     SourceRep, BalanceRepositorySQLAlchemy
 
-class Controller:
+class AnaliticCntrlV2:
     def __init__(self):
         self.ctx = ContextDepend(
             w_time=WorkTimeCntrl(),
@@ -97,10 +97,20 @@ class Controller:
         
     async def report(self):
         try:
-            report = Report(self.ctx)
+            report = ReportServ(self.ctx)
             return report.send_report()
         except Exception as e:
             if DEBUG >= 5: print(f'report - {e}')
             self.log.exception(f'report -  {e}')
             return False
+        
+    async def diff_count_sold(self):
+        try:
+            report = ReportServ(self.ctx)
+            return report.diff_count_sold()
+        except Exception as e:
+            if DEBUG >= 5: print(f'report - {e}')
+            self.log.exception(f'report -  {e}')
+            return False
+        
             

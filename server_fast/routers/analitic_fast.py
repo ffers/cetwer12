@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.responses import JSONResponse
-from black.analitic_cntrl.controller import Controller
+from asx.black.analitic_cntrl.analitic_cntrl import AnaliticCntrlV2
 
 from typing import Annotated
 from pydantic import BaseModel
@@ -71,15 +71,20 @@ async def market_sign():
 @router.get("/update_analitic")
 async def market_sign():
     with flask_app.app_context():
-        cntrl = Controller()
+        cntrl = AnaliticCntrlV2()
         return await cntrl.all() 
     
 @router.get("/report")
 async def market_sign():
     with flask_app.app_context():
-        cntrl = Controller()
+        cntrl = AnaliticCntrlV2()
         return await cntrl.report() 
     
+@router.get("/diff_count_sold")
+async def market_sign():
+    with flask_app.app_context():
+        cntrl = AnaliticCntrlV2()
+        return await cntrl.diff_count_sold() 
 
 
 

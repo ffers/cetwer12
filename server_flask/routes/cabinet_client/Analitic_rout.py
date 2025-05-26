@@ -7,7 +7,7 @@ from black import ProductAnaliticControl
 from black import AnCntrl
 from black import SourAnCntrl
 from black import SourDiffAnCntrl
-from black.analitic_cntrl.controller import Controller
+from asx.black.analitic_cntrl.analitic_cntrl import AnaliticCntrlV2
 import asyncio
 
 import traceback
@@ -71,7 +71,7 @@ def delete_product(id):
 @login_required
 @admin_permission.require(http_exception=403)
 def update_all():
-    cntrl = Controller()
+    cntrl = AnaliticCntrlV2()
     asyncio.run(cntrl.all())
     flash('Аналітику оновлено ALL', category='success')
     return redirect('/cabinet/analitic/all')
@@ -81,7 +81,7 @@ def update_all():
 @admin_permission.require(http_exception=403)
 def update_day():
     try:
-        cntrl = Controller()
+        cntrl = AnaliticCntrlV2()
         asyncio.run(cntrl.day())
         flash('Аналітику оновлено DAY', category='success')
         return redirect('/cabinet/analitic/all')
@@ -95,7 +95,7 @@ def update_day():
 @login_required
 @admin_permission.require(http_exception=403)
 def update_week():
-    cntrl = Controller()
+    cntrl = AnaliticCntrlV2()
     asyncio.run(cntrl.period('week', 'day'))
     flash('Аналітику оновлено week', category='success')
     return redirect('/cabinet/analitic/all')
@@ -104,7 +104,7 @@ def update_week():
 @login_required
 @admin_permission.require(http_exception=403)
 def update_month():
-    cntrl = Controller()
+    cntrl = AnaliticCntrlV2()
     asyncio.run(cntrl.period('month', 'week'))
     flash('Аналітику оновлено month', category='success')
     return redirect('/cabinet/analitic/all')
@@ -113,7 +113,7 @@ def update_month():
 @login_required
 @admin_permission.require(http_exception=403)
 def update_year():
-    cntrl = Controller()
+    cntrl = AnaliticCntrlV2()
     asyncio.run(cntrl.period('year', 'month'))
     flash('Аналітику року оновлено', category='success')
     return redirect('/cabinet/analitic/all')
@@ -148,7 +148,7 @@ def analitic_test_day():
         #         ctx
         #     ).day()
         # print(f'{resp =}')
-        cntrl = Controller()
+        cntrl = AnaliticCntrlV2()
         asyncio.run(cntrl.day())
         return 'Success Analitic' 
     except Exception as e:

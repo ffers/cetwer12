@@ -1,10 +1,13 @@
 from a_service import SourDiffAnServ
 from repository import SourDiffAnRep
 from a_service import CacheService
-from .work_time_cntrl import WorkTimeCntrl
 from repository import OrderRep
 from repository import ProductRep
-from datetime import timedelta
+
+from a_service.source.difference_serv import DifferenceServ
+from a_service.source.base import ContextDepend, Source
+
+from utils import WorkTimeCntrl, OC_logger, DEBUG
 
 
 
@@ -17,24 +20,37 @@ class SourDiffAnCntrl():
         self.work_time_cntrl = WorkTimeCntrl()
         self.ord_rep = OrderRep()
         self.prod_rep = ProductRep()
+        self.log = OC_logger.oc_log('deff_cntrl')
         self.sour_diff_an_serv = SourDiffAnServ(
             self.cache_serv, 
             self.sour_diff_an_rep,
             self.prod_rep
             )
+        self.ctx = ContextDepend(
+            WorkTimeCntrl(),
+            self.sour_diff_an_serv,
+            SourDiffAnRep(),
+            CacheService(),
+            OrderRep(),
+            ProductRep(),
+            OC_logger()
+            ) 
+        self.diff_serv = DifferenceServ(
+            self.ctx
+        )
 
     def load_source_difference(self):
         item = self.sour_diff_an_rep.load_source_difference() 
         return item
      
     def load_source_difference_id_period(self, id, period, days):
-        start_time, stop_time = self.work_time_cntrl.load_work_time(period, days)
-        product = self.sour_diff_an_rep.load_source_difference_id_period(
-            id, start_time, stop_time 
-            )
-        print(start_time, stop_time, "month")
-        return product
-    
+        try:
+            return self.diff_serv.load_source_difference_id_period(id, period, days)
+        except Exception as e:
+            if DEBUG >= 5: print(e)
+            self.log.exception(f'diff_cnrl: {e}')
+            raise
+        
     def load_source_diff_line(self, id):
         line = self.sour_diff_an_rep.load_source_diff_line(id)
         return line
@@ -48,22 +64,20 @@ class SourDiffAnCntrl():
         source = self.sour_diff_an_rep.load_last_line_id(id) 
         return source
     
-    
     def add_quantity_crm_today(self, sources):
         print("Працюєм")
-        event_date = next(self.work_time_cntrl.my_time()).strftime('%Y-%m-%d')
+        event_date = self.work_time_cntrl.start_utc_by_zone().strftime('%Y-%m-%d')
         # event_date = event_date - timedelta(days=1)
         # event_date = event_date.strftime('%Y-%m-%d')
         start, stop = self.work_time_cntrl.load_work_time("all") # що таке all
         orders = self.ord_rep.load_period(start, stop)
-        sold_quantities = self.sour_diff_an_serv.source_diff_sold_optimized(orders, sources)
+        'думаю нема обхідності в source_diff_sold_optimized'
+        # sold_quantities = self.sour_diff_an_serv.source_diff_sold_optimized(orders, sources)
         for item in sources:
             data = self.sour_diff_an_serv.add_quantity_crm(item, event_date)
             update = self.sour_diff_an_rep.add_quantity_crm(data)
         return update
             
-
-
     def add_source_difference_req(self, req):
         args_obj = self.sour_diff_an_serv.add_source_difference_req(req)
         print(args_obj)

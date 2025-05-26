@@ -6,7 +6,7 @@ from utils import DEBUG
 from ..base import Handler
 
 
-class Report(Handler):
+class ReportServ(Handler):
     def send_report(self):
         try:
             self.ctx.source_an_cntrl.add_quantity_crm_today()
@@ -18,3 +18,6 @@ class Report(Handler):
             if DEBUG >= 5: print(f'send_report {e}')
             self.ctx.logger.exception(f'send_report {e}')
             raise
+
+    def diff_count_sold(self):
+        return self.ctx.source_an_cntrl.sour_diff_all_source_sold("two_days") 

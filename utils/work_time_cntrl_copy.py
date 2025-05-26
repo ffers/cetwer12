@@ -54,8 +54,8 @@ class WorkTimeCntrl:
         return start_time, stop_time
     
     def days(self, quantity):
-        start_time = self.start_utc_by_zone()
-        stop_time = start_time + timedelta(days=quantity)
+        stop_time = self.start_utc_by_zone()
+        start_time = stop_time - timedelta(days=quantity)
         return start_time, stop_time
     
     def two_day(self):
