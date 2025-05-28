@@ -51,6 +51,7 @@ from copy import deepcopy
  та інші залежності
 '''
 
+   
 
 
 class OrderServ:
@@ -216,17 +217,11 @@ class OrderServ:
         else:
             return {"success": "ok", "order": "Store empty"}
         
-    def load_orders_store_v2(self, api_token, token, EvoClient, RozetMain):
-
+    def load_orders_store_v2(self, market):
         return load_orders_store(
-            api_token, 
-            token, 
-            EvoClient, 
-            RozetMain, 
+            market,
             OrderApi, 
-            self.map_ord.factory, 
-            self.add_order3,
-            self.store_repo
+            self.add_order3
             )
         
 

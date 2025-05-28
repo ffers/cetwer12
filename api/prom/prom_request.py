@@ -4,6 +4,10 @@ from os.path import join, dirname
 from dotenv import load_dotenv
 from datetime import datetime
 import http.client
+from utils import DEBUG, OSDEBUG
+
+from domain.models import StoreDTO
+from mapper import promMapper
 
 '''
 Щоб скасувати замовлення через API Prom.ua, 
@@ -55,8 +59,17 @@ class HTTPError(Exception):
 
 class EvoClient(object):
 
-    def __init__(self, token):
+    def __init__(self, token, prod_serv, store_data: StoreDTO):
         self.token = token
+        self.store_data = store_data
+        self.prod_serv = prod_serv
+
+    def final_map_orders(self, orders) -> list:
+        orders_dto = []
+        for o in orders:
+            orders_dto.append(promMapper(o, self.prod_serv, self.store_data.id))
+        return orders_dto
+
 
     def make_request(self, method, url, body=None):
         url = HOST + url
@@ -119,7 +132,7 @@ class EvoClient(object):
         statuses = ("pending", "paid")
         for status in statuses:
             orders.extend(self.load_orders(status)) 
-        return orders
+        return self.final_map_orders(orders)
   
 
     
@@ -139,6 +152,8 @@ class EvoClient(object):
         }
         url = '/api/v1/delivery/save_declaration_id'
         method = 'POST'
+        if DEBUG >= 5: print (body)
+        if OSDEBUG: return True
         resp = self.make_request(method, url, body)
         print("change_status:", resp)
         return resp
@@ -214,9 +229,6 @@ class EvoClient(object):
             status = self.get_set_status(dict_status_prom)
             self.send_message_f(chat_id, f"Відповідь по зміні статусу {order_id} : {status}")
             return status
-
-
-prom_api = EvoClient(get_from_env("PROM_TOKEN"))
 
 
 

@@ -14,5 +14,7 @@ class Stub:
 d = os.getenv('DEBUG')
 DEBUG = int(d) if d else 0
 
+OSDEBUG = True if os.getenv('ENV') == 'dev' else False
+
      
 

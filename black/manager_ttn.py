@@ -15,18 +15,17 @@ from server_flask.db import db
 import sys,os
 
 sys.path.append('../')
-from common_asx.utilits import Utils
+
 
 
 ttn_ref_list = "../common_asx/ttn_ref_list.json"
 
 AUTH_TOKEN = os.getenv("PROM_TOKEN")
-evo_cl = EvoClient(AUTH_TOKEN)
 ls_cl = ListClient()
 reg_cl = RegistrDoc()
 crnp_cl = CreateNpData()
 # cab_cl = NpCabinetCl()
-ut_cl = Utils(EvoClient, RozetMain)
+
 ord_rep = OrderRep()
 del_ord_cntrl = DeliveryOrderCntrl()
 
@@ -48,37 +47,37 @@ dict_status_prom = {
 
 class ManagerTTN:
 
-    def create_ttn(self, order):
-        order_id = order["id"]
-        try:
-            ttn_data = create_ttn_button(order)
-            if ttn_data["success"] == False:
-                tg_cntrl.sendMessage(chat_id_info,
-                            f"Замовленя {order_id}, не створенно!\n {ttn_data}")
-            else:
-                ttn_data = self.manipulation_tnn(order_id, ttn_data)
-                return ttn_data
-        except:
-            exep_text = f"❗️❗️❗️ Замовлення {order_id} не створено НП"
-            print(exep_text)
-            tg_cntrl.sendMessage(chat_id_info, exep_text)
+    # def create_ttn(self, order):
+    #     order_id = order["id"]
+    #     try:
+    #         ttn_data = create_ttn_button(order)
+    #         if ttn_data["success"] == False:
+    #             tg_cntrl.sendMessage(chat_id_info,
+    #                         f"Замовленя {order_id}, не створенно!\n {ttn_data}")
+    #         else:
+    #             ttn_data = self.manipulation_tnn(order_id, ttn_data)
+    #             return ttn_data
+    #     except:
+    #         exep_text = f"❗️❗️❗️ Замовлення {order_id} не створено НП"
+    #         print(exep_text)
+    #         tg_cntrl.sendMessage(chat_id_info, exep_text)
 
-    def manipulation_tnn(self, order_id, ttn_data):
-        ref = reg_cl.create_ref(ttn_data)
-        ls_cl.add_in_list(ttn_ref_list, ref)
-        ttn = ttn_data["data"][0]["IntDocNumber"]
-        resp_true = self.add_ttn_crm(order_id, ttn_data)
-        order = crnp_cl.order_send()
-        text = self.create_text(ttn_data, order)
-        delivery_type = "nova_poshta"
-        resp_prom = self.update_prom_order(ttn, order_id, delivery_type)
-        if resp_prom == "Пром не відповідає":
-            tg_cntrl.sendMessage(chat_id_info, f"❗️❗️❗️ Створено 🥊{text} АЛЕ {resp_prom}!")
-        else:
-            tg_cntrl.sendMessage(chat_id_info,
-                                 f"🥊 Створено - {text}🥊 ТТН додано!")
-        print(ttn)
-        return ttn_data
+    # def manipulation_tnn(self, order_id, ttn_data):
+    #     ref = reg_cl.create_ref(ttn_data)
+    #     ls_cl.add_in_list(ttn_ref_list, ref)
+    #     ttn = ttn_data["data"][0]["IntDocNumber"]
+    #     resp_true = self.add_ttn_crm(order_id, ttn_data)
+    #     order = crnp_cl.order_send()
+    #     text = self.create_text(ttn_data, order)
+    #     delivery_type = "nova_poshta"
+    #     resp_prom = self.update_prom_order(ttn, order_id, delivery_type)
+    #     if resp_prom == "Пром не відповідає":
+    #         tg_cntrl.sendMessage(chat_id_info, f"❗️❗️❗️ Створено 🥊{text} АЛЕ {resp_prom}!")
+    #     else:
+    #         tg_cntrl.sendMessage(chat_id_info,
+    #                              f"🥊 Створено - {text}🥊 ТТН додано!")
+    #     print(ttn)
+    #     return ttn_data
 
     def make_send_ttn(self, ttn, order_id, delivery_type=None):
         if delivery_type:

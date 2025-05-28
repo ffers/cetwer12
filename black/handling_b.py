@@ -1,14 +1,36 @@
 import os, json, re
+from server_flask.db import db
+from utils import OC_logger
+
 from dotenv import load_dotenv
+
 from api.prom import EvoClient
 
-from a_service import TgServNew
+from a_service import TgServNew, ProductServ
 from .order_cntrl import ord_cntrl
 
-env_path = '../common_asx/.env'
-load_dotenv(dotenv_path=env_path)
-TOKEN_PROM = os.getenv("PROM_TOKEN")
-prom_cl = EvoClient(TOKEN_PROM)
+from repository.store_sqlalchemy import StoreRepositorySQLAlchemy
+
+class HandlerB:
+    def __init__(self):
+        self.log = OC_logger.oc_log('handling_b')
+
+    def load_store(self):
+        try:
+            api_name = 'jemis'
+            self.store_data = StoreRepositorySQLAlchemy(db.session).get_token(api_name)
+            return EvoClient(
+                os.getenv("PROM_TOKEN"),
+                ProductServ(),
+                self.store_data,
+                )
+        except Exception as e:
+            self.log.exception(f'{e}')
+
+
+
+
+
 tg_cntrl = TgServNew()
 
 
@@ -94,6 +116,7 @@ callback_query_id = None
 def send_request_status(invoice_ttn, order_id):
     delivery_type_roz = "rozetka_delivery"
     order_id = re.sub(r"\D", "", order_id)
+    prom_cl = HandlerB().load_store()
     resp = prom_cl.send_ttn(order_id, invoice_ttn, delivery_type_roz)
     print("=======")
     print(resp)

@@ -1,9 +1,9 @@
 from a_service import prom_serv
-from api import prom_api
+
 import sys, os, re
 sys.path.append('../')
 from api import EvoClient, RozetMain
-from common_asx.utilits import Utils
+
 
 
 class PromCntrl:

@@ -8,8 +8,9 @@ from server_flask.flask_app import flask_app, jsonify
 from server_flask.db import db
 
 from a_service.order_service import OrderServ, OrderApi
-from a_service import EvoService, RozetkaServ, TgServNew
+from a_service import EvoService, RozetkaServ, TgServNew, ProductServ
 from a_service.order_service.handlers.base import UnpayContext
+
 
 
 
@@ -23,7 +24,6 @@ from ..dependencies import get_token_header
 from exceptions.order_exception import *
 
 
-
 logger = OC_logger.oc_log('market_rout')
 
 router = APIRouter(
@@ -31,6 +31,18 @@ router = APIRouter(
     dependencies=[Depends(get_token_header)],
     responses={404: {"description": "Not found"}},
 )
+
+class FactoryApi:
+    @staticmethod
+    def factory(api, EvoClient, RozetMain):
+        apis = {
+                "rozetka": RozetMain,
+                "prom": EvoClient
+        }
+        if api in apis:
+            return apis[api]
+        else:
+            raise ValueError(f"We dont have api: {api}")  
 
 # @router.get("/16")
 # async def close_day():
@@ -45,13 +57,22 @@ async def get_orders(api_name: str,
                      store_token: str | None = Query(None)):
     with flask_app.app_context():
         try:
-            order_cntrl = OrderServ(store_repo=StoreRepositorySQLAlchemy(db.session))
-            result = order_cntrl.load_orders_store_v2(
-                api_name, 
-                store_token, 
-                EvoClient, 
-                RozetMain,
-                ) 
+            store_data = StoreRepositorySQLAlchemy(db.session).get_token(api_name)
+            apis = {
+                "rozetka": RozetMain(
+                    store_token, 
+                    ProductServ(),
+                    store_data
+                    ),
+                "prom": EvoClient(
+                    store_token, 
+                    ProductServ(),
+                    store_data
+                    )
+            }
+            market = apis.get(store_data.api)
+            order_cntrl = OrderServ()
+            result = order_cntrl.load_orders_store_v2(market) 
             print("Get orders: ", result)
             if result:
                 logger.info(f'Загружено ордер: {result}')

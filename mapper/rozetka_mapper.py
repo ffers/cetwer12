@@ -18,7 +18,7 @@ from a_service import ProductServ
 
 class RozetkaMapper():
     def __init__(self, product_serv: ProductServ):
-        self.product_serv = product_serv()  
+        self.product_serv = product_serv 
         self.logger = OC_logger.oc_log('rozetka_mapper')
  
     def order(self, data: OrderRozetkaDTO, store_id) -> OrderDTO:
@@ -133,7 +133,8 @@ class RozetkaMapper():
             2024: 3,
             14383961: 4,
             13013935: 5, 
-            43660: 1
+            43660: 1,
+            56214: 2,
         }
         return avalaible[del_id] if del_id in avalaible else self.new_delivery(delivery)
 
@@ -154,6 +155,7 @@ class RozetkaMapper():
             11111111: 4,
             11111111: 5,
             4524: 6,
+            6815: 6,
         }
         return mapping[pay_id] if pay_id in mapping else self.new_payment(payment)
 

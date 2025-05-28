@@ -11,10 +11,13 @@ from .lib.tg_lib import LibTG
 from .lib.prom_dict import PromDict
 
 from black.order_cntrl import OrderCntrl
-from a_service.order_service.order_serv import OrderServ 
+from a_service.order_service.order_serv import OrderServ, ProductServ
 
 from api import RozetMain, EvoClient
 from repository.store_sqlalchemy import StoreRepositorySQLAlchemy
+
+from mapper import RozetkaMapper, promMapper
+
 
 
 
@@ -43,9 +46,23 @@ class TestOrderServ: # пооки іде все через кнтрл
                 json=RozetDict.rozet_order, status=200,
                 )
             self.make_response_tg()
-            resp = self.order_c.load_orders_store_v2(
-                "conus", self.rozet_token, EvoClient, RozetMain)
-            print(resp)
+            store_data = StoreRepositorySQLAlchemy(db.session).get_token('conus')
+            apis = {
+                "rozetka": RozetMain(
+                    self.rozet_token, 
+                    ProductServ(),
+                    store_data
+                    ),
+                "prom": EvoClient(
+                    self.prom_token, 
+                    ProductServ(),
+                    store_data
+                    )
+            }
+            market = apis.get(store_data.api)
+            order_cntrl = OrderServ()
+            resp = order_cntrl.load_orders_store_v2(market) 
+            print("Get orders: ", resp)
             pointer = resp["result"].get('error')
             assert pointer == 'Замовлення вже існує'
 
@@ -74,8 +91,24 @@ class TestOrderServ: # пооки іде все через кнтрл
                 json={}, status=200
                 )
             # self.make_response_tg()
-            resp = self.order_c.load_orders_store_v2(
-                "jemis", self.prom_token, EvoClient, RozetMain)
+            store_data = StoreRepositorySQLAlchemy(db.session).get_token('jemis')
+            apis = {
+                "rozetka": RozetMain(
+                    self.rozet_token, 
+                    ProductServ(),
+                    store_data
+                    ),
+                "prom": EvoClient(
+                    self.prom_token, 
+                    ProductServ(),
+                    store_data
+                    )
+            }
+            market = apis.get(store_data.api)
+            order_cntrl = OrderServ()
+            resp = order_cntrl.load_orders_store_v2(market) 
+            print("Get orders: ", resp)
+
             print(resp)
             pointer = resp["result"].get('error')
             assert pointer == 'Замовлення вже існує'

@@ -14,9 +14,8 @@ logger = OC_logger.oc_log('prom_mapper')
 class PromMapperException(Exception):
      pass
 
-def promMapper(prom: dict, ProductServ, store_id) -> OrderDTO:
+def promMapper(prom: dict, prod_serv, store_id) -> OrderDTO:
     try:
-        prod_serv = ProductServ()
         payment_id = add_payment_method_id(prom)
         ref = _get_ttn_ref(prom)
         warehouse_text = _get_warehouse_text(prom, ref)

@@ -45,7 +45,6 @@ from server_flask.db import db
 #  14 | Повернення
 
 sys.path.append('../')
-from common_asx.utilits import Utils
 
 # log_formatter = logging.Formatter("%(asctime)s [%(processName)s: %(process)d] [%(threadName)s: %(thread)d] [%(levelname)s] %(name)s: %(message)s")
 

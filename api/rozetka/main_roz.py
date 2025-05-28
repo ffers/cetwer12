@@ -4,7 +4,8 @@ from DTO import OrderRozetkaDTO
 import os, base64
 from a_service import TokenRepServ
 from utils import Stub 
-  
+from domain.models import StoreDTO
+from mapper import RozetkaMapper
   # статуси
   # 1 - новий 
   # 4 доставляєтсья
@@ -28,12 +29,20 @@ from utils import Stub
 # prefix = f"orders/search?{urlencode(params)}"
 
 class RozetMain(): 
-    def __init__(self, token):
+    def __init__(self, token, prod_serv, store_data: StoreDTO):
         self.bear_req = BearRequest()
         self.host = "https://api-seller.rozetka.com.ua/"
-        self.cash = token # "Nj2HNztLCMG1pBnr18GtDZ-SSfj4-j5B"
+        self.cash = token
         self.token_new = TokenRepServ()
         self.stub = Stub()
+        self.roz_mapper = RozetkaMapper(prod_serv)
+        self.store_data = store_data
+
+    def final_map_orders(self, orders) -> list:
+        orders_dto = []
+        for o in orders:
+            orders_dto.append(self.roz_mapper.order(o, self.store_data.id))
+        return orders_dto
 
     def get_orders(self):
         status_load = self.stub.status_order_load()
@@ -49,7 +58,7 @@ class RozetMain():
                     for order in resp["content"]["orders"]:
                         ob_order = OrderRozetkaDTO.model_validate(order)
                         orders.append(ob_order)
-                    return orders                  
+                    return self.final_map_orders(orders)                  
         return None
     
     def mapper_status(self, status):
