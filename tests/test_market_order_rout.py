@@ -23,7 +23,7 @@ def test_read_main():
             # url = f"api_name=jemis"
             # url += f"&source_token={token_prom}"
             params = {
-                'source_token': 'jemis',
+                'api_name': 'jemis',
                 'store_token': token_prom
             }
             header = {
@@ -32,7 +32,7 @@ def test_read_main():
                 }
             response = client.get(f"/v2/order/get_status_unpay", params=params, headers=header)
             cont = json.loads(response.content)
-            print(cont)
+            print('cont:', cont)
             if cont['message'] == "all order paid":
                 assert response.status_code == 200
             elif cont['message'] == "dont have change":
