@@ -60,8 +60,8 @@ class HTTPError(Exception):
 class EvoClient(object):
 
     def __init__(self, token, prod_serv, store_data: StoreDTO):
-        self.token = token
         self.store_data = store_data
+        self.token = store_data.token_market
         self.prod_serv = prod_serv
 
     def final_map_orders(self, orders) -> list:
@@ -155,7 +155,7 @@ class EvoClient(object):
         if DEBUG >= 5: print (body)
         if OSDEBUG: return True
         resp = self.make_request(method, url, body)
-        print("change_status:", resp)
+        if OSDEBUG: print("send_ttn:", resp)
         return resp
     
     def create_body_status(self, order_id, status_order):

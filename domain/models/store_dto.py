@@ -6,3 +6,4 @@ class StoreDTO:
     name: str = ''
     api: str = ''
     token: str = ''
+    token_market: str = ''

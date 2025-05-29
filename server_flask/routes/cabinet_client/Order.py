@@ -280,18 +280,18 @@ def get_product():
 #     print(resp.text)  # виведе відповідь від сервера
 #     return jsonify({"results": "success"})
 
-@bp.route('/cabinet/orders/get_product/send_with_prom', methods=['POST'])
-def get_prom_to_crm():
-    token = request.headers.get("Authorization")
-    json_data = request.json
-    if verify_token(token): 
-        if json_data:
-            resp = ord_cntrl.add_order(json_data)
-            return jsonify({'results': 'success', 'order_id': resp})
-        else:
-            return jsonify({'results': []})
-    else:
-        return jsonify({'result': 'forbiden'}), 401
+# @bp.route('/cabinet/orders/get_product/send_with_prom', methods=['POST'])
+# def get_prom_to_crm():
+#     token = request.headers.get("Authorization")
+#     json_data = request.json
+#     if verify_token(token): 
+#         if json_data:
+#             resp = ord_cntrl.add_order(json_data)
+#             return jsonify({'results': 'success', 'order_id': resp})
+#         else:
+#             return jsonify({'results': []})
+#     else:
+#         return jsonify({'result': 'forbiden'}), 401
 
 # @bp.route('/cabinet/orders/get_product/update_with_prom', methods=['POST'])
 # def get_update_order():

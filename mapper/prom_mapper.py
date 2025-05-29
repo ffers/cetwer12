@@ -62,7 +62,7 @@ def promMapper(prom: dict, prod_serv, store_id) -> OrderDTO:
         )
     except Exception as e:
          print(f"data = {prom}, type = {type(prom)}")
-         logger.error(f'{e}')
+         logger.exception(f'{e}')
          raise PromMapperException(f'Помилка обробкі ордера')
 
 def add_phone(order):
@@ -71,6 +71,8 @@ def add_phone(order):
         phone = item_filter[0]
         return phone
 
+'prom_mapper: ProductServ.load_item_by_article() missing 1 required positional argument: "name"'
+'как ето фигня но  работает'
 def _map_products(prom: dict, prod_serv: ProductServ) -> list[ProductDto]:
     products = []
     for p in prom.get("products", []):

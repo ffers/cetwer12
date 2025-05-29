@@ -39,20 +39,22 @@ class StoreRepositorySQLAlchemy(ItemRepository):
     def get(self, item_id):
         i = SQLItem.query.get_or_404(item_id)
         return StoreDTO(
-            i.id, i.name, i.api, i.token
+            i.id, i.name, i.api, i.token, i.token_market
             )
     
     def get_token(self, item_token):
         i = SQLItem.query.filter_by(token=item_token).first()
         return StoreDTO(
-            i.id, i.name, i.api, i.token
+            i.id, i.name, i.api, i.token, i.token_market
             )
 
     def add(self, item: StoreDTO):
         sql_item = SQLItem(
             name=item.name, 
             api=item.api,
-            token=item.token)
+            token=item.token,
+            token_market=item.token_market
+            )
         self.session.add(sql_item)
         self.session.commit()
 
@@ -61,6 +63,7 @@ class StoreRepositorySQLAlchemy(ItemRepository):
         i.name = item.name
         i.api = item.api
         i.token = item.token
+        i.token_market=item.token_market
         self.session.commit()
 
     def delete(self, item_id):

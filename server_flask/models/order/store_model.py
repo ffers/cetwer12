@@ -6,4 +6,5 @@ class Store(db.Model):
     name = db.Column(db.String(50), nullable=False)
     api = db.Column(db.String(50))
     token = db.Column(db.String(255))
+    token_market = db.Column(db.String(255))
     orders = db.relationship("Orders", back_populates="store")

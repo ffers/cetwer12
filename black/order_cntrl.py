@@ -12,15 +12,24 @@ from .product_analitic_cntrl import ProductAnaliticControl
 from .delivery_order_cntrl import DeliveryOrderCntrl
 from .add_order_to_crm import pr_to_crm_cntr
 from a_service import tg_serv, TgServ, TextFactory
-from a_service import TgServNew
+from a_service import TgServNew, ProductServ
 
-from .prom_cntrl import prom_cntrl
-from utils import OC_logger
+
+from a_service.store_service import StoreService
+from repository.store_sqlalchemy import StoreRepositorySQLAlchemy
+from server_flask.db import db
+
+from .prom_cntrl import PromCntrl
+from utils import OC_logger, OSDEBUG
 from datetime import datetime
 from .analitic_cntrl.sour_an_cntrl import SourAnCntrl
 from .telegram_cntrl.tg_cash_cntrl import TgCashCntrl
 from .product_cntrl import ProductCntrl
 from utils import my_time
+
+from DTO import OrderDTO
+
+from api import EvoClient
 
 from server_flask.db import db
 
@@ -79,7 +88,8 @@ class OrderCntrl:
         self.ord_rep = OrderRep()
         self.status_procces = StatusProcess
         self.order_serv = OrderServ()
-
+        self.store_serv = StoreService(repo=StoreRepositorySQLAlchemy(db.session))
+        self.prom_cntrl = PromCntrl()
     
 
         
@@ -159,21 +169,21 @@ class OrderCntrl:
     def dublicate2(self, order_id):
         pass
 
-    def add_order(self, order_js):
-        order_code = order_js["id"]
-        try:
-            data_for_tg = crmtotg_cl.manger(order_js)
-            resp = pr_to_crm_cntr.add_order(order_js, data_for_tg)
-            print(order_js)
-            order = self.ord_rep.load_for_code(order_js["id"])
-            print(f"add_order {order.id}")
-            bool_1 = del_ord_cntrl.add_item(order.id, 1)
-            bool_2 = self.examine_address(order_js)
-            return resp
-        except:
-            info = f"Замовленя можливо не додано в CRM {order_code}"
-            self.OC_log.info(info)
-            self.tg_cntrl.sendMessage(self.tg_cntrl.chat_id_confirm, info)
+    # def add_order(self, order_js):
+    #     order_code = order_js["id"]
+    #     try:
+    #         data_for_tg = crmtotg_cl.manger(order_js)
+    #         resp = pr_to_crm_cntr.add_order(order_js, data_for_tg)
+    #         print(order_js)
+    #         order = self.ord_rep.load_for_code(order_js["id"])
+    #         print(f"add_order {order.id}")
+    #         bool_1 = del_ord_cntrl.add_item(order.id, 1)
+    #         bool_2 = self.examine_address(order_js)
+    #         return resp
+    #     except:
+    #         info = f"Замовленя можливо не додано в CRM {order_code}"
+    #         self.OC_log.info(info)
+    #         self.tg_cntrl.sendMessage(self.tg_cntrl.chat_id_confirm, info)
 
     # 
     # Для РОЗЕТКІ =======================
@@ -209,24 +219,24 @@ class OrderCntrl:
 
     
 
-    def examine_address(self, order):
-        resp_bool = np_serv.examine_address_prom(order)
-        if not resp_bool:
-            order_dr = prom_cntrl.get_order(order["id"])
-            order = order_dr["order"]
-            order_id = order["id"]
-            delivery_provider_data = order["delivery_provider_data"]
-            try:
-                self.OC_log.info(f"Обробка стандартна, ордер:{order_id}\n Інформація по адресі {delivery_provider_data} ")
-                self.tg_cntrl.send_message_f(chat_id_helper,
-                                     f"Обробка стандартна, ордер:{order_id}\n Інформація по адресі {delivery_provider_data} ")
-                self.update_address(order)
-            except:
-                self.tg_cntrl.send_message_f(chat_id_helper,
-                                f"️❗️❗️❗️ Повторно адреси нема в № {order_id} ")
-                self.OC_log.info(
-                    f"Обробка ордера: {order_id}\n "
-                    f"Інформація по адресі {delivery_provider_data} ")
+    # def examine_address(self, order):
+    #     resp_bool = np_serv.examine_address_prom(order)
+    #     if not resp_bool:
+    #         order_dr = prom_cntrl.get_order(order["id"])
+    #         order = order_dr["order"]
+    #         order_id = order["id"]
+    #         delivery_provider_data = order["delivery_provider_data"]
+    #         try:
+    #             self.OC_log.info(f"Обробка стандартна, ордер:{order_id}\n Інформація по адресі {delivery_provider_data} ")
+    #             self.tg_cntrl.send_message_f(chat_id_helper,
+    #                                  f"Обробка стандартна, ордер:{order_id}\n Інформація по адресі {delivery_provider_data} ")
+    #             self.update_address(order)
+    #         except:
+    #             self.tg_cntrl.send_message_f(chat_id_helper,
+    #                             f"️❗️❗️❗️ Повторно адреси нема в № {order_id} ")
+    #             self.OC_log.info(
+    #                 f"Обробка ордера: {order_id}\n "
+    #                 f"Інформація по адресі {delivery_provider_data} ")
 
     def update_address(self, order):
         war_ref = np_serv.examine_address_prom(order)
@@ -304,11 +314,21 @@ class OrderCntrl:
         bool = self.change_status_item(order_id, 15)
         bool_prom = self.definition_source(order, 3)
         return bool
+    
+    def make_client_store(self, order_code):
+        try:
+            order_base = self.ord_rep.load_for_order_code(order_code)
+            store_data = self.store_serv.get_item(order_base.store_id)
+            return EvoClient(store_data.token_market, ProductServ(), store_data)
+        except Exception as e:
+            self.OC_log.exception(f'{e}')
+            if OSDEBUG: print(f'Помилка {e}')
 
-    def definition_source(self, order, status):
+    def definition_source(self, order: OrderDTO, status):
         bool_prom = True
         if order.source_order_id == 2:
-            bool_prom = prom_cntrl.change_status(order.order_code, status)
+            evo_client = self.make_client_store(order.order_code)
+            bool_prom = self.prom_cntrl.change_status(order.order_code, status, evo_client)
         print("definition_source:", order.source_order_id)
         print("definition_source:", bool_prom)
         return bool_prom
@@ -316,7 +336,8 @@ class OrderCntrl:
     def return_order(self, order_id, status):
         order = self.ord_rep.load_item(order_id)
         bool = self.ord_rep.change_status(order_id, status)
-        bool_prom = prom_cntrl.change_status(order.order_code, 5)
+        evo_client = self.make_client_store(order.order_code)
+        bool_prom = self.prom_cntrl.change_status(order.order_code, 5, evo_client)
         # update_analitic = prod_an_cntrl.product_in_order(order)
         resp_sour_bool = self.sour.return_prod(order)
         # resp = self.check_del_method(order)
@@ -354,7 +375,7 @@ class OrderCntrl:
             self.tg_cntrl.sendMessage(self.tg_cntrl.chat_id_np, text_courier)
             del_ord_cntrl.update_item(np_resp, order.id)
             if order.source_order_id == 2:
-                resp_prom_ttn = prom_cntrl.send_ttn(order.order_code, order.ttn, "nova_poshta")
+                self.send_ttn_to_market(order)
         elif 'OptionsSeat is empty' in np_resp["errors"]:
             resp = np_resp
             self.tg_cntrl.sendMessage(self.tg_cntrl.chat_id_confirm,
@@ -364,7 +385,18 @@ class OrderCntrl:
             self.tg_cntrl.sendMessage(self.tg_cntrl.chat_id_confirm,
                                  f"❗️❗️❗️ ТТН не створено - {resp}")
         return np_resp
-
+    
+    def send_ttn_to_market(self, order):
+        evo_client = self.make_client_store(order.order_code)
+        resp_prom_ttn = self.prom_cntrl.send_ttn(order.order_code, order.ttn, "nova_poshta", evo_client)
+        self.OC_log.info(f'del_method_np {resp_prom_ttn}')
+        if OSDEBUG: print(f'del_method_np {resp_prom_ttn}')
+        if resp_prom_ttn != {'status': 'success'}:
+            self.self.tg_cntrl.sendMessage(self.tg_cntrl.chat_id_confirm,
+                            f"❗️❗️❗️ Проблема підвязкі ттн замовлення: {order.order_code} - сповістити адміна")
+        else:
+            self.OC_log.info(f'ТТН підвязано {order.order_code}')
+            if OSDEBUG: print(f'ТТН підвязано {order.order_code}')
     def add_ttn_crm(self, order_id, ttn):
         resp = self.ord_rep.add_ttn_crm(order_id, ttn)
         return resp
