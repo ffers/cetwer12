@@ -120,6 +120,7 @@ class SendToCrmNew:
                 self.logger.info(message)
             return resp
         except Exception as e:
+            self.logger.exception(f'send_request to {url}: {e}')
             self.tg.sendMessage(self.tg.chat_id_info, 
                                 f"🔴 🔴 🔴  send_requester не працює! \n {e}")
             return False
