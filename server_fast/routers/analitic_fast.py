@@ -77,14 +77,22 @@ async def market_sign():
 @router.get("/report")
 async def market_sign():
     with flask_app.app_context():
-        cntrl = AnaliticCntrlV2()
-        return await cntrl.report() 
+        try:
+            cntrl = AnaliticCntrlV2()
+            return await cntrl.report()
+        except Exception as e:
+            logger.exception(f'diff_count_sold: {e}')
+            return 400, {'error': 'report have problem - we work'} 
     
 @router.get("/diff_count_sold")
 async def market_sign():
     with flask_app.app_context():
-        cntrl = AnaliticCntrlV2()
-        return await cntrl.diff_count_sold() 
+        try: 
+            cntrl = AnaliticCntrlV2()
+            return await cntrl.diff_count_sold() 
+        except Exception as e:
+            logger.exception(f'diff_count_sold: {e}')
+            return 400, {'error': 'diff_count_sold have problem - we work '}
 
 
 

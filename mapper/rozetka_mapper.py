@@ -156,6 +156,7 @@ class RozetkaMapper():
             11111111: 5,
             4524: 6,
             6815: 6,
+            4682: 2
         }
         return mapping[pay_id] if pay_id in mapping else self.new_payment(payment)
 

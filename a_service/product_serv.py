@@ -86,7 +86,7 @@ class ProductServ:
         combined_list = list(zip_longest(article, quantity, product_id, fillvalue=None))
         return combined_list
     
-    def load_item_by_article(self, artcl, name):
+    def load_item_by_article(self, artcl, name="Перевірити назву"):
         product = self.prod_rep.load_by_article(artcl)
         if not product:
             product = self.add_product_v2(artcl, name)
