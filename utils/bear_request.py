@@ -34,3 +34,5 @@ class BearRequest:
             print("Запит не вдалося виконати після {} спроб".format(max_retries))
             raise ValueError("Запит не вдалося виконати після {} спроб".format(max_retries))
         return json.loads(response.content)
+
+    

@@ -83,15 +83,15 @@ async def get_orders(api_name: str,
             return {"message": "Get orders Error"}
     
 @router.get("/get_status_unpay")
-async def get_status_unpay(api_name: str,
-                     store_token: str | None = Query(None)
+async def get_status_unpay(store_crm_token: str,
+                     marketplace_token: str | None = Query(None)
                      ):
     with flask_app.app_context():
         try:
-            store_data = StoreRepositorySQLAlchemy(db.session).get_token(api_name)
+            store_data = StoreRepositorySQLAlchemy(db.session).get_token(store_crm_token)
             tg_token = os.getenv('TELEGRAM_BOT_TOKEN')
-            evo_serv = EvoService(EvoClient(store_token, ProductServ(), store_data))
-            roz_serv = RozetkaServ(RozetMain(store_token, ProductServ(), store_data))
+            evo_serv = EvoService(EvoClient(marketplace_token, ProductServ(), store_data))
+            roz_serv = RozetkaServ(RozetMain(marketplace_token, ProductServ(), store_data))
             tg_serv = TgServNew(TgClient(tg_token))
             order_repo = OrderRep(db.session)
             store_repo = StoreRepositorySQLAlchemy(db.session)
@@ -113,7 +113,7 @@ async def get_status_unpay(api_name: str,
                             store_proc,
 
                 )
-            ctx.state.token = api_name
+            ctx.state.token = store_crm_token
             result = order_serv.get_status_unpay_v3(ctx) 
             if result:
                 logger.info(f'find prompay in order: {result}')

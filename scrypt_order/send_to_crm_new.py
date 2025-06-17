@@ -34,11 +34,11 @@ class SendToCrmNew:
         та завантажити и прописати все необхідне
         '''
 
-    def get_status_unpay(self, api_name, token):
+    def get_status_unpay(self, store_crm_token, marketplace_token):
         try:
             url = f"v2/order/get_status_unpay?"
-            url += f"source_token={api_name}"
-            url += f"&store_token={token}"
+            url += f"store_crm_token={store_crm_token}"
+            url += f"&marketplace_token={marketplace_token}"
             # url += f"&store_name={name}"
             resp = self.make_request("GET", url)
         except Exception as e:
@@ -46,7 +46,7 @@ class SendToCrmNew:
 
     def get_check(self):
         url = "v2/check/check_sign"
-        resp = self.make_request("GET", url)
+        resp = self.make_request("GET", url)    
 
 
     def start_16_58(self):
