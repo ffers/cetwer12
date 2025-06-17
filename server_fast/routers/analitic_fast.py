@@ -74,6 +74,11 @@ async def market_sign():
         cntrl = AnaliticCntrlV2()
         return await cntrl.all() 
     
+
+    '''
+    Репоррт делаеться в 19:01
+    и в нем судя по всему проблеми
+    '''
 @router.get("/report")
 async def market_sign():
     with flask_app.app_context():
@@ -81,8 +86,13 @@ async def market_sign():
             cntrl = AnaliticCntrlV2()
             return await cntrl.report()
         except Exception as e:
-            logger.exception(f'diff_count_sold: {e}')
+            logger.exception(f'report: {e}')
             return 400, {'error': 'report have problem - we work'} 
+        
+    '''
+    diff_count_sold делаеться в 19:02
+    и в нем судя по всему тоже проблеми
+    '''
     
 @router.get("/diff_count_sold")
 async def market_sign():

@@ -33,7 +33,8 @@ class SourceRep:
             items = ProductSource.query.order_by(ProductSource.timestamp).all()
             return items
         except Exception as e:
-            return False, e
+            self.logger.exception(f'load_all: {e}')
+            raise
 
 
     def load_article(self, article):

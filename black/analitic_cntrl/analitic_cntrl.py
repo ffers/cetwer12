@@ -28,7 +28,7 @@ class AnaliticCntrlV2:
             ord_rep=OrderRep(),
             an_cntrl=AnCntrl(),
             an_rep=AnaliticRep(),
-            logger=OC_logger.oc_log('analitic_handler'),
+            logger=OC_logger.oc_log('analitic_cntrl'),
             prod_rep=ProductRep(),
             source_rep=SourceRep(),
             state=AnaliticDto,

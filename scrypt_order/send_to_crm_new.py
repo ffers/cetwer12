@@ -77,9 +77,19 @@ class SendToCrmNew:
         url = "v2/analitic/update_analitic"
         return self.make_request("GET", url) 
     
-    def report(self):
+    '''
+    Репоррт делаеться в 19:01
+    и в нем судя по всему проблеми
+    '''
+    
+    def report(self): 
         url = "v2/analitic/report"
         return self.make_request("GET", url) 
+    
+    '''
+    diff_count_sold делаеться в 19:02
+    и в нем судя по всему тоже проблеми
+    '''
     
     def diff_count_sold(self):
         url = "v2/analitic/diff_count_sold"
@@ -104,12 +114,12 @@ class SendToCrmNew:
                 print(error)
                 self.logger.error(error)
                 raise ValueError(error)
-            if 'message' in resp:
+            if 'message' in resp:   
                 message = str(resp['message'])
                 print(message)
                 self.logger.info(message)
             return resp
         except Exception as e:
             self.tg.sendMessage(self.tg.chat_id_info, 
-                                f"🔴 🔴 🔴  Сервер не працює! \n {e}")
+                                f"🔴 🔴 🔴  send_requester не працює! \n {e}")
             return False

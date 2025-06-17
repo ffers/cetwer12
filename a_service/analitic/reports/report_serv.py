@@ -23,7 +23,7 @@ class ReportServ(Handler):
         except Exception as e:
             if DEBUG >= 5: print(f'send_report {e}')
             self.ctx.logger.exception(f'send_report {e}')
-            raise
+            raise       
 
     def diff_count_sold(self):
         return self.ctx.source_an_cntrl.sour_diff_all_source_sold("two_days") 
