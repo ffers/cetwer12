@@ -45,8 +45,8 @@ async def market_sign():
         resp = api.sour_diff_all_source_sold("two_days")
         print("відповідь сервера {}".format(resp))
         if resp:
-            return 200, {"message": "SUCCESS"}
-        return 200, {"message": "FALSE"}
+            return {"message": "SUCCESS"}
+        return {"message": "FALSE"}
     
 @router.get("/start_16_58")
 async def market_sign():   
@@ -84,10 +84,12 @@ async def market_sign():
     with flask_app.app_context():
         try:
             cntrl = AnaliticCntrlV2()
-            return await cntrl.report()
+            if await cntrl.report():
+               return {'message': 'Ok'}  
+            return {'error': 'report have problem - we working'}  
         except Exception as e:
             logger.exception(f'report: {e}')
-            return 400, {'error': 'report have problem - we work'} 
+            return {'error': 'report have problem - we work'} 
         
     '''
     diff_count_sold делаеться в 19:02
@@ -99,10 +101,12 @@ async def market_sign():
     with flask_app.app_context():
         try: 
             cntrl = AnaliticCntrlV2()
-            return await cntrl.diff_count_sold() 
+            if await cntrl.diff_count_sold():
+                return {'message': 'Ok'}  
+            return {'error': 'diff_count_sold have problem - we working'}   
         except Exception as e:
             logger.exception(f'diff_count_sold: {e}')
-            return 400, {'error': 'diff_count_sold have problem - we work '}
+            return {'error': 'diff_count_sold have problem - we work '}
 
 
 

@@ -109,6 +109,10 @@ class SendToCrmNew:
         self.tg = TgServNew()
         try:
             resp = self.bear.request_go(method, url, header)
+            self.logger.info(f"{resp}")
+            if isinstance(resp, bool):
+                self.tg.sendMessage(self.tg.chat_id_info, 
+                                f"Відповідь сервера bool на {url}")
             if 'error' in resp:
                 error = str(resp['error'])
                 print(error)
@@ -117,7 +121,8 @@ class SendToCrmNew:
             if 'message' in resp:   
                 message = str(resp['message'])
                 print(message)
-                self.logger.info(message)
+                self.logger.info(f"{url} - {message}")
+
             return resp
         except Exception as e:
             self.logger.exception(f'send_request to {url}: {e}')
