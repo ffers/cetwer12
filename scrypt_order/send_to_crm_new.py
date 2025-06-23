@@ -15,10 +15,10 @@ class SendToCrmNew:
         resp = self.make_request("GET", url)
 
 
-    def get_orders(self, api_name, token):
+    def get_orders(self, store_crm_token, marketplace_token):
         url = f"v2/order/get_orders?"
-        url += f"api_name={api_name}"
-        url += f"&store_token={token}"
+        url += f"store_crm_token={store_crm_token}"
+        url += f"&marketplace_token={marketplace_token}"
         # url += f"&store_name={name}"
         resp = self.make_request("GET", url)
 

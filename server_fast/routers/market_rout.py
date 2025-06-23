@@ -54,19 +54,19 @@ class FactoryApi:
 #         return jsonify({"message": "Admin getting schwifty"})
     
 @router.get("/get_orders")
-async def get_orders(api_name: str,
-                     store_token: str | None = Query(None)):
+async def get_orders(store_crm_token: str,
+                     marketplace_token: str | None = Query(None)):
     with flask_app.app_context():
         try:
-            store_data = StoreRepositorySQLAlchemy(db.session).get_token(api_name)
+            store_data = StoreRepositorySQLAlchemy(db.session).get_token(store_crm_token)
             apis = {
                 "rozetka": RozetMain(
-                    store_token, 
+                    marketplace_token, 
                     ProductServ(),
                     store_data
                     ),
                 "prom": EvoClient(
-                    store_token, 
+                    marketplace_token, 
                     ProductServ(),
                     store_data
                     )
