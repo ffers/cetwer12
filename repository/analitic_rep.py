@@ -161,7 +161,7 @@ class AnaliticRep():
                 Analitic.timestamp <= stop,
                 Analitic.period == period
                 ).first()
-            
+            if not i: return None 
             return AnaliticDto(
                 id=i.id, torg=i.torg, body=i.body, 
                 worker=i.worker, prom=i.prom, rozet=i.rozet,

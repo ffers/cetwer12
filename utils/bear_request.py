@@ -10,9 +10,9 @@ class BearRequest:
         if body:
             body = json.dumps(body) 
         time.sleep(1)
-        max_retries = 5  # Максимальна кількість спроб
+        max_retries = 3  # Максимальна кількість спроб
         retries = 0
-        timeout = 20
+        timeout = 10
         while retries < max_retries:
             try:
                 response = requests.request(method, url, data=body, headers=headers, timeout=timeout)
@@ -22,6 +22,8 @@ class BearRequest:
                 response.raise_for_status()  # Підняти виключення, якщо код статусу не 200
                 self.logger.info(f"Responce server: OK")
                 break
+            except requests.exceptions.Timeout:
+                self.logger.error("Хтось не відповідає — таймаут") # змінити "хтось" на url
             except requests.exceptions.RequestException as e:
                 self.logger.error(f'{e}')
                 self.logger.info(f"Помилка: {e} - Відповідь сервера")

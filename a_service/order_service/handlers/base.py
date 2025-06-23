@@ -5,7 +5,7 @@ from ...telegram_service import TgServNew
 from ..order_api_process import OrderApi
 from repository import OrderRep
 from repository import StoreRepositorySQLAlchemy
-from utils import OC_logger
+import logging
 
 class UnpayState:
     store = None
@@ -21,7 +21,7 @@ class UnpayContext:
             tg_serv: TgServNew,
             order_repo: OrderRep,
             store_repo: StoreRepositorySQLAlchemy,
-            logger: OC_logger.oc_log,
+            logger: logging,
             store_proc: OrderApi
         ):
         self.evo_serv = evo_serv

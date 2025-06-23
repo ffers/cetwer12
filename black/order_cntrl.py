@@ -1,37 +1,44 @@
 import os, logging, sys
-from repository import OrderRep
-from black.crm_to_telegram import CrmToTelegram
-from a_service.order_service import OrderServ
-from a_service.delivery import NpServ
-from a_service import DeliveryOrderServ, StatusProcess
+from server_flask.db import db
 from dotenv import load_dotenv
-from api.nova_poshta.create_data import NpClient
+from datetime import datetime
 
+
+from .crm_to_telegram import CrmToTelegram
 from .np_cntrl import NpCntrl
 from .product_analitic_cntrl import ProductAnaliticControl
 from .delivery_order_cntrl import DeliveryOrderCntrl
-from .add_order_to_crm import pr_to_crm_cntr
-from a_service import tg_serv, TgServ, TextFactory
-from a_service import TgServNew, ProductServ
-
-
-from a_service.store_service import StoreService
-from repository.store_sqlalchemy import StoreRepositorySQLAlchemy
-from server_flask.db import db
-
 from .prom_cntrl import PromCntrl
-from utils import OC_logger, OSDEBUG
-from datetime import datetime
 from .analitic_cntrl.sour_an_cntrl import SourAnCntrl
 from .telegram_cntrl.tg_cash_cntrl import TgCashCntrl
 from .product_cntrl import ProductCntrl
+
+
+from a_service.order_service import OrderServ
+from a_service.delivery import NpServ
+from a_service import DeliveryOrderServ, StatusProcess
+from a_service import tg_serv, TgServ, TextFactory
+from a_service import TgServNew, ProductServ
+from a_service import EvoService, RozetkaServ, TgServNew, ProductServ
+from a_service.order_service import OrderServ, OrderApi
+from a_service.order_service.handlers.base import UnpayContext
+from a_service.store_service import StoreService
+
+
+from api import EvoClient, RozetMain, TgClient
+from api.nova_poshta.create_data import NpClient
+
+
+from repository.store_sqlalchemy import StoreRepositorySQLAlchemy
+from repository import OrderRep
+
+
 from utils import my_time
+from utils import OC_logger, OSDEBUG
 
 from DTO import OrderDTO
 
-from api import EvoClient
 
-from server_flask.db import db
 
 
 # order1 = StatusProcess.update_order(2487, 6, TelegramController)
@@ -450,6 +457,35 @@ class OrderCntrl:
     
     def order_api_factory(self, get_type):
         pass
+
+    async def get_status_unpay(self, store_crm_token, marketplace_token):   
+        store_data = StoreRepositorySQLAlchemy(db.session).get_token(store_crm_token)
+        tg_token = os.getenv('TELEGRAM_BOT_TOKEN')
+        evo_serv = EvoService(EvoClient(marketplace_token, ProductServ(), store_data))
+        roz_serv = RozetkaServ(RozetMain(marketplace_token, ProductServ(), store_data))
+        tg_serv = TgServNew(TgClient(tg_token))
+        order_repo = OrderRep(db.session)
+        store_repo = StoreRepositorySQLAlchemy(db.session)
+        store_proc = OrderApi
+        order_serv = OrderServ(
+            evo_serv=evo_serv, 
+            roz_serv=roz_serv,
+            tg_serv=tg_serv,
+            order_repo=order_repo,
+            store_repo=store_repo, 
+            )
+        ctx = UnpayContext(
+                        evo_serv,
+                        roz_serv,
+                        tg_serv,
+                        order_repo,
+                        store_repo,
+                        OC_logger.oc_log('unpay_test'),
+                        store_proc,
+
+            )
+        ctx.state.token = store_crm_token
+        result = order_serv.get_status_unpay_v3(ctx) 
     
 
 

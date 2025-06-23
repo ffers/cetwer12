@@ -113,21 +113,21 @@ class TestOrderServ: # пооки іде все через кнтрл
             pointer = resp["result"].get('error')
             assert pointer == 'Замовлення вже існує'
 
-    # @responses.activate
-    # def test_get_unpay(self):
-    #     try:П
-    #         with flask_app.app_context():
-    #             self.make_response_tg()
-    #             host = "https://my.prom.ua/"
-    #             prefix = "api/v1/orders/33839071023"
-    #             responses.add(
-    #                 responses.GET, host+prefix,
-    #                 json=PromDict.order, status=200
-    #                 )
-    #             pointer = self.order_c.get_status_unpay(
-    #                 "vida", self.prom_token, EvoClient, RozetMain
-    #                 )
-    #             assert pointer == True
-    #     except AllOrderPayException:
-    #         assert True
+    @responses.activate
+    def test_get_unpay(self):
+        try:
+            with flask_app.app_context():
+                self.make_response_tg()
+                host = "https://my.prom.ua/"
+                prefix = "api/v1/orders/33839071023"
+                responses.add(
+                    responses.GET, host+prefix,
+                    json=PromDict.order, status=200
+                    )
+                pointer = self.order_c.get_status_unpay(
+                    "jemis", self.prom_token, EvoClient, RozetMain
+                    )
+                assert pointer == True
+        except AllOrderPayException:
+            assert True
 

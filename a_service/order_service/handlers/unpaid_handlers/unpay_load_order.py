@@ -68,6 +68,7 @@ class UnpayLoadOrderProcessor:
         self.op = OrderProcessor(ValidateUnpayOrderHandler(ctx))
 
     def process(self):
+        self.ctx.logger.info('UnpayLoadOrderProcessor: Go')
         self.oloh.handle()
         resp = self.op.handle_all(self.ctx.state.orders)
         return resp

@@ -1,6 +1,6 @@
 from utils import BearRequest, OC_logger
 from a_service import TgServNew
-import os, json
+import os, json, asyncio
 
 
 
@@ -112,7 +112,7 @@ class SendToCrmNew:
             self.logger.info(f"{resp}")
             if isinstance(resp, bool):
                 self.tg.sendMessage(self.tg.chat_id_info, 
-                                f"Відповідь сервера bool на {url}")
+                                f"Відповідь сервера booli")
             if 'error' in resp:
                 error = str(resp['error'])
                 print(error)
@@ -129,3 +129,7 @@ class SendToCrmNew:
             self.tg.sendMessage(self.tg.chat_id_info, 
                                 f"🔴 🔴 🔴  send_requester не працює! \n {e}")
             return False
+        
+    # async def fetch_prom(self, method, url, header):
+    #     loop = asyncio.get_running_loop()
+    #     return await loop.run_in_executor(None, self.send_request, method, url, header)

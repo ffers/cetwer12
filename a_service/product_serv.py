@@ -1,7 +1,7 @@
 from decimal import Decimal
 from itertools import zip_longest
 from repository import ProductRep, ProductAnaliticRep
-
+from utils import OC_logger
 '''
 продукт сервіс 
 нужно иметь виду аналитику каждое действие должно бить с ней связано 
@@ -26,6 +26,7 @@ class ProductServ:
     def __init__(self):
         self.prod_rep = ProductRep()
         self.prod_an_rep = ProductAnaliticRep()
+        self.log = OC_logger.oc_log('product_serv')
 
     def add_product_v2(self, article, product_name):
         product =  self.prod_rep.create_v2(article, product_name)
@@ -85,12 +86,16 @@ class ProductServ:
         product_id = req.form.getlist('product')
         combined_list = list(zip_longest(article, quantity, product_id, fillvalue=None))
         return combined_list
-    
+ 
     def load_item_by_article(self, artcl, name="Перевірити назву"):
-        product = self.prod_rep.load_by_article(artcl)
-        if not product:
-            product = self.add_product_v2(artcl, name)
-        return product
+        try:
+            product = self.prod_rep.load_by_article(artcl)
+            if not product:
+                product = self.add_product_v2(artcl, name)
+            return product
+        except Exception as e:
+            self.log.error(f'load_item_by_article: {e} self meaning: {self}')
+            raise
     
     def load_item_id(self, id):
         return self.prod_rep.load_product_item(id)
