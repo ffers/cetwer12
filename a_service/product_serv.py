@@ -88,6 +88,7 @@ class ProductServ:
         return combined_list
  
     def load_item_by_article(self, artcl, name="Перевірити назву"):
+        print(f"load_item_by_article {self}")
         try:
             product = self.prod_rep.load_by_article(artcl)
             if not product:

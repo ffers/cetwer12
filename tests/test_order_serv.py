@@ -12,6 +12,7 @@ from .lib.prom_dict import PromDict
 
 from black.order_cntrl import OrderCntrl
 from a_service.order_service.order_serv import OrderServ, ProductServ
+from black.order_cntrl import OrderCntrl
 
 from api import RozetMain, EvoClient
 from repository.store_sqlalchemy import StoreRepositorySQLAlchemy
@@ -26,6 +27,7 @@ class TestOrderServ: # пооки іде все через кнтрл
     prom_token = os.getenv('PROM_TOKEN')
     rozet_token = os.getenv('ROZETKA_TOKEN')
     env = os.getenv("ENV")
+    order_cntrl = OrderCntrl("jemis", prom_token)
 
     def status_dev(self):
         if self.env == "dev":
@@ -119,14 +121,12 @@ class TestOrderServ: # пооки іде все через кнтрл
             with flask_app.app_context():
                 self.make_response_tg()
                 host = "https://my.prom.ua/"
-                prefix = "api/v1/orders/33839071023"
+                prefix = "api/v1/orders/342422636"
                 responses.add(
                     responses.GET, host+prefix,
                     json=PromDict.order, status=200
                     )
-                pointer = self.order_c.get_status_unpay(
-                    "jemis", self.prom_token, EvoClient, RozetMain
-                    )
+                pointer = self.order_cntrl.get_status_unpay()
                 assert pointer == True
         except AllOrderPayException:
             assert True

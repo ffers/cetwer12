@@ -86,7 +86,7 @@ del_ord_cntrl = DeliveryOrderCntrl()
 
 
 class OrderCntrl: 
-    def __init__(self) -> None:
+    def __init__(self, store_crm_token=None, marketplace_token=None) -> None:
         self.OC_log = OC_logger.oc_log("order_cntrl")
         self.sour = SourAnCntrl()
         self.quan_stok = TgCashCntrl()
@@ -97,6 +97,8 @@ class OrderCntrl:
         self.order_serv = OrderServ()
         self.store_serv = StoreService(repo=StoreRepositorySQLAlchemy(db.session))
         self.prom_cntrl = PromCntrl()
+        self.store_crm_token = store_crm_token
+        self.marketplace_token = marketplace_token
     
 
         
@@ -458,11 +460,11 @@ class OrderCntrl:
     def order_api_factory(self, get_type):
         pass
 
-    async def get_status_unpay(self, store_crm_token, marketplace_token):   
-        store_data = StoreRepositorySQLAlchemy(db.session).get_token(store_crm_token)
+    def get_status_unpay(self):   
+        store_data = StoreRepositorySQLAlchemy(db.session).get_token(self.store_crm_token)
         tg_token = os.getenv('TELEGRAM_BOT_TOKEN')
-        evo_serv = EvoService(EvoClient(marketplace_token, ProductServ(), store_data))
-        roz_serv = RozetkaServ(RozetMain(marketplace_token, ProductServ(), store_data))
+        evo_serv = EvoService(EvoClient(self.marketplace_token, ProductServ(), store_data))
+        roz_serv = RozetkaServ(RozetMain(self.marketplace_token, ProductServ(), store_data))
         tg_serv = TgServNew(TgClient(tg_token))
         order_repo = OrderRep(db.session)
         store_repo = StoreRepositorySQLAlchemy(db.session)
@@ -484,8 +486,16 @@ class OrderCntrl:
                         store_proc,
 
             )
-        ctx.state.token = store_crm_token
-        result = order_serv.get_status_unpay_v3(ctx) 
+        ctx.state.token = self.store_crm_token
+        result = order_serv.get_status_unpay_v3(ctx)
+        if result:
+            self.OC_log.debug(f'GET_STATUS_UNPAY: {result}')
+            '''
+                посмотреть варианти обработки результата
+                пока ориентируюсь на except возвращаю bool
+            '''
+            return True
+        return False
     
 
 

@@ -26,6 +26,7 @@ class LoadUnpaid(Handler):
         self.logger.debug(f'store_id: {store_id}')
         orders = self.ctx.order_repo.load_unpaid_prom_orders(store_id)
         if not orders:
+            self.logger.debug(f'Несплачені замовлення не знайдено')
             raise AllOrderPayException('Несплачені замовлення не знайдено')
         self.ctx.state.orders = orders
     
@@ -68,7 +69,7 @@ class UnpayLoadOrderProcessor:
         self.op = OrderProcessor(ValidateUnpayOrderHandler(ctx))
 
     def process(self):
-        self.ctx.logger.info('UnpayLoadOrderProcessor: Go')
+        self.ctx.logger.info('UnpayLoadOrderProcessor: Working')
         self.oloh.handle()
         resp = self.op.handle_all(self.ctx.state.orders)
         return resp

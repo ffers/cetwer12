@@ -89,34 +89,34 @@ async def get_status_unpay(store_crm_token: str,
                      ):
     with flask_app.app_context():
         try:
-            store_data = StoreRepositorySQLAlchemy(db.session).get_token(store_crm_token)
-            tg_token = os.getenv('TELEGRAM_BOT_TOKEN')
-            evo_serv = EvoService(EvoClient(marketplace_token, ProductServ(), store_data))
-            roz_serv = RozetkaServ(RozetMain(marketplace_token, ProductServ(), store_data))
-            tg_serv = TgServNew(TgClient(tg_token))
-            order_repo = OrderRep(db.session)
-            store_repo = StoreRepositorySQLAlchemy(db.session)
-            store_proc = OrderApi
-            order_serv = OrderServ(
-                evo_serv=evo_serv, 
-                roz_serv=roz_serv,
-                tg_serv=tg_serv,
-                order_repo=order_repo,
-                store_repo=store_repo, 
-                )
-            ctx = UnpayContext(
-                            evo_serv,
-                            roz_serv,
-                            tg_serv,
-                            order_repo,
-                            store_repo,
-                            OC_logger.oc_log('unpay_test'),
-                            store_proc,
+            # store_data = StoreRepositorySQLAlchemy(db.session).get_token(store_crm_token)
+            # tg_token = os.getenv('TELEGRAM_BOT_TOKEN')
+            # evo_serv = EvoService(EvoClient(marketplace_token, ProductServ(), store_data))
+            # roz_serv = RozetkaServ(RozetMain(marketplace_token, ProductServ(), store_data))
+            # tg_serv = TgServNew(TgClient(tg_token))
+            # order_repo = OrderRep(db.session)
+            # store_repo = StoreRepositorySQLAlchemy(db.session)
+            # store_proc = OrderApi
+            # order_serv = OrderServ(
+            #     evo_serv=evo_serv, 
+            #     roz_serv=roz_serv,
+            #     tg_serv=tg_serv,
+            #     order_repo=order_repo,
+            #     store_repo=store_repo, 
+            #     )
+            # ctx = UnpayContext(
+            #                 evo_serv,
+            #                 roz_serv,
+            #                 tg_serv,
+            #                 order_repo,
+            #                 store_repo,
+            #                 OC_logger.oc_log('unpay_test'),
+            #                 store_proc,
 
-                )
-            ctx.state.token = store_crm_token
-            result = order_serv.get_status_unpay_v3(ctx) 
-
+            #     )
+            # ctx.state.token = store_crm_token
+            order_cntrl = OrderCntrl(store_crm_token, marketplace_token)
+            result = order_cntrl.get_status_unpay() 
             if result:
                 logger.info(f'find prompay in order: {result}')
                 return {"message": f"have result"}

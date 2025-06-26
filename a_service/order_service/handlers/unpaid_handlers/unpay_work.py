@@ -54,7 +54,7 @@ class GetOrderStore(Handler):
 
     def order_mapper(self, order_store, order):
         store_id = self.ctx.state.store.id
-        order_store = promMapper(order_store, ProductServ, store_id)
+        order_store = promMapper(order_store, ProductServ(), store_id)
         if not order_store:
             raise OrderNotFoundException(f'Order not found in store: {order.order_code}')
         elif order_store.payment_status_id == 1:
@@ -93,7 +93,7 @@ class ValidateUnpayOrderHandler:
         for cmd_class in self.commands:
             self.logger.debug(f"Працює: {cmd_class.__name__}")
             cmd_class(self.ctx).execute(order)
-        return f'Оплачено: {order.order_code}'
+        return {f'{order.order_code}': 'Оплачено'}
 
 
 class OrderProcessor:
@@ -103,13 +103,14 @@ class OrderProcessor:
 
     def handle_all(self, orders):
         results = []
-        
+        self.logger.debug(results)
         for order in orders:
             try:
                 result = self.handler.handle(order)
                 results.append(result)
             except Exception as e:
                 self.logger.debug(f'ордер {order.order_code} ще неоплачено: {e}')
+                raise
         return results
 
     
