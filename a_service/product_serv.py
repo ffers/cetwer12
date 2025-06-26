@@ -91,6 +91,7 @@ class ProductServ:
         print(f"load_item_by_article {self}")
         try:
             product = self.prod_rep.load_by_article(artcl)
+            self.log.info(f'load_item_by_article: {product}')
             if not product:
                 product = self.add_product_v2(artcl, name)
             return product

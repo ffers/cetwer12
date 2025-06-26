@@ -1,9 +1,9 @@
 
 
 import os
-
+from typing import Annotated
 from fastapi import APIRouter, Depends, \
-    HTTPException, Query
+    HTTPException, Query, Header
 from server_flask.flask_app import flask_app, jsonify
 from server_flask.db import db
 
@@ -54,8 +54,10 @@ class FactoryApi:
 #         return jsonify({"message": "Admin getting schwifty"})
     
 @router.get("/get_orders")
-async def get_orders(store_crm_token: str,
-                     marketplace_token: str | None = Query(None)):
+async def get_orders(
+                    marketplace_token: Annotated[str | None, Header()] = None,
+                    store_crm_token: Annotated[str | None, Header()] = None
+                    ):
     with flask_app.app_context():
         try:
             store_data = StoreRepositorySQLAlchemy(db.session).get_token(store_crm_token)
@@ -84,8 +86,9 @@ async def get_orders(store_crm_token: str,
             return {"message": "Get orders Error"}
     
 @router.get("/get_status_unpay")
-async def get_status_unpay(store_crm_token: str,
-                     marketplace_token: str | None = Query(None)
+async def get_status_unpay(
+                    marketplace_token: Annotated[str | None, Header()] = None,
+                    store_crm_token: Annotated[str | None, Header()] = None
                      ):
     with flask_app.app_context():
         try:

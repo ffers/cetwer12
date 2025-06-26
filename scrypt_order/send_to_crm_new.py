@@ -17,10 +17,14 @@ class SendToCrmNew:
 
     def get_orders(self, store_crm_token, marketplace_token):
         url = f"v2/order/get_orders?"
-        url += f"store_crm_token={store_crm_token}"
-        url += f"&marketplace_token={marketplace_token}"
+        # url += f"store_crm_token={store_crm_token}"
+        # url += f"&marketplace_token={marketplace_token}"
+        header = {
+                "marketplace-token": marketplace_token,
+                "store-crm-token": store_crm_token
+            }
         # url += f"&store_name={name}"
-        resp = self.make_request("GET", url)
+        resp = self.make_request("GET", url, header)
 
         ''' Короткий вариант
         стор нейм как определить
@@ -36,11 +40,13 @@ class SendToCrmNew:
 
     def get_status_unpay(self, store_crm_token, marketplace_token):
         try:
-            url = f"v2/order/get_status_unpay?"
-            url += f"store_crm_token={store_crm_token}"
-            url += f"&marketplace_token={marketplace_token}"
+            url = f"v2/order/get_status_unpay"
+            header = {
+                "marketplace-token": marketplace_token,
+                "store-crm-token": store_crm_token
+            }
             # url += f"&store_name={name}"
-            resp = self.make_request("GET", url)
+            resp = self.make_request("GET", url, header)
         except Exception as e:
             self.logger.error(f'{e}')
 
@@ -96,13 +102,15 @@ class SendToCrmNew:
         return self.make_request("GET", url) 
 
         
-    def make_request(self, method, prefix):
+    def make_request(self, method, prefix, another_header=None):
         url = os.getenv("HOSTCRM") + prefix
         token = os.getenv("SEND_TO_CRM_TOKEN")
         header = {
                 "Content-Type": "application/json", 
                 "Authorization": f"{token}"
             }
+        if another_header:
+            header.update(another_header)
         return self.send_request(method, url, header)
 
     def send_request(self, method, url, header):

@@ -3,9 +3,13 @@ from server_flask.models import (Products,
                                  ProductAnalitic,
                                  ProductRelate,
                                  ProductSource)
+from utils import OC_logger
 
 
 class ProductRep():
+    def __init__(self):
+        self.log = OC_logger.oc_log('prod_rep')
+
     def add_product(self, description, article, product_name, price, quantity):
         try:
             product = Products(description=description,
@@ -32,7 +36,8 @@ class ProductRep():
             db.session.commit()
             return product
         except Exception as e:
-            return str(e)
+            self.log.exception(f'create_v2: {e}')
+            raise
         
     def add_product_relate(self, data_list):
         try:
