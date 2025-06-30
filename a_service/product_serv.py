@@ -85,7 +85,20 @@ class ProductServ:
         quantity = req.form.getlist('quantity')
         product_id = req.form.getlist('product')
         combined_list = list(zip_longest(article, quantity, product_id, fillvalue=None))
+        print(f"add_product_relate = {combined_list}")
         return combined_list
+    
+    def adduse_product_relate(self, new_product_id, old_product_id):
+        resp = {}
+        relate_products = self.prod_rep.load_prod_relate_product_id_all(old_product_id)
+        print(relate_products)  # покажи, чи є 'product_source'
+        for relate in relate_products:
+            resp.update({relate.product_source_id: self.prod_rep.add_product_relate(
+                [relate.product_source_id, relate.quantity, new_product_id]
+            )})
+        return resp
+            
+
  
     def load_item_by_article(self, artcl, name="Перевірити назву"):
         print(f"load_item_by_article {self}")

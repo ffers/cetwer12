@@ -29,6 +29,7 @@
                 <div id="product-container">
                     <div class="row">   
                         <div class="col-sm col-lg-2">
+                            <label>дата:</label>
                             <!-- Include input field with id so 
                                 that we can use it in JavaScript 
                                 to set attributes.-->
@@ -44,8 +45,9 @@
                             defaultDate: 'today', 
                             });
                         </script>
-
+                        
                         <div class="col-sm col-lg-2">
+                            <label>связь:</label>
                             <input 
                             placeholder="Связь" 
                             class="form-control" 
@@ -54,8 +56,10 @@
                             name="article_product" 
                             value="{{item.products.article}}"                   
                             > 
+                            
                         </div>
                         <div class="col-sm col-lg-2">
+                            <label>id</label>
                             <input 
                             placeholder="Связь" 
                             class="form-control" 
@@ -68,7 +72,9 @@
                       
         
                         <!-- Товар та кількість -->
+                        
                         <div class="col-sm col-lg-2">
+                            <label>ісходник:</label>
                             <select  class="form-control select-source" 
                             name="article" 
                             required>
@@ -76,6 +82,7 @@
                         </div>
                             <br>
                         <div class="col-sm col-lg-2">
+                            <label>назва:</label>
                             <input 
                                 placeholder="Назва" 
                                 class="form-control  " 
@@ -87,6 +94,7 @@
                                 <br>
                         </div>
                         <div class="col-sm col-lg-2">
+                            <label>ціна</label>
                             <input 
                                 placeholder="Ціна" 
                                 class="form-control" 
@@ -98,6 +106,7 @@
                                 <br>
                         </div>
                         <div class="col-sm col-lg-2">
+                            <label>кількість:</label>
                             <input style="text-align: center;"
                              class="quantity form-control" 
                             id="quantity" name="quantity"  min="1" max="10000" 

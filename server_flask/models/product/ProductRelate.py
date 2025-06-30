@@ -5,7 +5,7 @@ from datetime import datetime
 class ProductRelate(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-    article = db.Column(db.String(50))
+    article = db.Column(db.String(50)) # тут product_source_id должен бить
     name = db.Column(db.String(150))
     quantity = db.Column(db.Integer)
     product_id = db.Column(db.Integer, db.ForeignKey(

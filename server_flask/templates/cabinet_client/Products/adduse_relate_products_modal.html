@@ -1,0 +1,51 @@
+	<!-- My Modal Add product -->
+	<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
+	<!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"> -->
+     {% include 'cabinet_client/toast_message.html' %}
+    <script src="{{url_for('static', filename='javascript/product/adduse_relate_product.js')}}"></script>
+    <div class="modal fade" id="adduseComponent" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="content text-center">
+                        <h1 style="text-align: center;">
+                            З якого товару взяти
+                        </h1>
+                        <form id="dataForm">
+                            
+                            <div class="row modal-div">									
+                                <div class="col-sm "><select class="form-control select-product" 
+                                    style="text-align: center;" id="old_product_id" name="old_product_id" 
+                                    rows="1" cols="50" placeholder="* Назва"></select><br></div>
+                            </div>
+                            <div class="row">
+                                <div class="modal-footer" style="text-align: center;">
+                                    <div class="col-sm ">
+                                        <button 
+                                        id="submitBtn" 
+                                        style="color: #626870;
+                                            background: #beccf4;
+                                            border-radius: 14px;
+                                            box-shadow: 4px 4px 12px #00000010;
+                                            width: 30%;
+                                            "
+                                            class="btn" 
+                                            onclick="adduse_relate()" type="button">
+                                            Взяти
+                                        </button>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>	
+            </div>
+        </div>
+    </div>
+    <script src="{{url_for('static', filename='javascript/product/select-product.js')}}"></script>
+    <script src="{{url_for('static', filename='javascript/toast.js')}}"></script>
+    <script src="{{url_for('static', filename='javascript/toastLite.js')}}"></script>

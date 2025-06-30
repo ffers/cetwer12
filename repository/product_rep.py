@@ -4,7 +4,14 @@ from server_flask.models import (Products,
                                  ProductRelate,
                                  ProductSource)
 from utils import OC_logger
+from dataclasses import dataclass
 
+@dataclass
+class ProductRelateDTO:
+    id: int
+    product_id: int # тут product_source_id должен бить
+    quantity: int
+    product_source_id: int
 
 class ProductRep():
     def __init__(self):
@@ -42,11 +49,11 @@ class ProductRep():
     def add_product_relate(self, data_list):
         try:
             item = ProductRelate(
-                article=data_list[0],
+                article=data_list[0], # надо поменять - ето id исходника
+                product_source_id=data_list[0],
                 name="",
                 quantity=int(data_list[1]),
                 product_id=data_list[2],
-                product_source_id=data_list[0]
             )
             db.session.add(item)
             db.session.commit()
@@ -124,6 +131,10 @@ class ProductRep():
         product = Products.query.get_or_404(product_id)
         return product
     
+    def load_product_by_id(self, product_id):
+        product = Products.query.get_or_404(product_id)
+        return product
+    
     def load_by_article(self, art):
         try:
             product = Products.query.filter_by(article=art).first()
@@ -144,8 +155,14 @@ class ProductRep():
         return item
 
     def load_prod_relate_product_id_all(self, id):
-        item = ProductRelate.query.filter_by(product_id=id).all()
-        return item
+        items = ProductRelate.query.filter_by(product_id=id).all()
+        select = []
+        for i in items:
+            select.append(
+                ProductRelateDTO(
+                i.id, i.product_id, i.quantity, i.product_source_id
+            ))
+        return select
 
 
     def delete_product_relate(self, id):

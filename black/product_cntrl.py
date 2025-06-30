@@ -1,6 +1,7 @@
 from repository import ProductRep
 from a_service import ProductServ
 from black import ProductAnaliticControl
+from utils import OC_logger
 
 
 
@@ -10,17 +11,28 @@ class ProductCntrl:
         self.an = ProductAnaliticControl()
         self.p_rep = ProductRep()
         self.p_serv = ProductServ()
+        self.log = OC_logger.oc_log('product_cntrl')
 
     def add_product(self, description, article, product_name, price, quantity):
         resp = self.p_rep.add_product(description, article, product_name, price, quantity)
         return resp
     
     def add_product_relate(self, request):
-        resp = False, "компонент не додано"
+        resp = False
         list_data = self.p_serv.add_product_relate(request)
         for item in list_data:
             resp = self.p_rep.add_product_relate(item)
         return resp
+    
+    def adduse_product_relate(self, new_product_id, old_product_id):
+        try:
+            resp = self.p_serv.adduse_product_relate(new_product_id, old_product_id)
+            print(resp)
+            return resp
+        except Exception as e:
+            print('except')
+            self.log.exception(f'adduse_product_relate: {e}')
+            return False
 
     def update_product(self, req, id):
         update_data = self.p_serv.update_product(req)

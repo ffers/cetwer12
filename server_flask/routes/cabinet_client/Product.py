@@ -54,14 +54,14 @@ def add_product():
         pr = ProductServ()
         resp = pr.add_product_v2(request.form['article'], request.form['product_name'])
         if resp:
-            print("Product added successfully")
+            print(f"Product added successfully {resp}")
             if "modal" in request.form:
                 responce_data = {'status': 'success', 'message': 'Product added successfully'}
                 return jsonify(responce_data)
             else:
-                return redirect(url_for('Products.Product'))
+                return redirect(f'/cabinet/products/update/{resp.id}')
         else:
-            print("!!! Product don`t added! Unsuccessfully")
+            print(f"!!! Product don`t added! Unsuccessfully {resp}")
 
     return render_template('cabinet_client/Products/add_product.html', user=current_user )
 
@@ -118,23 +118,54 @@ def delete_product(id):
 @login_required
 @admin_permission.require(http_exception=403)
 def add_product_relate():
-    if request.method == 'POST':
-        print("ПРацюєм")
-        resp_bool = prod_cntrl.add_product_relate(request)
-        print(resp_bool)
-        for item in request.form:
-            print(item)
-        if resp_bool == True:
-            print("Product added successfully")
-            responce_data = {'status': 'success', 'message': 'Product relate added successfully'}
-            flash('Компоненти додано!', category='success')
-            return redirect(url_for('Products.add_product_relate'))
-        else:
-            print(request.form)
-            print("НЕВИЙШЛО!")
-            flash('Компоненти недодано!', category='error')
-            return redirect(url_for('Products.add_product_relate'))
-    return render_template('cabinet_client/Products/add_product_relate.html', user=current_user )
+    try:
+        if request.method == 'POST':
+            if request.form.get('modal'):
+                print(f"add_product_relate {request.form}")
+                resp_bool = prod_cntrl.add_product_relate(request)
+                print(resp_bool)
+                if resp_bool:
+                    return jsonify({'result': 'ok'})
+                return jsonify({'result': 'false'})
+            if resp_bool == True:
+                flash('Компоненти додано!', category='success')
+                return redirect(url_for('Products.add_product_relate'))
+            else:
+                flash('Компоненти недодано!', category='error')
+                return redirect(url_for('Products.add_product_relate'))
+        return render_template('cabinet_client/Products/add_product_relate.html', user=current_user )
+    except:
+        print("Працює ексепт")
+        return jsonify({'result': 'false'})
+
+
+@bp.route('/cabinet/products/adduse_product_relate', methods=['POST', 'GET'])
+@login_required
+@admin_permission.require(http_exception=403)
+def adduse_product_relate():
+    try:
+        if request.method == 'POST':
+            if request.form.get('modal'):
+                print(f"add_product_relate {request.form}")
+                new_product_id = request.form.get('new_product_id')
+                old_product_id = request.form.get('old_product_id')
+                resp_bool = prod_cntrl.adduse_product_relate(new_product_id, old_product_id)
+                print(resp_bool)
+                if resp_bool:
+                    return jsonify({'result': 'ok'})
+                if len(resp_bool) == 0:
+                    return jsonify({'result': 'product_empty'})
+                return jsonify({'result': 'false'})
+            if resp_bool == True:
+                flash('Компоненти додано!', category='success')
+                return redirect(url_for('Products.add_product_relate'))
+            else:
+                flash('Компоненти недодано!', category='error')
+                return redirect(url_for('Products.add_product_relate'))
+        return render_template('cabinet_client/Products/add_product_relate.html', user=current_user )
+    except:
+        print("Працює ексепт")
+        return jsonify({'result': 'false'})
    
 @bp.route('/cabinet/products/update_product_relate/<int:id>', methods=['POST', 'GET'])
 @login_required

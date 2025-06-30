@@ -1,7 +1,11 @@
 $(document).ready(function () {
-$('.select-source').select2({ 
+    let modal = document.getElementById('modal-div')
+    let select2Options = { 
     width: '100%',
     theme: 'bootstrap-5',
+    if (modal) {
+
+    },
     language: {
         noResults: function () {
             return 'Ничего не знайдено';
@@ -34,6 +38,10 @@ $('.select-source').select2({
     templateResult: function (result) {
         return result.text || result.text; // Виведення тексту міста
     }
-    });   
+    }
+if (modal) {
+  select2Options.dropdownParent = $('#modal-div');
+}
+$('.select-source').select2(select2Options);   
 });
 

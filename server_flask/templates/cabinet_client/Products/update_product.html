@@ -10,6 +10,7 @@
 			Оновлення Товару {{product.article}}
 		</h1>
 		<form action="/cabinet/products/update/{{product.id}}" method="post">
+			<input style="display: none;" name="new_product_id" id="new_product_id" value="{{ product.id }}">
 			<div class="row">
 				<div class="col-sm"><footer>
 					<small class="text-muted">Артікул</small></footer>
@@ -22,7 +23,8 @@
 					<br>
 				</div>
 			</div>
-			<div class=" center">
+			
+<div class="center">
 				<button style="color: #626870;
 				background: #beccf4;
 				border-radius: 14px;
@@ -30,6 +32,97 @@
 				width: 30%;
 				"
 				class="btn"  type="submit">Оновити Товар</button>
+		</div>
+		<h1 style="text-align: center;">
+			Компоненти
+		</h1>
+		
+		{% for relate in product.product_relate %}
+			<div class="row" id="relate">
+				<input style="display:none" name="source_id" rows="1" cols="50" 
+				placeholder="* Артікул"	value="{{ relate.product_source.id }}">
+				<div class="row">
+					<div class="col-sm"><footer>
+						<small class="text-muted">Артікул</small></footer>
+						<input class="form-control bg-light" name="relate_article" 
+						rows="1" cols="50" 
+						placeholder="* Назва" value="{{relate.product_source.article}}"><br></div>
+					</div>
+					<div class="row">
+						<div class="col-sm">
+							<footer><small class="text-muted">Кількість</small></footer>
+							<input class="form-control bg-light" name="relate_quantity" 
+							rows="1" cols="50" placeholder="* Артікул"	value="{{relate.quantity}}">
+						<br>
+					</div>
+				</div>
+			</div>
+			
+		{% endfor %}
+		
+		{% if not product.product_relate %}
+		<div class="row">
+			<h3 style="text-align: center;">
+				Нет Компонентов
+			</h3>
+		</div>
+		{% else %}
+		<div class="row">
+					<div class="center">
+							<button 
+							type="button"
+							class="btn"
+							style="color: #626870;
+								background: #beccf4;
+								border-radius: 14px;
+								box-shadow: 4px 4px 12px #00000010;
+								width: 30%;
+								"
+							data-bs-toggle="modal" 
+							data-bs-target="#useComponent">
+							Использовать Компоненти
+						</button>
+					</div>
+				</div>
+				{% include 'cabinet_client/Products/use_relate_products_modal.html' %}
+				
+				{% endif %}
+				{% include 'cabinet_client/Products/add_relate_products_modal.html' %}
+				{% include 'cabinet_client/Products/adduse_relate_products_modal.html' %}
+				<div class="row">
+					<div class="center">
+					<button 
+						type="button"
+						class="btn"
+						style="color: #626870;
+							background: #beccf4;
+							border-radius: 14px;
+							box-shadow: 4px 4px 12px #00000010;
+							width: 30%;
+							"
+						data-bs-toggle="modal" 
+						data-bs-target="#addComponent">
+						Додати Компоненти
+					</button>
+					</div>
+				</div>
+				<div class="row">
+					<div class="center">
+					<button 
+						type="button"
+						class="btn"
+						style="color: #626870;
+							background: #beccf4;
+							border-radius: 14px;
+							box-shadow: 4px 4px 12px #00000010;
+							width: 30%;
+							"
+						data-bs-toggle="modal" 
+						data-bs-target="#adduseComponent">
+						Додати Компоненти з товару
+					</button>
+					</div>
+				</div>
 			</div>
 			
 		</form>

@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    
     // Ініціалізація #citySelect
 $('#citySelect').select2({ width: '100%', theme: 'bootstrap-5', language: { noResults: function () { return 'Ничего не знайдено';}, searching: function () { return 'Пошук...'; },
     inputTooShort: function (args) {
