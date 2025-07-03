@@ -166,7 +166,7 @@ class SourAnCntrl:
                     curent_time = next(self.my_time())           
                     if sale_quantity and description:
                         print('fixed_process')
-                        self.fixed_process(prod_comp.product_source.id, sale_quantity, description, curent_time)
+                        self.fixed_process(prod_comp.product_source_id, sale_quantity, description, curent_time)
             return True
         return False
       

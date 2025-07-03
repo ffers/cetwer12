@@ -9,7 +9,7 @@ from dataclasses import dataclass
 @dataclass
 class ProductRelateDTO:
     id: int
-    product_id: int # тут product_source_id должен бить
+    product_id: int 
     quantity: int
     product_source_id: int
 

@@ -1,6 +1,6 @@
 from utils import BearRequest, OC_logger
 from a_service import TgServNew
-import os, json, asyncio
+import os
 
 
 
@@ -120,13 +120,13 @@ class SendToCrmNew:
             self.logger.info(f"{resp}")
             if isinstance(resp, bool):
                 self.tg.sendMessage(self.tg.chat_id_info, 
-                                f"Відповідь сервера booli")
-            if 'error' in resp:
+                                f"Відповідь сервера bool")
+            elif 'error' in resp:
                 error = str(resp['error'])
                 print(error)
                 self.logger.error(error)
                 raise ValueError(error)
-            if 'message' in resp:   
+            elif 'message' in resp:   
                 message = str(resp['message'])
                 print(message)
                 self.logger.info(f"{url} - {message}")
