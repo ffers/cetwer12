@@ -1,10 +1,13 @@
-from server_flask.models import Orders, OrderedProduct, Costumer, Recipient
+from server_flask.models import Orders, OrderedProduct
 from server_flask.db import db
 from sqlalchemy import desc
-from urllib.parse import unquote
 from datetime import datetime, timedelta
 from sqlalchemy.exc import IntegrityError
 from .exception_serv import OrderAlreadyExistsError
+
+from DTO import OrderDTO
+
+
 
 from utils import OC_logger
 
@@ -16,8 +19,9 @@ class OrderRep:
     def my_time(self):
         yield (datetime.utcnow())
 
-    def add_order(self, item):
+    def add_order(self, item: OrderDTO):
         try:
+            # print(f'add_order: {item.quantity_orders_costumer}')
             order = Orders(description=item.description,
                         city_name=item.city_name,
                         city_ref=item.city_ref,
@@ -42,7 +46,8 @@ class OrderRep:
                         costumer_id=item.costumer_id,
                         recipient_id=item.recipient_id,
                         payment_status_id=item.payment_status_id,
-                        store_id=item.store_id
+                        store_id=item.store_id,
+                        quantity_orders_costumer=item.quantity_orders_costumer
                         )
             db.session.add(order)
             db.session.commit()
@@ -335,7 +340,9 @@ class OrderRep:
                        delivery_method_id=item.delivery_method_id,
                        source_order_id=1,
                        ordered_status_id=10,
-                       description_delivery="Одяг Jemis")
+                       description_delivery="Одяг Jemis",
+                       quantity_orders_costumer = item.quantity_orders_costumer
+                       )
         db.session.add(order)
         db.session.commit()
         return order

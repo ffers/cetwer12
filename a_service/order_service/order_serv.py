@@ -15,10 +15,11 @@ from .order_api_process import OrderApi
 from .handlers.store_load_order import load_orders_store
 from .handlers.unpaid_handlers import UnpayLoadOrderHandler, \
 ValidateUnpayOrderHandler, OrderProcessor, UnpayLoadOrderProcessor
-from .handlers.base import UnpayContext
+from .handlers.base import UnpayContext, OrderContext
 from .handlers import RepoLoader
+from .handlers.add_order import AddOrder
 
-from mapper import TextOrderManager 
+from mapper import TextOrderManager, map_order_to_dto
 from ..product_serv import ProductServ
 from ..telegram_service import TgServNew
  
@@ -61,7 +62,9 @@ class OrderServ:
                  tg_serv=None,
                  order_repo=None,
                  store_repo=None,
+                 ctx: OrderContext=None
                  ):  
+        self.ctx = ctx
         self.order_rep =  OrderRep()
         self.costum_rep = CostumerRep()
         self.recip_rep = RecipientRep()
@@ -72,6 +75,7 @@ class OrderServ:
         self.logger = OC_logger.oc_log('order_serv')
         self.store_repo = store_repo
         self.repo_loader = RepoLoader
+        self.add_order_v5 = AddOrder(ctx)
 
     def generate_order_code(self, prefix='ASX'):
         digits = [random.choice('0123456789') for _ in range(6)]
@@ -189,6 +193,10 @@ class OrderServ:
     def add_recipient(self, dto):
         recipient = self.recip_rep.create(dto.recipient)
         dto.recipient_id = recipient.id
+        return dto
+    
+    def add_orders_quantity_costumer(self, dto: OrderDTO):
+        dto.quantity_orders_costumer = self.add_order_v5.add_quantity_orders_costumer(dto.costumer.phone)
         return dto
     
     @wrapper()
@@ -340,12 +348,13 @@ class OrderServ:
 
     def dublicate_order(self, order_id):
         item = self.order_rep.load_item(order_id)
-        new_item = deepcopy(item)
+        new_item: OrderDTO = map_order_to_dto(item)
         new_item.source_order_id=1
         new_item.ordered_status_id=10 
         new_item.description_delivery="Одяг Jemis"
         new_item.history = f"Дубль замовлення {item.order_code}\n"
         new_item.order_code = self.generate_order_code()
+        new_item = self.add_orders_quantity_costumer(new_item)
         ordered_product = list(item.ordered_product)
         resp = self.add_order4(new_item)
         print("dublicate_order:", resp)
@@ -354,6 +363,7 @@ class OrderServ:
             resp = self.make_double_history_voor_new_oreder(item, order)
             resp = self.make_double_history_voor_old_oreder(item, order)
             order = self.update_ordered_product(order.id, ordered_product)
+            
             return order
         else:
             return False

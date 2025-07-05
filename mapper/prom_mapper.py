@@ -57,6 +57,7 @@ def promMapper(prom: dict, prod_serv, store_id) -> OrderDTO:
             recipient_id=None,
             costumer=_map_costumer(prom),
             costumer_id=None,
+            quantity_orders_costumer=None,
             store_id=store_id,
             ordered_product=_map_products(prom, prod_serv)
         )

@@ -113,9 +113,9 @@ class TextOrderAllInfo:
         else:
             return "Нотаток від клієнта нема\n"
         
-    def costumer_name(self, order):
+    def costumer_name(self, order: OrderDTO):
         text = "Покупець:\n"
-        text += f'Замовлень: {len(order.costumer.orders)}\n'
+        text += f'Замовлень: {order.quantity_orders_costumer}\n'
         text += f"{order.costumer.last_name} {order.costumer.first_name}\n"
         return text
     

@@ -11,7 +11,6 @@ bp = Blueprint('Bot', __name__, template_folder='templates')
 
 @bp.route("/bot", methods=['POST', 'GET'])
 def bot():
-
     if request.method == 'POST':
         tg = TgAnswerCntrl(OrderCntrl())
         data = request.json

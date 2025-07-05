@@ -1,7 +1,9 @@
 import os, logging, sys
 from server_flask.db import db
+
 from dotenv import load_dotenv
 from datetime import datetime
+
 
 
 from .crm_to_telegram import CrmToTelegram
@@ -21,7 +23,7 @@ from a_service import tg_serv, TgServ, TextFactory
 from a_service import TgServNew, ProductServ
 from a_service import EvoService, RozetkaServ, TgServNew, ProductServ
 from a_service.order_service import OrderServ, OrderApi
-from a_service.order_service.handlers.base import UnpayContext
+from a_service.order_service.handlers.base import UnpayContext, OrderContext
 from a_service.store_service import StoreService
 
 
@@ -87,6 +89,7 @@ del_ord_cntrl = DeliveryOrderCntrl()
 
 class OrderCntrl: 
     def __init__(self, store_crm_token=None, marketplace_token=None) -> None:
+        self.marketplace_token = marketplace_token
         self.OC_log = OC_logger.oc_log("order_cntrl")
         self.sour = SourAnCntrl()
         self.quan_stok = TgCashCntrl()
@@ -94,14 +97,20 @@ class OrderCntrl:
         self.np_client = NpClient()
         self.ord_rep = OrderRep()
         self.status_procces = StatusProcess
-        self.order_serv = OrderServ()
+        self.store_crm_token = store_crm_token
+        self.order_serv = OrderServ(ctx=self.make_ctx())
         self.store_serv = StoreService(repo=StoreRepositorySQLAlchemy(db.session))
         self.prom_cntrl = PromCntrl()
-        self.store_crm_token = store_crm_token
-        self.marketplace_token = marketplace_token
-    
 
-        
+    def make_ctx(self):
+            order_repo = OrderRep(db.session)
+            store_repo = StoreRepositorySQLAlchemy(db.session)
+            return OrderContext(
+                            order_repo,
+                            store_repo,
+                            OC_logger.oc_log('order_cntrl')
+                )
+
     def update_history(self, order_id, comment):
         resp = self.order_serv.update_history(order_id, comment)
         return resp
@@ -175,8 +184,8 @@ class OrderCntrl:
         self.send_order_tg(dublicate_item.id)
         return True
     
-    def dublicate2(self, order_id):
-        pass
+    def dublicate_v2(self, order_id):
+        return self.order_serv.dublicate_order(order_id)
 
     # def add_order(self, order_js):
     #     order_code = order_js["id"]
@@ -496,12 +505,6 @@ class OrderCntrl:
             '''
             return True
         return False
-    
-
-
-
-
-ord_cntrl = OrderCntrl()
 
 
 

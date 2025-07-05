@@ -6,7 +6,7 @@ from .lib.tg_lib import LibTG
 from server_flask.flask_app import flask_app
 import pytest
 
-class TestWorker:
+class TestBot:
     await_button_tg = TgAnswerCntrl(OrderCntrl()).await_tg_button
     
     def test_just_message(self):
@@ -179,8 +179,8 @@ class TestWorker:
 
     def test_search_6_numbers(self):
         with flask_app.app_context():
-            codes = ["ASX-820635", "R-841603966", 
-                     "318724837", "P-337489755"]
+            codes = ["ASX-106944", "R-8321603966", 
+                     "318724837", "P-345974822"]
             data = LibTG.test_search_6_numbers
             resp = []
             for code in codes:
@@ -191,12 +191,12 @@ class TestWorker:
             assert len(resp) == 4  # 4 ChatData
 
             assert resp[0].cmd == "search_order_manager"
-            assert "Замовлення № ASX-820635" in resp[0].text
+            assert "Замовлення № ASX-106944" in resp[0].text
 
-            assert resp[1].content[0].id == 2500
-            assert "Замовлення № R-841603966" in resp[1].text
+            assert resp[1].content[0].id == 5695
+            assert "Замовлення № R-8321603966" in resp[1].text
             
-            assert resp[2].content[0].id == 2409
+            assert resp[2].content[0].id == 3568
             assert "Замовлення № 318724837" in resp[2].text
 
             assert resp[3].content == []  # останній — без замовлень

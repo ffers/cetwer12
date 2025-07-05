@@ -33,7 +33,9 @@ class RecipientDto(BaseModel):
     
 class OrderDTO(BaseModel):
     id: Optional[int] = None
+    order_code: str|None
     timestamp: datetime
+
     phone: str
     email: Optional[str] = None
     ttn: str|None
@@ -41,6 +43,10 @@ class OrderDTO(BaseModel):
     client_firstname: Optional[str] = None
     client_lastname: Optional[str] = None
     client_surname: Optional[str] = None
+
+    description: Optional[str]
+    history: Optional[str] = None
+
     delivery_option: str|None
     city_name: str|None
     city_ref: Optional[str]
@@ -51,26 +57,28 @@ class OrderDTO(BaseModel):
     warehouse_ref: str|None
     sum_price: float
     sum_before_goods: float|None
-    description: Optional[str]
     description_delivery: Optional[str] 
     cpa_commission: Optional[str]
     client_id: int|None
     send_time: Optional[datetime]
     order_id_sources: Optional[str]
-    order_code: str|None
+
     payment_status_id: Optional[int] = None
     ordered_status_id: Optional[int]
     warehouse_method_id: Optional[int]
     source_order_id: Optional[int]
     payment_method_id: Optional[int]
     delivery_method_id: Optional[int]
+
     author_id: Optional[int] = None
+
     recipient: RecipientDto
     recipient_id: int | None
     costumer: CostumerDto
     costumer_id: int | None
     store_id: int | None
     ordered_product: List[ProductDto]
+    quantity_orders_costumer: int | None
     model_config = {
         "from_attributes": True
     }

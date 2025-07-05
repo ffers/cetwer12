@@ -66,7 +66,8 @@ class RozetkaMapper():
             store_id=store_id,
             client_firstname=data.user_title.first_name,
             client_lastname=data.user_title.last_name,
-            client_surname=data.user_title.second_name
+            client_surname=data.user_title.second_name,
+            quantity_orders_costumer=None
         )
 
 

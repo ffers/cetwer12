@@ -5,7 +5,7 @@ from a_service.tg_serv import tg_serv
 from a_service import BotProductSrv
 from black.crm_to_telegram import CrmToTelegram
 from .add_order_to_crm import PromToCrm
-from .handling_b import search_reply_message
+
 from a_service.update_to_crm import up_to_srm
 from .telegram_controller import tg_cntrl, TelegramController
 
@@ -83,7 +83,9 @@ class TgAnswerCntrl:
 
     def await_telegram(self, data): #працює з чатами Склад, Каштан, Розетка
         chat_id = data["message"]["chat"]["id"]
-        
+        from .handling_b import HandlerB
+        hand_B = HandlerB(self.ord_cntrl)
+
         # return 200, "Ok"
         if int(ch_id_sk) == chat_id:
             # print("Отримали повідомлення з Робочого чату")
@@ -95,7 +97,7 @@ class TgAnswerCntrl:
         if int(tg_cntrl.chat_id_rozet) == chat_id:
             if ("reply_to_message" in data["message"] and
                     "text" in data["message"]["reply_to_message"]):
-                search_reply_message(data)
+                hand_B.search_reply_message(data, self.ord_cntrl)
                 return 200, "ok"
 
 

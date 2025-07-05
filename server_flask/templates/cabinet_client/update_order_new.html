@@ -279,7 +279,7 @@
 						<footer><small class="text-muted">Замовленнь клієнта:</small></footer>
 						<div class="editable" data-name="costumer_orders"
 							style="min-height: 1.5rem; cursor: pointer;">
-							{{ order.costumer.orders | length or '' }}</div>
+							{{ order.quantity_orders_costumer or '' }}</div>
 						<input type="email" class="form-control d-none" name="costumer_orders" value=" {{ order.costumer.orders | length or '' }}">
 						<input type="hidden" name="costumer_orders" value="{{ order.costumer.orders | length or '' }}">
 					  </div>

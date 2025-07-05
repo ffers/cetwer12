@@ -17,6 +17,10 @@ class Orders(db.Model):
     costumer = db.relationship("Costumer", back_populates="orders")
     costumer_id = db.Column(db.Integer, db.ForeignKey(
         'costumer.id', name='fk_orders_costumer_id'))
+    
+    ''' для фіксування кількості замовленнь по телефону '''
+    quantity_orders_costumer = db.Column(db.Integer) # тимчасове поле 
+
     delivery_option = db.Column(db.String(50))
     city_name = db.Column(db.String(50))
     city_ref = db.Column(db.String(50))

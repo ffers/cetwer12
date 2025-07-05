@@ -94,7 +94,8 @@ def Order():
 def update(order_id): 
     session.pop('order_dto', None)
     or_c = OrderCntrl()
-    order = or_c.load_for_order_id(order_id) # завнатаженя ордера
+    order :OrderDTO = or_c.load_for_order_id(order_id) # завнатаженя ордера
+    print(f'order_update {order.quantity_orders_costumer}')
     dto = OrderDTO.model_validate(order) # робимо ДТО
     data = OrderedProductSession.proccess(dto) # для сесії з ДТО
     
@@ -331,7 +332,7 @@ def delete(id):
 @login_required
 @author_permission.require(http_exception=403)
 def dublicate(id):
-    order = OrderServ().dublicate_order(id)
+    order = OrderCntrl().dublicate_v2(id)
     if order:
         flash('Замовлення дубльоване', category='success')
         return redirect(f'/cabinet/orders/update/{order.id}')

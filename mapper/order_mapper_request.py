@@ -51,7 +51,8 @@ class OrderFormMapper:
             costumer=costumer,
             costumer_id=form.get('costumer_id', None),
             store_id=form.get('store_id', None),
-            ordered_product=products
+            ordered_product=products,
+            quantity_orders_costumer=None
         )
 
         return order
