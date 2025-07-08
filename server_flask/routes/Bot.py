@@ -5,20 +5,24 @@ from dotenv import load_dotenv
 from black.tg_answer_cntrl import TgAnswerCntrl
 from black.order_cntrl import OrderCntrl
 
+
+
 load_dotenv()
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 bp = Blueprint('Bot', __name__, template_folder='templates')
+
 
 @bp.route("/bot", methods=['POST', 'GET'])
 def bot():
     if request.method == 'POST':
         tg = TgAnswerCntrl(OrderCntrl())
         data = request.json
-        # try:
-        tg.await_tg_button(data)
-        # except:
-        #     print("не вдалося отримати відповідь")
-        return {'success': True}
+        try:
+            tg.await_tg_button(data)
+            return {'success': True}
+        except:
+            return {'success': False}
+        
     return render_template('index.html', user=current_user)
 
 # @bp.route("/bot_send", methods=['POST', 'GET'])

@@ -63,7 +63,7 @@ class TgAnswerCntrl:
         return resp
 
     def await_tg_button(self, data):
-        # try:
+        try:
                 
             result = ResponceDirector().construct(data, OrderCntrl=self.ord_cntrl,
                                                 SourAnCntrl=SourAnCntrl, 
@@ -73,13 +73,13 @@ class TgAnswerCntrl:
             print(result, "tg_command_new")
             if "message" in data: #працює з усіма відповдями
                 self.await_telegram(data)
-                # button_hand(data)
+    
             if "callback_query" in data:
                 self.await_button(data)
             return result
-        # except Exception as e:
-        #     self.log.error(str(e))
-        #     return "Помилка tg answer"
+        except Exception as e:
+            self.log.exception(str(e))
+            raise
 
     def await_telegram(self, data): #працює з чатами Склад, Каштан, Розетка
         chat_id = data["message"]["chat"]["id"]
@@ -98,7 +98,7 @@ class TgAnswerCntrl:
             if ("reply_to_message" in data["message"] and
                     "text" in data["message"]["reply_to_message"]):
                 hand_B.search_reply_message(data, self.ord_cntrl)
-                return 200, "ok"
+                return True
 
 
     def await_button(self, data): #працює з Підтвердженнями

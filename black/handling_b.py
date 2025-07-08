@@ -41,10 +41,10 @@ class HandlerB:
 
 # вп: -421982888; розет: -1001822083358; укр: -1001173544690; нп: -1001391714237
 
-    def send_request_status(invoice_ttn, order_id):
+    def send_request_status(self, invoice_ttn, order_id):
         delivery_type_roz = "rozetka_delivery"
         order_id = re.sub(r"\D", "", order_id)
-        prom_cl = HandlerB().load_store()
+        prom_cl = self.load_store()
         resp = prom_cl.send_ttn(order_id, invoice_ttn, delivery_type_roz)
         print("=======")
         print(resp)
@@ -65,7 +65,7 @@ class HandlerB:
         tg_cntrl.editMessageText(chat_id, message_id, text)
         print(chat_id, message_id, text)
 
-    def replace_text_ttn(text, ttn_number):
+    def replace_text_ttn(self, text, ttn_number):
         new_text = text.replace(";ТТН немає", f";{ttn_number}")
         return new_text
 
