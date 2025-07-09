@@ -97,7 +97,7 @@ class TgAnswerCntrl:
         if int(tg_cntrl.chat_id_rozet) == chat_id:
             if ("reply_to_message" in data["message"] and
                     "text" in data["message"]["reply_to_message"]):
-                hand_B.search_reply_message(data, self.ord_cntrl)
+                hand_B.search_reply_message(data)
                 return True
 
 
