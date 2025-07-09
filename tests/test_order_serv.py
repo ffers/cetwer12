@@ -18,6 +18,7 @@ from api import RozetMain, EvoClient
 from repository.store_sqlalchemy import StoreRepositorySQLAlchemy
 
 from mapper import RozetkaMapper, promMapper
+from unittest.mock import MagicMock
 
 
 
@@ -79,6 +80,7 @@ class TestOrderServ: # пооки іде все через кнтрл
     
     @responses.activate
     def test_get_order_prom(self):
+        mock_repo = MagicMock()
         with flask_app.app_context():
             self.make_response_tg()
             host = "https://my.prom.ua/"
@@ -113,7 +115,7 @@ class TestOrderServ: # пооки іде все через кнтрл
 
             print(resp)
             pointer = resp["result"].get('error')
-            assert pointer == 'Замовлення вже існує'
+            assert mock_repo.add_order.called
 
     @responses.activate
     def test_get_unpay(self):

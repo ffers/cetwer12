@@ -150,8 +150,10 @@ class OrderServ:
         resp = self.add_costumer(dto)
         # print("add_order_costumer:", resp)
         resp = self.add_recipient(resp.get("result"))
+
         # print("add_order_recipient:", resp)
         dto = resp.get("result")
+        dto = self.add_orders_quantity_costumer(dto)
         resp = self.add_order4(resp.get("result"))
         if not resp.get("result"):
             raise OrderAlreadyExistsError("Замовлення вже існує")
