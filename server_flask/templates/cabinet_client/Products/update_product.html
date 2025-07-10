@@ -39,6 +39,27 @@
 		
 		{% for relate in product.product_relate %}
 			<div class="row" id="relate">
+				<button type="button" onclick="confirmDelete({{ relate.id }})" 
+					class="btn    my-sm-0" style="color: #626870;">
+						Видалити Компонент
+				</button>
+				<script>
+					function confirmDelete(id) {
+						// Викликаємо модальне вікно підтвердження
+						if (confirm("Ви впевнені, що хочете видалити компонент?")) {
+							// Якщо користувач натиснув "OK", видалити елемент
+							window.location.href = "/cabinet/products/delete_relate/" + id;
+						} else {
+							// Якщо користувач натиснув "Скасувати", нічого не робимо
+							return false;
+						} 
+					}
+
+					function deleteElement() { 
+						// Видалення елементу
+						// Наприклад, можна використати jQuery для цього: $('#elementId').remove();
+					}
+				</script>
 				<input style="display:none" name="source_id" rows="1" cols="50" 
 				placeholder="* Артікул"	value="{{ relate.product_source.id }}">
 				<div class="row">
