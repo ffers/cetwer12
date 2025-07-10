@@ -3,25 +3,34 @@ from exceptions.order_exception import *
 
 from server_flask.flask_app import flask_app
 from server_flask.db import db
-import requests, responses
 
+import responses
+import logging
+
+from utils import OC_logger
 
 from .lib.rozet_dict import RozetDict
 from .lib.tg_lib import LibTG
 from .lib.prom_dict import PromDict
 
 from black.order_cntrl import OrderCntrl
+
 from a_service.order_service.order_serv import OrderServ, ProductServ
-from black.order_cntrl import OrderCntrl
+from a_service.order_service.handlers.base import UnpayContext, OrderContext
 
 from api import RozetMain, EvoClient
-from repository.store_sqlalchemy import StoreRepositorySQLAlchemy
 
-from mapper import RozetkaMapper, promMapper
+from repository.store_sqlalchemy import StoreRepositorySQLAlchemy
+from repository.order_rep import OrderRep
+
 from unittest.mock import MagicMock
 
-
-
+with flask_app.app_context():   
+    ctx = OrderContext(
+        order_repo=OrderRep(db.session), 
+        store_repo=StoreRepositorySQLAlchemy(db.session),
+        logger=OC_logger.oc_log
+        )
 
 class TestOrderServ: # пооки іде все через кнтрл
     order_c = OrderServ(store_repo=StoreRepositorySQLAlchemy(db.session))
@@ -63,7 +72,7 @@ class TestOrderServ: # пооки іде все через кнтрл
                     )
             }
             market = apis.get(store_data.api)
-            order_cntrl = OrderServ()
+            order_cntrl = OrderServ(ctx=ctx)
             resp = order_cntrl.load_orders_store_v2(market) 
             print("Get orders: ", resp)
             pointer = resp["result"].get('error')
@@ -80,7 +89,7 @@ class TestOrderServ: # пооки іде все через кнтрл
     
     @responses.activate
     def test_get_order_prom(self):
-        mock_repo = MagicMock()
+        # mock_repo = MagicMock()
         with flask_app.app_context():
             self.make_response_tg()
             host = "https://my.prom.ua/"
@@ -109,13 +118,14 @@ class TestOrderServ: # пооки іде все через кнтрл
                     )
             }
             market = apis.get(store_data.api)
-            order_cntrl = OrderServ()
+        
+            order_cntrl = OrderServ(ctx=ctx)
             resp = order_cntrl.load_orders_store_v2(market) 
             print("Get orders: ", resp)
 
             print(resp)
             pointer = resp["result"].get('error')
-            assert mock_repo.add_order.called
+            assert pointer == None
 
     @responses.activate
     def test_get_unpay(self):

@@ -11,7 +11,7 @@ from utils import OC_logger
 
 from a_service.order_service import OrderServ, OrderApi
 from a_service import EvoService, RozetkaServ, TgServNew, ProductServ
-from a_service.order_service.handlers.base import UnpayContext
+from a_service.order_service.handlers.base import UnpayContext, OrderContext
 
 
 from black.order_cntrl import OrderCntrl
@@ -74,7 +74,11 @@ async def get_orders(
                     )
             }
             market = apis.get(store_data.api)
-            order_cntrl = OrderServ()
+            ctx = OrderContext(
+                order_repo=OrderRep(db.session), 
+                store_repo=StoreRepositorySQLAlchemy(db.session)
+                )
+            order_cntrl = OrderServ(ctx=ctx)
             result = order_cntrl.load_orders_store_v2(market) 
             print("Get orders: ", result)
             if result:
