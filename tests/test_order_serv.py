@@ -28,8 +28,7 @@ from unittest.mock import MagicMock
 with flask_app.app_context():   
     ctx = OrderContext(
         order_repo=OrderRep(db.session), 
-        store_repo=StoreRepositorySQLAlchemy(db.session),
-        logger=OC_logger.oc_log
+        store_repo=StoreRepositorySQLAlchemy(db.session)
         )
 
 class TestOrderServ: # пооки іде все через кнтрл

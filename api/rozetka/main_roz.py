@@ -18,6 +18,7 @@ from mapper import RozetkaMapper
 #   6 	# Замовлення виконано 	
 #  61 	Заплановано передачу перевізникові 	
 #  26 "Обробляється менеджером"
+# 70  Планується повторний дзвінок 
 
 # from urllib.parse import urlencode
 

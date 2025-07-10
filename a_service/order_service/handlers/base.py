@@ -49,10 +49,8 @@ class Handler:
 class OrderContext:
     def __init__(self,
             order_repo: OrderRep,
-            store_repo: StoreRepositorySQLAlchemy,
-            logger: logging):
+            store_repo: StoreRepositorySQLAlchemy):
         self.order_repo = order_repo
         self.store_repo = store_repo
-        self.logger = logger
 
 

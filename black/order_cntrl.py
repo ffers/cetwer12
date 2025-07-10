@@ -107,8 +107,7 @@ class OrderCntrl:
             store_repo = StoreRepositorySQLAlchemy(db.session)
             return OrderContext(
                             order_repo,
-                            store_repo,
-                            OC_logger.oc_log('order_cntrl')
+                            store_repo
                 )
 
     def update_history(self, order_id, comment):
