@@ -14,19 +14,19 @@ class Periodtodel(Handler):
             # periods = ['week', 'month', 'year', 'all']
             # for p in periods:
             day = self.make_day(day)
-            period = self.make_period(period_flag)
-            return self.count_v2(day, period, period_flag)     
+            row = self.make_period_rows(period_flag)
+            return self.count_v2(day, row, period_flag)     
         except Exception as e:
             print('Помилка')
             if DEBUG > 1: print(e)  
             self.ctx.logger.exception(f'Period_process - {e}')
 
-    def make_period(self, period_flag):
+    def make_period_rows(self, period_flag):
         start_time, stop_time = self.ctx.w_time.load_work_time(period_flag)
-        period = self.return_row(period_flag, start_time, stop_time)
+        rows = self.return_row(period_flag, start_time, stop_time)
         print('time:', start_time, stop_time)
-        if DEBUG>5: print('an_row:', period)
-        return period
+        if DEBUG>5: print('an_rows:', rows)
+        return rows
     
     def make_day(self, day):
         start_time, stop_time = self.ctx.w_time.day()

@@ -83,7 +83,7 @@ class AnaliticCntrlV2:
                 ).process('week', 'day')
             resp = PeriodV2(
                     self.ctx
-                ).process('month', 'week')
+                ).process('month', 'day')
             resp = PeriodV2(
                     self.ctx
                 ).process('year', 'month')

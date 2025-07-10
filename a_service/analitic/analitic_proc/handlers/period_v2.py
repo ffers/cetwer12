@@ -14,13 +14,11 @@ class DontHaveAnaliticData(Exception):
 class PeriodV2(Handler):
     def process(self, item_flag, period_flag):
         try:
-            # periods = ['week', 'month', 'year', 'all']
-            # for p in periods:
             item = self.return_item(item_flag)
             if DEBUG>4: print('return_item:', item_flag)
-            period = self.return_period(item_flag, period_flag)
-            if DEBUG>4: print('return_period:', period)
-            return self.count_v2(item, period)     
+            rows = self.return_period(item_flag, period_flag)
+            if DEBUG>4: print('return_period:', rows)
+            return self.count_v2(item, rows)     
         except Exception as e:
             print('Помилка')
             if DEBUG > 1: print(e)  
@@ -45,10 +43,10 @@ class PeriodV2(Handler):
             raise DontHaveAnaliticData('Немає ще данних для підрахунку')
         return p
     
-    def count_v2(self, item: AnaliticDto, period: list[AnaliticDto]):
-        item = self.make_zero(item)
+    def count_v2(self, item: AnaliticDto, rows: list[AnaliticDto]):
+        item = self.make_start_dto(item)
         item = self.balance(item)
-        for p in period:
+        for p in rows:
             item = self.count(item, p)
         if DEBUG>4:print('sum_row:', item)
         resp = self.ctx.an_rep.update_v3(item)
@@ -70,7 +68,7 @@ class PeriodV2(Handler):
             self.ctx.logger.exception(f'count: {e}')
             raise
 
-    def make_zero(self, item):
+    def make_start_dto(self, item):
         return AnaliticDto(id=item.id, period=item.period)
     
     def balance(self, item):
