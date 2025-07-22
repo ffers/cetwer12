@@ -141,7 +141,7 @@ class OrderServ:
         text_order = TextOrderManager(order).builder()
         keyboard_json = self.tg.keyboard_func()
         self.tg.sendMessage(self.tg.chat_id_confirm, 
-                                text_order, keyboard_json)
+                                '🟠'+text_order, keyboard_json)
         return True
     
     @wrapper()
