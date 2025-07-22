@@ -1,5 +1,6 @@
 from repository.balance_sqlalchemy import BalanceRepositorySQLAlchemy
-from a_service.balance_service import BalanceService
+from asx.a_service.analitic.balance_serv.balance_service import BalanceService
+from black.analitic_cntrl.balance_cntrl import BalanceCntrl
 
 from flask import Blueprint, render_template, request, redirect, url_for, \
     jsonify
@@ -22,8 +23,12 @@ bp = Blueprint('balance', __name__)
 
 repo = BalanceRepositorySQLAlchemy(db.session)
 service = BalanceService(repo)
+cntrl = BalanceCntrl(repo)
 
 temp = 'cabinet_client/balance/'
+'''
+PATH - balance/
+'''
 
 @login_required
 @admin_permission.require(http_exception=403)
@@ -83,3 +88,38 @@ def list_select():
         return jsonify({'results': items})
     else:
         return jsonify({'results': []})
+
+
+@login_required
+@admin_permission.require(http_exception=403)
+@bp.route('/income', methods=['POST', 'GET'])
+def income():
+    try:
+        if request.method == 'POST':
+            if cntrl.add_income_balance(
+                request.form['description'],
+                request.form['sum']
+            ):
+                return render_template(f'{temp}project.html', item=item, user=current_user)
+        else:
+            item = service.get_item(2)  
+            return render_template(f'{temp}add_arrival_balance.html', item=item, user=current_user)
+
+    except:
+        print("income_balance помилка")
+        return "Помилка"
+    
+
+    '''
+    временная функция с конкретним айди проекта
+    '''
+@login_required
+@admin_permission.require(http_exception=403)
+@bp.route('/project', methods=['GET'])
+def project():
+    try:
+        item = service.get_item(2) 
+        return render_template(f'{temp}project.html', item=item, user=current_user)
+    except:
+        print("income_balance помилка")
+        return "Помилка"

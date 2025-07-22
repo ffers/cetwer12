@@ -88,8 +88,7 @@ class OrderFormMapper:
             "costumer": costumer.model_dump(),
             "recipient": recipient.model_dump(),
             "ordered_product": [p.model_dump() for p in products],
-            "store_id": form.get('store_id', store_id),
-            "ordered_status_id": 1
+            "store_id": form.get('store_id', store_id)
         })
 
         return order_data

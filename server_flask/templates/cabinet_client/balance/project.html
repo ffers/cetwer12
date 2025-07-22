@@ -1,0 +1,46 @@
+
+{% extends 'layout/base.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+
+<!doctype html>
+<title>Balance</title>
+<h1>Balance </h1>
+<div class="content">
+    <div class="center">
+            <a href="{{ url_for('balance.create') }}">Create New</a>
+            <ul>
+                    <li>
+                        <strong>{{ item.id }}.</strong> —
+                        <strong>{{ item.balance }}</strong> —
+                        <strong>{{ item.wait }}</strong> —
+                        <strong>{{ item.stock }}</strong> —
+                        <strong>{{ item.inwork }}</strong> —
+                        
+
+                    <a href="{{ url_for('balance.edit', item_id=item.id) }}">Edit</a>
+
+                    
+                    
+                    </li>
+                    
+            </ul>
+            <a href="{{ url_for('balance.income') }}">Робота с балансом</a>
+    </div>
+    <div class="row">
+        <div class="col-sm ">
+            <a href="/cabinet/store/">
+              <button id="submitBtn" class="btn btn-outline-info my-2 my-sm-0" 
+                  type="button">
+                  Store
+              </button>
+              </a>
+          </div>
+    </div>
+</div>
+
+
+{% endblock %}

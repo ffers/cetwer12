@@ -15,11 +15,11 @@
 {% block body %}
 	<div class="content"> 
 		<h1 style="text-align: center;">
-			Прихід Товару
+			Робота с Балансом
 		</h1>
 		
 			<form 
-                action="{{ url_for('balance.add_arrival_income') }}" 
+                action="{{ url_for('balance.income') }}" 
                 method="post"
                 style="margin-bottom: 200px;"
             >
@@ -53,21 +53,15 @@
                                 required>
                         </div>
                 					
-                        <div class="col-sm individ">
-                            <select  
-                                class="form-control select-source" 
-                                name="article" 
-                                required>
-                            </select> 
-                        </div>
                         <div class="col-sm col-lg-2 individ">
-                            <input 
-                            style="text-align: center;" 
-                            class=" quantity form-control" 
-                            id="quantity" name="quantity"  
-                            min="1" max="10000" 
-                            placeholder="* Кількість" 
-                            required>
+                             <input 
+                                type="number" 
+                                style="text-align: center;" 
+                                class="form-control"
+                                name="sum" 
+                                value=""
+                                placeholder="Сума"
+                                required>
                         </div>
                         <div class="col-sm col-lg-2"></div>
                     </div>               
@@ -86,7 +80,7 @@
                 <div class="col-sm">
                     <div class="center">
                         <button class="button button--primary button--large">
-                            Поставити на прихід
+                            Провести
                         </button>
                     <div>
                 </div>
@@ -98,7 +92,7 @@
 	</div>
 
 
-    <script src="{{url_for('static', filename='javascript/select_source.js')}}"></script>
+    <script src="{{url_for('static', filename='javascript/select-balance.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/add-input-arrival.js')}}"></script>
     <script src="{{url_for('static', filename='javascript/modal-window.js')}}"></script>
 {% endblock %}

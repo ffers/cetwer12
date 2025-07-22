@@ -30,6 +30,7 @@ from .order.telegram_address_order.UkrAddressTg import UkrAddressTg
 
 from .analitic.ProductAnalitic import ProductAnalitic
 from .analitic.FinancAnalitic import FinancAnalitic
+from .analitic.MoneyJournal import MoneyJournal
 from .product.Arrival import Arrival
 from .analitic.Analitic import Analitic
 from .delivery.DeliveryOrder import DeliveryOrder
