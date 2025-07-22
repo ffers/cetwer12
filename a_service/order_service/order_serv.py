@@ -137,11 +137,11 @@ class OrderServ:
         return order_db
     
 
-    def make_send_to_confirmed_tg_times(self, order):
+    def make_send_to_confirmed_tg_times(self, order, flag=''):
         text_order = TextOrderManager(order).builder()
         keyboard_json = self.tg.keyboard_func()
         self.tg.sendMessage(self.tg.chat_id_confirm, 
-                                '🟠'+text_order, keyboard_json)
+                                flag+text_order, keyboard_json)
         return True
     
     @wrapper()
@@ -309,7 +309,7 @@ class OrderServ:
         if order_db:
             if order_dto.ordered_product:
                 self.update_product3(order_dto, resp)
-                self.make_send_to_confirmed_tg_times(order_db)
+                self.make_send_to_confirmed_tg_times(order_db, '🟠')
             return resp.update({"order_db": "ok"})
         resp.update({"order_db": "unsuccess"})
         return resp
