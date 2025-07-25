@@ -98,6 +98,57 @@
             <div class="center">
 			    <button class="button button--primary button--large" type="submit">Додати</button>
             </div>
+            {% for relate in item.product_relate %}
+			<div class="row" id="relate">
+				<!-- <button type="button" onclick="confirmDelete({{ relate.id }})" 
+					class="btn    my-sm-0" style="color: #626870;">
+						Видалити Компонент
+				</button> -->
+				<script>
+					function confirmDelete(id) {
+						// Викликаємо модальне вікно підтвердження
+						if (confirm("Ви впевнені, що хочете видалити компонент?")) {
+							// Якщо користувач натиснув "OK", видалити елемент
+							window.location.href = "/cabinet/products/delete_relate/" + id;
+						} else {
+							// Якщо користувач натиснув "Скасувати", нічого не робимо
+							return false;
+						} 
+					}
+
+					function deleteElement() { 
+						// Видалення елементу
+						// Наприклад, можна використати jQuery для цього: $('#elementId').remove();
+					}
+				</script>
+				<input style="display:none" name="source_id" rows="1" cols="50" 
+				placeholder="* Артікул"	value="{{ relate.products.id }}">
+				<div class="row">
+					<div class="col-sm"><footer>
+						<small class="text-muted">Артікул</small></footer>
+						<input class="form-control bg-light" name="relate_article" 
+						rows="1" cols="50" 
+						placeholder="* Назва" value="{{relate.products.article}}"><br></div>
+					</div>
+					<div class="row">
+						<div class="col-sm">
+							<footer><small class="text-muted">Кількість</small></footer>
+							<input class="form-control bg-light" name="relate_quantity" 
+							rows="1" cols="50" placeholder="* Артікул"	value="{{relate.quantity}}">
+						<br>
+					</div>
+				</div>
+			</div>
+			
+		{% endfor %}
+		
+		{% if not item.product_relate %}
+		<div class="row">
+			<h3 style="text-align: center;">
+				Нет Компонентов
+			</h3>
+		</div>
+        {% endif %}
 		</form>
 
 
