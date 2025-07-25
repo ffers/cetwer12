@@ -6,7 +6,10 @@ from ...base import Handler
 from . import Count
 from domain.models.analitic_dto import AnaliticDto
 from domain.models import BalanceDTO
+from domain.models.move_balance_dto import MoveBalanceDTO
+from a_service.analitic.balance_serv.balance_service import BalanceService
 from decimal import Decimal
+
 
 class OrderHaveSendTime(Exception):
     pass
@@ -55,6 +58,7 @@ class CheckConfirmedOrder(Handler):
             return AnaliticDay(self.ctx).process(order)
 
 'Аналітика на день'
+'ЯКЩО DEV то непрописує ордер send_time'
 class AnaliticDay(Handler):
     def process(self, order):
         return self.make_day(order)
@@ -85,13 +89,23 @@ class AnaliticDay(Handler):
         stock = Stock(self.ctx)
         balance = Balance(self.ctx)
         inwork = Inwork(self.ctx)
+        move = MoveBalance(self.ctx)
         try:
+            body_order = count.body_v2(order)
             stock_sum = stock.process(order)
-            torg = count.torg_func(order)
+            torg_order = count.torg_func(order)
+            profit = torg_order - body_order
+            move.update_balance_salary(
+                MoveBalanceDTO(
+                    project_id=2,
+                    sum=-profit
+                )
+            )
+            
             x.stock = stock_sum
             x.orders += 1
-            x.torg += torg
-            x.body += count.body_v2(order)
+            x.torg += torg_order
+            x.body += body_order
             x.worker += 27
             x.profit = x.torg - x.body
             x.prom += count.cpa_com_f(order)
@@ -99,7 +113,7 @@ class AnaliticDay(Handler):
             x.period = 'day'
             x.salary = count.salary(x)
             x.balance = balance.process()
-            x.wait = wait.wait(torg)
+            x.wait = wait.wait(torg_order)
             x.inwork = inwork.process()
             if DEBUG>4: print(f"новий кеш: {x}")
             return x
@@ -178,6 +192,37 @@ class Balance(Handler):
     def process(self):
         balance = self.ctx.balance_rep.get(2)
         return balance.balance
+    
+
+class MoveBalance(Handler):
+    '''
+    я хочу считать баланс профита и витаскивать етот баланс когда он в наличии
+    а он в наличии когда ми получаем очікувано и вичетаем тіло
+    тоесть я би хотел иметь баланс зп и вичетать его отдельно чтоби понимать
+    что ето четко баланс зп 
+    я могу его пополнить вручную
+    я би хотел чтоби он пополнялся автоматом и с него списивать
+    вот мои мисли и спутались
+    но в тот момент когда я буду снимать деньги ето незначит 
+    что ми их уже заработали
+    например можно вичесть то что висит на почте из зп и за вичетом етого 
+    посути то что на почте ето просто проблема на две недели а бивает и на месец 
+    тоесть нужно отслеживать заказ и только когда он в статусе виполнен 
+    обрабативать его и тоесть наверноое может бить прикидочная аналитика
+    и аналитика по факту
+    на сегодняшний день пусть зотяби зп просто прибавляеться 
+    в момент подсчета аналитики
+    '''
+    def update_balance_salary(self, move: MoveBalanceDTO):
+        balance: BalanceDTO = self.ctx.balance_rep.get(move.project_id)
+        print(f'update_balance_salary {balance}')
+        salary = balance.balance - move.sum
+        return self.ctx.balance_rep.update_balance(
+            BalanceDTO(
+                id=balance.id,
+                balance=salary
+            )
+        )
 
 
 

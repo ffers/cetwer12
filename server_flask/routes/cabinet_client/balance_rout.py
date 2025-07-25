@@ -1,6 +1,8 @@
 from repository.balance_sqlalchemy import BalanceRepositorySQLAlchemy
 from asx.a_service.analitic.balance_serv.balance_service import BalanceService
 from black.analitic_cntrl.balance_cntrl import BalanceCntrl
+from domain.models.move_balance_dto import MoveBalanceDTO
+from utils.format_float import format_float
 
 from flask import Blueprint, render_template, request, redirect, url_for, \
     jsonify
@@ -10,6 +12,8 @@ from flask_login import login_required, current_user
 from flask_principal import Permission, RoleNeed
 
 from utils import OC_logger
+
+import os
 
 logger = OC_logger.oc_log('balance_cntrl')
 
@@ -93,20 +97,23 @@ def list_select():
 @login_required
 @admin_permission.require(http_exception=403)
 @bp.route('/income', methods=['POST', 'GET'])
-def income():
+def move_balance():
     try:
         if request.method == 'POST':
-            if cntrl.add_income_balance(
+            project_id = int(os.getenv('PROJECT_ID'))
+            move_dto = MoveBalanceDTO(
+                project_id,
+                format_float(request.form['sum']),
                 request.form['description'],
-                request.form['sum']
-            ):
-                return render_template(f'{temp}project.html', item=item, user=current_user)
-        else:
-            item = service.get_item(2)  
-            return render_template(f'{temp}add_arrival_balance.html', item=item, user=current_user)
+            )
+            print(move_dto)
+            item = cntrl.move_balance(move_dto)
+            return render_template(f'{temp}move_balance.html', user=current_user)
+        else: 
+            return render_template(f'{temp}move_balance.html', user=current_user)
 
-    except:
-        print("income_balance помилка")
+    except Exception as e:
+        print(f"move_balance помилка {e}")
         return "Помилка"
     
 
@@ -120,6 +127,6 @@ def project():
     try:
         item = service.get_item(2) 
         return render_template(f'{temp}project.html', item=item, user=current_user)
-    except:
-        print("income_balance помилка")
+    except Exception as e:
+        print(f"income_balance помилка {e}")
         return "Помилка"

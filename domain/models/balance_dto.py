@@ -13,3 +13,7 @@ class BalanceDTO:
     wait: Decimal = Decimal('0.00')
     stock: Decimal = Decimal('0.00')
     inwork: Decimal = Decimal('0.00')
+    salary: Decimal = Decimal('0.00')
+    rozetka_pay: Decimal = Decimal('0.00')
+    nova_pay: Decimal = Decimal('0.00')
+

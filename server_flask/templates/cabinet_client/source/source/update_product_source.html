@@ -96,7 +96,7 @@
                 <!-- <div class="col-sm"><a href="get_product/send_with_prom_test">Підвердити</a></div> -->
             </div><br>
             <div class="center">
-			    <button class="button button--primary button--large" type="submit">Додати</button>
+			    <button class="button button--primary button--large" type="submit">Змінити</button>
             </div>
             {% for relate in item.product_relate %}
 			<div class="row" id="relate">
@@ -128,7 +128,7 @@
 						<small class="text-muted">Артікул</small></footer>
 						<input class="form-control bg-light" name="relate_article" 
 						rows="1" cols="50" 
-						placeholder="* Назва" value="{{relate.products.article}}"><br></div>
+						placeholder="* Назва" value="{{relate.products.article}} - {{relate.products.product_name}}"><br></div>
 					</div>
 					<div class="row">
 						<div class="col-sm">

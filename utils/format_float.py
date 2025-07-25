@@ -1,7 +1,7 @@
 from decimal import Decimal
 
 
-def format_float(self, num):
+def format_float(num):
         try:
             if isinstance(num, int):
                 num_format = str(f"{int(num)}.00")

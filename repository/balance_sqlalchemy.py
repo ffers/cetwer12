@@ -86,9 +86,16 @@ class BalanceRepositorySQLAlchemy(ItemRepository):
         return 
 
     def update_balance(self, item: BalanceDTO):
-        i = SQLItem.query.get_or_404(item.id)
-        i.balance = item.balance
-        self.session.commit()
+        try:
+            i = SQLItem.query.get_or_404(item.id)
+            i.balance = item.balance
+            self.session.commit()
+            self.session.refresh(i) # моожет ошибка кбудет непомню
+            return i
+        except Exception as e:
+            print(e)
+            raise ValueError('update_balance repo dont work')
+        
 
     def update_wait(self, item: BalanceDTO):
         i = SQLItem.query.get_or_404(item.id)

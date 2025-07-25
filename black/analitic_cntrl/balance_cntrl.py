@@ -9,5 +9,5 @@ class BalanceCntrl:
     def __init__(self, repo: ItemRepository):
         self.serv = BalanceService(repo)
 
-    def add_income_balance(self, description, sum):
-        self.serv.add_income_balance(description, sum)
+    def move_balance(self, move):
+        self.serv.move_balance(move)

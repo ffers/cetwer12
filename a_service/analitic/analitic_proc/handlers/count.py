@@ -38,7 +38,11 @@ class Count(Handler):
         return rozet
     
     def salary(self, x: AnaliticDto):
-        return x.profit - x.worker - x.prom - x.rozet - x.google - x.insta 
+        '''
+        пока несчитаем рабочих и пром
+        меняем посдчет на прибавление а не приравнивание
+        '''
+        return x.profit - x.rozet - x.google - x.insta 
 
     def inwork(self, x: AnaliticDto):
         return x.stock + x.inwork + x.balance
