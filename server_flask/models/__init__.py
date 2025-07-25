@@ -45,5 +45,6 @@ from .Receipts.Receipt import Receipt
 from .Receipts.Shift import Shift
 from .Receipts.Cash import Cash
 from .analitic.Balance import Balance
+from .journal.journal_balance import JournalBalance
 
  

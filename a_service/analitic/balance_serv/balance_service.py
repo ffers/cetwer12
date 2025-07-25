@@ -39,7 +39,7 @@ class BalanceService:
     def delete_item(self, item_id):
         self.repo.delete(item_id)
  
-    def add_balance_income(self, description, sum):
+    def add_income_balance(self, description, sum):
         '''
         проблема в том что нужно записать баланс в общий журнал но ето нельзя
         сдклать потомучто журнал завязан только под товар
