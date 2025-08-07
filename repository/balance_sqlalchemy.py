@@ -4,9 +4,10 @@ from server_flask.models import Balance as SQLItem
 from domain.models.balance_dto import BalanceDTO
 from domain.repositories.balance_repo import ItemRepository
 from sqlalchemy.orm import Session
+from server_flask.db import db
 
 class BalanceRepositorySQLAlchemy(ItemRepository):
-    def __init__(self, session: Session):
+    def __init__(self, session=Session(db.session)):
         self.session = session
 
     def get_all(self):

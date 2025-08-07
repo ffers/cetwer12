@@ -78,7 +78,7 @@ $('#saveBtn').on('click', function () {
       contentType: 'application/json',
       data: JSON.stringify(tableData),
       success: function (response) {
-        //   location.reload()
+          location.reload()
           
       }
   });

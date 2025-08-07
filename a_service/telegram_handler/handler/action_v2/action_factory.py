@@ -1,7 +1,12 @@
 
 from .base import Command
 
-  
+
+
+'''
+по моему ето устаревший обʼєкт
+OLD
+'''
      
 class Stock(Command):
     def execute(self, data_chat):

@@ -1,7 +1,10 @@
 
 from domain.models.balance_dto import BalanceDTO
+from domain.models.move_balance_dto import MoveBalanceDTO
+
 from domain.repositories.balance_repo import ItemRepository
 from .handlers.move_balance import MoveBalance
+
 
 class BalanceService:
     def __init__(self, repo: ItemRepository):
@@ -39,13 +42,16 @@ class BalanceService:
     def delete_item(self, item_id):
         self.repo.delete(item_id)
  
-    def move_balance(self, move):
+    def move_balance(self, move_dto: MoveBalanceDTO):
         '''
         проблема в том что нужно записать баланс в общий журнал но ето нельзя
         сдклать потомучто журнал завязан только под товар
         сделаем журнал денег
         на половину журнал готов но пока его пропустим
         '''
-        balance = self.move.update_balance_salary(move)
+        balance = self.move.update_balance_salary(move_dto)
         print(balance)
         return balance
+    
+
+   

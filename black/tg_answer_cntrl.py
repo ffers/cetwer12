@@ -12,9 +12,16 @@ from .telegram_controller import tg_cntrl, TelegramController
 from .analitic_cntrl.sour_an_cntrl import SourAnCntrl
 from a_service import TgAnswerSerw, ResponceDirector
 from .telegram_cntrl.tg_cash_cntrl import TgCashCntrl
+from a_service.analitic.balance_serv.balance_service import BalanceService
 from a_service.order_service import OrderServ
 from utils import OC_logger
 from exceptions.order_exception import OrderNotFoundException
+from repository.balance_sqlalchemy import BalanceRepositorySQLAlchemy
+
+
+'''
+я получаю через ансвер контрл и отправляю в сервис
+'''
 
 env_path = '../common_asx/.env'
 load_dotenv(dotenv_path=env_path)
@@ -63,12 +70,22 @@ class TgAnswerCntrl:
         return resp
 
     def await_tg_button(self, data):
+        '''
+        тг імеет два направления 
+        получение данних presentation
+        обработка данних domain
+        ответ infrastructure
+        я смешал ето в одно
+        мне надо вичесть из тоовара потом из баланса
+        '''
         try:
                 
-            result = ResponceDirector().construct(data, OrderCntrl=self.ord_cntrl,
+            result = ResponceDirector().construct(data, 
+                                                OrderCntrl=self.ord_cntrl,
                                                 SourAnCntrl=SourAnCntrl, 
                                                 TelegramCntrl=TelegramController,
-                                                OrderServ=OrderServ
+                                                OrderServ=OrderServ,
+                                                BalanceService=BalanceService(BalanceRepositorySQLAlchemy())
                                                 )
             print(result, "tg_command_new")
             if "message" in data: #працює з усіма відповдями
@@ -82,6 +99,7 @@ class TgAnswerCntrl:
             raise
 
     def await_telegram(self, data): #працює з чатами Склад, Каштан, Розетка
+      
         chat_id = data["message"]["chat"]["id"]
         from .handling_b import HandlerB
         hand_B = HandlerB(self.ord_cntrl)
@@ -102,6 +120,7 @@ class TgAnswerCntrl:
 
 
     def await_button(self, data): #працює з Підтвердженнями
+
         chat_id = data["callback_query"]["message"]["chat"]["id"]
         if int(tg_cntrl.chat_id_confirm) == chat_id:
             key = data["callback_query"]["message"]["reply_markup"]

@@ -1,21 +1,25 @@
 
 from utils import my_time_v2
 from ..base import Command
+from dataclasses import dataclass
+from domain.models.move_balance_dto import MoveBalanceDTO
 
 class ThisSubtrection(Exception):
     pass
 
-
 class StockAction(Command):
     def execute(self, data_chat): 
-        return self.parse_stock(data_chat, self.SourAnCntrl)
-
+        data_chat = self.parse_stock(data_chat, self.SourAnCntrl)
+        # move_dto = self.balance()
+        # balance_dto = self.balance_serv.move_balance(move_dto)
+        return None
+        
     def parse_stock(self, data_chat, sour_cntrl):
         data_chat.resp = [] 
         for item in data_chat.content:
             try:
                 data_chat = self.fixed_product(
-                    data_chat,
+                    data_chat,  
                     sour_cntrl, 
                     item                    
                 )
@@ -62,20 +66,24 @@ class StockAction(Command):
             
         return data_chat
     
-    def balance(self, sour_cntrl, quantity, source):
+    def balance(self, quantity, item_prod):
         try:
             if '-' in str(quantity):
                 raise ThisSubtrection('це вичет все гуд')
-            source_bal = sour_cntrl.load_article("balance")
-            pay = quantity * source.price
-            sour_cntrl.fixed_process(
-                source_bal.id, 
-                -pay, 
-                'автоматичне списання',
-                my_time_v2()
-            )   
+            pay = quantity * item_prod.price
+            move_dto = MoveBalanceDTO(
+                project_id=2, # тут має бути session.project_id
+                sum=pay, 
+                description='автоматичне списання'
+                )                                     
+            # sour_cntrl.fixed_process(
+            #     source_bal.id, 
+            #     -pay, 
+            #     'автоматичне списання',
+            #     my_time_v2()
+            # )   
             self.logger.info(f'Вичетаня балансу SUCCESS')
-            return True
+            return move_dto
         except ThisSubtrection: return True
         except Exception as e:
             self.logger.error(f'Вичетаня балансу не працює {e}', exc_info=True)

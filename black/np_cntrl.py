@@ -42,7 +42,7 @@ class NpCntrl:
                 "CityRecipient": info_ref.get("CityRef"),
                 "RecipientAddress": order.warehouse_ref,
                 "payment_option": order.payment_method_id,
-                "RecipientsPhone": self.strip_phone(order.phone),
+                "RecipientsPhone": self.strip_phone(order.recipient.phone),
                 "FirstName": order.recipient.first_name,
                 "LastName": order.recipient.last_name,
                 "MiddleName": order.recipient.second_name,

@@ -3,27 +3,11 @@ from .parsers.parse_worker import Parse
 from utils import my_time
 from datetime import datetime
 from .action_v2.actions.stock_action import StockAction
-
-class Command:
-    def __init__(self, **deps):
-        self.order_cntrl = deps["OrderCntrl"]
-        self.SourAnCntrl = deps["SourAnCntrl"]()
-        self.order_serv = deps["OrderServ"]()
-        self.parse = Parse()     
-
-    def execute(self, content):     
-        pass      
+from .action_v2.base import Command
      
 class Take(Command):
     def execute(self, data_chat): 
-        return data_chat
-    
-# class Stock(Command):
-#     def execute(self, data_chat):
-#         data_chat = self.parse.parse_stock(data_chat, self.SourAnCntrl)
-#         return data_chat 
-       
-      
+        return data_chat      
         
 class NewOrders(Command):
     def execute(self, data_chat): 
